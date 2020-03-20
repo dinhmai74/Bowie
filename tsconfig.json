@@ -1,0 +1,34 @@
+{
+  "compilerOptions": {
+    "allowJs": false,
+    "allowSyntheticDefaultImports": true,
+    "experimentalDecorators": true,
+    "jsx": "react-native",
+    "module": "es2015",
+    "moduleResolution": "node",
+    "noImplicitAny": false,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noUnusedLocals": true,
+    "sourceMap": true,
+    "target": "es2015",
+    "lib": ["es7"],
+    "skipLibCheck": true,
+    "baseUrl": ".",
+    "paths": {
+      "*": ["node_modules/*", "app/*"],
+      "app": ["./app"],
+      "api": ["./app/api"],
+      "components": ["./app/components"],
+      "screens": ["./app/screens"],
+      "navigation": ["./app/navigation"],
+      "services": ["./app/services"],
+      "theme": ["./app/theme"],
+      "utils": ["./app/utils"],
+      "models": ["./app/models"],
+      "i18n": ["./app/i18n"]
+    }
+  },
+  "exclude": ["node_modules"],
+  "include": ["index.js", "app", "test", "storybook"]
+}

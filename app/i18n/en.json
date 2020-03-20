@@ -1,0 +1,27 @@
+{
+  "common": {
+    "ok": "OK!",
+    "cancel": "Cancel",
+    "back": "Back"
+  },
+  "errors": {
+    "invalidEmail": "Invalid email address."
+  },
+  "welcomeScreen": {
+    "title": "Welcome",
+    "subText": "Lorem ipsum dolor sit amet, at sem omnis penatibus tellus scelerisque malesuada, lectus at fringilla feugiat enim eros, venenatis ac venenatis elit porta sit, elit amet ultricies metus pellentesque nulla. Mauris lectus, dui lacinia maecenas, suscipit pretium id faucibus pretium suspendisse. Urna amet purus sed ",
+    "getStarted": "Let's start"
+  },
+  "demoScreen": {
+    "howTo": "HOW TO",
+    "title": "What’s In This Stack?",
+    "tagLine": "Congratulations, you’ve got a very advanced React Native app template here.  Take advantage of this boilerplate!",
+    "reactotron": "Demo Reactotron",
+    "androidReactotronHint": "If this doesn't work, ensure the Reactotron desktop app is running, run adb reverse tcp:9090 tcp:9090 from your terminal, and reload the app.",
+    "iosReactotronHint": "If this doesn't work, ensure the Reactotron desktop app is running and reload app."
+  },
+  "storybook": {
+    "placeholder": "Placeholder",
+    "field": "Field"
+  }
+}
