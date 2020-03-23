@@ -1,4 +1,4 @@
-import React, { useEffect } from "react"
+import React, { useEffect, useState } from "react"
 import { getStorybookUI, configure } from "@storybook/react-native"
 import { AppThemeContext, themes } from "../app/theme"
 import { ApplicationProvider } from "@ui-kitten/components"
@@ -14,6 +14,7 @@ configure(() => {
 const StorybookUI = getStorybookUI({ port: 9001, host: "localhost", onDeviceUI: true })
 
 export const StorybookUIRoot: React.FunctionComponent = () => {
+  const [theme, setTheme] = useState("light")
   useEffect(() => {
     ;(async () => {
       if (typeof __TEST__ === "undefined" || !__TEST__) {
