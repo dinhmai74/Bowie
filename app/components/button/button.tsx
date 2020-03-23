@@ -24,14 +24,22 @@ export class Button extends React.Component<ButtonProps> {
       style: styleOverride,
       textStyle: textStyleOverride,
       children,
+      disabled,
       full,
       loading,
+      onPress: onPressProps,
       ...rest
     } = this.props
 
     const notFullStyle: ViewStyle = !full && { alignSelf: "flex-start" }
+    const opacity = disabled ? 0.2 : 1
     const viewStyle = mergeAll(
-      flatten([viewPresets[preset] || viewPresets.primary, notFullStyle, styleOverride]),
+      flatten([
+        viewPresets[preset] || viewPresets.primary,
+        notFullStyle,
+        styleOverride,
+        { opacity },
+      ]),
     )
     const textStyle = mergeAll(
       flatten([textPresets[preset] || textPresets.primary, textStyleOverride]),
@@ -51,7 +59,14 @@ export class Button extends React.Component<ButtonProps> {
     }
 
     return (
-      <KTButton style={viewStyle} textStyle={textStyle} {...rest} {...customProps}>
+      <KTButton
+        style={viewStyle}
+        {...{ textStyle }}
+        onPress={!disabled && onPressProps}
+        activeOpacity={disabled ? opacity : 0.5}
+        {...rest}
+        {...customProps}
+      >
         {content}
       </KTButton>
     )

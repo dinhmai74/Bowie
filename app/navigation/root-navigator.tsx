@@ -4,6 +4,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack"
 
 import { RootParamList } from "./types"
 import { PrimaryNavigator } from "./primary-navigator"
+import { AuthNavigator } from "./auth-navigator"
 
 const Stack = createNativeStackNavigator<RootParamList>()
 
@@ -16,6 +17,13 @@ const RootStack = () => {
         stackPresentation: "modal",
       }}
     >
+      <Stack.Screen
+        name="authStack"
+        component={AuthNavigator}
+        options={{
+          headerShown: false,
+        }}
+      />
       <Stack.Screen
         name="primaryStack"
         component={PrimaryNavigator}

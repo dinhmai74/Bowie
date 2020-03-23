@@ -11,6 +11,7 @@ export const AppThemeContext = React.createContext({
 interface UseThemes {
   toggle: () => void
   color: Color
+  theme: string
 }
 
 export const useThemes = (): UseThemes => {
@@ -23,5 +24,6 @@ export const useThemes = (): UseThemes => {
     toggle,
     // @ts-ignore
     color: useTheme(),
+    theme: themeContext.theme,
   }
 }

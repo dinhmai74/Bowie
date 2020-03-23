@@ -10,4 +10,4 @@ export * from "./text-field/text-field"
 export * from "./wallpaper/wallpaper"
 export * from "./sized-box/sized-box"
 export * from "./view/view"
-
+export * from "./auth-header/auth-header"

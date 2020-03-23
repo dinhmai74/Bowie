@@ -56,7 +56,7 @@ export const WelcomeScreen: React.FunctionComponent<WelcomeScreenProps> = props 
   const welcomeOpacity: any = bInterpolate(welcomeAnim, 0, 1)
   const insets = useSafeArea()
 
-  const { toggle } = useThemes()
+  const { navigation } = props
 
   return (
     <Screen style={styles.full}>
@@ -87,7 +87,7 @@ export const WelcomeScreen: React.FunctionComponent<WelcomeScreenProps> = props 
         <Animated.View style={{ opacity: bInterpolate(welcomeAnim, -3, 1) }}>
           <Button
             onPress={() => {
-              toggle()
+              navigation.navigate("signInScreen")
             }}
             full
           >

@@ -21,7 +21,7 @@ export interface SizedBoxProps extends ViewProps {
  *
  * Component description here for TypeScript tips.
  */
-export function SizedBox(props: SizedBoxProps) {
+export const SizedBox = (props: SizedBoxProps) => {
   // grab the props
   const { bg, h, w, style: styleOver, ...rest } = props
   const height: ViewStyle = h && { paddingVertical: spacing[h] / 2 }

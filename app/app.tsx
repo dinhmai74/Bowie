@@ -16,8 +16,15 @@ import { RootStore, RootStoreProvider, setupRootStore } from "./models/root-stor
 import * as storage from "./utils/storage"
 import getActiveRouteName from "./navigation/get-active-routename"
 import { AppThemeContext, themes } from "./theme"
-import { ApplicationProvider } from "@ui-kitten/components"
+import { ApplicationProvider, IconRegistry } from "@ui-kitten/components"
 import { mapping } from "@eva-design/eva"
+import { IoniconsPack } from "./theme/custom-eva-icons/ionicons"
+import { FeatherIconsPack } from "./theme/custom-eva-icons/feather-icon"
+import Ionicons from "react-native-vector-icons/Ionicons"
+import Feather from "react-native-vector-icons/Feather"
+
+Feather.loadFont()
+Ionicons.loadFont()
 
 // This puts screens in a native ViewController or Activity. If you want fully native
 // stack navigation, use `createNativeStackNavigator` in place of `createStackNavigator`:
@@ -139,6 +146,7 @@ const App: React.FunctionComponent<{}> = () => {
   return (
     <RootStoreProvider value={rootStore}>
       <SafeAreaProvider initialSafeAreaInsets={initialWindowSafeAreaInsets}>
+        <IconRegistry icons={[IoniconsPack, FeatherIconsPack]} />
         <AppThemeContext.Provider value={{ theme, toggle }}>
           <ApplicationProvider mapping={mapping} theme={currentTheme}>
             <RootNavigator

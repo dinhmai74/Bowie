@@ -1,16 +1,40 @@
-import * as React from "react"
-import { translate } from "i18n"
-import { TextFieldProps } from "./text-field.props"
-import { Input } from "@ui-kitten/components"
+import { Input, InputProps } from "@ui-kitten/components"
+import React from "react"
+import { StyleSheet } from "react-native"
+import { translate } from "../../i18n"
+import { spacing } from "../../theme"
 
-/**
- * A component which has a label and an input together.
- */
-export const TextField: React.FunctionComponent<TextFieldProps> = props => {
-  const { placeholder: placeholderTx, label: labelOver, forwardedRef, ...rest } = props
+export interface TextFieldProps extends InputProps {
+  inputRef?: any
+}
+const styles = StyleSheet.create({
+  label: {
+    paddingBottom: spacing[2],
+  },
+})
 
-  const label = translate(labelOver)
-  const placeholder = translate(placeholderTx)
+export const TextField = (props: TextFieldProps) => {
+  // grab the props
+  const {
+    style,
+    caption: cap,
+    label: PLabel,
+    labelStyle,
+    placeholder: PPlaceholder,
+    inputRef,
+    ...rest
+  } = props
+  const label = translate(PLabel)
+  const placeholder = translate(PPlaceholder)
+  const caption = translate(cap)
 
-  return <Input {...{ label, placeholder }} ref={forwardedRef} {...rest} />
+  return (
+    <Input
+      labelStyle={[styles.label, labelStyle]}
+      style={style}
+      {...{ label, placeholder, caption }}
+      {...rest}
+      ref={inputRef}
+    />
+  )
 }

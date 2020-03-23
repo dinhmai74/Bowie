@@ -5,12 +5,16 @@
     "back": "Back"
   },
   "errors": {
-    "invalidEmail": "Invalid email address."
+    "invalidEmail": "Invalid email address.",
+    "required": "This field is required"
   },
   "welcomeScreen": {
+    "poweredBy": "POWERED BY BOWSER",
+    "readyForLaunch": "Ready for launch.",
+    "continue": "CONTINUE",
+    "getStarted": "Get started!",
     "title": "Welcome",
-    "subText": "Lorem ipsum dolor sit amet, at sem omnis penatibus tellus scelerisque malesuada, lectus at fringilla feugiat enim eros, venenatis ac venenatis elit porta sit, elit amet ultricies metus pellentesque nulla. Mauris lectus, dui lacinia maecenas, suscipit pretium id faucibus pretium suspendisse. Urna amet purus sed ",
-    "getStarted": "Let's start"
+    "subText": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer t"
   },
   "demoScreen": {
     "howTo": "HOW TO",
@@ -23,5 +27,23 @@
   "storybook": {
     "placeholder": "Placeholder",
     "field": "Field"
+  },
+  "signInScreen": {
+    "title": "Sign In",
+    "letsCook": "Let's cook!",
+    "forgotPassword": "Forgot password?",
+    "loginWithFb": "Login with Facebook"
+  },
+  "auth": {
+    "signUp": "Sign Up",
+    "signIn": "Sign In",
+    "welcome": "Welcome",
+    "email": "Email",
+    "password": "Password",
+    "name": "Name"
+  },
+  "signUpScreen": {
+    "title": "Sign Up"
   }
 }
+
