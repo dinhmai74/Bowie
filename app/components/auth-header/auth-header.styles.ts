@@ -6,8 +6,8 @@ export const authHeaderStyles = StyleSheet.create({
     alignItems: "center",
     flexDirection: "row",
     justifyContent: "space-between",
-    paddingBottom: spacing[4],
     paddingHorizontal: spacing[4],
+    paddingVertical: spacing[4],
   },
   title: {
     paddingHorizontal: spacing[4],

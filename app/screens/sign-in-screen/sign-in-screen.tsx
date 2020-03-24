@@ -1,33 +1,24 @@
-import { AuthHeader, Screen, SizedBox, Text, TextField, Button, View } from "components"
+import { AuthHeader, Button, Screen, SizedBox, Text, TextField, View } from "components"
 import { observer } from "mobx-react-lite"
 import React, { useRef, useState } from "react"
+import { Controller, useForm } from "react-hook-form"
 import { StyleSheet, TouchableOpacity } from "react-native"
-import Animated, {
-  set,
-  Transition,
-  Transitioning,
-  useCode,
-  Value,
-  log,
-} from "react-native-reanimated"
+import { ScrollView } from "react-native-gesture-handler"
+import Animated, { set, Transition, Transitioning, useCode } from "react-native-reanimated"
+import { bInterpolate } from "react-native-redash"
 // import { useStores } from "models/root-store"
 import { NavigationScreenProp } from "react-navigation"
-import { images, metrics, spacing, sw, useThemes, sh } from "theme"
-import { useMemoOne } from "use-memo-one"
+import { images, metrics, sh, spacing, sw, useThemes } from "theme"
 import {
   getOpacity,
-  getTranslateX,
-  useLayout,
-  runTimingWithEndActionOB,
-  runTimingOb,
   getScaleAndOpacity,
+  getTranslateX,
   nDelay,
+  runTimingWithEndActionOB,
+  useLayout,
 } from "utils"
 import { EyeIcon, FBicon } from "./components/Icons"
-import { ScrollView } from "react-native-gesture-handler"
-import { bInterpolate } from "react-native-redash"
-import { useForm, Controller } from "react-hook-form"
-import _ from "lodash"
+import { useSignInAnimations } from "./hooks"
 
 const styles = StyleSheet.create({
   btn: {
@@ -83,6 +74,8 @@ type FormData = {
   password: string
 }
 
+const duration = 300
+
 export const SignInScreen: React.FunctionComponent<SignInScreenProps> = observer(props => {
   // const { someStore } = useStores()
   const refForm = useRef(null)
@@ -90,6 +83,7 @@ export const SignInScreen: React.FunctionComponent<SignInScreenProps> = observer
   const { color } = useThemes()
   const { control, handleSubmit, errors } = useForm<FormData>()
 
+  /* ------------- state ------------- */
   const [isSignIn, setIsSignIn] = useState(true)
   const [secureTextEntry, setSecureTextEntry] = useState<boolean>(true)
   const [loading, setLoading] = useState<boolean>(false)
@@ -97,7 +91,6 @@ export const SignInScreen: React.FunctionComponent<SignInScreenProps> = observer
 
   const [btnCookLayout, layout] = useLayout()
 
-  const duration = 300
   const {
     animWallpaper,
     animEmail,
@@ -106,49 +99,9 @@ export const SignInScreen: React.FunctionComponent<SignInScreenProps> = observer
     animBtnCook,
     animBtnFb,
     animBtnCookOut,
-  } = useMemoOne(
-    () => ({
-      animEmail: new Value(0),
-      animPassword: new Value(0),
-      animFgpw: new Value(0),
-      animBtnCook: new Value(0),
-      animBtnFb: new Value(0),
-      animWallpaper: new Value(0),
-      animBtnCookOut: new Value(0),
-    }),
-    [],
-  )
+  } = useSignInAnimations(duration)
 
-  const anim = [
-    {
-      anim: animEmail,
-      duration: duration,
-    },
-    {
-      anim: animPassword,
-      duration: duration * 1.3,
-    },
-    {
-      anim: animFgpw,
-      duration: duration * 2,
-    },
-    {
-      anim: animBtnCook,
-      duration: duration * 1.5,
-    },
-    {
-      anim: animBtnFb,
-      duration: duration * 1.7,
-    },
-    {
-      anim: animWallpaper,
-      duration: duration * 3,
-    },
-  ]
-
-  anim.forEach(value => {
-    useCode(() => set(value.anim, runTimingOb({ duration: value.duration })), [])
-  })
+  /* ------------- methods ------------- */
 
   const resetState = () => {
     setLoading(false)
@@ -160,20 +113,19 @@ export const SignInScreen: React.FunctionComponent<SignInScreenProps> = observer
     props.navigation.navigate("primaryStack")
   }
 
+  const onSubmit = data => {
+    setLoading(true)
+    console.log("data", data)
+    refForm.current.animateNextTransition()
+    nDelay(600).then(() => setTriggerSpreadOut(true))
+  }
+
   useCode(() => {
     if (triggerSpreadOut) {
       return set(animBtnCookOut, runTimingWithEndActionOB({ duration: 600, endAction: nextScreen }))
     }
     return []
   }, [triggerSpreadOut])
-
-  const onSubmit = data => {
-    setLoading(true)
-    refForm.current.animateNextTransition()
-    nDelay(600).then(() => setTriggerSpreadOut(true))
-  }
-
-  console.log(errors.email)
 
   return (
     <Screen>
@@ -309,4 +261,3 @@ export const SignInScreen: React.FunctionComponent<SignInScreenProps> = observer
     </Screen>
   )
 })
-
