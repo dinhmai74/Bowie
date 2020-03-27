@@ -1,10 +1,10 @@
-import * as React from "react"
-import { Image, ImageStyle, Platform, TextStyle, View, ViewStyle } from "react-native"
 import { ParamListBase } from "@react-navigation/native"
 import { NativeStackNavigationProp } from "@react-navigation/native-stack"
-import { BulletItem, Button, Header, Text, Screen, Wallpaper } from "../../components"
-import { color, spacing } from "../../theme"
+import * as React from "react"
+import { Image, ImageStyle, Platform, TextStyle, View, ViewStyle } from "react-native"
+import { Button, Header, Screen, Text } from "../../components"
 import { Api } from "../../services/api"
+import { color, spacing } from "../../theme"
 import { save } from "../../utils/storage"
 export const logoIgnite = require("./logo-ignite.png")
 export const heart = require("./heart.png")
@@ -126,7 +126,6 @@ export const DemoScreen: React.FunctionComponent<DemoScreenProps> = props => {
 
   return (
     <View style={FULL}>
-      <Wallpaper />
       <Screen style={CONTAINER} preset="scroll" backgroundColor={color.transparent}>
         <Header
           headerTx="demoScreen.howTo"
@@ -137,8 +136,6 @@ export const DemoScreen: React.FunctionComponent<DemoScreenProps> = props => {
         />
         <Text style={TITLE} preset="header" tx="demoScreen.title" />
         <Text style={TAGLINE} tx="demoScreen.tagLine" />
-        <BulletItem text="Load up Reactotron!  You can inspect your app, view the events, interact, and so much more!" />
-        <BulletItem text="Integrated here, Navigation with State, TypeScript, Storybook, Solidarity, and i18n." />
         <View>
           <Button
             style={DEMO}

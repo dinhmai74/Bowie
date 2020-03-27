@@ -3,6 +3,10 @@ export type RootParamList = {
 }
 
 export type PrimaryParamList = {
-  welcome: undefined
   demo: undefined
+}
+
+export type AuthParamList ={
+  welcome: undefined
+  signIn: undefined 
 }

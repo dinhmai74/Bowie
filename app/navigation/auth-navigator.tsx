@@ -1,11 +1,11 @@
 import React from "react"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
-import { DemoScreen } from "../screens"
-import { PrimaryParamList } from "./types"
+import { WelcomeScreen, SignInScreen } from "../screens"
+import { AuthParamList } from "./types"
 
-const Stack = createNativeStackNavigator<PrimaryParamList>()
+const Stack = createNativeStackNavigator<AuthParamList>()
 
-export function PrimaryStack() {
+export function AuthStack() {
   return (
     <Stack.Navigator
       screenOptions={{
@@ -13,7 +13,8 @@ export function PrimaryStack() {
         gestureEnabled: true,
       }}
     >
-      <Stack.Screen name="demo" component={DemoScreen} />
+      <Stack.Screen name="welcome" component={WelcomeScreen} />
+      <Stack.Screen name="signIn" component={SignInScreen} />
     </Stack.Navigator>
   )
 }
@@ -25,4 +26,4 @@ export function PrimaryStack() {
  * Anything not on this list will be a standard `back` action in
  * react-navigation.
  */
-export const exitRoutes: string[] = ["demo"]
+export const exitRoutes: string[] = ["welcome"]

@@ -1,9 +1,9 @@
-import React from "react"
 import { NavigationContainer, NavigationContainerRef } from "@react-navigation/native"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
-
-import { RootParamList } from "./types"
+import React from "react"
+import { AuthStack } from './auth-navigator'
 import { PrimaryStack } from "./primary-navigator"
+import { RootParamList } from "./types"
 
 const Stack = createNativeStackNavigator<RootParamList>()
 
@@ -13,9 +13,15 @@ const RootStack = () => {
       screenOptions={{
         headerShown: false,
         gestureEnabled: true,
-        stackPresentation: "modal",
       }}
     >
+       <Stack.Screen
+        name="authStack"
+        component={AuthStack}
+        options={{
+          headerShown: false,
+        }}
+      />
       <Stack.Screen
         name="primaryStack"
         component={PrimaryStack}
