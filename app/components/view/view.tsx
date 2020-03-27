@@ -1,9 +1,10 @@
 import * as React from "react"
-import { View as RNView, ViewStyle } from "react-native"
+import { Layout as RNView, LayoutProps } from "@ui-kitten/components"
 import mergeAll from "ramda/es/mergeAll"
 import flatten from "ramda/es/flatten"
+import { ViewStyle } from "react-native"
 
-export interface ViewProps {
+export interface ViewProps extends LayoutProps {
   style?: ViewStyle | ViewStyle[]
   children?: JSX.Element | JSX.Element[]
   full?: boolean

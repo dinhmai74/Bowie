@@ -2,19 +2,24 @@
 /* eslint-disable react-native/no-color-literals */
 
 import * as React from "react"
-import { View, ViewStyle } from "react-native"
+import { View, ViewStyle, StyleSheet } from "react-native"
 import { storiesOf } from "@storybook/react-native"
 import { StoryScreen, Story, UseCase } from "../../../storybook/views"
 import { color } from "../../theme"
 import { Text } from "./text"
+import { Layout } from "@ui-kitten/components"
 
 declare let module
 
 const VIEWSTYLE = {
   flex: 1,
-  backgroundColor: color.storybookDarkBg,
 }
 const viewStyleArray: ViewStyle[] = [VIEWSTYLE, { backgroundColor: "#7fff00" }]
+const styles = StyleSheet.create({
+  text: {
+    margin: 8,
+  },
+})
 
 storiesOf("Text", module)
   .addDecorator(fn => <StoryScreen>{fn()}</StoryScreen>)
@@ -87,6 +92,65 @@ storiesOf("Text", module)
             Hello <Text preset="bold">bolded</Text> World.
           </Text>
         </View>
+      </UseCase>
+    </Story>
+  ))
+  .add("category", () => (
+    <Story>
+      <UseCase text="category">
+        <Layout>
+          <Text style={styles.text} category="h1">
+            H1
+          </Text>
+
+          <Text style={styles.text} category="h2">
+            H2
+          </Text>
+
+          <Text style={styles.text} category="h3">
+            H3
+          </Text>
+
+          <Text style={styles.text} category="h4">
+            H4
+          </Text>
+
+          <Text style={styles.text} category="h5">
+            H5
+          </Text>
+
+          <Text style={styles.text} category="h6">
+            H6
+          </Text>
+
+          <Text style={styles.text} category="s1">
+            S1
+          </Text>
+
+          <Text style={styles.text} category="s2">
+            S2
+          </Text>
+
+          <Text style={styles.text} category="p1">
+            P1
+          </Text>
+
+          <Text style={styles.text} category="p2">
+            P2
+          </Text>
+
+          <Text style={styles.text} category="c1">
+            C1
+          </Text>
+
+          <Text style={styles.text} category="c2">
+            C2
+          </Text>
+
+          <Text style={styles.text} category="label">
+            LABEL
+          </Text>
+        </Layout>
       </UseCase>
     </Story>
   ))

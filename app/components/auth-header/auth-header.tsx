@@ -1,7 +1,7 @@
 import React from "react"
 import { View, TouchableOpacity } from "react-native"
 import { useObserver } from "mobx-react-lite"
-import { Text } from "../"
+import { Text } from "../text/text"
 // import { useStores } from "../../models/root-store"
 import { authHeaderStyles as styles } from "./auth-header.styles"
 import { Icon } from "@ui-kitten/components"
