@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect } from "react"
 import { getStorybookUI, configure } from "@storybook/react-native"
+import { initFonts } from "../app/theme/fonts"
 import { AppThemeContext, themes } from "../app/theme"
 import { ApplicationProvider } from "@ui-kitten/components"
 import { mapping } from "@eva-design/eva"
@@ -14,9 +15,9 @@ configure(() => {
 const StorybookUI = getStorybookUI({ port: 9001, host: "localhost", onDeviceUI: true })
 
 export const StorybookUIRoot: React.FunctionComponent = () => {
-  const [theme, setTheme] = useState("light")
   useEffect(() => {
     ;(async () => {
+      await initFonts()
       if (typeof __TEST__ === "undefined" || !__TEST__) {
         const Reactotron = require("../app/services/reactotron")
         const reactotron = new Reactotron.Reactotron()

@@ -49,14 +49,17 @@ export const WelcomeScreen: React.FunctionComponent<WelcomeScreenProps> = props 
 
   useCode(() => {
     if (showWelcome) return set(subtextAnim, runTiming(clock, 0.5, 1, 200))
-    return set(welcomeAnim, runTimingWithEndAction(clock, 0, 1, () => setShowWelcome(true)))
+    return set(
+      welcomeAnim,
+      runTimingWithEndAction(clock, 0, 1, () => setShowWelcome(true)),
+    )
   }, [showWelcome, welcomeAnim, subtextAnim])
 
   const welcomeY: any = bInterpolate(welcomeAnim, 500, 1)
   const welcomeOpacity: any = bInterpolate(welcomeAnim, 0, 1)
   const insets = useSafeArea()
 
-  const { navigation } = props
+  const { toggle } = useThemes()
 
   return (
     <Screen style={styles.full}>
@@ -87,7 +90,7 @@ export const WelcomeScreen: React.FunctionComponent<WelcomeScreenProps> = props 
         <Animated.View style={{ opacity: bInterpolate(welcomeAnim, -3, 1) }}>
           <Button
             onPress={() => {
-              navigation.navigate("signInScreen")
+              props.navigation.navigate("signIn")
             }}
             full
           >

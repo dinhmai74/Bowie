@@ -6,6 +6,7 @@ import "./i18n"
 import React, { useState, useEffect, useRef } from "react"
 import { YellowBox } from "react-native"
 import { NavigationContainerRef } from "@react-navigation/native"
+import { initFonts } from "./theme/fonts"
 import { contains } from "ramda"
 import { enableScreens } from "react-native-screens"
 import { SafeAreaProvider, initialWindowSafeAreaInsets } from "react-native-safe-area-context"
@@ -20,11 +21,6 @@ import { ApplicationProvider, IconRegistry } from "@ui-kitten/components"
 import { mapping } from "@eva-design/eva"
 import { IoniconsPack } from "./theme/custom-eva-icons/ionicons"
 import { FeatherIconsPack } from "./theme/custom-eva-icons/feather-icon"
-import Ionicons from "react-native-vector-icons/Ionicons"
-import Feather from "react-native-vector-icons/Feather"
-
-Feather.loadFont()
-Ionicons.loadFont()
 
 // This puts screens in a native ViewController or Activity. If you want fully native
 // stack navigation, use `createNativeStackNavigator` in place of `createStackNavigator`:
@@ -40,19 +36,6 @@ YellowBox.ignoreWarnings([
   "componentWillReceiveProps is deprecated",
   "Require cycle:",
 ])
-
-/**
- * Storybook still wants to use ReactNative's AsyncStorage instead of the
- * react-native-community package; this causes a YellowBox warning. This hack
- * points RN's AsyncStorage at the community one, fixing the warning. Here's the
- * Storybook issue about this: https://github.com/storybookjs/storybook/issues/6078
- */
-const ReactNative = require("react-native")
-Object.defineProperty(ReactNative, "AsyncStorage", {
-  get(): any {
-    return require("@react-native-community/async-storage").default
-  },
-})
 
 /**
  * Are we allowed to exit the app?  This is called when the back button
@@ -101,6 +84,7 @@ const App: React.FunctionComponent<{}> = () => {
 
   useEffect(() => {
     ;(async () => {
+      await initFonts()
       setupRootStore().then(setRootStore)
     })()
   }, [])

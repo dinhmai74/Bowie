@@ -1,4 +1,15 @@
-import AsyncStorage from "@react-native-community/async-storage"
+import { AsyncStorage } from "react-native"
+
+jest.mock("react-native", () => ({
+  AsyncStorage: {
+    getItem: jest.fn(),
+    setItem: jest.fn(),
+    removeItem: jest.fn(),
+    multiSet: jest.fn(),
+    multiRemove: jest.fn(),
+    clear: jest.fn(),
+  },
+}))
 
 import { load, loadString, save, saveString, clear, remove } from "./storage"
 

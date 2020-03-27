@@ -14,7 +14,6 @@ module.exports = {
     [
       "module-resolver",
       {
-        cwd: "babelrc",
         root: ["."],
         extensions: [".tsx", ".ts", ".ios.js", ".android.js", ".js", ".json"],
         alias: {

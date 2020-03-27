@@ -5,6 +5,7 @@ import { Color } from "./color-model"
 
 export const AppThemeContext = React.createContext({
   theme: "light",
+  // eslint-disable-next-line
   toggle: () => {},
 })
 
@@ -27,3 +28,4 @@ export const useThemes = (): UseThemes => {
     theme: themeContext.theme,
   }
 }
+
