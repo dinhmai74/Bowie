@@ -1,5 +1,9 @@
 # bowie
 
+### test account
+test@gmail.com
+password
+
 [![CircleCI](https://circleci.com/gh/infinitered/ignite-bowser.svg?style=svg)](https://circleci.com/gh/infinitered/ignite-bowser)
 
 ## The latest and greatest boilerplate for Infinite Red opinions
