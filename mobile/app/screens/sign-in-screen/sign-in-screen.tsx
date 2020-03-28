@@ -8,19 +8,19 @@ import Animated, { set, Transition, Transitioning, useCode } from "react-native-
 import { bInterpolate } from "react-native-redash"
 // import { useStores } from "models/root-store"
 import { NavigationScreenProp } from "react-navigation"
+import { firebaseSDK } from "services/firebase/fire-sdk"
 import { images, metrics, sh, spacing, sw, useThemes } from "theme"
 import {
   getOpacity,
   getScaleAndOpacity,
   getTranslateX,
+  mailRegex,
   nDelay,
   runTimingWithEndActionOB,
   useLayout,
-  mailRegex,
 } from "utils"
 import { EyeIcon, FBicon } from "./components/Icons"
 import { useSignInAnimations } from "./hooks"
-import { firebaseSDK } from "services/firebase/fire-config"
 
 const styles = StyleSheet.create({
   btn: {
@@ -117,7 +117,7 @@ export const SignInScreen: React.FunctionComponent<SignInScreenProps> = observer
 
   const onSubmit = async (data: FormData) => {
     setLoading(true)
-    await firebaseSDK.login(
+    firebaseSDK.login(
       {
         email: data.email,
         password: data.password,
@@ -126,8 +126,9 @@ export const SignInScreen: React.FunctionComponent<SignInScreenProps> = observer
         refForm.current.animateNextTransition()
         nDelay(600).then(() => setTriggerSpreadOut(true))
       },
-      () => {
-        alert("failed")
+      err => {
+        // @ts-ignore
+        alert(JSON.stringify(err.message))
       },
     )
     setLoading(false)
@@ -139,8 +140,6 @@ export const SignInScreen: React.FunctionComponent<SignInScreenProps> = observer
     }
     return []
   }, [triggerSpreadOut])
-
-  console.tlog("errors", errors)
 
   return (
     <Screen>

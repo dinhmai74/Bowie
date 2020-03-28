@@ -1,13 +1,13 @@
-import React, { useState } from "react"
+import { Button, Screen, SizedBox, Text, View } from "components"
+import React, { useEffect, useState } from "react"
 import { Image, StyleSheet } from "react-native"
 import Animated, { Clock, set, useCode, Value } from "react-native-reanimated"
 import { bInterpolate } from "react-native-redash"
 import { useSafeArea } from "react-native-safe-area-context"
 import { NavigationInjectedProps } from "react-navigation"
+import { firebaseSDK } from "services/firebase/fire-sdk"
+import { images, metrics, spacing } from "theme"
 import { useMemoOne } from "use-memo-one"
-
-import { Button, Screen, SizedBox, Text, View } from "components"
-import { metrics, spacing, useThemes, images } from "theme"
 import { runTiming, runTimingWithEndAction } from "utils/reanimated"
 
 const styles = StyleSheet.create({
@@ -36,6 +36,12 @@ const styles = StyleSheet.create({
 export interface WelcomeScreenProps extends NavigationInjectedProps<{}> {}
 
 export const WelcomeScreen: React.FunctionComponent<WelcomeScreenProps> = props => {
+  useEffect(() => {
+    firebaseSDK.auth().then(rs => {
+      if (rs) props.navigation.navigate("primaryStack")
+    })
+  })
+
   const { welcomeAnim, clock, subtextAnim } = useMemoOne(
     () => ({
       welcomeAnim: new Value(0),
@@ -58,8 +64,6 @@ export const WelcomeScreen: React.FunctionComponent<WelcomeScreenProps> = props 
   const welcomeY: any = bInterpolate(welcomeAnim, 500, 1)
   const welcomeOpacity: any = bInterpolate(welcomeAnim, 0, 1)
   const insets = useSafeArea()
-
-  const { toggle } = useThemes()
 
   return (
     <Screen style={styles.full}>

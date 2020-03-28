@@ -1,12 +1,10 @@
 import { AppMapView, Header, Screen, View } from "components"
+import * as Location from "expo-location"
+import * as Permissions from "expo-permissions"
 import { observer } from "mobx-react-lite"
 import * as React from "react"
 import { StyleSheet } from "react-native"
 import { NavigationScreenProp } from "react-navigation"
-// import { useStores } from "models/root-store"
-import { spacing } from "theme"
-import * as Location from "expo-location"
-import * as Permissions from "expo-permissions"
 
 const styles = StyleSheet.create({
   container: {
@@ -40,7 +38,6 @@ export const HomeScreen: React.FunctionComponent<HomeScreenProps> = observer(pro
     <Screen preset="scroll">
       <Header
         headerTx="homeScreen.header"
-        leftIcon="back"
         onLeftPress={() => props.navigation.navigate("authStack")}
       />
       <View style={styles.container}>
