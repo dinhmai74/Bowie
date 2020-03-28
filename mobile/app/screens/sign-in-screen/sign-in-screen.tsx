@@ -16,9 +16,11 @@ import {
   nDelay,
   runTimingWithEndActionOB,
   useLayout,
+  mailRegex,
 } from "utils"
 import { EyeIcon, FBicon } from "./components/Icons"
 import { useSignInAnimations } from "./hooks"
+import { firebaseSDK } from "services/firebase/fire-config"
 
 const styles = StyleSheet.create({
   btn: {
@@ -113,11 +115,22 @@ export const SignInScreen: React.FunctionComponent<SignInScreenProps> = observer
     props.navigation.navigate("primaryStack")
   }
 
-  const onSubmit = data => {
+  const onSubmit = async (data: FormData) => {
     setLoading(true)
-    console.log("data", data)
-    refForm.current.animateNextTransition()
-    nDelay(600).then(() => setTriggerSpreadOut(true))
+    await firebaseSDK.login(
+      {
+        email: data.email,
+        password: data.password,
+      },
+      () => {
+        refForm.current.animateNextTransition()
+        nDelay(600).then(() => setTriggerSpreadOut(true))
+      },
+      () => {
+        alert("failed")
+      },
+    )
+    setLoading(false)
   }
 
   useCode(() => {
@@ -126,6 +139,8 @@ export const SignInScreen: React.FunctionComponent<SignInScreenProps> = observer
     }
     return []
   }, [triggerSpreadOut])
+
+  console.tlog("errors", errors)
 
   return (
     <Screen>
@@ -147,13 +162,20 @@ export const SignInScreen: React.FunctionComponent<SignInScreenProps> = observer
               control={control}
               name="email"
               onChange={args => args[0].nativeEvent.text}
-              rules={{ required: true }}
+              rules={{
+                required: "Email is required",
+                pattern: {
+                  value: mailRegex,
+                  message: "Invalid email",
+                },
+              }}
               defaultValue=""
               status={errors.email ? "danger" : "basic"}
-              caption={errors.email ? "errors.required" : ""}
+              caption={errors.email ? errors.email.message : ""}
               label="auth.email"
               keyboardType="email-address"
               placeholder="auth.email"
+              autoCapitalize="none"
             />
           </Animated.View>
 
@@ -167,8 +189,8 @@ export const SignInScreen: React.FunctionComponent<SignInScreenProps> = observer
                 name="name"
                 onChange={args => args[0].nativeEvent.text}
                 rules={{ required: true }}
-                status={errors.email ? "danger" : "basic"}
-                caption={errors.email ? "errors.required" : ""}
+                status={errors.name ? "danger" : "basic"}
+                caption={errors.name ? "errors.required" : ""}
                 defaultValue=""
                 label="auth.name"
                 placeholder="auth.name"
@@ -187,8 +209,8 @@ export const SignInScreen: React.FunctionComponent<SignInScreenProps> = observer
               defaultValue=""
               label="auth.password"
               rules={{ required: true }}
-              status={errors.email ? "danger" : "basic"}
-              caption={errors.email ? "errors.required" : ""}
+              status={errors.password ? "danger" : "basic"}
+              caption={errors.password ? "errors.required" : ""}
               placeholder={secureTextEntry ? "********" : "password"}
               icon={style => (
                 <EyeIcon
