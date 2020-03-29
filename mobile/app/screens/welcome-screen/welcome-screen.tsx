@@ -68,7 +68,7 @@ export const WelcomeScreen: React.FunctionComponent<WelcomeScreenProps> = props 
           }}
         >
           <Image source={images.chef} style={styles.logo} />
-          <Text tx="welcomeScreen.title" category="h1" />
+          <Text tx="welcomeScreen.title" preset="h1medium" textAlign="center" />
         </Animated.View>
         <SizedBox h={4} />
         <Animated.View
@@ -77,9 +77,7 @@ export const WelcomeScreen: React.FunctionComponent<WelcomeScreenProps> = props 
             opacity: subtextAnim,
           }}
         >
-          <Text category="p1" style={styles.subText}>
-            welcomeScreen.subText
-          </Text>
+          <Text style={styles.subText}>welcomeScreen.subText</Text>
         </Animated.View>
       </Screen>
 

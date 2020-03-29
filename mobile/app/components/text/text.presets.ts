@@ -8,6 +8,10 @@ const BASE: TextStyle = {
   fontFamily: typography.primary,
 }
 
+const MEDIUM: TextStyle = {
+  fontFamily: typography.medium,
+}
+
 /**
  * All the variations of text styling within the app.
  *
@@ -38,6 +42,14 @@ export const presets = {
    * A smaller piece of secondard information.
    */
   secondary: { ...BASE, fontSize: 9 } as TextStyle,
+  h1medium: {
+    ...MEDIUM,
+    fontSize: 32,
+  },
+  h2medium: {
+    ...MEDIUM,
+    fontSize: 24,
+  } as TextStyle,
 }
 
 /**

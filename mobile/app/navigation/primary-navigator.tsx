@@ -1,9 +1,12 @@
-import React from "react"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
-import { HomeScreen } from "../screens"
-import { PrimaryParamList } from "./types"
+import { CardStyleInterpolators, createStackNavigator } from "@react-navigation/stack"
+import React from "react"
+import { CreateNewEventScreen } from "screens"
+import { HomeStack } from "./home-navigator"
 
-const Stack = createNativeStackNavigator<PrimaryParamList>()
+const NativeStack = createNativeStackNavigator()
+
+const Stack = createStackNavigator()
 
 export function PrimaryStack() {
   return (
@@ -11,9 +14,11 @@ export function PrimaryStack() {
       screenOptions={{
         headerShown: false,
         gestureEnabled: true,
+        cardStyleInterpolator: CardStyleInterpolators.forScaleFromCenterAndroid,
       }}
     >
-      <Stack.Screen name="home" component={HomeScreen} />
+      <NativeStack.Screen name="homeStack" component={HomeStack} />
+      <Stack.Screen name="createNewEvent" component={CreateNewEventScreen} />
     </Stack.Navigator>
   )
 }

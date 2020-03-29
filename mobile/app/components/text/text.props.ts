@@ -1,5 +1,5 @@
-import { TextStyle } from "react-native"
-import { TextProps as TextProperties } from "@ui-kitten/components"
+import { TextStyle, TextProps as TextProperties } from "react-native"
+// import { TextProps as TextProperties } from "@ui-kitten/components"
 import { TextPresets } from "./text.presets"
 
 export interface TextProps extends TextProperties {
@@ -28,4 +28,5 @@ export interface TextProps extends TextProperties {
   themeColor?: string
   underline?: boolean
   children?: any
+  textAlign?: "auto" | "left" | "right" | "center" | "justify"
 }

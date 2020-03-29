@@ -25,7 +25,7 @@ class FirebaseSDK {
     }
   }
 
-  login = async (user: User, successCallback, errCallback): void => {
+  login = async (user: User, successCallback, errCallback): Promise<void> => {
     const { email, password } = user
     await firebase
       .auth()
@@ -38,6 +38,11 @@ class FirebaseSDK {
     if (rs) return true
 
     return false
+  }
+
+  signOut = async (): Promise<boolean> => {
+    await firebase.auth().signOut()
+    return true
   }
 }
 

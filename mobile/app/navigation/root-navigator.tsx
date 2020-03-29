@@ -1,7 +1,7 @@
 import { NavigationContainer, NavigationContainerRef } from "@react-navigation/native"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import React from "react"
-import { AuthStack } from './auth-navigator'
+import { AuthStack } from "./auth-navigator"
 import { PrimaryStack } from "./primary-navigator"
 import { RootParamList } from "./types"
 
@@ -15,7 +15,7 @@ const RootStack = () => {
         gestureEnabled: true,
       }}
     >
-       <Stack.Screen
+      <Stack.Screen
         name="authStack"
         component={AuthStack}
         options={{

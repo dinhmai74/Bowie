@@ -37,6 +37,7 @@
   "auth": {
     "signUp": "Sign Up",
     "signIn": "Sign In",
+    "signOut": "Sign Out",
     "welcome": "Welcome",
     "email": "Email",
     "password": "Password",
@@ -44,5 +45,8 @@
   },
   "signUpScreen": {
     "title": "Sign Up"
+  },
+  "homeScreen": {
+    "header": "Explore"
   }
 }

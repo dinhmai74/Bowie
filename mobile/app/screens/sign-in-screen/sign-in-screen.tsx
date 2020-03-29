@@ -117,7 +117,7 @@ export const SignInScreen: React.FunctionComponent<SignInScreenProps> = observer
 
   const onSubmit = async (data: FormData) => {
     setLoading(true)
-    firebaseSDK.login(
+    await firebaseSDK.login(
       {
         email: data.email,
         password: data.password,
@@ -152,7 +152,7 @@ export const SignInScreen: React.FunctionComponent<SignInScreenProps> = observer
 
       <Transitioning.View transition={formTransition} ref={refForm}>
         <ScrollView style={styles.container}>
-          <Text category="h1">{isSignIn ? "signInScreen.title" : "signUpScreen.title"}</Text>
+          <Text preset="h1medium">{isSignIn ? "signInScreen.title" : "signUpScreen.title"}</Text>
           <SizedBox h={5} />
 
           <Animated.View style={getTranslateX(animEmail, sw, 0)}>

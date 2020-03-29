@@ -35,6 +35,7 @@ YellowBox.ignoreWarnings([
   "componentWillMount is deprecated",
   "componentWillReceiveProps is deprecated",
   "Require cycle:",
+  "Can't perform a React state",
 ])
 
 /**

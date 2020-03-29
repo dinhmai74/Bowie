@@ -1,59 +1,56 @@
+import { AppIcon, Button, Text } from "components"
 import * as React from "react"
-import { View, ViewStyle, TextStyle } from "react-native"
+import { StyleSheet, View } from "react-native"
+import { spacing, useThemes, metrics } from "../../theme"
 import { HeaderProps } from "./header.props"
-import { Button, Icon, Text } from "../"
-import { spacing } from "../../theme"
-import { translate } from "../../i18n/"
+import { useNavigation } from "@react-navigation/native"
 
-// static styles
-const ROOT: ViewStyle = {
-  flexDirection: "row",
-  paddingHorizontal: spacing[4],
-  alignItems: "center",
-  paddingTop: spacing[5],
-  paddingBottom: spacing[5],
-  justifyContent: "flex-start",
-}
-const TITLE: TextStyle = { textAlign: "center" }
-const TITLE_MIDDLE: ViewStyle = { flex: 1, justifyContent: "center" }
-const LEFT: ViewStyle = { width: 32 }
-const RIGHT: ViewStyle = { width: 32 }
+const styles = StyleSheet.create({
+  header: {
+    alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "center",
+  },
+  leftIcon: {
+    marginRight: spacing[1],
+  },
+  root: {
+    alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "flex-start",
+    paddingBottom: spacing[5],
+    paddingHorizontal: spacing[4],
+    paddingTop: spacing[5],
+  },
+})
 
-/**
- * Header that appears on many screens. Will hold navigation buttons and screen title.
- */
 export const Header: React.FunctionComponent<HeaderProps> = props => {
   const {
-    onLeftPress,
+    onLeftPress: onLeft,
     onRightPress,
     rightIcon,
     leftIcon,
-    headerText,
     headerTx,
     style,
     titleStyle,
   } = props
-  const header = headerText || (headerTx && translate(headerTx)) || ""
+  const { color } = useThemes()
+  const navigation = useNavigation()
+
+  const LeftIcon = ({ style, ...rest }) => (
+    <AppIcon icon={leftIcon} style={[style, { tintColor: color["text-basic-color"] }]} {...rest} />
+  )
+
+  const onLeftPress = () => {
+    onLeft ? onLeft() : navigation.goBack()
+  }
 
   return (
-    <View style={{ ...ROOT, ...style }}>
-      {leftIcon ? (
-        <Button preset="link" onPress={onLeftPress}>
-          <Icon icon={leftIcon} />
-        </Button>
-      ) : (
-        <View style={LEFT} />
-      )}
-      <View style={TITLE_MIDDLE}>
-        <Text style={{ ...TITLE, ...titleStyle }} text={header} />
+    <View style={{ ...styles.root, ...style }}>
+      <View style={styles.header}>
+        {leftIcon && <LeftIcon onPress={onLeftPress} style={styles.leftIcon} />}
+        <Text text={headerTx} preset="h2medium" />
       </View>
-      {rightIcon ? (
-        <Button preset="link" onPress={onRightPress}>
-          <Icon icon={rightIcon} />
-        </Button>
-      ) : (
-        <View style={RIGHT} />
-      )}
     </View>
   )
 }
