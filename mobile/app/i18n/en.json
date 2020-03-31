@@ -47,6 +47,7 @@
     "title": "Sign Up"
   },
   "homeScreen": {
-    "header": "Explore"
+    "header": "Explore",
+    "viewDetail": "View detail"
   }
 }
