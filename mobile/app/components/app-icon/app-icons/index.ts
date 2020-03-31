@@ -6,6 +6,7 @@ export const AppIcons = {
   add: require("./add.png"),
   notifications: require("./icons8-speech_bubble.png"),
   settings: require("./icons8-person.png"),
+  close: require("./icons8-multiply.png"),
 }
 
 export type IconTypes = keyof typeof AppIcons

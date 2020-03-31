@@ -1,9 +1,9 @@
 import * as React from "react"
 import { View, Image, ImageStyle, StyleSheet } from "react-native"
-import { AppIconProps } from "./AppIcon.props"
+import { AppIconProps, AppIconPresets } from "./AppIcon.props"
 import { AppIcons } from "./app-icons"
 import { flatten, mergeAll } from "ramda"
-import { color, metrics } from "theme"
+import { color, metrics, spacing, useThemes } from "theme"
 import { TouchableOpacity } from "react-native-gesture-handler"
 
 export * from "./AppIcon.props"
@@ -13,7 +13,7 @@ const ROOT: ImageStyle = {
   backgroundColor: color.transparent,
 }
 
-export function AppIcon(props: AppIconProps) {
+export const AppIcon = (props: AppIconProps) => {
   const {
     style: styleOverride,
     icon,
@@ -26,19 +26,36 @@ export function AppIcon(props: AppIconProps) {
     onLongPress,
     disabled,
     opacityDisable,
+    preset,
   } = props
+  const { color: theme } = useThemes()
   const imageSize = size || metrics.icon.md
   const sizeImage = { width: imageSize, height: imageSize }
-  const bgImage = bg && { backgroundColor: bg }
-  const colorImage = color && { tintColor: color }
+  let bgImage: object
+  let colorImage: object
+
+  if (preset && preset === "raise") {
+    bgImage = { backgroundColor: theme["background-basic-color-1"] }
+    colorImage = { tintColor: theme["text-basic-color"] }
+  }
+
+  if (bg) bgImage = { backgroundColor: bg }
+  if (color) colorImage = { tintColor: color }
 
   // @ts-ignore
   const style: ImageStyle = mergeAll(flatten([ROOT, sizeImage, colorImage, styleOverride]))
 
   const renderIcon = () => {
     return (
-      // eslint-disable-next-line
-      <View style={[bgImage, containerStyle, { opacity: disabled ? opacityDisable : 1 }]}>
+      <View
+        style={[
+          bgImage,
+          preset && AppIconPresets[preset].containerStyle,
+          containerStyle,
+          // eslint-disable-next-line
+          { opacity: disabled ? opacityDisable : 1 },
+        ]}
+      >
         <Image
           style={style}
           // @ts-ignore
