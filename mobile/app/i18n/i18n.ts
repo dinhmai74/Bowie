@@ -3,10 +3,11 @@ import i18n from "i18n-js"
 
 const en = require("./en")
 const ja = require("./ja")
+const vi = require("./vi")
 
 i18n.fallbacks = true
-i18n.translations = { en, ja }
+i18n.translations = { en, ja, vi }
 
-const fallback = { languageTag: "en", isRTL: false }
+i18n.locale = Localization.locale || "en"
 
-i18n.locale = Localization.locale || fallback
+export { i18n }

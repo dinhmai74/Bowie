@@ -21,29 +21,29 @@ export const useLayout = (): [Size, any] => {
   return [layout, onLayout]
 }
 export const getOpacity: any = (value, from = 0, to = 1) => ({
-  opacity: bInterpolate(value, from, to)
+  opacity: bInterpolate(value, from, to),
 })
 
 export const getScale: any = (value, from = 0, to = 1) => ({
-  scale: bInterpolate(value, from, to)
+  scale: bInterpolate(value, from, to),
 })
 
 export const getScaleAndOpacity: any = (value, from = 0, to = 1) => ({
   ...getOpacity(value, from, to),
-  transform: [getScale(value, from, to)]
+  transform: [getScale(value, from, to)],
 })
 
 export const getTranslateX: any = (value, from = 100, to = 0) => ({
   transform: [
     {
-      translateX: bInterpolate(value, from, to)
-    }
-  ]
+      translateX: bInterpolate(value, from, to),
+    },
+  ],
 })
 
 export const getCircle = (value: number = 50) => ({
   borderRadius: value / 2,
-  ...getSize(value)
+  ...getSize(value),
 })
 
 export const getAnimateCircle = (animatedValue: Animated.Value<number>, from = 0, to = 50) => {
@@ -52,11 +52,19 @@ export const getAnimateCircle = (animatedValue: Animated.Value<number>, from = 0
   return {
     borderRadius: border,
     width: size,
-    height: size
+    height: size,
   }
 }
 
 export const getSize = (value: number) => ({
   width: value,
-  height: value
+  height: value,
 })
+
+export function useForceUpdate() {
+  const [, setTick] = useState(0)
+  const update = useCallback(() => {
+    setTick(tick => tick + 1)
+  }, [])
+  return update
+}

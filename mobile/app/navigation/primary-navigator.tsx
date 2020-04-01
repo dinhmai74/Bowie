@@ -11,16 +11,16 @@ const Stack = createStackNavigator()
 
 export function PrimaryStack() {
   return (
-    <NativeStack.Navigator
+    <Stack.Navigator
       screenOptions={{
         headerShown: false,
         gestureEnabled: true,
-        // cardStyleInterpolator: CardStyleInterpolators.forScaleFromCenterAndroid,
+        cardStyleInterpolator: CardStyleInterpolators.forScaleFromCenterAndroid,
       }}
     >
-      <NativeStack.Screen name="homeStack" component={HomeStack} />
-      <NativeStack.Screen name="createNewEvent" component={CreateNewEventScreen} />
-    </NativeStack.Navigator>
+      <Stack.Screen name="homeStack" component={HomeStack} />
+      <Stack.Screen name="createNewEvent" component={CreateNewEventScreen} />
+    </Stack.Navigator>
   )
 }
 

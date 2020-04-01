@@ -14,7 +14,7 @@ declare global {
      * Hey, it's Reactotron if we're in dev, and no-ops if we're in prod.
      */
     tron: typeof Tron
-    tl: any
+    tlog: any
   }
 }
 
@@ -30,7 +30,6 @@ function tlog(message: string, ...params: any[]) {
   })
 }
 
-// @ts-ignore
 console.tlog = tlog
 
 /** Do Nothing. */
