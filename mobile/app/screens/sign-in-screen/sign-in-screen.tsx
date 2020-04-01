@@ -1,6 +1,6 @@
 import { AuthHeader, Button, Screen, SizedBox, Text, TextField, View } from "components"
 import { observer } from "mobx-react-lite"
-import React, { useRef, useState } from "react"
+import React, { useRef, useState, useContext } from "react"
 import { Controller, useForm } from "react-hook-form"
 import { StyleSheet, TouchableOpacity } from "react-native"
 import { ScrollView } from "react-native-gesture-handler"
@@ -21,6 +21,7 @@ import {
 } from "utils"
 import { EyeIcon, FBicon } from "./components/Icons"
 import { useSignInAnimations } from "./hooks"
+import { AuthContext } from "navigation"
 
 const styles = StyleSheet.create({
   btn: {
@@ -81,6 +82,7 @@ const duration = 300
 export const SignInScreen: React.FunctionComponent<SignInScreenProps> = observer(props => {
   // const { someStore } = useStores()
   const refForm = useRef(null)
+  const { signIn } = useContext(AuthContext)
 
   const { color } = useThemes()
   const { control, handleSubmit, errors } = useForm<FormData>()
@@ -112,12 +114,12 @@ export const SignInScreen: React.FunctionComponent<SignInScreenProps> = observer
 
   const nextScreen = () => {
     resetState()
-    props.navigation.navigate("primaryStack")
+    // props.navigation.navigate("primaryStack")
   }
 
   const onSubmit = async (data: FormData) => {
     setLoading(true)
-    await firebaseSDK.login(
+    await signIn(
       {
         email: data.email,
         password: data.password,
@@ -168,8 +170,9 @@ export const SignInScreen: React.FunctionComponent<SignInScreenProps> = observer
                   message: "Invalid email",
                 },
               }}
-              defaultValue=""
+              defaultValue="test@gmail.com"
               status={errors.email ? "danger" : "basic"}
+              // @ts-ignore
               caption={errors.email ? errors.email.message : ""}
               label="auth.email"
               keyboardType="email-address"
@@ -205,7 +208,7 @@ export const SignInScreen: React.FunctionComponent<SignInScreenProps> = observer
               control={control}
               name="password"
               onChange={args => args[0].nativeEvent.text}
-              defaultValue=""
+              defaultValue="password"
               label="auth.password"
               rules={{ required: true }}
               status={errors.password ? "danger" : "basic"}

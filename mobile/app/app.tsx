@@ -21,6 +21,9 @@ import { ApplicationProvider, IconRegistry } from "@ui-kitten/components"
 import { mapping } from "@eva-design/eva"
 import { IoniconsPack } from "./theme/custom-eva-icons/ionicons"
 import { FeatherIconsPack } from "./theme/custom-eva-icons/feather-icon"
+import { i18n } from "i18n/i18n"
+import { loadString } from "./utils/storage"
+import { strings } from "utils"
 
 // This puts screens in a native ViewController or Activity. If you want fully native
 // stack navigation, use `createNativeStackNavigator` in place of `createStackNavigator`:
@@ -87,6 +90,7 @@ const App: React.FunctionComponent<{}> = () => {
     ;(async () => {
       await initFonts()
       setupRootStore().then(setRootStore)
+      i18n.locale = await loadString(strings.lang)
     })()
   }, [])
 
