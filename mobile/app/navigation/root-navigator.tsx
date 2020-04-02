@@ -88,8 +88,6 @@ const RootStack = () => {
     [],
   )
 
-  console.tlog("user", state.userToken)
-
   return (
     <AuthContext.Provider value={authContext}>
       <Stack.Navigator

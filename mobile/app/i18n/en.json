@@ -49,5 +49,13 @@
   "homeScreen": {
     "header": "Explore",
     "viewDetail": "View detail"
-  }
+  },
+  "settingsScreen": {
+    "header": "Setttings",
+    "darkMode": "Dark mode",
+    "choseLang": "Chose language:",
+    "lang": "Language"
+  },
+  "en": "English",
+  "vi": "Vietnamese"
 }

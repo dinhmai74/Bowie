@@ -1,76 +1,67 @@
-import { Button as KTButton, Spinner } from "@ui-kitten/components"
+import { Button as KTButton, useStyleSheet } from "@ui-kitten/components"
 import { flatten, mergeAll } from "ramda"
 import * as React from "react"
-import { textPresets, viewPresets } from "./button.presets"
-import { ButtonProps } from "./button.props"
+import { ActivityIndicator, ViewStyle } from "react-native"
 import { translate } from "../../i18n"
-import { ViewStyle, ActivityIndicator } from "react-native"
+import { TextPresets, ViewPresets } from "./button.presets"
+import { ButtonProps } from "./button.props"
 
-export class Button extends React.Component<ButtonProps> {
-  static defaultProps: any
-
-  renderLoading() {
-    const { loadingColor, loadingSize } = this.props
-    console.log("loadingColor", loadingColor)
+export const Button: React.FC<ButtonProps> = props => {
+  const renderLoading = () => {
+    const { loadingColor, loadingSize } = props
     return <ActivityIndicator size={loadingSize} color={loadingColor || "#fff"} />
   }
 
-  render() {
-    const {
-      preset = "primary",
-      tx,
-      txOptions,
-      text,
-      style: styleOverride,
-      textStyle: textStyleOverride,
-      children,
-      disabled,
-      full,
-      loading,
-      onPress: onPressProps,
-      ...rest
-    } = this.props
+  const {
+    preset = "primary",
+    tx,
+    txOptions,
+    text,
+    style: styleOverride,
+    textStyle: textStyleOverride,
+    children,
+    disabled,
+    full,
+    loading,
+    onPress: onPressProps,
+    ...rest
+  } = props
 
-    const notFullStyle: ViewStyle = !full && { alignSelf: "flex-start" }
-    const opacity = disabled ? 0.2 : 1
-    const viewStyle = mergeAll(
-      flatten([
-        viewPresets[preset] || viewPresets.primary,
-        notFullStyle,
-        styleOverride,
-        { opacity },
-      ]),
-    )
-    const textStyle = mergeAll(
-      flatten([textPresets[preset] || textPresets.primary, textStyleOverride]),
-    )
+  const textPresets = useStyleSheet(TextPresets)
+  const viewPresets = useStyleSheet(ViewPresets)
 
-    let content: any
-    const customProps = {}
+  const notFullStyle: ViewStyle = !full && { alignSelf: "flex-start" }
+  const opacity = disabled ? 0.2 : 1
+  const viewStyle = mergeAll(
+    flatten([viewPresets[preset] || viewPresets.primary, notFullStyle, styleOverride, { opacity }]),
+  )
+  const textStyle = mergeAll(
+    flatten([textPresets[preset] || textPresets.primary, textStyleOverride]),
+  )
 
-    if (loading) {
-      Object.assign(customProps, {
-        icon: () => this.renderLoading(),
-      })
-    } else {
-      if (typeof children === "string") {
-        content = translate(children, txOptions)
-      } else content = children || text || (tx && translate(tx))
-    }
+  let content: any
+  const customProps = {}
 
-    return (
-      <KTButton
-        style={viewStyle}
-        {...{ textStyle }}
-        onPress={!disabled && onPressProps}
-        activeOpacity={disabled ? opacity : 0.5}
-        {...rest}
-        {...customProps}
-      >
-        {content}
-      </KTButton>
-    )
+  if (loading) {
+    Object.assign(customProps, {
+      icon: () => renderLoading(),
+    })
+  } else {
+    if (typeof children === "string") {
+      content = translate(children, txOptions)
+    } else content = children || text || (tx && translate(tx))
   }
-}
 
-Button.defaultProps = {}
+  return (
+    <KTButton
+      style={viewStyle}
+      {...{ textStyle }}
+      onPress={!disabled && onPressProps}
+      activeOpacity={disabled ? opacity : 0.5}
+      {...rest}
+      {...customProps}
+    >
+      {content}
+    </KTButton>
+  )
+}

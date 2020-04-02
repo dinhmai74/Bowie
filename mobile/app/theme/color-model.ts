@@ -314,3 +314,4 @@ export interface Color {
   "text-danger-disabled-color": string
   "outline-color": string
 }
+

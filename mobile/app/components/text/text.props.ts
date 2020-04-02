@@ -29,4 +29,5 @@ export interface TextProps extends TextProperties {
   underline?: boolean
   children?: any
   textAlign?: "auto" | "left" | "right" | "center" | "justify"
+  fontFamily?: string
 }
