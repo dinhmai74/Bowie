@@ -8,11 +8,6 @@ export interface HeaderProps {
   headerTx?: string
 
   /**
-   * header non-i18n
-   */
-  headerText?: string
-
-  /**
    * Icon that should appear on the left
    */
   leftIcon?: IconTypes

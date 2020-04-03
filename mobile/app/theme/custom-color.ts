@@ -77,7 +77,7 @@ export const darkColor = {
   "color-danger-transparent-300": "rgba(255, 81, 50, 0.24)",
   "color-danger-transparent-400": "rgba(255, 81, 50, 0.32)",
   "color-danger-transparent-500": "rgba(255, 81, 50, 0.4)",
-  "color-danger-transparent-600": "rgba(255, 81, 50, 0.48)"
+  "color-danger-transparent-600": "rgba(255, 81, 50, 0.48)",
 }
 
 export const lightColor = {
@@ -157,5 +157,5 @@ export const lightColor = {
   "color-danger-transparent-300": "rgba(255, 81, 50, 0.24)",
   "color-danger-transparent-400": "rgba(255, 81, 50, 0.32)",
   "color-danger-transparent-500": "rgba(255, 81, 50, 0.4)",
-  "color-danger-transparent-600": "rgba(255, 81, 50, 0.48)"
+  "color-danger-transparent-600": "rgba(255, 81, 50, 0.48)",
 }

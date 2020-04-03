@@ -1,11 +1,10 @@
 import { Button, Screen, SizedBox, Text, View } from "components"
-import React, { useEffect, useState } from "react"
+import React, { useState } from "react"
 import { Image, StyleSheet } from "react-native"
 import Animated, { Clock, set, useCode, Value } from "react-native-reanimated"
 import { bInterpolate } from "react-native-redash"
 import { useSafeArea } from "react-native-safe-area-context"
 import { NavigationInjectedProps } from "react-navigation"
-import { firebaseSDK } from "services/firebase/fire-sdk"
 import { images, metrics, spacing } from "theme"
 import { useMemoOne } from "use-memo-one"
 import { runTiming, runTimingWithEndAction } from "utils/reanimated"
@@ -36,12 +35,6 @@ const styles = StyleSheet.create({
 export interface WelcomeScreenProps extends NavigationInjectedProps<{}> {}
 
 export const WelcomeScreen: React.FunctionComponent<WelcomeScreenProps> = props => {
-  useEffect(() => {
-    firebaseSDK.auth().then(rs => {
-      if (rs) props.navigation.navigate("primaryStack")
-    })
-  })
-
   const { welcomeAnim, clock, subtextAnim } = useMemoOne(
     () => ({
       welcomeAnim: new Value(0),
@@ -75,7 +68,7 @@ export const WelcomeScreen: React.FunctionComponent<WelcomeScreenProps> = props 
           }}
         >
           <Image source={images.chef} style={styles.logo} />
-          <Text tx="welcomeScreen.title" category="h1" />
+          <Text tx="welcomeScreen.title" preset="h1medium" textAlign="center" />
         </Animated.View>
         <SizedBox h={4} />
         <Animated.View
@@ -84,9 +77,7 @@ export const WelcomeScreen: React.FunctionComponent<WelcomeScreenProps> = props 
             opacity: subtextAnim,
           }}
         >
-          <Text category="p1" style={styles.subText}>
-            welcomeScreen.subText
-          </Text>
+          <Text style={styles.subText}>welcomeScreen.subText</Text>
         </Animated.View>
       </Screen>
 

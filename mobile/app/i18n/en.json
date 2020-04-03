@@ -37,6 +37,7 @@
   "auth": {
     "signUp": "Sign Up",
     "signIn": "Sign In",
+    "signOut": "Sign Out",
     "welcome": "Welcome",
     "email": "Email",
     "password": "Password",
@@ -44,5 +45,21 @@
   },
   "signUpScreen": {
     "title": "Sign Up"
-  }
+  },
+  "homeScreen": {
+    "header": "Explore",
+    "viewDetail": "View detail"
+  },
+  "settingsScreen": {
+    "header": "Setttings",
+    "darkMode": "Dark mode",
+    "choseLang": "Chose language:",
+    "lang": "Language",
+    "noti": "Notifications",
+    "term": "Term of service",
+    "getHelp": "Get help",
+    "feedBack": "Feedback"
+  },
+  "en": "English",
+  "vi": "Vietnamese"
 }

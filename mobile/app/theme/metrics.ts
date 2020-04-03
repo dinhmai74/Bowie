@@ -10,6 +10,10 @@ export const metrics = {
       width: 200,
       height: 200,
     },
+    thumbnail: {
+      width: 300,
+      height: 150,
+    },
   },
   icon: {
     sm: 16,

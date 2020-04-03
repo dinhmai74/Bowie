@@ -1,5 +1,6 @@
 import React from "react"
 import { StyleSheet, TouchableOpacity } from "react-native"
+import { metrics } from "theme/metrics"
 // import Icon from "react-native-vector-icons/Feather"
 
 function NewIcon({
@@ -31,7 +32,7 @@ function NewIcon({
   return (
     <Icon
       name={name}
-      size={height || size || width || PHeight}
+      size={height || size || width || PHeight || metrics.icon.md}
       color={tintColor || fill || color}
       style={iconStyle}
       {...rest}

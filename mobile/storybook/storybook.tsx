@@ -8,11 +8,12 @@ import { mapping } from "@eva-design/eva"
 // eslint-disable-next-line
 declare var module
 
-configure(() => {
-  require("./storybook-registry")
-}, module)
-
-const StorybookUI = getStorybookUI({ port: 9001, host: "localhost", onDeviceUI: true })
+const StorybookUI = getStorybookUI({
+  port: 9001,
+  host: "localhost",
+  onDeviceUI: true,
+  asyncStorage: require("react-native"),
+})
 
 export const StorybookUIRoot: React.FunctionComponent = () => {
   useEffect(() => {
@@ -25,6 +26,8 @@ export const StorybookUIRoot: React.FunctionComponent = () => {
       }
     })()
   }, [])
+
+  const [theme, setTheme] = React.useState("light")
 
   const currentTheme = themes[theme]
 
@@ -41,3 +44,6 @@ export const StorybookUIRoot: React.FunctionComponent = () => {
     </AppThemeContext.Provider>
   )
 }
+configure(() => {
+  require("./storybook-registry")
+}, module)

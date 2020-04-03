@@ -1,9 +1,13 @@
-import React from "react"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
-import { HomeScreen } from "../screens"
-import { PrimaryParamList } from "./types"
+import { CardStyleInterpolators, createStackNavigator } from "@react-navigation/stack"
+import React from "react"
+import { CreateNewEventScreen } from "screens"
+import { HomeStack } from "./home-navigator"
+import { PrimaryParamList } from "navigation/types"
 
-const Stack = createNativeStackNavigator<PrimaryParamList>()
+const NativeStack = createNativeStackNavigator<PrimaryParamList>()
+
+const Stack = createStackNavigator()
 
 export function PrimaryStack() {
   return (
@@ -11,9 +15,11 @@ export function PrimaryStack() {
       screenOptions={{
         headerShown: false,
         gestureEnabled: true,
+        cardStyleInterpolator: CardStyleInterpolators.forScaleFromCenterAndroid,
       }}
     >
-      <Stack.Screen name="home" component={HomeScreen} />
+      <Stack.Screen name="homeStack" component={HomeStack} />
+      <Stack.Screen name="createNewEvent" component={CreateNewEventScreen} />
     </Stack.Navigator>
   )
 }
@@ -25,4 +31,4 @@ export function PrimaryStack() {
  * Anything not on this list will be a standard `back` action in
  * react-navigation.
  */
-export const exitRoutes: string[] = ["demo"]
+export const exitRoutes: string[] = ["homeStack"]
