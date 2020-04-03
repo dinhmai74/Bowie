@@ -2,10 +2,11 @@ import React from "react"
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
 import { HomeScreen, SettingsScreen, SavedScreen, NotificationsScreen } from "../screens"
 // import { PrimaryParamList } from "./types"
-import { useThemes } from "theme"
+import { useThemes, spacing } from "theme"
 import { SafeAreaView, View } from "react-native"
 import { BottomNavigation, BottomNavigationTab, Icon } from "@ui-kitten/components"
-import { AppIcon } from "components"
+import { AppIcon, SizedBox } from "components"
+import { getElevation } from "utils"
 
 const Tab = createBottomTabNavigator()
 
@@ -20,9 +21,11 @@ const BottomTabBar = ({ navigation, state }) => {
   }
 
   const selectedIndex = state.index >= 2 ? state.index + 1 : state.index
+  const { color } = useThemes()
+  const backgroundColor = color["background-basic-color-1"]
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{ backgroundColor }}>
       <BottomNavigation selectedIndex={selectedIndex} onSelect={onSelect}>
         {tabs.map((v, i) => {
           // if (i === 2) return <View />

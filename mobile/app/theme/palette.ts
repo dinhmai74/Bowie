@@ -7,4 +7,10 @@ export const palette = {
   lightGrey: "#939AA4",
   lighterGrey: "#CDD4DA",
   angry: "#dd3333",
+  blueViking: "#69c9d6",
+  blueLightState: "#7480ff",
+  orangeRajah: "#f8aa71",
+  redMonaLisa: "#fe9391",
 }
+
+export type Palette = keyof typeof palette

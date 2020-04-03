@@ -2,7 +2,7 @@ import { palette } from "./palette"
 import { Color } from "./color-model"
 import { darkColor, lightColor } from "./custom-color"
 
-export const color: Color = {
+export const colors: Color = {
   /**
    * The palette is available to use, but prefer using the name.
    */
@@ -13,16 +13,16 @@ export const color: Color = {
 
 export const themes = {
   default: {
-    ...color,
+    ...colors,
   } as Color,
   light: {
-    ...color,
+    ...colors,
   } as Color,
   dark: {
-    ...color,
+    ...colors,
     ...darkColor,
   } as Color,
 }
 
-export type ColorType = typeof color
+export type ColorType = typeof colors
 export type ThemeType = keyof typeof themes

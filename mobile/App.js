@@ -13,6 +13,7 @@ import App from "./app/app.tsx"
 //
 // ⚠️ Leave this as `false` when checking into git.
 const SHOW_STORYBOOK = false
+// const SHOW_STORYBOOK = true
 
 let RootComponent = App
 if (__DEV__ && SHOW_STORYBOOK) {

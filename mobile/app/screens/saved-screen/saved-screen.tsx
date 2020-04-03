@@ -3,7 +3,7 @@ import { observer } from "mobx-react-lite"
 import { ViewStyle, StyleSheet } from "react-native"
 import { Screen, Text, Header, View } from "components"
 // import { useStores } from "models/root-store"
-import { color, spacing } from "theme"
+import { colors, spacing } from "theme"
 import { NavigationScreenProp } from "react-navigation"
 
 const styles = StyleSheet.create({

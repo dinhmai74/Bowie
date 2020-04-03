@@ -1,7 +1,7 @@
 import * as React from "react"
 import { TouchableOpacity, TextStyle, ViewStyle, View } from "react-native"
 import { Text } from "../"
-import { color, spacing } from "../../theme"
+import { colors, spacing } from "../../theme"
 import { CheckboxProps } from "./checkbox.props"
 import { mergeAll, flatten } from "ramda"
 
@@ -19,14 +19,14 @@ const OUTLINE: ViewStyle = {
   justifyContent: "center",
   alignItems: "center",
   borderWidth: 1,
-  borderColor: color.primaryDarker,
+  borderColor: colors.primaryDarker,
   borderRadius: 1,
 }
 
 const FILL: ViewStyle = {
   width: DIMENSIONS.width - 4,
   height: DIMENSIONS.height - 4,
-  backgroundColor: color.primary,
+  backgroundColor: colors.primary,
 }
 
 const LABEL: TextStyle = { paddingLeft: spacing[2] }

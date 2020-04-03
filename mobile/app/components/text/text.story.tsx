@@ -5,7 +5,7 @@ import * as React from "react"
 import { View, ViewStyle, StyleSheet } from "react-native"
 import { storiesOf } from "@storybook/react-native"
 import { StoryScreen, Story, UseCase } from "../../../storybook/views"
-import { color } from "../../theme"
+import { colors } from "../../theme"
 import { Text } from "./text"
 import { Layout } from "@ui-kitten/components"
 
