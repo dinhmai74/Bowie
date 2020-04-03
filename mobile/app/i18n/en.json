@@ -54,7 +54,11 @@
     "header": "Setttings",
     "darkMode": "Dark mode",
     "choseLang": "Chose language:",
-    "lang": "Language"
+    "lang": "Language",
+    "noti": "Notifications",
+    "term": "Term of service",
+    "getHelp": "Get help",
+    "feedBack": "Feedback"
   },
   "en": "English",
   "vi": "Vietnamese"

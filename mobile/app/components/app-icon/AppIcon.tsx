@@ -3,14 +3,14 @@ import { View, Image, ImageStyle, StyleSheet } from "react-native"
 import { AppIconProps, AppIconPresets } from "./AppIcon.props"
 import { AppIcons } from "./app-icons"
 import { flatten, mergeAll } from "ramda"
-import { color, metrics, spacing, useThemes } from "theme"
+import { colors, metrics, spacing, useThemes } from "theme"
 import { TouchableOpacity } from "react-native-gesture-handler"
 
 export * from "./AppIcon.props"
 
 const ROOT: ImageStyle = {
   resizeMode: "contain",
-  backgroundColor: color.transparent,
+  backgroundColor: colors.transparent,
 }
 
 export const AppIcon = (props: AppIconProps) => {

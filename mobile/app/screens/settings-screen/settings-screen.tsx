@@ -1,23 +1,70 @@
 import { Button, Header, Screen, View, SizedBox, Text, Switch, AppIcon } from "components"
 import { observer } from "mobx-react-lite"
 import React, { useContext, useRef } from "react"
-import { StyleSheet, TouchableWithoutFeedback, TouchableOpacity } from "react-native"
+import { StyleSheet, TouchableWithoutFeedback, TouchableOpacity, ScrollView } from "react-native"
 import { NavigationScreenProp } from "react-navigation"
 // import { useStores } from "models/root-store"
-import { spacing, useThemes, metrics, color as Colors, typography } from "theme"
+import { spacing, useThemes, metrics, colors as Colors, typography } from "theme"
 import { i18n } from "i18n/i18n"
 import { saveString } from "utils/storage"
 import { strings, useForceUpdate, getElevation } from "utils"
 import { AuthContext } from "navigation"
 import BottomSheet from "reanimated-bottom-sheet"
-import { LangModalContent, LangModalHeader, LangItem } from "./components/LangModal"
+import { LangItem } from "./components/LangModal"
 import Animated from "react-native-reanimated"
 import { Layout, StyleService, useStyleSheet } from "@ui-kitten/components"
 import { FlatList } from "react-native-gesture-handler"
+import { SettingsCard } from "screens/settings-screen/components/SettingsCard"
+import { palette, Palette } from "theme/palette"
 
 const langs = ["en", "vi"]
 
+interface SettingItem {
+  name: string
+  navigateTo: string
+  color: Palette
+}
+
+const settingItems: SettingItem[][] = [
+  [
+    {
+      name: "noti",
+      navigateTo: "",
+      color: "blueViking",
+    },
+    {
+      name: "term",
+      navigateTo: "",
+      color: "orangeRajah",
+    },
+  ],
+  [
+    {
+      name: "getHelp",
+      navigateTo: "",
+      color: "redMonaLisa",
+    },
+    {
+      name: "feedBack",
+      navigateTo: "",
+      color: "blueLightState",
+    },
+  ],
+]
+
 const Styles = StyleService.create({
+  card: {
+    alignSelf: "stretch",
+    margin: spacing[4],
+  },
+  cardRow: {
+    flexDirection: "row",
+  },
+  cardWrapper: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
   bsWrapper: {
     height: "100%",
     width: "100%",
@@ -103,6 +150,7 @@ export const SettingsScreen: React.FunctionComponent<SettingsScreenProps> = obse
         <SizedBox h={4} />
         <FlatList
           data={langs}
+          keyExtractor={(_, k) => k.toString()}
           renderItem={({ item }) => (
             <LangItem
               value={item}
@@ -151,6 +199,22 @@ export const SettingsScreen: React.FunctionComponent<SettingsScreenProps> = obse
     )
   }
 
+  const renderRow = (data: SettingItem[], i) => {
+    return (
+      <View style={styles.cardRow} key={i}>
+        {data.map(v => {
+          const { color: vColor, name: n, navigateTo } = v
+          const color = palette[vColor]
+          const name = "settingsScreen." + n
+
+          return (
+            <SettingsCard {...{ color, name }} onPress={() => {}} key={name} style={styles.card} />
+          )
+        })}
+      </View>
+    )
+  }
+
   return (
     <Screen>
       <BottomSheet
@@ -163,7 +227,7 @@ export const SettingsScreen: React.FunctionComponent<SettingsScreenProps> = obse
 
       <Header headerTx="settingsScreen.header" leftIcon="back" />
       <View style={styles.container}>
-        <View>
+        <View full>
           <View row style={styles.rowWrapper}>
             <Text tx="settingsScreen.darkMode" style={styles.rowWrapper} />
             <Switch status="primary" checked={theme !== "light"} onChange={toggle} />
@@ -171,16 +235,23 @@ export const SettingsScreen: React.FunctionComponent<SettingsScreenProps> = obse
           <SizedBox h={4} />
 
           <View row style={styles.rowWrapper}>
-            <Text tx="settingsScreen.lang" style={styles.rowWrapper} />
+            <Text tx="settingsScreen.lang" />
             <TouchableOpacity onPress={() => openBs()}>
               <Text
-                tx={i18n.locale}
+                tx={i18n.locale || "en"}
                 color={color["text-primary-color"]}
                 fontFamily={typography.medium}
               />
             </TouchableOpacity>
           </View>
-          <SizedBox h={4} />
+
+          <View style={styles.cardWrapper}>
+            {settingItems.map((datum, i) => {
+              return renderRow(datum, i)
+            })}
+          </View>
+
+          <SizedBox h={8} />
         </View>
 
         <View style={styles.btnSignOutWrapper}>

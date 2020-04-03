@@ -4,14 +4,14 @@ import * as React from "react"
 import { Image, ImageStyle, Platform, TextStyle, View, ViewStyle } from "react-native"
 import { Button, Header, Screen, Text } from "../../components"
 import { Api } from "../../services/api"
-import { color, spacing } from "../../theme"
+import { colors, spacing } from "../../theme"
 import { save } from "../../utils/storage"
 export const logoIgnite = require("./logo-ignite.png")
 export const heart = require("./heart.png")
 
 const FULL: ViewStyle = { flex: 1 }
 const CONTAINER: ViewStyle = {
-  backgroundColor: color.transparent,
+  backgroundColor: colors.transparent,
   paddingHorizontal: spacing[4],
 }
 const DEMO: ViewStyle = {
@@ -126,7 +126,7 @@ export const DemoScreen: React.FunctionComponent<DemoScreenProps> = props => {
 
   return (
     <View style={FULL}>
-      <Screen style={CONTAINER} preset="scroll" backgroundColor={color.transparent}>
+      <Screen style={CONTAINER} preset="scroll" backgroundColor={colors.transparent}>
         <Header
           headerTx="demoScreen.howTo"
           leftIcon="back"
