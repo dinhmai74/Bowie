@@ -8,7 +8,12 @@ import { mapping } from "@eva-design/eva"
 // eslint-disable-next-line
 declare var module
 
-const StorybookUI = getStorybookUI({ port: 9001, host: "localhost", onDeviceUI: true })
+const StorybookUI = getStorybookUI({
+  port: 9001,
+  host: "localhost",
+  onDeviceUI: true,
+  asyncStorage: require("react-native"),
+})
 
 export const StorybookUIRoot: React.FunctionComponent = () => {
   useEffect(() => {
@@ -42,4 +47,3 @@ export const StorybookUIRoot: React.FunctionComponent = () => {
 configure(() => {
   require("./storybook-registry")
 }, module)
-

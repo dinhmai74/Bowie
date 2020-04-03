@@ -1,13 +1,13 @@
 import { Avatar } from "@ui-kitten/components"
-import React, { useState } from "react"
-import { ScrollView, View, Image } from "react-native"
-import MapView, { Marker as MapMarker, MarkerProps } from "react-native-maps"
-import { appMapViewStyles as styles } from "./app-map-view.styles"
-import { Text, Button, AppCard } from "components"
+import { AppCard, Button, Text } from "components"
 import { AppIcon } from "components/app-icon/AppIcon"
-import { metrics, useThemes } from "theme"
 import { SizedBox } from "components/sized-box/sized-box"
+import React, { useState } from "react"
+import { Image, View } from "react-native"
+import MapView, { Marker as MapMarker, MarkerProps } from "react-native-maps"
+import { metrics, useThemes } from "theme"
 import { Color } from "theme/color-model"
+import { appMapViewStyles as styles } from "./app-map-view.styles"
 
 export type Region = {
   latitude: number
@@ -33,7 +33,7 @@ export const AppMapView: React.FunctionComponent<AppMapViewProps> = props => {
   const [selected, setSelected] = useState<number>(null)
   const { color } = useThemes()
 
-  const onPressMarker = (location, index) => {
+  const onPressMarker = (location: any, index: number) => {
     setSelected(index)
   }
 

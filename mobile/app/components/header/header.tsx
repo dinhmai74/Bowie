@@ -1,6 +1,6 @@
 import { AppIcon, Button, Text } from "components"
 import * as React from "react"
-import { StyleSheet, View } from "react-native"
+import { StyleSheet, View, TouchableOpacity } from "react-native"
 import { spacing, useThemes, metrics } from "../../theme"
 import { HeaderProps } from "./header.props"
 import { useNavigation } from "@react-navigation/native"
@@ -45,12 +45,13 @@ export const Header: React.FunctionComponent<HeaderProps> = props => {
     onLeft ? onLeft() : navigation.goBack()
   }
 
+  const LeftWrapper: any = leftIcon ? TouchableOpacity : View
   return (
     <View style={{ ...styles.root, ...style }}>
-      <View style={styles.header}>
-        {leftIcon && <LeftIcon onPress={onLeftPress} style={styles.leftIcon} />}
+      <LeftWrapper style={styles.header} onPress={onLeftPress}>
+        {leftIcon && <LeftIcon style={styles.leftIcon} />}
         <Text text={headerTx} preset="h2medium" />
-      </View>
+      </LeftWrapper>
     </View>
   )
 }

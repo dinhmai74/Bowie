@@ -216,17 +216,18 @@ export const SettingsScreen: React.FunctionComponent<SettingsScreenProps> = obse
   }
 
   return (
-    <Screen>
+    <Screen style={{ flex: 1 }}>
       <BottomSheet
         ref={bs}
-        snapPoints={[0, 300, 400]}
+        snapPoints={[-100, "30%", "40%"]}
         renderContent={() => renderBottomSheetContent()}
         renderHeader={() => renderHeaderBottomSheet()}
         callbackNode={fall}
+        borderRadius={spacing[4]}
       />
 
       <Header headerTx="settingsScreen.header" leftIcon="back" />
-      <View style={styles.container}>
+      <Screen style={styles.container} preset="scroll">
         <View full>
           <View row style={styles.rowWrapper}>
             <Text tx="settingsScreen.darkMode" style={styles.rowWrapper} />
@@ -257,7 +258,7 @@ export const SettingsScreen: React.FunctionComponent<SettingsScreenProps> = obse
         <View style={styles.btnSignOutWrapper}>
           <Button tx="auth.signOut" onPress={() => signOut()} full preset="ghostWithPrimaryBg" />
         </View>
-      </View>
+      </Screen>
       {renderShadow()}
     </Screen>
   )
