@@ -1,23 +1,23 @@
-import { AppIcon, Button, Text } from "components"
-import * as React from "react"
-import { StyleSheet, View, TouchableOpacity } from "react-native"
-import { spacing, useThemes, metrics } from "../../theme"
-import { HeaderProps } from "./header.props"
-import { useNavigation } from "@react-navigation/native"
+import { useNavigation } from '@react-navigation/native'
+import { AppIcon, Text } from 'components'
+import * as React from 'react'
+import { StyleSheet, TouchableOpacity, View } from 'react-native'
+import { spacing, useThemes } from '../../theme'
+import { HeaderProps } from './header.props'
 
 const styles = StyleSheet.create({
   header: {
-    alignItems: "center",
-    flexDirection: "row",
-    justifyContent: "center",
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'center',
   },
   leftIcon: {
     marginRight: spacing[1],
   },
   root: {
-    alignItems: "center",
-    flexDirection: "row",
-    justifyContent: "flex-start",
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
     paddingBottom: spacing[5],
     paddingHorizontal: spacing[4],
     paddingTop: spacing[5],
@@ -25,20 +25,12 @@ const styles = StyleSheet.create({
 })
 
 export const Header: React.FunctionComponent<HeaderProps> = props => {
-  const {
-    onLeftPress: onLeft,
-    onRightPress,
-    rightIcon,
-    leftIcon,
-    headerTx,
-    style,
-    titleStyle,
-  } = props
+  const { onLeftPress: onLeft, leftIcon, headerTx, style } = props
   const { color } = useThemes()
   const navigation = useNavigation()
 
   const LeftIcon = ({ style, ...rest }) => (
-    <AppIcon icon={leftIcon} style={[style, { tintColor: color["text-basic-color"] }]} {...rest} />
+    <AppIcon icon={leftIcon} style={[style, { tintColor: color['text-basic-color'] }]} {...rest} />
   )
 
   const onLeftPress = () => {

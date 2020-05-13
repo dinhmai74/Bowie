@@ -1,14 +1,14 @@
-import { AppMapView, Header, Screen, View } from "components"
-import * as Location from "expo-location"
-import * as Permissions from "expo-permissions"
-import { observer } from "mobx-react-lite"
-import * as React from "react"
-import { useQuery } from "react-apollo"
-import { StyleSheet } from "react-native"
-import { Region } from "react-native-maps"
-import { NavigationScreenProp } from "react-navigation"
-import { shopsQuery } from "services/queries/shop-queries"
-import { useImmer } from "use-immer"
+import { AppMapView, Header, Screen, View } from 'components'
+import * as Location from 'expo-location'
+import * as Permissions from 'expo-permissions'
+import { observer } from 'mobx-react-lite'
+import * as React from 'react'
+import { useQuery } from 'react-apollo'
+import { StyleSheet } from 'react-native'
+import { Region } from 'react-native-maps'
+import { NavigationScreenProp } from 'react-navigation'
+import { shopsQuery } from 'services/queries/shop-queries'
+import { useImmer } from 'use-immer'
 
 const styles = StyleSheet.create({
   container: {
@@ -20,10 +20,10 @@ export interface HomeScreenProps {
   navigation: NavigationScreenProp<any, any>
 }
 const Images = [
-  "https://i.imgur.com/sNam9iJ.jpg",
-  "https://i.imgur.com/N7rlQYt.jpg",
-  "https://i.imgur.com/UDrH0wm.jpg",
-  "https://i.imgur.com/Ka8kNST.jpg",
+  'https://i.imgur.com/sNam9iJ.jpg',
+  'https://i.imgur.com/N7rlQYt.jpg',
+  'https://i.imgur.com/UDrH0wm.jpg',
+  'https://i.imgur.com/Ka8kNST.jpg',
 ]
 
 export const HomeScreen: React.FunctionComponent<HomeScreenProps> = observer(props => {
@@ -36,19 +36,19 @@ export const HomeScreen: React.FunctionComponent<HomeScreenProps> = observer(pro
     longitudeDelta: 0.040142817690068,
   })
 
-  const { error, data, loading } = useQuery(shopsQuery)
+  const { error, data } = useQuery(shopsQuery)
 
-  console.tlog("error", error)
-  console.tlog("data", data)
+  console.tlog('error', error)
+  console.tlog('data', data)
 
-  const [markers, setMarkes] = useImmer([
+  const [markers] = useImmer([
     {
       coordinate: {
         latitude: 45.524548,
         longitude: -122.6749817,
       },
-      title: "Best Place",
-      description: "This is the best place in Portland",
+      title: 'Best Place',
+      description: 'This is the best place in Portland',
       avatar: Images[0],
     },
     {
@@ -56,8 +56,8 @@ export const HomeScreen: React.FunctionComponent<HomeScreenProps> = observer(pro
         latitude: 45.524698,
         longitude: -122.6655507,
       },
-      title: "Second Best Place",
-      description: "This is the second best place in Portland",
+      title: 'Second Best Place',
+      description: 'This is the second best place in Portland',
       avatar: Images[1],
     },
     {
@@ -65,8 +65,8 @@ export const HomeScreen: React.FunctionComponent<HomeScreenProps> = observer(pro
         latitude: 45.5230786,
         longitude: -122.6701034,
       },
-      title: "Third Best Place",
-      description: "This is the third best place in Portland",
+      title: 'Third Best Place',
+      description: 'This is the third best place in Portland',
       avatar: Images[2],
     },
     {
@@ -74,15 +74,15 @@ export const HomeScreen: React.FunctionComponent<HomeScreenProps> = observer(pro
         latitude: 45.521016,
         longitude: -122.6561917,
       },
-      title: "Fourth Best Place",
-      description: "This is the fourth best place in Portland",
+      title: 'Fourth Best Place',
+      description: 'This is the fourth best place in Portland',
       avatar: Images[3],
     },
   ])
 
   const getLocationAsync = async () => {
     const { status } = await Permissions.askAsync(Permissions.LOCATION)
-    if (status !== "granted") {
+    if (status !== 'granted') {
     }
 
     const location = await Location.getCurrentPositionAsync({})
@@ -97,7 +97,7 @@ export const HomeScreen: React.FunctionComponent<HomeScreenProps> = observer(pro
     <Screen preset="scroll">
       <Header
         headerTx="homeScreen.header"
-        onLeftPress={() => props.navigation.navigate("authStack")}
+        onLeftPress={() => props.navigation.navigate('authStack')}
       />
       <View style={styles.container}>
         {location !== null && (

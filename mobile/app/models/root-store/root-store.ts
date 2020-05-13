@@ -4,7 +4,7 @@ import { ThemeModel } from "../theme"
 /**
  * A RootStore model.
  */
-//prettier-ignore
+// prettier-ignore
 export const RootStoreModel = types.model("RootStore").props({
   themeStore: types.optional(ThemeModel, {}),
 })

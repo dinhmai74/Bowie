@@ -1,20 +1,20 @@
 import Animated, {
-  Easing,
+  and,
+  block,
   call,
   Clock,
+  clockRunning,
+  cond,
+  Easing,
+  eq,
+  proc,
+  set,
+  spring,
+  startClock,
+  stopClock,
   timing,
   Value,
-  clockRunning,
-  spring,
-  cond,
-  stopClock,
-  set,
-  block,
-  startClock,
-  proc,
-  and,
-  eq
-} from "react-native-reanimated"
+} from 'react-native-reanimated'
 
 const betterSpring = proc(
   (
@@ -30,7 +30,7 @@ const betterSpring = proc(
     overshootClamping,
     restSpeedThreshold,
     restDisplacementThreshold,
-    clock
+    clock,
   ) =>
     spring(
       clock,
@@ -39,7 +39,7 @@ const betterSpring = proc(
         velocity,
         position,
         time,
-        prevPosition
+        prevPosition,
       },
       {
         toValue,
@@ -48,12 +48,12 @@ const betterSpring = proc(
         stiffness,
         overshootClamping,
         restDisplacementThreshold,
-        restSpeedThreshold
-      }
-    )
+        restSpeedThreshold,
+      },
+    ),
 )
 
-function springFill(clock, state, config) {
+export function springFill(clock, state, config) {
   return betterSpring(
     state.finished,
     state.velocity,
@@ -67,7 +67,7 @@ function springFill(clock, state, config) {
     config.overshootClamping,
     config.restSpeedThreshold,
     config.restDisplacementThreshold,
-    clock
+    clock,
   )
 }
 
@@ -75,13 +75,13 @@ export function runSpringDeep(
   clock: Animated.Clock,
   value: number | Animated.Node<number>,
   dest: number | Animated.Node<number>,
-  velocity: any = -2500
+  velocity: any = -2500,
 ) {
   const state = {
     finished: new Value(0),
     velocity: new Value(0),
     position: new Value(0),
-    time: new Value(0)
+    time: new Value(0),
   }
 
   const config = {
@@ -91,7 +91,7 @@ export function runSpringDeep(
     stiffness: 121.6,
     overshootClamping: false,
     restSpeedThreshold: 0.001,
-    restDisplacementThreshold: 0.001
+    restDisplacementThreshold: 0.001,
   }
 
   return block([
@@ -101,11 +101,11 @@ export function runSpringDeep(
       set(state.position, value),
       set(state.velocity, velocity),
       set(config.toValue, dest),
-      startClock(clock)
+      startClock(clock),
     ]),
     spring(clock, state, config),
     cond(state.finished, stopClock(clock)),
-    state.position
+    state.position,
   ])
 }
 
@@ -113,13 +113,13 @@ export function runSpring(
   clock: any,
   value: number | Animated.Node<number>,
   dest: number | Animated.Node<number>,
-  velocity: any = -2500
+  velocity: any = -2500,
 ) {
   const state = {
     finished: new Value(0),
     velocity: new Value(0),
     position: new Value(0),
-    time: new Value(0)
+    time: new Value(0),
   }
 
   const config = {
@@ -129,7 +129,7 @@ export function runSpring(
     overshootClamping: false,
     restSpeedThreshold: 0.001,
     restDisplacementThreshold: 0.001,
-    toValue: new Value(0)
+    toValue: new Value(0),
   }
 
   return block([
@@ -138,11 +138,11 @@ export function runSpring(
       set(state.velocity, velocity),
       set(state.position, value),
       set(config.toValue, dest),
-      startClock(clock)
+      startClock(clock),
     ]),
     spring(clock, state, config),
     cond(state.finished, stopClock(clock)),
-    state.position
+    state.position,
   ])
 }
 
@@ -151,13 +151,13 @@ export const runTiming = (clock, value, dest, duration = 1000): any => {
     finished: new Value(0),
     position: new Value(0),
     time: new Value(0),
-    frameTime: new Value(0)
+    frameTime: new Value(0),
   }
 
   const config = {
     duration,
     toValue: new Value(0),
-    easing: Easing.inOut(Easing.ease)
+    easing: Easing.inOut(Easing.ease),
   }
 
   return block([
@@ -170,12 +170,12 @@ export const runTiming = (clock, value, dest, duration = 1000): any => {
         set(state.position, value),
         set(state.frameTime, 0),
         set(config.toValue, dest),
-        startClock(clock)
-      ]
+        startClock(clock),
+      ],
     ),
     timing(clock, state, config),
     cond(state.finished, stopClock(clock)),
-    state.position
+    state.position,
   ])
 }
 
@@ -184,13 +184,13 @@ export const runTimingOb = ({ clock = new Clock(), from = 0, to = 1, duration = 
     finished: new Value(0),
     position: new Value(0),
     time: new Value(0),
-    frameTime: new Value(0)
+    frameTime: new Value(0),
   }
 
   const config = {
     duration,
     toValue: new Value(0),
-    easing: Easing.inOut(Easing.ease)
+    easing: Easing.inOut(Easing.ease),
   }
 
   return block([
@@ -203,12 +203,12 @@ export const runTimingOb = ({ clock = new Clock(), from = 0, to = 1, duration = 
         set(state.position, from),
         set(state.frameTime, 0),
         set(config.toValue, to),
-        startClock(clock)
-      ]
+        startClock(clock),
+      ],
     ),
     timing(clock, state, config),
     cond(state.finished, stopClock(clock)),
-    state.position
+    state.position,
   ])
 }
 
@@ -218,13 +218,13 @@ export const runTimingWithEndAction = (clock, value, dest, endAction, duration =
     position: new Value(value),
     time: new Value(0),
     frameTime: new Value(0),
-    callEndAction: new Value(0)
+    callEndAction: new Value(0),
   }
 
   const config = {
     duration: duration,
     toValue: new Value(0),
-    easing: Easing.inOut(Easing.ease)
+    easing: Easing.inOut(Easing.ease),
   }
 
   const reset = [set(state.finished, 0), set(state.time, 0), set(state.frameTime, 0)]
@@ -233,11 +233,11 @@ export const runTimingWithEndAction = (clock, value, dest, endAction, duration =
     cond(and(state.finished, eq(state.position, value)), [...reset, set(config.toValue, dest)]),
     cond(and(state.finished, eq(state.position, dest)), [
       cond(state.callEndAction, 0, [call([], endAction)]),
-      set(state.callEndAction, 1)
+      set(state.callEndAction, 1),
     ]),
     cond(clockRunning(clock), 0, startClock(clock)),
     timing(clock, state, config),
-    state.position
+    state.position,
   ])
 }
 
@@ -246,7 +246,7 @@ export const runTimingWithEndActionOB = ({
   from = 0,
   to = 1,
   duration = 1000,
-  endAction = () => {}
+  endAction = () => {},
 }): any => {
   return runTimingWithEndAction(clock, from, to, endAction, duration)
 }
@@ -256,13 +256,13 @@ export const runTimingLoop = (clock, value, dest, duration = 1000): any => {
     finished: new Value(1),
     position: new Value(value),
     time: new Value(0),
-    frameTime: new Value(0)
+    frameTime: new Value(0),
   }
 
   const config = {
     duration: duration,
     toValue: new Value(0),
-    easing: Easing.inOut(Easing.ease)
+    easing: Easing.inOut(Easing.ease),
   }
 
   const reset = [set(state.finished, 0), set(state.time, 0), set(state.frameTime, 0)]
@@ -272,6 +272,6 @@ export const runTimingLoop = (clock, value, dest, duration = 1000): any => {
     cond(and(state.finished, eq(state.position, dest)), [...reset, set(config.toValue, value)]),
     cond(clockRunning(clock), 0, startClock(clock)),
     timing(clock, state, config),
-    state.position
+    state.position,
   ])
 }

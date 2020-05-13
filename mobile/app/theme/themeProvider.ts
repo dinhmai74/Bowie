@@ -28,4 +28,3 @@ export const useThemes = (): UseThemes => {
     theme: themeContext.theme,
   }
 }
-

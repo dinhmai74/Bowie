@@ -15,7 +15,7 @@ interface FirebaseResult {
 class FirebaseSDK {
   constructor() {
     if (!firebase.apps.length) {
-      //avoid re-initializing
+      // avoid re-initializing
       firebase.initializeApp({
         apiKey: "AIzaSyA3rfuUHnDAv5AbUIXbIUAbeZ6bgRDmPfs",
         authDomain: "bowie-3512e.firebaseapp.com",
