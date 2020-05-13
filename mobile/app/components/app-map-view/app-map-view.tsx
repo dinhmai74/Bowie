@@ -1,13 +1,13 @@
-import { Avatar } from "@ui-kitten/components"
-import { AppCard, Button, Text } from "components"
-import { AppIcon } from "components/app-icon/AppIcon"
-import { SizedBox } from "components/sized-box/sized-box"
-import React, { useState } from "react"
-import { Image, View } from "react-native"
-import MapView, { Marker as MapMarker, MarkerProps } from "react-native-maps"
-import { metrics, useThemes } from "theme"
-import { Color } from "theme/color-model"
-import { appMapViewStyles as styles } from "./app-map-view.styles"
+import { Avatar } from '@ui-kitten/components'
+import { AppCard, Button, Text } from 'components'
+import { AppIcon } from 'components/app-icon/AppIcon'
+import { SizedBox } from 'components/sized-box/sized-box'
+import React, { useState } from 'react'
+import { Image, View } from 'react-native'
+import MapView, { Marker as MapMarker, MarkerProps } from 'react-native-maps'
+import { metrics, useThemes } from 'theme'
+import { Color } from 'theme/color-model'
+import { appMapViewStyles as styles } from './app-map-view.styles'
 
 export type Region = {
   latitude: number
@@ -54,7 +54,7 @@ export const AppMapView: React.FunctionComponent<AppMapViewProps> = props => {
               avatar={marker.avatar}
               coordinate={marker.coordinate}
               onPress={location => onPressMarker(location, index)}
-              {...{ opacity }}
+              // {...{ opacity }}
             />
           )
         })}
@@ -101,7 +101,7 @@ const AppMarkerCard: React.FC<AppMarkerCardProps> = ({ marker, color }) => {
       <Text text={marker.description} />
       <SizedBox h={4} />
       <Button
-        style={[styles.bottomInfoButton, { backgroundColor: color["background-basic-color-1"] }]}
+        style={[styles.bottomInfoButton, { backgroundColor: color['background-basic-color-1'] }]}
         appearance="outline"
         tx="homeScreen.viewDetail"
       />

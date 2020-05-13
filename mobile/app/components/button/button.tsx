@@ -1,19 +1,19 @@
-import { Button as KTButton, useStyleSheet } from "@ui-kitten/components"
-import { flatten, mergeAll } from "ramda"
-import * as React from "react"
-import { ActivityIndicator, ViewStyle } from "react-native"
-import { translate } from "../../i18n"
-import { TextPresets, ViewPresets } from "./button.presets"
-import { ButtonProps } from "./button.props"
+import { Button as KTButton, useStyleSheet } from '@ui-kitten/components'
+import { Text } from 'components/text/text'
+import { flatten, mergeAll } from 'ramda'
+import * as React from 'react'
+import { ActivityIndicator, ViewStyle } from 'react-native'
+import { TextPresets, ViewPresets } from './button.presets'
+import { ButtonProps } from './button.props'
 
 export const Button: React.FC<ButtonProps> = props => {
   const renderLoading = () => {
     const { loadingColor, loadingSize } = props
-    return <ActivityIndicator size={loadingSize} color={loadingColor || "#fff"} />
+    return <ActivityIndicator size={loadingSize} color={loadingColor || '#fff'} />
   }
 
   const {
-    preset = "primary",
+    preset = 'primary',
     tx,
     txOptions,
     text,
@@ -30,38 +30,40 @@ export const Button: React.FC<ButtonProps> = props => {
   const textPresets = useStyleSheet(TextPresets)
   const viewPresets = useStyleSheet(ViewPresets)
 
-  const notFullStyle: ViewStyle = !full && { alignSelf: "flex-start" }
+  const notFullStyle: ViewStyle = !full && { alignSelf: 'flex-start' }
   const opacity = disabled ? 0.2 : 1
   const viewStyle = mergeAll(
+    // @ts-ignore
     flatten([viewPresets[preset] || viewPresets.primary, notFullStyle, styleOverride, { opacity }]),
   )
   const textStyle = mergeAll(
+    // @ts-ignore
     flatten([textPresets[preset] || textPresets.primary, textStyleOverride]),
   )
 
-  let content: any
   const customProps = {}
-
-  if (loading) {
-    Object.assign(customProps, {
-      icon: () => renderLoading(),
-    })
-  } else {
-    if (typeof children === "string") {
-      content = translate(children, txOptions)
-    } else content = children || text || (tx && translate(tx))
-  }
 
   return (
     <KTButton
       style={viewStyle}
       {...{ textStyle }}
-      onPress={!disabled && onPressProps}
+      onPress={!disabled ? onPressProps : () => {}}
       activeOpacity={disabled ? opacity : 0.5}
       {...rest}
       {...customProps}
     >
-      {content}
+      {evaProps => {
+        if (loading) {
+          return renderLoading()
+        }
+
+        let content = tx || text
+        if (children && typeof children !== 'string')
+          return React.cloneElement(children, { ...evaProps })
+        else if (children) content = children
+
+        return <Text {...evaProps} style={[evaProps.style, textStyle]} tx={content} />
+      }}
     </KTButton>
   )
 }

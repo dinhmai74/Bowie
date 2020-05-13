@@ -28,7 +28,9 @@ const BottomTabBar = ({ navigation, state }) => {
       <BottomNavigation selectedIndex={selectedIndex} onSelect={onSelect}>
         {tabs.map((v, i) => {
           // if (i === 2) return <View />
-          const Icon = style => <AppIcon {...{ style }} icon={v} />
+          const iconColor =
+            selectedIndex === i ? color['color-primary-500'] : color['text-basic-color']
+          const Icon = style => <AppIcon {...{ style }} icon={v} color={iconColor} />
           return <BottomNavigationTab icon={Icon} key={i} />
         })}
       </BottomNavigation>

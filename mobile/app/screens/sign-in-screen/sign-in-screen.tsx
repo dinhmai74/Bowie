@@ -303,7 +303,9 @@ export const SignInScreen: React.FunctionComponent<SignInScreenProps> = observer
             )}
           </Animated.View>
           <Animated.View style={getScaleAndOpacity(animBtnFb)}>
-            <Button icon={FBicon} style={styles.btn} />
+            <Button style={styles.btn}>
+              <FBicon />
+            </Button>
           </Animated.View>
         </View>
       </Transitioning.View>
