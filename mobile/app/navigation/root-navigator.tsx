@@ -1,22 +1,47 @@
-import { NavigationContainer, NavigationContainerRef } from "@react-navigation/native"
-import { createNativeStackNavigator } from "@react-navigation/native-stack"
-import React, { useEffect } from "react"
-import { useMutation } from "react-apollo"
-import { mutationAuth } from "services/mutations"
-import { AuthStack } from "./auth-navigator"
-import { PrimaryStack } from "./primary-navigator"
-import { RootParamList } from "./types"
+import { NavigationContainer, NavigationContainerRef } from '@react-navigation/native'
+import { createNativeStackNavigator } from '@react-navigation/native-stack'
+import React, { useEffect } from 'react'
+import { useMutation } from 'react-apollo'
+import { useNetworkStatus } from 'react-offix-hooks'
+import { mutationAuth } from 'services/mutations'
+import { load, remove, save } from 'utils/storage'
+import { AuthStack } from './auth-navigator'
+import { PrimaryStack } from './primary-navigator'
+import { RootParamList } from './types'
 
 export const AuthContext = React.createContext(null)
 
 const Stack = createNativeStackNavigator<RootParamList>()
 
+const LOGIN_KEY = 'login'
 const RootStack = () => {
-  const [auth, { data }] = useMutation(mutationAuth)
+  const [validUser, setValidUser] = React.useState(false)
+
+  const handleErr = () => {
+    setValidUser(false)
+    remove(LOGIN_KEY)
+  }
+  const [auth] = useMutation(mutationAuth, {
+    onCompleted(d) {
+      if (d?.auth?.email) {
+        setValidUser(true)
+        save(LOGIN_KEY, 'login')
+      } else handleErr()
+    },
+    onError(e) {
+      handleErr()
+    },
+  })
+  const isOnline = useNetworkStatus()
 
   useEffect(() => {
     const bootstrapAsync = async () => {
-      await auth()
+      if (isOnline) await auth()
+      else {
+        const key = await load(LOGIN_KEY)
+        console.tlog('key', key)
+        if (key) setValidUser(true)
+      }
     }
 
     bootstrapAsync()
@@ -31,7 +56,7 @@ const RootStack = () => {
     [],
   )
 
-  const isHaveCookie = data?.auth?.email
+  const isHaveCookie = isOnline ? validUser : true
 
   return (
     <AuthContext.Provider value={authContext}>
@@ -74,4 +99,4 @@ export const RootNavigator = React.forwardRef<
   )
 })
 
-RootNavigator.displayName = "RootNavigator"
+RootNavigator.displayName = 'RootNavigator'
