@@ -10,16 +10,18 @@
 import App from "./app/app.tsx"
 
 // Should we show storybook instead of our app?
-//
+
 // ⚠️ Leave this as `false` when checking into git.
-const SHOW_STORYBOOK = false
+// const SHOW_STORYBOOK = false
 // const SHOW_STORYBOOK = true
 
-let RootComponent = App
-if (__DEV__ && SHOW_STORYBOOK) {
-  // Only include Storybook if we're in dev mode
-  const { StorybookUIRoot } = require("./storybook")
-  RootComponent = StorybookUIRoot
-}
+// let RootComponent = App
+// if (__DEV__ && SHOW_STORYBOOK) {
+// Only include Storybook if we're in dev mode
+// const { StorybookUIRoot } = require("./storybook")
+// RootComponent = StorybookUIRoot
+// }
 
-export default RootComponent
+// export default RootComponent
+
+export default App

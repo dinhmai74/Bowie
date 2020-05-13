@@ -3,10 +3,12 @@ import * as Location from "expo-location"
 import * as Permissions from "expo-permissions"
 import { observer } from "mobx-react-lite"
 import * as React from "react"
-import { StyleSheet, Image, Text, Animated } from "react-native"
-import { NavigationScreenProp } from "react-navigation"
-import { useImmer } from "use-immer"
+import { useQuery } from "react-apollo"
+import { StyleSheet } from "react-native"
 import { Region } from "react-native-maps"
+import { NavigationScreenProp } from "react-navigation"
+import { shopsQuery } from "services/queries/shop-queries"
+import { useImmer } from "use-immer"
 
 const styles = StyleSheet.create({
   container: {
@@ -33,6 +35,12 @@ export const HomeScreen: React.FunctionComponent<HomeScreenProps> = observer(pro
     latitudeDelta: 0.04864195044303443,
     longitudeDelta: 0.040142817690068,
   })
+
+  const { error, data, loading } = useQuery(shopsQuery)
+
+  console.tlog("error", error)
+  console.tlog("data", data)
+
   const [markers, setMarkes] = useImmer([
     {
       coordinate: {
@@ -83,7 +91,7 @@ export const HomeScreen: React.FunctionComponent<HomeScreenProps> = observer(pro
 
   React.useEffect(() => {
     getLocationAsync()
-  })
+  }, [])
 
   return (
     <Screen preset="scroll">
