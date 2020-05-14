@@ -1,15 +1,15 @@
-import { AuthHeader, Button, Screen, SizedBox, Text, TextField, View } from "components"
-import { observer } from "mobx-react-lite"
-import React, { useRef, useState, useContext } from "react"
-import { Controller, useForm } from "react-hook-form"
-import { StyleSheet, TouchableOpacity } from "react-native"
-import { ScrollView } from "react-native-gesture-handler"
-import Animated, { set, Transition, Transitioning, useCode } from "react-native-reanimated"
-import { bInterpolate } from "react-native-redash"
+import { AuthHeader, Button, Screen, SizedBox, Text, TextField, View } from 'components'
+import { observer } from 'mobx-react-lite'
+import { AuthContext } from 'navigation'
+import React, { useContext, useRef, useState } from 'react'
+import { Controller, useForm } from 'react-hook-form'
+import { StyleSheet, TouchableOpacity, Alert } from 'react-native'
+import { ScrollView } from 'react-native-gesture-handler'
+import Animated, { set, Transition, Transitioning, useCode } from 'react-native-reanimated'
+import { bInterpolate } from 'react-native-redash'
 // import { useStores } from "models/root-store"
-import { NavigationScreenProp } from "react-navigation"
-import { firebaseSDK } from "services/firebase/fire-sdk"
-import { images, metrics, sh, spacing, sw, useThemes } from "theme"
+import { NavigationScreenProp } from 'react-navigation'
+import { images, metrics, sh, spacing, sw, useThemes } from 'theme'
 import {
   getOpacity,
   getScaleAndOpacity,
@@ -18,14 +18,15 @@ import {
   nDelay,
   runTimingWithEndActionOB,
   useLayout,
-} from "utils"
-import { EyeIcon, FBicon } from "./components/Icons"
-import { useSignInAnimations } from "./hooks"
-import { AuthContext } from "navigation"
+} from 'utils'
+import { EyeIcon, FBicon } from './components/Icons'
+import { useSignInAnimations } from './hooks'
+import { useMutation } from 'react-apollo'
+import { mutationLogin, mutationSignUp } from 'services/mutations'
 
 const styles = StyleSheet.create({
   btn: {
-    alignSelf: "flex-end",
+    alignSelf: 'flex-end',
     borderBottomLeftRadius: spacing[2],
     borderRadius: 0,
     borderTopLeftRadius: spacing[2],
@@ -35,7 +36,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing[7],
   },
   btnForgot: {
-    alignSelf: "flex-start",
+    alignSelf: 'flex-start',
     marginVertical: spacing[4],
   },
   btnView: {},
@@ -46,15 +47,15 @@ const styles = StyleSheet.create({
     paddingBottom: spacing[1],
   },
   linkView: {
-    flexDirection: "row",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   wallpaper: {
     ...metrics.images.logo,
     bottom: spacing[6],
     left: spacing[6],
-    position: "absolute",
-    resizeMode: "contain",
+    position: 'absolute',
+    resizeMode: 'contain',
     right: 0,
   },
 })
@@ -79,10 +80,34 @@ type FormData = {
 
 const duration = 300
 
-export const SignInScreen: React.FunctionComponent<SignInScreenProps> = observer(props => {
+export const SignInScreen: React.FunctionComponent<SignInScreenProps> = observer(() => {
   // const { someStore } = useStores()
   const refForm = useRef(null)
-  const { signIn } = useContext(AuthContext)
+  const { reAuth } = useContext(AuthContext)
+
+  const onError = err => {
+    Alert.alert(JSON.stringify(err))
+    console.tlog('err', err)
+  }
+  const onCompleted = data => {
+    const errMss = data?.register?.errors || data?.login?.errors
+    if (errMss) {
+      Alert.alert(JSON.stringify(errMss[0]?.message))
+    } else {
+      refForm.current.animateNextTransition()
+      nDelay(200).then(() => setTriggerSpreadOut(true))
+      nDelay(600).then(() => reAuth())
+    }
+  }
+
+  const [login, loginResult] = useMutation(mutationLogin, {
+    onCompleted,
+    onError,
+  })
+  const [signUp, signUpResult] = useMutation(mutationSignUp, {
+    onCompleted,
+    onError,
+  })
 
   const { color } = useThemes()
   const { control, handleSubmit, errors } = useForm<FormData>()
@@ -90,7 +115,6 @@ export const SignInScreen: React.FunctionComponent<SignInScreenProps> = observer
   /* ------------- state ------------- */
   const [isSignIn, setIsSignIn] = useState(true)
   const [secureTextEntry, setSecureTextEntry] = useState<boolean>(true)
-  const [loading, setLoading] = useState<boolean>(false)
   const [triggerSpreadOut, setTriggerSpreadOut] = useState<boolean>(false)
 
   const [btnCookLayout, layout] = useLayout()
@@ -108,7 +132,6 @@ export const SignInScreen: React.FunctionComponent<SignInScreenProps> = observer
   /* ------------- methods ------------- */
 
   const resetState = () => {
-    setLoading(false)
     setTriggerSpreadOut(false)
   }
 
@@ -118,22 +141,22 @@ export const SignInScreen: React.FunctionComponent<SignInScreenProps> = observer
   }
 
   const onSubmit = async (data: FormData) => {
-    setLoading(true)
-    await signIn(
-      {
-        email: data.email,
-        password: data.password,
-      },
-      () => {
-        refForm.current.animateNextTransition()
-        nDelay(600).then(() => setTriggerSpreadOut(true))
-      },
-      err => {
-        // @ts-ignore
-        alert(JSON.stringify(err.message))
-      },
-    )
-    setLoading(false)
+    if (isSignIn) {
+      await login({
+        variables: {
+          email: data.email,
+          password: data.password,
+        },
+      })
+    } else {
+      await signUp({
+        variables: {
+          email: data.email,
+          password: data.password,
+          name: data.name,
+        },
+      })
+    }
   }
 
   useCode(() => {
@@ -142,6 +165,8 @@ export const SignInScreen: React.FunctionComponent<SignInScreenProps> = observer
     }
     return []
   }, [triggerSpreadOut])
+
+  const loading = loginResult?.loading || signUpResult?.loading
 
   return (
     <Screen>
@@ -154,7 +179,7 @@ export const SignInScreen: React.FunctionComponent<SignInScreenProps> = observer
 
       <Transitioning.View transition={formTransition} ref={refForm}>
         <ScrollView style={styles.container}>
-          <Text preset="h1medium">{isSignIn ? "signInScreen.title" : "signUpScreen.title"}</Text>
+          <Text preset="h1medium">{isSignIn ? 'signInScreen.title' : 'signUpScreen.title'}</Text>
           <SizedBox h={5} />
 
           <Animated.View style={getTranslateX(animEmail, sw, 0)}>
@@ -164,16 +189,16 @@ export const SignInScreen: React.FunctionComponent<SignInScreenProps> = observer
               name="email"
               onChange={args => args[0].nativeEvent.text}
               rules={{
-                required: "Email is required",
+                required: 'Email is required',
                 pattern: {
                   value: mailRegex,
-                  message: "Invalid email",
+                  message: 'Invalid email',
                 },
               }}
               defaultValue="test@gmail.com"
-              status={errors.email ? "danger" : "basic"}
+              status={errors.email ? 'danger' : 'basic'}
               // @ts-ignore
-              caption={errors.email ? errors.email.message : ""}
+              caption={errors.email ? errors.email.message : ''}
               label="auth.email"
               keyboardType="email-address"
               placeholder="auth.email"
@@ -191,8 +216,8 @@ export const SignInScreen: React.FunctionComponent<SignInScreenProps> = observer
                 name="name"
                 onChange={args => args[0].nativeEvent.text}
                 rules={{ required: true }}
-                status={errors.name ? "danger" : "basic"}
-                caption={errors.name ? "errors.required" : ""}
+                status={errors.name ? 'danger' : 'basic'}
+                caption={errors.name ? 'errors.required' : ''}
                 defaultValue=""
                 label="auth.name"
                 placeholder="auth.name"
@@ -211,9 +236,9 @@ export const SignInScreen: React.FunctionComponent<SignInScreenProps> = observer
               defaultValue="password"
               label="auth.password"
               rules={{ required: true }}
-              status={errors.password ? "danger" : "basic"}
-              caption={errors.password ? "errors.required" : ""}
-              placeholder={secureTextEntry ? "********" : "password"}
+              status={errors.password ? 'danger' : 'basic'}
+              caption={errors.password ? 'errors.required' : ''}
+              placeholder={secureTextEntry ? '********' : 'password'}
               icon={style => (
                 <EyeIcon
                   {...{ style, secureTextEntry }}
@@ -242,7 +267,7 @@ export const SignInScreen: React.FunctionComponent<SignInScreenProps> = observer
                 setIsSignIn(p => !p)
               }}
             >
-              <Text themeColor="color-basic-600">{isSignIn ? "auth.signUp" : "auth.signIn"}</Text>
+              <Text themeColor="color-basic-600">{isSignIn ? 'auth.signUp' : 'auth.signIn'}</Text>
             </TouchableOpacity>
           </Animated.View>
         </ScrollView>
@@ -251,10 +276,10 @@ export const SignInScreen: React.FunctionComponent<SignInScreenProps> = observer
         <Animated.View
           // eslint-disable-next-line
           style={{
-            position: "absolute",
+            position: 'absolute',
             top: bInterpolate(animBtnCookOut, btnCookLayout ? btnCookLayout.y : 0, 0) || 0,
             right: (btnCookLayout ? btnCookLayout.x : 0) || 0,
-            backgroundColor: color["color-success-default"],
+            backgroundColor: color['color-success-default'],
             width: bInterpolate(animBtnCookOut, 0, 900),
             height: bInterpolate(animBtnCookOut, 0, sh),
             opacity: bInterpolate(animBtnCookOut, 1, 0),
@@ -278,7 +303,9 @@ export const SignInScreen: React.FunctionComponent<SignInScreenProps> = observer
             )}
           </Animated.View>
           <Animated.View style={getScaleAndOpacity(animBtnFb)}>
-            <Button icon={FBicon} style={styles.btn} />
+            <Button style={styles.btn}>
+              <FBicon />
+            </Button>
           </Animated.View>
         </View>
       </Transitioning.View>

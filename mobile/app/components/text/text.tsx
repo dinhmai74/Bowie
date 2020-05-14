@@ -1,12 +1,12 @@
-import * as React from "react"
+import * as React from 'react'
 // import { Text as KittenText } from "@ui-kitten/components"
-import { Text as ReactNativeText } from "react-native"
-import { TextPresets } from "./text.presets"
-import { TextProps } from "./text.props"
-import { translate } from "i18n"
-import { mergeAll, flatten } from "ramda"
-import { useThemes } from "theme"
-import { useStyleSheet } from "@ui-kitten/components"
+import { Text as ReactNativeText } from 'react-native'
+import { TextPresets } from './text.presets'
+import { TextProps } from './text.props'
+import { translate } from 'i18n'
+import { mergeAll, flatten } from 'ramda'
+import { useThemes } from 'theme'
+import { useStyleSheet } from '@ui-kitten/components'
 
 export const Text = (props: TextProps) => {
   // grab the props
@@ -30,7 +30,7 @@ export const Text = (props: TextProps) => {
   // figure out which content to use
   const i18nText = tx && translate(tx, txOptions)
   let content: any
-  if (typeof children === "string") {
+  if (typeof children === 'string') {
     content = translate(children, txOptions)
   } else content = children || translate(text, txOptions) || i18nText
 
@@ -44,7 +44,7 @@ export const Text = (props: TextProps) => {
     flatten([
       presets[preset] || presets.default,
       defaultColor && { color: defaultColor },
-      underline && { textDecorationLine: "underline" },
+      underline && { textDecorationLine: 'underline' },
       textAlign && { textAlign },
       fontFamily && { fontFamily },
       styleOverride,

@@ -29,4 +29,3 @@ export function translate(initialMsg: string, options?: object) {
 
   return localMsg
 }
-

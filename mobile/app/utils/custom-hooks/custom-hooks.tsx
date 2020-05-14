@@ -1,7 +1,6 @@
-import { useCallback, useState } from "react"
-import { Dimensions } from "react-native"
-import { bInterpolate } from "react-native-redash"
-import Animated from "react-native-reanimated"
+import { useCallback, useState } from 'react'
+import Animated from 'react-native-reanimated'
+import { bInterpolate } from 'react-native-redash'
 
 interface Size {
   width: number
@@ -41,7 +40,7 @@ export const getTranslateX: any = (value, from = 100, to = 0) => ({
   ],
 })
 
-export const getCircle = (value: number = 50) => ({
+export const getCircle = (value = 50) => ({
   borderRadius: value / 2,
   ...getSize(value),
 })

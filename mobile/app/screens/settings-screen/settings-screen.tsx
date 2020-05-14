@@ -1,23 +1,25 @@
-import { Button, Header, Screen, View, SizedBox, Text, Switch, AppIcon } from "components"
-import { observer } from "mobx-react-lite"
-import React, { useContext, useRef } from "react"
-import { StyleSheet, TouchableWithoutFeedback, TouchableOpacity, ScrollView } from "react-native"
-import { NavigationScreenProp } from "react-navigation"
+import { Layout, StyleService, useStyleSheet } from '@ui-kitten/components'
+import { AppIcon, Button, Header, Screen, SizedBox, Switch, Text, View } from 'components'
+import { i18n } from 'i18n/i18n'
+import { observer } from 'mobx-react-lite'
+import { AuthContext } from 'navigation'
+import React, { useContext, useRef } from 'react'
+import { useMutation } from 'react-apollo'
+import { StyleSheet, TouchableOpacity } from 'react-native'
+import { FlatList } from 'react-native-gesture-handler'
+import Animated from 'react-native-reanimated'
+import { NavigationScreenProp } from 'react-navigation'
+import BottomSheet from 'reanimated-bottom-sheet'
+import { SettingsCard } from 'screens/settings-screen/components/SettingsCard'
+import { mutationLogout } from 'services/mutations'
 // import { useStores } from "models/root-store"
-import { spacing, useThemes, metrics, colors as Colors, typography } from "theme"
-import { i18n } from "i18n/i18n"
-import { saveString } from "utils/storage"
-import { strings, useForceUpdate, getElevation } from "utils"
-import { AuthContext } from "navigation"
-import BottomSheet from "reanimated-bottom-sheet"
-import { LangItem } from "./components/LangModal"
-import Animated from "react-native-reanimated"
-import { Layout, StyleService, useStyleSheet } from "@ui-kitten/components"
-import { FlatList } from "react-native-gesture-handler"
-import { SettingsCard } from "screens/settings-screen/components/SettingsCard"
-import { palette, Palette } from "theme/palette"
+import { colors as Colors, metrics, spacing, typography, useThemes } from 'theme'
+import { palette, Palette } from 'theme/palette'
+import { getElevation, strings, useForceUpdate } from 'utils'
+import { saveString } from 'utils/storage'
+import { LangItem } from './components/LangModal'
 
-const langs = ["en", "vi"]
+const langs = ['en', 'vi']
 
 interface SettingItem {
   name: string
@@ -28,51 +30,51 @@ interface SettingItem {
 const settingItems: SettingItem[][] = [
   [
     {
-      name: "noti",
-      navigateTo: "",
-      color: "blueViking",
+      name: 'noti',
+      navigateTo: '',
+      color: 'blueViking',
     },
     {
-      name: "term",
-      navigateTo: "",
-      color: "orangeRajah",
+      name: 'term',
+      navigateTo: '',
+      color: 'orangeRajah',
     },
   ],
   [
     {
-      name: "getHelp",
-      navigateTo: "",
-      color: "redMonaLisa",
+      name: 'getHelp',
+      navigateTo: '',
+      color: 'redMonaLisa',
     },
     {
-      name: "feedBack",
-      navigateTo: "",
-      color: "blueLightState",
+      name: 'feedBack',
+      navigateTo: '',
+      color: 'blueLightState',
     },
   ],
 ]
 
 const Styles = StyleService.create({
   card: {
-    alignSelf: "stretch",
+    alignSelf: 'stretch',
     margin: spacing[4],
   },
   cardRow: {
-    flexDirection: "row",
+    flexDirection: 'row',
   },
   cardWrapper: {
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   bsWrapper: {
-    height: "100%",
-    width: "100%",
+    height: '100%',
+    width: '100%',
     padding: spacing[4],
     ...getElevation(),
   },
   btnSignOutWrapper: {
-    position: "absolute",
+    position: 'absolute',
     left: spacing[6],
     right: spacing[6],
     bottom: spacing[6],
@@ -85,21 +87,21 @@ const Styles = StyleService.create({
   container: {
     flex: 1,
     paddingHorizontal: spacing[6],
-    height: "100%",
+    height: '100%',
   },
   modalHeaderContainer: {
-    alignItems: "center",
+    alignItems: 'center',
     flex: 1,
     padding: spacing[4],
   },
   rowWrapper: {
-    flexDirection: "row",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   // Shadow
   shadowContainer: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: "#000",
+    backgroundColor: '#000',
   },
 })
 
@@ -107,11 +109,12 @@ export interface SettingsScreenProps {
   navigation: NavigationScreenProp<any, any>
 }
 
-export const SettingsScreen: React.FunctionComponent<SettingsScreenProps> = observer(props => {
+export const SettingsScreen: React.FunctionComponent<SettingsScreenProps> = observer(() => {
   // const { someStore } = useStores()
   // const { navigation } = props
+  const { reAuth } = useContext(AuthContext)
   const { toggle, theme } = useThemes()
-  const { signOut: appSignOut } = useContext(AuthContext)
+  const [logout] = useMutation(mutationLogout)
   const force = useForceUpdate()
   const { color } = useThemes()
   const styles = useStyleSheet(Styles)
@@ -121,8 +124,9 @@ export const SettingsScreen: React.FunctionComponent<SettingsScreenProps> = obse
 
   /* ------------- methods ------------- */
 
-  const signOut = () => {
-    appSignOut()
+  const signOut = async () => {
+    await logout()
+    if (reAuth) reAuth()
   }
 
   const changeLang = v => {
@@ -146,7 +150,7 @@ export const SettingsScreen: React.FunctionComponent<SettingsScreenProps> = obse
   const renderBottomSheetContent = () => {
     return (
       <Layout style={styles.bsWrapper}>
-        <Text preset="h3" tx={"settingsScreen.choseLang"} />
+        <Text preset="h3" tx={'settingsScreen.choseLang'} />
         <SizedBox h={4} />
         <FlatList
           data={langs}
@@ -203,9 +207,9 @@ export const SettingsScreen: React.FunctionComponent<SettingsScreenProps> = obse
     return (
       <View style={styles.cardRow} key={i}>
         {data.map(v => {
-          const { color: vColor, name: n, navigateTo } = v
+          const { color: vColor, name: n } = v
           const color = palette[vColor]
-          const name = "settingsScreen." + n
+          const name = 'settingsScreen.' + n
 
           return (
             <SettingsCard {...{ color, name }} onPress={() => {}} key={name} style={styles.card} />
@@ -216,10 +220,10 @@ export const SettingsScreen: React.FunctionComponent<SettingsScreenProps> = obse
   }
 
   return (
-    <Screen style={{ flex: 1 }}>
+    <Screen>
       <BottomSheet
         ref={bs}
-        snapPoints={[-100, "30%", "40%"]}
+        snapPoints={[-100, '30%', '40%']}
         renderContent={() => renderBottomSheetContent()}
         renderHeader={() => renderHeaderBottomSheet()}
         callbackNode={fall}
@@ -231,7 +235,7 @@ export const SettingsScreen: React.FunctionComponent<SettingsScreenProps> = obse
         <View full>
           <View row style={styles.rowWrapper}>
             <Text tx="settingsScreen.darkMode" style={styles.rowWrapper} />
-            <Switch status="primary" checked={theme !== "light"} onChange={toggle} />
+            <Switch status="primary" checked={theme !== 'light'} onChange={toggle} />
           </View>
           <SizedBox h={4} />
 
@@ -239,8 +243,8 @@ export const SettingsScreen: React.FunctionComponent<SettingsScreenProps> = obse
             <Text tx="settingsScreen.lang" />
             <TouchableOpacity onPress={() => openBs()}>
               <Text
-                tx={i18n.locale || "en"}
-                color={color["text-primary-color"]}
+                tx={i18n.locale || 'en'}
+                color={color['text-primary-color']}
                 fontFamily={typography.medium}
               />
             </TouchableOpacity>

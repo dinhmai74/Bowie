@@ -10,4 +10,3 @@ export const appCardStyles = StyleSheet.create({
     ...getElevation(),
   },
 })
-

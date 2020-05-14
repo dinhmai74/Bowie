@@ -3,14 +3,14 @@ export type RootParamList = {
   authStack: undefined
 }
 
-export type HomeParamList= {
+export type HomeParamList = {
   Home: undefined
   Saved: undefined
   Notifications: undefined
   Settings: undefined
 }
 
-export type PrimaryParamList{
+export type PrimaryParamList = {
   homeStack: undefined
   createNewEvent: undefined
 }

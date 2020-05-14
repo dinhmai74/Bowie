@@ -1,6 +1,6 @@
-import { ViewStyle, TextStyle, StyleSheet } from "react-native"
-import { spacing } from "theme"
-import { StyleService } from "@ui-kitten/components"
+import { StyleService } from '@ui-kitten/components'
+import { TextStyle, ViewStyle } from 'react-native'
+import { spacing } from 'theme'
 
 /**
  * All text will start off looking like this.
@@ -28,8 +28,8 @@ export const ViewPresets = StyleService.create({
   },
   ghostWithPrimaryBg: {
     paddingVertical: spacing[4],
-    backgroundColor: "color-primary-100",
-    borderColor: "none",
+    backgroundColor: 'color-primary-100',
+    borderColor: 'none',
     borderWidth: 0,
   },
 })
@@ -40,11 +40,11 @@ export const TextPresets = StyleService.create({
     ...BASE_TEXT,
   } as TextStyle,
   ghostWithPrimaryBg: {
-    color: "color-primary-500",
+    color: 'color-primary-500',
   },
 })
 
 /**
  * A list of preset names.
  */
-export type ButtonPresetNames = keyof typeof viewPresets
+export type ButtonPresetNames = keyof typeof ViewPresets

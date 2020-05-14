@@ -1,36 +1,30 @@
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable react-native/no-color-literals */
 
-import * as React from "react"
-import { View, ViewStyle, StyleSheet } from "react-native"
-import { storiesOf } from "@storybook/react-native"
-import { StoryScreen, Story, UseCase } from "../../../storybook/views"
-import { colors } from "../../theme"
-import { Text } from "./text"
-import { Layout } from "@ui-kitten/components"
+import { storiesOf } from '@storybook/react-native'
+import { Layout } from '@ui-kitten/components'
+import * as React from 'react'
+import { View, ViewStyle } from 'react-native'
+import { Story, StoryScreen, UseCase } from '../../../storybook/views'
+import { Text } from './text'
 
 declare let module
 
 const VIEWSTYLE = {
   flex: 1,
 }
-const viewStyleArray: ViewStyle[] = [VIEWSTYLE, { backgroundColor: "#7fff00" }]
-const styles = StyleSheet.create({
-  text: {
-    margin: 8,
-  },
-})
+const viewStyleArray: ViewStyle[] = [VIEWSTYLE, { backgroundColor: '#7fff00' }]
 
-storiesOf("Text", module)
+storiesOf('Text', module)
   .addDecorator(fn => <StoryScreen>{fn()}</StoryScreen>)
-  .add("Style Presets", () => (
+  .add('Style Presets', () => (
     <Story>
       <UseCase text="default" usage="Used for normal body text.">
         <View style={VIEWSTYLE}>
           <Text>Hello!</Text>
           <Text style={{ paddingTop: 10 }}>
-            Check out{"\n"}
-            my{"\n"}
+            Check out{'\n'}
+            my{'\n'}
             line height
           </Text>
           <Text style={{ paddingTop: 10 }}>The quick brown fox jumped over the slow lazy dog.</Text>
@@ -49,7 +43,7 @@ storiesOf("Text", module)
       </UseCase>
     </Story>
   ))
-  .add("Passing Content", () => (
+  .add('Passing Content', () => (
     <Story>
       <UseCase
         text="text"
@@ -76,81 +70,29 @@ storiesOf("Text", module)
       <UseCase text="nested children" usage="You can embed them and change styles too.">
         <View style={VIEWSTYLE}>
           <Text>
-            {" "}
+            {' '}
             Hello <Text preset="bold">bolded</Text> World.
           </Text>
         </View>
       </UseCase>
     </Story>
   ))
-  .add("Styling", () => (
+  .add('Styling', () => (
     <Story>
       <UseCase text="Style array" usage="Text with style array">
         <View style={viewStyleArray}>
           <Text>
-            {" "}
+            {' '}
             Hello <Text preset="bold">bolded</Text> World.
           </Text>
         </View>
       </UseCase>
     </Story>
   ))
-  .add("category", () => (
+  .add('category', () => (
     <Story>
       <UseCase text="category">
-        <Layout>
-          <Text style={styles.text} category="h1">
-            H1
-          </Text>
-
-          <Text style={styles.text} category="h2">
-            H2
-          </Text>
-
-          <Text style={styles.text} category="h3">
-            H3
-          </Text>
-
-          <Text style={styles.text} category="h4">
-            H4
-          </Text>
-
-          <Text style={styles.text} category="h5">
-            H5
-          </Text>
-
-          <Text style={styles.text} category="h6">
-            H6
-          </Text>
-
-          <Text style={styles.text} category="s1">
-            S1
-          </Text>
-
-          <Text style={styles.text} category="s2">
-            S2
-          </Text>
-
-          <Text style={styles.text} category="p1">
-            P1
-          </Text>
-
-          <Text style={styles.text} category="p2">
-            P2
-          </Text>
-
-          <Text style={styles.text} category="c1">
-            C1
-          </Text>
-
-          <Text style={styles.text} category="c2">
-            C2
-          </Text>
-
-          <Text style={styles.text} category="label">
-            LABEL
-          </Text>
-        </Layout>
+        <Layout></Layout>
       </UseCase>
     </Story>
   ))

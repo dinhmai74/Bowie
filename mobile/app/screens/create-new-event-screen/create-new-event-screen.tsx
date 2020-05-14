@@ -1,10 +1,10 @@
-import React from "react"
-import { observer } from "mobx-react-lite"
-import { ViewStyle, StyleSheet } from "react-native"
-import { Screen, Text, Header, View } from "components"
+import { Header, Screen, Text, View } from 'components'
+import { observer } from 'mobx-react-lite'
+import React from 'react'
+import { StyleSheet } from 'react-native'
+import { NavigationScreenProp } from 'react-navigation'
 // import { useStores } from "models/root-store"
-import { colors, spacing } from "theme"
-import { NavigationScreenProp } from "react-navigation"
+import { spacing } from 'theme'
 
 const styles = StyleSheet.create({
   container: {
@@ -18,7 +18,7 @@ export interface CreateNewEventScreenProps {
 }
 
 export const CreateNewEventScreen: React.FunctionComponent<CreateNewEventScreenProps> = observer(
-  props => {
+  () => {
     // const { someStore } = useStores()
     return (
       <Screen preset="scroll">

@@ -1,35 +1,36 @@
-import React from "react"
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
-import { HomeScreen, SettingsScreen, SavedScreen, NotificationsScreen } from "../screens"
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import { BottomNavigation, BottomNavigationTab } from '@ui-kitten/components'
+import { AppIcon } from 'components'
+import React from 'react'
+import { SafeAreaView } from 'react-native'
 // import { PrimaryParamList } from "./types"
-import { useThemes, spacing } from "theme"
-import { SafeAreaView, View } from "react-native"
-import { BottomNavigation, BottomNavigationTab, Icon } from "@ui-kitten/components"
-import { AppIcon, SizedBox } from "components"
-import { getElevation } from "utils"
+import { useThemes } from 'theme'
+import { HomeScreen, NotificationsScreen, SavedScreen, SettingsScreen } from '../screens'
 
 const Tab = createBottomTabNavigator()
 
-const tabs = ["home", "saved", "add", "notifications", "settings"]
+const tabs = ['home', 'saved', 'add', 'notifications', 'settings']
 
 const BottomTabBar = ({ navigation, state }) => {
   const onSelect = index => {
     if (index === 2) {
-      navigation.navigate("createNewEvent")
+      navigation.navigate('createNewEvent')
     } else if (index > 2) navigation.navigate(state.routeNames[index - 1])
     else navigation.navigate(state.routeNames[index])
   }
 
   const selectedIndex = state.index >= 2 ? state.index + 1 : state.index
   const { color } = useThemes()
-  const backgroundColor = color["background-basic-color-1"]
+  const backgroundColor = color['background-basic-color-1']
 
   return (
     <SafeAreaView style={{ backgroundColor }}>
       <BottomNavigation selectedIndex={selectedIndex} onSelect={onSelect}>
         {tabs.map((v, i) => {
           // if (i === 2) return <View />
-          const Icon = style => <AppIcon {...{ style }} icon={v} />
+          const iconColor =
+            selectedIndex === i ? color['color-primary-500'] : color['text-basic-color']
+          const Icon = style => <AppIcon {...{ style }} icon={v} color={iconColor} />
           return <BottomNavigationTab icon={Icon} key={i} />
         })}
       </BottomNavigation>
@@ -43,7 +44,7 @@ export function HomeStack() {
     <Tab.Navigator
       initialRouteName="Home"
       tabBarOptions={{
-        activeTintColor: color["color-primary-500"],
+        activeTintColor: color['color-primary-500'],
       }}
       tabBar={props => <BottomTabBar {...props} />}
     >
@@ -55,4 +56,4 @@ export function HomeStack() {
   )
 }
 
-export const exitRoutes: string[] = ["Home"]
+export const exitRoutes: string[] = ['Home']

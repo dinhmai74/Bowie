@@ -1,5 +1,7 @@
 import { AsyncStorage } from "react-native"
 
+import { load, loadString, save, saveString, clear, remove } from "./storage"
+
 jest.mock("react-native", () => ({
   AsyncStorage: {
     getItem: jest.fn(),
@@ -10,8 +12,6 @@ jest.mock("react-native", () => ({
     clear: jest.fn(),
   },
 }))
-
-import { load, loadString, save, saveString, clear, remove } from "./storage"
 
 // fixtures
 const VALUE_OBJECT = { x: 1 }

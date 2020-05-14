@@ -1,15 +1,15 @@
-import * as React from "react"
-import { View, Image, ImageStyle, StyleSheet } from "react-native"
-import { AppIconProps, AppIconPresets } from "./AppIcon.props"
-import { AppIcons } from "./app-icons"
-import { flatten, mergeAll } from "ramda"
-import { colors, metrics, spacing, useThemes } from "theme"
-import { TouchableOpacity } from "react-native-gesture-handler"
+import { flatten, mergeAll } from 'ramda'
+import * as React from 'react'
+import { Image, ImageStyle, View } from 'react-native'
+import { TouchableOpacity } from 'react-native-gesture-handler'
+import { colors, metrics, useThemes } from 'theme'
+import { AppIcons } from './app-icons'
+import { AppIconPresets, AppIconProps } from './AppIcon.props'
 
-export * from "./AppIcon.props"
+export * from './AppIcon.props'
 
 const ROOT: ImageStyle = {
-  resizeMode: "contain",
+  resizeMode: 'contain',
   backgroundColor: colors.transparent,
 }
 
@@ -34,9 +34,9 @@ export const AppIcon = (props: AppIconProps) => {
   let bgImage: object
   let colorImage: object
 
-  if (preset && preset === "raise") {
-    bgImage = { backgroundColor: theme["background-basic-color-1"] }
-    colorImage = { tintColor: theme["text-basic-color"] }
+  if (preset && preset === 'raise') {
+    bgImage = { backgroundColor: theme['background-basic-color-1'] }
+    colorImage = { tintColor: theme['text-basic-color'] }
   }
 
   if (bg) bgImage = { backgroundColor: bg }
