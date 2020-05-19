@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "expo-updates": "^0.2.1",
+    "react": "^16.13.1"
+  }
+}
