@@ -1,9 +1,9 @@
 import { NavigationContainer, NavigationContainerRef } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
+import { useGetCurrentUserInfoLazyQuery } from 'graphql'
 import React, { useEffect } from 'react'
-import { useMutation } from 'react-apollo'
 import { useNetworkStatus } from 'react-offix-hooks'
-import { mutationAuth } from 'services/mutations'
+import { useForceUpdate } from 'utils'
 import { load, remove, save } from 'utils/storage'
 import { AuthStack } from './auth-navigator'
 import { PrimaryStack } from './primary-navigator'
@@ -16,14 +16,15 @@ const Stack = createNativeStackNavigator<RootParamList>()
 const LOGIN_KEY = 'login'
 const RootStack = () => {
   const [validUser, setValidUser] = React.useState(false)
+  const refresh = useForceUpdate()
 
   const handleErr = () => {
     setValidUser(false)
     remove(LOGIN_KEY)
   }
-  const [auth] = useMutation(mutationAuth, {
+  const [auth] = useGetCurrentUserInfoLazyQuery({
     onCompleted(d) {
-      if (d?.auth?.email) {
+      if (d.me.email) {
         setValidUser(true)
         save(LOGIN_KEY, 'login')
       } else handleErr()
@@ -51,6 +52,7 @@ const RootStack = () => {
     () => ({
       reAuth: async () => {
         await auth()
+        refresh()
       },
     }),
     [],

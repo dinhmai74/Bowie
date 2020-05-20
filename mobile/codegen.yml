@@ -13,3 +13,6 @@ config:
     enumValues: upper-case#upperCase
 
   withHooks: true
+  withComponent: false
+  withHOC: false
+  withRefetchFn: true

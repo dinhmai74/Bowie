@@ -1,17 +1,16 @@
 import { Layout, StyleService, useStyleSheet } from '@ui-kitten/components'
 import { AppIcon, Button, Header, Screen, SizedBox, Switch, Text, View } from 'components'
+import { useLogoutMutation } from 'graphql'
 import { i18n } from 'i18n/i18n'
 import { observer } from 'mobx-react-lite'
 import { AuthContext } from 'navigation'
 import React, { useContext, useRef } from 'react'
-import { useMutation } from 'react-apollo'
 import { StyleSheet, TouchableOpacity } from 'react-native'
 import { FlatList } from 'react-native-gesture-handler'
 import Animated from 'react-native-reanimated'
 import { NavigationScreenProp } from 'react-navigation'
 import BottomSheet from 'reanimated-bottom-sheet'
 import { SettingsCard } from 'screens/settings-screen/components/SettingsCard'
-import { mutationLogout } from 'services/mutations'
 // import { useStores } from "models/root-store"
 import { colors as Colors, metrics, spacing, typography, useThemes } from 'theme'
 import { palette, Palette } from 'theme/palette'
@@ -114,7 +113,7 @@ export const SettingsScreen: React.FunctionComponent<SettingsScreenProps> = obse
   // const { navigation } = props
   const { reAuth } = useContext(AuthContext)
   const { toggle, theme } = useThemes()
-  const [logout] = useMutation(mutationLogout)
+  const [logout] = useLogoutMutation()
   const force = useForceUpdate()
   const { color } = useThemes()
   const styles = useStyleSheet(Styles)
