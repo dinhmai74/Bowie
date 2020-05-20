@@ -26,7 +26,8 @@
       "theme": ["./app/theme"],
       "utils": ["./app/utils"],
       "models": ["./app/models"],
-      "i18n": ["./app/i18n"]
+      "i18n": ["./app/i18n"],
+      "graphql": ["./app/graphql"]
     }
   },
   "exclude": ["node_modules"],

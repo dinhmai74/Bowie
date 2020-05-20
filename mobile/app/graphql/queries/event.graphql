@@ -1,0 +1,26 @@
+query queryGetEventByCoord($input: CoordInput!) {
+  getEventBaseOnPos(input: $input) {
+    events {
+      hostId
+      membersInfo {
+        id
+        type
+      }
+      time
+      information {
+        eventName
+        description
+      }
+      place {
+        name
+        coord {
+          latitude
+          longitude
+        }
+      }
+    }
+    errors {
+      message
+    }
+  }
+}

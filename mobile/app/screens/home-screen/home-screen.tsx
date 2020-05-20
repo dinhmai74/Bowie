@@ -1,14 +1,13 @@
 import { AppMapView, Header, Screen, View } from 'components'
 import * as Location from 'expo-location'
 import * as Permissions from 'expo-permissions'
+import { useQueryGetEventByCoordLazyQuery } from 'graphql'
 import { observer } from 'mobx-react-lite'
 import * as React from 'react'
-import { useQuery } from 'react-apollo'
 import { StyleSheet } from 'react-native'
 import { Region } from 'react-native-maps'
 import { NavigationScreenProp } from 'react-navigation'
-import { shopsQuery } from 'services/queries/shop-queries'
-import { useImmer } from 'use-immer'
+import { images } from 'theme'
 
 const styles = StyleSheet.create({
   container: {
@@ -20,15 +19,29 @@ export interface HomeScreenProps {
   navigation: NavigationScreenProp<any, any>
 }
 const Images = [
-  'https://i.imgur.com/sNam9iJ.jpg',
-  'https://i.imgur.com/N7rlQYt.jpg',
-  'https://i.imgur.com/UDrH0wm.jpg',
-  'https://i.imgur.com/Ka8kNST.jpg',
+  { uri: 'https://i.imgur.com/sNam9iJ.jpg' },
+  { uri: 'https://i.imgur.com/N7rlQYt.jpg' },
+  { uri: 'https://i.imgur.com/UDrH0wm.jpg' },
+  { uri: 'https://i.imgur.com/Ka8kNST.jpg' },
 ]
+
+const earthRadiusInKM = 6371
+const aspectRatio = 1
+const radiusInKM = 1.5
+
+const deg2rad = angle => {
+  return angle * 0.017453292519943295 // (angle / 180) * Math.PI;
+}
+
+const rad2deg = angle => {
+  return angle * 57.29577951308232 // angle / Math.PI * 180
+}
 
 export const HomeScreen: React.FunctionComponent<HomeScreenProps> = observer(props => {
   // const { someStore } = useStores()
-  const [location, setLocation] = React.useState(null)
+  const [location, setLocation] = React.useState<any>({})
+
+  const radiusInRad = radiusInKM / earthRadiusInKM
   const [region, setRegion] = React.useState<Region>({
     latitude: 45.52220671242907,
     longitude: -122.6653281029795,
@@ -36,60 +49,60 @@ export const HomeScreen: React.FunctionComponent<HomeScreenProps> = observer(pro
     longitudeDelta: 0.040142817690068,
   })
 
-  const { error, data } = useQuery(shopsQuery)
+  const [markers, setMarkers] = React.useState([])
 
-  console.tlog('error', error)
-  console.tlog('data', data)
+  const [loadEvent, { data, error }] = useQueryGetEventByCoordLazyQuery({
+    variables: {
+      input: {
+        longitude: location.coords?.longitude,
+        latitude: location.coords?.latitude,
+      },
+    },
+    onCompleted: data => {
+      if (!data.getEventBaseOnPos.errors) {
+        const newMarkers: any[] = data.getEventBaseOnPos.events.map(v => {
+          const converted = {
+            coordinate: v.place.coord,
+            title: v.information.eventName,
+            description: v.information.description.slice(0, 10),
+            avatar: images.place,
+          }
+          return converted
+        })
 
-  const [markers] = useImmer([
-    {
-      coordinate: {
-        latitude: 45.524548,
-        longitude: -122.6749817,
-      },
-      title: 'Best Place',
-      description: 'This is the best place in Portland',
-      avatar: Images[0],
+        setMarkers(newMarkers)
+      }
     },
-    {
-      coordinate: {
-        latitude: 45.524698,
-        longitude: -122.6655507,
-      },
-      title: 'Second Best Place',
-      description: 'This is the second best place in Portland',
-      avatar: Images[1],
-    },
-    {
-      coordinate: {
-        latitude: 45.5230786,
-        longitude: -122.6701034,
-      },
-      title: 'Third Best Place',
-      description: 'This is the third best place in Portland',
-      avatar: Images[2],
-    },
-    {
-      coordinate: {
-        latitude: 45.521016,
-        longitude: -122.6561917,
-      },
-      title: 'Fourth Best Place',
-      description: 'This is the fourth best place in Portland',
-      avatar: Images[3],
-    },
-  ])
+  })
 
-  const getLocationAsync = async () => {
-    const { status } = await Permissions.askAsync(Permissions.LOCATION)
-    if (status !== 'granted') {
-    }
-
-    const location = await Location.getCurrentPositionAsync({})
-    setLocation(location)
-  }
+  if (error) console.tron.log('error', error)
+  console.tron.log('data', data)
 
   React.useEffect(() => {
+    const getLocationAsync = async () => {
+      const { status } = await Permissions.askAsync(Permissions.LOCATION)
+      if (status !== 'granted') {
+      }
+
+      const location = await Location.getCurrentPositionAsync({})
+      setLocation(location)
+
+      if (location.coords) {
+        const longitudeDelta = rad2deg(radiusInRad / Math.cos(deg2rad(location.coords?.latitude)))
+        const latitudeDelta = aspectRatio * rad2deg(radiusInRad)
+        setRegion({
+          latitude: location.coords?.latitude,
+          longitude: location.coords?.longitude,
+          longitudeDelta,
+          latitudeDelta,
+        })
+      }
+
+      console.tlog('location', location)
+
+      loadEvent()
+    }
+
     getLocationAsync()
   }, [])
 
