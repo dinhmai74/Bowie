@@ -1,9 +1,10 @@
 import { AuthHeader, Button, Screen, SizedBox, Text, TextField, View } from 'components'
+import { useLoginMutation, useLogoutMutation } from 'graphql'
 import { observer } from 'mobx-react-lite'
 import { AuthContext } from 'navigation'
 import React, { useContext, useRef, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
-import { StyleSheet, TouchableOpacity, Alert } from 'react-native'
+import { Alert, StyleSheet, TouchableOpacity } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
 import Animated, { set, Transition, Transitioning, useCode } from 'react-native-reanimated'
 import { bInterpolate } from 'react-native-redash'
@@ -21,8 +22,6 @@ import {
 } from 'utils'
 import { EyeIcon, FBicon } from './components/Icons'
 import { useSignInAnimations } from './hooks'
-import { useMutation } from 'react-apollo'
-import { mutationLogin, mutationSignUp } from 'services/mutations'
 
 const styles = StyleSheet.create({
   btn: {
@@ -100,11 +99,11 @@ export const SignInScreen: React.FunctionComponent<SignInScreenProps> = observer
     }
   }
 
-  const [login, loginResult] = useMutation(mutationLogin, {
+  const [login, loginResult] = useLoginMutation({
     onCompleted,
     onError,
   })
-  const [signUp, signUpResult] = useMutation(mutationSignUp, {
+  const [signUp, signUpResult] = useLogoutMutation({
     onCompleted,
     onError,
   })
@@ -239,6 +238,7 @@ export const SignInScreen: React.FunctionComponent<SignInScreenProps> = observer
               status={errors.password ? 'danger' : 'basic'}
               caption={errors.password ? 'errors.required' : ''}
               placeholder={secureTextEntry ? '********' : 'password'}
+              // @ts-ignore
               icon={style => (
                 <EyeIcon
                   {...{ style, secureTextEntry }}
