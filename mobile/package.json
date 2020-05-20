@@ -21,7 +21,8 @@
     "prepare": "npm-run-all patch hack:*",
     "storybook": "start-storybook -p 9001 -c ./storybook",
     "test": "jest",
-    "adb": "adb reverse tcp:9090 tcp:9090 && adb reverse tcp:3000 tcp:3000 && adb reverse tcp:9001 tcp:9001 && adb reverse tcp:8081 tcp:8081"
+    "adb": "adb reverse tcp:9090 tcp:9090 && adb reverse tcp:3000 tcp:3000 && adb reverse tcp:9001 tcp:9001 && adb reverse tcp:8081 tcp:8081",
+    "generate": "graphql-codegen --config codegen.yml"
   },
   "dependencies": {
     "@eva-design/eva": "^2.0.0",
@@ -92,6 +93,11 @@
     "@babel/core": "^7.8.6",
     "@babel/plugin-proposal-decorators": "^7.0.0",
     "@babel/plugin-proposal-optional-catch-binding": "^7.0.0",
+    "@graphql-codegen/cli": "1.14.0",
+    "@graphql-codegen/introspection": "1.14.0",
+    "@graphql-codegen/typescript": "1.14.0",
+    "@graphql-codegen/typescript-operations": "1.14.0",
+    "@graphql-codegen/typescript-react-apollo": "1.14.0",
     "@storybook/addon-storyshots": "5.3.17",
     "@storybook/react-native": "5.3.17",
     "@storybook/react-native-server": "5.3.17",
