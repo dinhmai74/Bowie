@@ -6,12 +6,10 @@ import { MyContext } from '../graphql-types/MyContext'
 import { DI } from '../mikroconfig'
 
 const invalidLoginResponse = {
-  errors: [
-    {
-      path: 'email',
-      message: 'invalid login',
-    },
-  ],
+  error: {
+    path: 'email',
+    message: 'invalid login',
+  },
 }
 
 @Resolver()
@@ -33,12 +31,10 @@ export class AuthResolver {
     const existingUser = await DI.userRepos.findOne({ email })
     if (existingUser) {
       return {
-        errors: [
-          {
-            path: 'email',
-            message: 'already in use',
-          },
-        ],
+        error: {
+          path: 'email',
+          message: 'already in use',
+        },
       }
     } else {
       const user = new User()

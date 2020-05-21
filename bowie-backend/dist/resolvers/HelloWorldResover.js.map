@@ -1,1 +1,0 @@
-{"version":3,"file":"HelloWorldResover.js","sourceRoot":"","sources":["../../src/resolvers/HelloWorldResover.ts"],"names":[],"mappings":";;;;;;;;;;;AAAA,+CAA8C;AAG9C,IAAa,kBAAkB,GAA/B,MAAa,kBAAkB;IAE7B,KAAK;QACH,OAAO,KAAK,CAAA;IACd,CAAC;CACF,CAAA;AAHC;IADC,oBAAK,CAAC,GAAG,EAAE,CAAC,MAAM,CAAC;;;;+CAGnB;AAJU,kBAAkB;IAD9B,uBAAQ,EAAE;GACE,kBAAkB,CAK9B;AALY,gDAAkB"}

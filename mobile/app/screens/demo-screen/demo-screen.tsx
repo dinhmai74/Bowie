@@ -1,13 +1,11 @@
-import { ParamListBase } from "@react-navigation/native"
-import { NativeStackNavigationProp } from "@react-navigation/native-stack"
-import * as React from "react"
-import { Image, ImageStyle, Platform, TextStyle, View, ViewStyle } from "react-native"
-import { Button, Header, Screen, Text } from "../../components"
-import { Api } from "../../services/api"
-import { colors, spacing } from "../../theme"
-import { save } from "../../utils/storage"
-export const logoIgnite = require("./logo-ignite.png")
-export const heart = require("./heart.png")
+import { ParamListBase } from '@react-navigation/native'
+import { NativeStackNavigationProp } from '@react-navigation/native-stack'
+import * as React from 'react'
+import { ImageStyle, Platform, TextStyle, View, ViewStyle } from 'react-native'
+import { Button, Header, Screen, Text } from '../../components'
+import { Api } from '../../services/api'
+import { colors, spacing } from '../../theme'
+import { save } from '../../utils/storage'
 
 const FULL: ViewStyle = { flex: 1 }
 const CONTAINER: ViewStyle = {
@@ -17,9 +15,9 @@ const CONTAINER: ViewStyle = {
 const DEMO: ViewStyle = {
   paddingVertical: spacing[4],
   paddingHorizontal: spacing[4],
-  backgroundColor: "#5D2555",
+  backgroundColor: '#5D2555',
 }
-const BOLD: TextStyle = { fontWeight: "bold" }
+const BOLD: TextStyle = { fontWeight: 'bold' }
 const DEMO_TEXT: TextStyle = {
   ...BOLD,
   fontSize: 13,
@@ -34,33 +32,33 @@ const HEADER_TITLE: TextStyle = {
   ...BOLD,
   fontSize: 12,
   lineHeight: 15,
-  textAlign: "center",
+  textAlign: 'center',
   letterSpacing: 1.5,
 }
 const TITLE: TextStyle = {
   ...BOLD,
   fontSize: 28,
   lineHeight: 38,
-  textAlign: "center",
+  textAlign: 'center',
   marginBottom: spacing[5],
 }
 const TAGLINE: TextStyle = {
-  color: "#BAB6C8",
+  color: '#BAB6C8',
   fontSize: 15,
   lineHeight: 22,
   marginBottom: spacing[4] + spacing[1],
 }
 const IGNITE: ImageStyle = {
   marginVertical: spacing[6],
-  alignSelf: "center",
+  alignSelf: 'center',
 }
 const LOVE_WRAPPER: ViewStyle = {
-  flexDirection: "row",
-  alignItems: "center",
-  alignSelf: "center",
+  flexDirection: 'row',
+  alignItems: 'center',
+  alignSelf: 'center',
 }
 const LOVE: TextStyle = {
-  color: "#BAB6C8",
+  color: '#BAB6C8',
   fontSize: 15,
   lineHeight: 22,
 }
@@ -68,10 +66,10 @@ const HEART: ImageStyle = {
   marginHorizontal: spacing[2],
   width: 10,
   height: 10,
-  resizeMode: "contain",
+  resizeMode: 'contain',
 }
 const HINT: TextStyle = {
-  color: "#BAB6C8",
+  color: '#BAB6C8',
   fontSize: 12,
   lineHeight: 15,
   marginVertical: spacing[2],
@@ -86,19 +84,19 @@ export const DemoScreen: React.FunctionComponent<DemoScreenProps> = props => {
 
   const demoReactotron = React.useMemo(
     () => async () => {
-      console.tron.log("Your Friendly tron log message")
-      console.tron.logImportant("I am important")
+      console.tron.log('Your Friendly tron log message')
+      console.tron.logImportant('I am important')
       console.tron.display({
-        name: "DISPLAY",
+        name: 'DISPLAY',
         value: {
           numbers: 1,
-          strings: "strings",
+          strings: 'strings',
           booleans: true,
           arrays: [1, 2, 3],
           objects: {
             deeper: {
               deeper: {
-                yay: "👾",
+                yay: '👾',
               },
             },
           },
@@ -106,20 +104,20 @@ export const DemoScreen: React.FunctionComponent<DemoScreenProps> = props => {
             /* dummy function */
           },
         },
-        preview: "More control with display()",
+        preview: 'More control with display()',
         important: true,
         image: {
           uri:
-            "https://avatars2.githubusercontent.com/u/3902527?s=200&u=a0d16b13ed719f35d95ca0f4440f5d07c32c349a&v=4",
+            'https://avatars2.githubusercontent.com/u/3902527?s=200&u=a0d16b13ed719f35d95ca0f4440f5d07c32c349a&v=4',
         },
       })
       // make an API call for the demo
       // Don't do API like this, use store's API
       const demo = new Api()
       demo.setup()
-      demo.getUser("1")
+      demo.getUser('1')
       // Let's do some async storage stuff
-      await save("Cool Name", "Boaty McBoatface")
+      await save('Cool Name', 'Boaty McBoatface')
     },
     [],
   )
@@ -144,12 +142,6 @@ export const DemoScreen: React.FunctionComponent<DemoScreenProps> = props => {
             onPress={demoReactotron}
           />
           <Text style={HINT} tx={`demoScreen.${Platform.OS}ReactotronHint`} />
-        </View>
-        <Image source={logoIgnite} style={IGNITE} />
-        <View style={LOVE_WRAPPER}>
-          <Text style={LOVE} text="Made with" />
-          <Image source={heart} style={HEART} />
-          <Text style={LOVE} text="by Infinite Red" />
         </View>
       </Screen>
     </View>

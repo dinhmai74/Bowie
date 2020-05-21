@@ -1,6 +1,7 @@
 query queryGetEventByCoord($input: CoordInput!) {
   getEventBaseOnPos(input: $input) {
     events {
+      id
       hostId
       membersInfo {
         id
@@ -19,7 +20,36 @@ query queryGetEventByCoord($input: CoordInput!) {
         }
       }
     }
-    errors {
+    error {
+      message
+    }
+  }
+}
+
+query getEventById($id: String!) {
+  getEventById(id: $id) {
+    event {
+      id
+      hostId
+      membersInfo {
+        id
+        type
+      }
+      time
+      information {
+        eventName
+        description
+      }
+      place {
+        name
+        coord {
+          latitude
+          longitude
+        }
+      }
+    }
+    error {
+      path
       message
     }
   }

@@ -1,7 +1,6 @@
-import * as React from "react"
-import mergeAll from "ramda/es/mergeAll"
-import flatten from "ramda/es/flatten"
-import { ViewStyle, View as RNView, ViewProps as RNViewProps } from "react-native"
+import { flatten, mergeAll } from 'ramda'
+import * as React from 'react'
+import { View as RNView, ViewProps as RNViewProps, ViewStyle } from 'react-native'
 
 export interface ViewProps extends RNViewProps {
   style?: ViewStyle | ViewStyle[]
@@ -15,7 +14,7 @@ export const View = (props: ViewProps) => {
   // grab the props
   const { full, style, children, row, ...rest } = props
   const styleOver: any = mergeAll(
-    flatten([style, full && { flex: 1 }, row && { flexDirection: "row" }]),
+    flatten([style, full && { flex: 1 }, row && { flexDirection: 'row' }]),
   )
 
   return (

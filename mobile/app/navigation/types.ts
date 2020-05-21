@@ -13,6 +13,7 @@ export type HomeParamList = {
 export type PrimaryParamList = {
   homeStack: undefined
   createNewEvent: undefined
+  eventDetail: { id: string }
 }
 
 export type AuthParamList = {

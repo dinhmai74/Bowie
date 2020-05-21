@@ -3,7 +3,7 @@ mutation login($email: String!, $password: String!) {
     user {
       email
     }
-    errors {
+    error {
       message
     }
   }
@@ -15,7 +15,7 @@ mutation signUp($email: String!, $password: String!, $name: String!) {
       email
       name
     }
-    errors {
+    error {
       message
     }
   }

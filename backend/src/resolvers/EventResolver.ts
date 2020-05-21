@@ -8,9 +8,16 @@ import { isInArea } from '../utils'
 export class EventResolver {
   @Query(() => EventsResponse)
   async getEvents() {
-    const events = DI.eventRepos.findAll()
+    const events = await DI.eventRepos.findAll()
 
     return { events }
+  }
+
+  @Query(() => EventResponse)
+  async getEventById(@Arg('id') id: string) {
+    const event = await DI.eventRepos.findOne(id)
+
+    return { event }
   }
 
   @Query(() => EventsResponse)
@@ -58,7 +65,7 @@ export class EventResolver {
       }
     } catch (error) {
       return {
-        errors: error,
+        error: error,
       }
     }
   }

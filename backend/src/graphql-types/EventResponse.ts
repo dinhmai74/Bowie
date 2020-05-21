@@ -7,8 +7,8 @@ export class EventResponse {
   @Field(() => Event, { nullable: true })
   event?: Event
 
-  @Field(() => [FieldError], { nullable: true })
-  errors?: FieldError[]
+  @Field(() => FieldError, { nullable: true })
+  error?: FieldError
 }
 
 @ObjectType()
@@ -16,6 +16,6 @@ export class EventsResponse {
   @Field(() => [Event], { nullable: true })
   events?: Event[]
 
-  @Field(() => [FieldError], { nullable: true })
-  errors?: FieldError[]
+  @Field(() => FieldError, { nullable: true })
+  error?: FieldError
 }

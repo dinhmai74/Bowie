@@ -35,8 +35,8 @@
     "type-graphql": "^1.0.0-rc.1"
   },
   "scripts": {
-    "start": "nodemon --exec ts-node --files src/index.ts",
+    "start": "nodemon --exec ts-node --files ./src/index.ts",
     "watch": "tsc -w",
-    "build": "nodemon dist/src/index.js"
+    "build": "nodemon ./dist/src/index.js"
   }
 }

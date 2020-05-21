@@ -27,7 +27,7 @@ module.exports = {
           utils: './app/utils',
           models: './app/models',
           i18n: './app/i18n',
-          graphql: './app/graphql',
+          'app-graphql': './app/graphql',
         },
       },
     ],

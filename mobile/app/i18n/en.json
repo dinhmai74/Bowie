@@ -2,11 +2,13 @@
   "common": {
     "ok": "OK!",
     "cancel": "Cancel",
-    "back": "Back"
+    "back": "Back",
+    "loading": "Loading..."
   },
   "errors": {
     "invalidEmail": "Invalid email address.",
-    "required": "This field is required"
+    "required": "This field is required",
+    "common": "Sorry, something wrong happen"
   },
   "welcomeScreen": {
     "poweredBy": "POWERED BY BOWSER",
@@ -48,7 +50,10 @@
   },
   "homeScreen": {
     "header": "Explore",
-    "viewDetail": "View detail"
+    "viewDetail": "View detail",
+    "errors": {
+      "loadLocation": "We got error when get your location, be sure that use enable geo permission"
+    }
   },
   "settingsScreen": {
     "header": "Setttings",
@@ -59,6 +64,9 @@
     "term": "Term of service",
     "getHelp": "Get help",
     "feedBack": "Feedback"
+  },
+  "eventDetailScreen": {
+    "header": "Event"
   },
   "en": "English",
   "vi": "Vietnamese"

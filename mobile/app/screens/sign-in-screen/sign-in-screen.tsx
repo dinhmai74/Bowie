@@ -1,5 +1,5 @@
+import { useLoginMutation, useLogoutMutation } from 'app-graphql'
 import { AuthHeader, Button, Screen, SizedBox, Text, TextField, View } from 'components'
-import { useLoginMutation, useLogoutMutation } from 'graphql'
 import { observer } from 'mobx-react-lite'
 import { AuthContext } from 'navigation'
 import React, { useContext, useRef, useState } from 'react'
@@ -89,9 +89,9 @@ export const SignInScreen: React.FunctionComponent<SignInScreenProps> = observer
     console.tlog('err', err)
   }
   const onCompleted = data => {
-    const errMss = data?.register?.errors || data?.login?.errors
+    const errMss = data?.register?.error || data?.login?.error
     if (errMss) {
-      Alert.alert(JSON.stringify(errMss[0]?.message))
+      Alert.alert(JSON.stringify(errMss?.message))
     } else {
       refForm.current.animateNextTransition()
       nDelay(200).then(() => setTriggerSpreadOut(true))

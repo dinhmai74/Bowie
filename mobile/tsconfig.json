@@ -11,7 +11,7 @@
     "noImplicitThis": true,
     "noUnusedLocals": true,
     "sourceMap": true,
-    "target": "es2015",
+    "target": "es2019",
     "lib": ["es7"],
     "skipLibCheck": true,
     "baseUrl": ".",
@@ -27,7 +27,7 @@
       "utils": ["./app/utils"],
       "models": ["./app/models"],
       "i18n": ["./app/i18n"],
-      "graphql": ["./app/graphql"]
+      "app-graphql": ["./app/graphql"]
     }
   },
   "exclude": ["node_modules"],
