@@ -1,6 +1,6 @@
 import { NavigationContainer, NavigationContainerRef } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
-import { useGetCurrentUserInfoLazyQuery } from 'graphql'
+import { useGetCurrentUserInfoLazyQuery } from 'app-graphql'
 import React, { useEffect } from 'react'
 import { useNetworkStatus } from 'react-offix-hooks'
 import { useForceUpdate } from 'utils'

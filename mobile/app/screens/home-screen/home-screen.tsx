@@ -1,7 +1,7 @@
 import { AppMapView, Header, Screen, View } from 'components'
 import * as Location from 'expo-location'
 import * as Permissions from 'expo-permissions'
-import { Event, useQueryGetEventByCoordLazyQuery } from 'graphql'
+import { Event, useQueryGetEventByCoordLazyQuery } from 'app-graphql'
 import { observer } from 'mobx-react-lite'
 import * as React from 'react'
 import { StyleSheet } from 'react-native'
@@ -43,8 +43,6 @@ export const HomeScreen: React.FunctionComponent<HomeScreenProps> = observer(pro
     longitudeDelta: 0.040142817690068,
   })
 
-  const [markers, setMarkers] = React.useState([])
-
   const [loadEvent, { data, error }] = useQueryGetEventByCoordLazyQuery({
     variables: {
       input: {
@@ -52,15 +50,14 @@ export const HomeScreen: React.FunctionComponent<HomeScreenProps> = observer(pro
         latitude: location.coords?.latitude,
       },
     },
-    onCompleted: data => {
-      if (!data.getEventBaseOnPos.errors) {
-        setMarkers(data.getEventBaseOnPos.events)
-      }
-    },
+    // onCompleted: data => {
+    // if (!data.getEventBaseOnPos.errors) {
+    // setMarkers(data.getEventBaseOnPos.events)
+    // }
+    // },
   })
 
   if (error) console.tron.log('error', error)
-  console.tron.log('data', data)
 
   React.useEffect(() => {
     const getLocationAsync = async () => {
@@ -90,6 +87,10 @@ export const HomeScreen: React.FunctionComponent<HomeScreenProps> = observer(pro
     getLocationAsync()
   }, [])
 
+  let events: Event[] = []
+  // @ts-ignore
+  if (data?.getEventBaseOnPos?.events.length > 0) events = [...data.getEventBaseOnPos.events]
+
   return (
     <Screen preset="scroll">
       <Header
@@ -105,7 +106,7 @@ export const HomeScreen: React.FunctionComponent<HomeScreenProps> = observer(pro
             // latitudeDelta: 0.003,
             // longitudeDelta: 0.003,
             // }}
-            events={markers}
+            events={events}
             region={region}
             onRegionChangeComplete={r => {
               setRegion(r)

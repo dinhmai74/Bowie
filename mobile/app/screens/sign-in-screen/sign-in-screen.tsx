@@ -1,5 +1,5 @@
+import { useLoginMutation, useLogoutMutation } from 'app-graphql'
 import { AuthHeader, Button, Screen, SizedBox, Text, TextField, View } from 'components'
-import { useLoginMutation, useLogoutMutation } from 'graphql'
 import { observer } from 'mobx-react-lite'
 import { AuthContext } from 'navigation'
 import React, { useContext, useRef, useState } from 'react'

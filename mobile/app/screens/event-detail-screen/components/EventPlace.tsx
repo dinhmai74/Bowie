@@ -1,7 +1,7 @@
-import React, { useState } from 'react'
-import { Place } from 'graphql'
 import { Icon } from '@ui-kitten/components'
-import { View, Text, SizedBox } from 'components'
+import { Place } from 'app-graphql'
+import { SizedBox, Text, View } from 'components'
+import React from 'react'
 import { StyleSheet } from 'react-native'
 
 const styles = StyleSheet.create({

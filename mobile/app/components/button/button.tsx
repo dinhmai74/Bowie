@@ -58,9 +58,9 @@ export const Button: React.FC<ButtonProps> = props => {
         }
 
         let content = tx || text
-        if (children && typeof children !== 'string')
+        if (children && typeof children !== 'string') {
           return React.cloneElement(children, { ...evaProps })
-        else if (children) content = children
+        } else if (children) content = children
 
         return <Text {...evaProps} style={[evaProps.style, textStyle]} tx={content} />
       }}

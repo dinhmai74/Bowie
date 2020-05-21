@@ -1,4 +1,6 @@
+import { useNavigation } from '@react-navigation/native'
 import { Avatar } from '@ui-kitten/components'
+import { Event } from 'app-graphql'
 import { AppCard, Button, Text } from 'components'
 import { AppIcon } from 'components/app-icon/AppIcon'
 import { SizedBox } from 'components/sized-box/sized-box'
@@ -8,8 +10,6 @@ import MapView, { Marker as MapMarker, MarkerProps } from 'react-native-maps'
 import { images, metrics, useThemes } from 'theme'
 import { Color } from 'theme/color-model'
 import { appMapViewStyles as styles } from './app-map-view.styles'
-import { useNavigation } from '@react-navigation/native'
-import { Event } from 'graphql'
 
 export type Region = {
   latitude: number
