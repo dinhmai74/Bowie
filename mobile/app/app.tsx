@@ -2,30 +2,30 @@
 //
 // In this file, we'll be kicking off our app or storybook.
 
-import { mapping } from "@eva-design/eva"
-import { NavigationContainerRef } from "@react-navigation/native"
-import { ApplicationProvider, IconRegistry } from "@ui-kitten/components"
-import { i18n } from "i18n/i18n"
-import { contains } from "ramda"
-import React, { useEffect, useRef, useState } from "react"
-import { ApolloProvider } from "react-apollo"
-import { YellowBox } from "react-native"
-import { initialWindowSafeAreaInsets, SafeAreaProvider } from "react-native-safe-area-context"
-import { enableScreens } from "react-native-screens"
-import { ApolloOfflineProvider } from "react-offix-hooks"
-import { strings } from "utils"
-import { offlineClient } from "./config/apollo"
-import "./i18n"
-import { RootStore, RootStoreProvider, setupRootStore } from "./models/root-store"
-import { exitRoutes, RootNavigator, setRootNavigation } from "./navigation"
-import getActiveRouteName from "./navigation/get-active-routename"
-import { useBackButtonHandler } from "./navigation/use-back-button-handler"
-import { AppThemeContext, themes } from "./theme"
-import { FeatherIconsPack } from "./theme/custom-eva-icons/feather-icon"
-import { IoniconsPack } from "./theme/custom-eva-icons/ionicons"
-import { initFonts } from "./theme/fonts"
-import * as storage from "./utils/storage"
-import { loadString } from "./utils/storage"
+import { mapping } from '@eva-design/eva'
+import { NavigationContainerRef } from '@react-navigation/native'
+import { ApplicationProvider, IconRegistry } from '@ui-kitten/components'
+import { i18n } from 'i18n/i18n'
+import { contains } from 'ramda'
+import React, { useEffect, useRef, useState } from 'react'
+import { ApolloProvider } from 'react-apollo'
+import { YellowBox } from 'react-native'
+import { initialWindowSafeAreaInsets, SafeAreaProvider } from 'react-native-safe-area-context'
+import { enableScreens } from 'react-native-screens'
+import { ApolloOfflineProvider } from 'react-offix-hooks'
+import { strings } from 'utils'
+import { offlineClient } from './config/apollo'
+import './i18n'
+import { RootStore, RootStoreProvider, setupRootStore } from './models/root-store'
+import { exitRoutes, RootNavigator, setRootNavigation } from './navigation'
+import getActiveRouteName from './navigation/get-active-routename'
+import { useBackButtonHandler } from './navigation/use-back-button-handler'
+import { AppThemeContext, themes } from './theme'
+import { FeatherIconsPack } from './theme/custom-eva-icons/feather-icon'
+import { IoniconsPack } from './theme/custom-eva-icons/ionicons'
+import { initFonts } from './theme/fonts'
+import * as storage from './utils/storage'
+import { loadString } from './utils/storage'
 
 // This puts screens in a native ViewController or Activity. If you want fully native
 // stack navigation, use `createNativeStackNavigator` in place of `createStackNavigator`:
@@ -37,10 +37,11 @@ enableScreens()
  * that we haven't gotten around to replacing yet.
  */
 YellowBox.ignoreWarnings([
-  "componentWillMount is deprecated",
-  "componentWillReceiveProps is deprecated",
-  "Require cycle:",
+  'componentWillMount is deprecated',
+  'componentWillReceiveProps is deprecated',
+  'Require cycle:',
   "Can't perform a React state",
+  'Story with',
 ])
 
 /**
@@ -51,7 +52,7 @@ YellowBox.ignoreWarnings([
  */
 const canExit = (routeName: string) => contains(routeName, exitRoutes)
 
-export const NAVIGATION_PERSISTENCE_KEY = "NAVIGATION_STATE"
+export const NAVIGATION_PERSISTENCE_KEY = 'NAVIGATION_STATE'
 
 /**
  * This is the root component of our app.
@@ -62,7 +63,7 @@ const App: React.FunctionComponent<{}> = () => {
   const [rootStore, setRootStore] = useState<RootStore | undefined>(undefined)
   const [initialNavigationState, setInitialNavigationState] = useState()
   const [isRestoringNavigationState, setIsRestoringNavigationState] = useState(true)
-  const [theme, setTheme] = React.useState("light")
+  const [theme, setTheme] = React.useState('light')
 
   setRootNavigation(navigationRef)
   useBackButtonHandler(navigationRef, canExit)
@@ -92,7 +93,7 @@ const App: React.FunctionComponent<{}> = () => {
   useEffect(() => {
     ;(async () => {
       await initFonts()
-      setupRootStore().then(setRootStore)
+      if (!rootStore) setupRootStore().then(setRootStore)
       i18n.locale = await loadString(strings.lang)
     })()
     offlineClient.init().then(() => setInitialized(true))
@@ -131,7 +132,7 @@ const App: React.FunctionComponent<{}> = () => {
   const currentTheme = themes[theme]
 
   const toggle = () => {
-    const nextTheme = theme === "light" ? "dark" : "light"
+    const nextTheme = theme === 'light' ? 'dark' : 'light'
     setTheme(nextTheme)
   }
 
