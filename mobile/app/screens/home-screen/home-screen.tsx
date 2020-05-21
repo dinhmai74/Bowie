@@ -1,7 +1,7 @@
 import { AppMapView, Header, Screen, View } from 'components'
 import * as Location from 'expo-location'
 import * as Permissions from 'expo-permissions'
-import { useQueryGetEventByCoordLazyQuery } from 'graphql'
+import { Event, useQueryGetEventByCoordLazyQuery } from 'graphql'
 import { observer } from 'mobx-react-lite'
 import * as React from 'react'
 import { StyleSheet } from 'react-native'
@@ -18,12 +18,6 @@ const styles = StyleSheet.create({
 export interface HomeScreenProps {
   navigation: NavigationScreenProp<any, any>
 }
-const Images = [
-  { uri: 'https://i.imgur.com/sNam9iJ.jpg' },
-  { uri: 'https://i.imgur.com/N7rlQYt.jpg' },
-  { uri: 'https://i.imgur.com/UDrH0wm.jpg' },
-  { uri: 'https://i.imgur.com/Ka8kNST.jpg' },
-]
 
 const earthRadiusInKM = 6371
 const aspectRatio = 1
@@ -60,17 +54,7 @@ export const HomeScreen: React.FunctionComponent<HomeScreenProps> = observer(pro
     },
     onCompleted: data => {
       if (!data.getEventBaseOnPos.errors) {
-        const newMarkers: any[] = data.getEventBaseOnPos.events.map(v => {
-          const converted = {
-            coordinate: v.place.coord,
-            title: v.information.eventName,
-            description: v.information.description.slice(0, 10),
-            avatar: images.place,
-          }
-          return converted
-        })
-
-        setMarkers(newMarkers)
+        setMarkers(data.getEventBaseOnPos.events)
       }
     },
   })
@@ -121,7 +105,7 @@ export const HomeScreen: React.FunctionComponent<HomeScreenProps> = observer(pro
             // latitudeDelta: 0.003,
             // longitudeDelta: 0.003,
             // }}
-            markers={markers}
+            events={markers}
             region={region}
             onRegionChangeComplete={r => {
               setRegion(r)

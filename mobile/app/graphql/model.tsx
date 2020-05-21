@@ -90,13 +90,13 @@ export type EventPlaceInput = {
 export type EventResponse = {
   __typename?: 'EventResponse';
   event?: Maybe<Event>;
-  errors?: Maybe<Array<FieldError>>;
+  error?: Maybe<FieldError>;
 };
 
 export type EventsResponse = {
   __typename?: 'EventsResponse';
   events?: Maybe<Array<Event>>;
-  errors?: Maybe<Array<FieldError>>;
+  error?: Maybe<FieldError>;
 };
 
 export type EventTag = {
@@ -118,13 +118,13 @@ export type EventTagInput = {
 export type EventTagResponse = {
   __typename?: 'EventTagResponse';
   eventTag?: Maybe<EventTag>;
-  errors?: Maybe<Array<FieldError>>;
+  error?: Maybe<FieldError>;
 };
 
 export type EventTagsResponse = {
   __typename?: 'EventTagsResponse';
   eventTags?: Maybe<Array<EventTag>>;
-  errors?: Maybe<Array<FieldError>>;
+  error?: Maybe<FieldError>;
 };
 
 export type FieldError = {
@@ -202,8 +202,14 @@ export type Query = {
   book: Scalars['String'];
   getBooks: BooksResponse;
   getEvents: EventsResponse;
+  getEventById: EventResponse;
   getEventBaseOnPos: EventsResponse;
   getAllTag: EventTagsResponse;
+};
+
+
+export type QueryGetEventByIdArgs = {
+  id: Scalars['String'];
 };
 
 
@@ -229,13 +235,13 @@ export type User = {
 export type UserResponse = {
   __typename?: 'UserResponse';
   user?: Maybe<User>;
-  errors?: Maybe<Array<FieldError>>;
+  error?: Maybe<FieldError>;
 };
 
 export type UsersResponse = {
   __typename?: 'UsersResponse';
   users?: Maybe<Array<User>>;
-  errors?: Maybe<Array<FieldError>>;
+  error?: Maybe<FieldError>;
 };
 
 export type LoginMutationVariables = {
@@ -251,10 +257,10 @@ export type LoginMutation = (
     & { user?: Maybe<(
       { __typename?: 'User' }
       & Pick<User, 'email'>
-    )>, errors?: Maybe<Array<(
+    )>, error?: Maybe<(
       { __typename?: 'FieldError' }
       & Pick<FieldError, 'message'>
-    )>> }
+    )> }
   ) }
 );
 
@@ -272,10 +278,10 @@ export type SignUpMutation = (
     & { user?: Maybe<(
       { __typename?: 'User' }
       & Pick<User, 'email' | 'name'>
-    )>, errors?: Maybe<Array<(
+    )>, error?: Maybe<(
       { __typename?: 'FieldError' }
       & Pick<FieldError, 'message'>
-    )>> }
+    )> }
   ) }
 );
 
@@ -334,7 +340,7 @@ export type QueryGetEventByCoordQuery = (
     { __typename?: 'EventsResponse' }
     & { events?: Maybe<Array<(
       { __typename?: 'Event' }
-      & Pick<Event, 'hostId' | 'time'>
+      & Pick<Event, 'id' | 'hostId' | 'time'>
       & { membersInfo: Array<(
         { __typename?: 'MemberInfo' }
         & Pick<MemberInfo, 'id' | 'type'>
@@ -349,10 +355,43 @@ export type QueryGetEventByCoordQuery = (
           & Pick<Coord, 'latitude' | 'longitude'>
         ) }
       ) }
-    )>>, errors?: Maybe<Array<(
+    )>>, error?: Maybe<(
       { __typename?: 'FieldError' }
       & Pick<FieldError, 'message'>
-    )>> }
+    )> }
+  ) }
+);
+
+export type GetEventByIdQueryVariables = {
+  id: Scalars['String'];
+};
+
+
+export type GetEventByIdQuery = (
+  { __typename?: 'Query' }
+  & { getEventById: (
+    { __typename?: 'EventResponse' }
+    & { event?: Maybe<(
+      { __typename?: 'Event' }
+      & Pick<Event, 'id' | 'hostId' | 'time'>
+      & { membersInfo: Array<(
+        { __typename?: 'MemberInfo' }
+        & Pick<MemberInfo, 'id' | 'type'>
+      )>, information: (
+        { __typename?: 'Information' }
+        & Pick<Information, 'eventName' | 'description'>
+      ), place: (
+        { __typename?: 'Place' }
+        & Pick<Place, 'name'>
+        & { coord: (
+          { __typename?: 'Coord' }
+          & Pick<Coord, 'latitude' | 'longitude'>
+        ) }
+      ) }
+    )>, error?: Maybe<(
+      { __typename?: 'FieldError' }
+      & Pick<FieldError, 'path' | 'message'>
+    )> }
   ) }
 );
 
@@ -363,7 +402,7 @@ export const LoginDocument = gql`
     user {
       email
     }
-    errors {
+    error {
       message
     }
   }
@@ -402,7 +441,7 @@ export const SignUpDocument = gql`
       email
       name
     }
-    errors {
+    error {
       message
     }
   }
@@ -572,6 +611,7 @@ export const QueryGetEventByCoordDocument = gql`
     query queryGetEventByCoord($input: CoordInput!) {
   getEventBaseOnPos(input: $input) {
     events {
+      id
       hostId
       membersInfo {
         id
@@ -590,7 +630,7 @@ export const QueryGetEventByCoordDocument = gql`
         }
       }
     }
-    errors {
+    error {
       message
     }
   }
@@ -624,4 +664,63 @@ export type QueryGetEventByCoordLazyQueryHookResult = ReturnType<typeof useQuery
 export type QueryGetEventByCoordQueryResult = ApolloReactCommon.QueryResult<QueryGetEventByCoordQuery, QueryGetEventByCoordQueryVariables>;
 export function refetchQueryGetEventByCoordQuery(variables?: QueryGetEventByCoordQueryVariables) {
       return { query: QueryGetEventByCoordDocument, variables: variables }
+    }
+export const GetEventByIdDocument = gql`
+    query getEventById($id: String!) {
+  getEventById(id: $id) {
+    event {
+      id
+      hostId
+      membersInfo {
+        id
+        type
+      }
+      time
+      information {
+        eventName
+        description
+      }
+      place {
+        name
+        coord {
+          latitude
+          longitude
+        }
+      }
+    }
+    error {
+      path
+      message
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetEventByIdQuery__
+ *
+ * To run a query within a React component, call `useGetEventByIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetEventByIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetEventByIdQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetEventByIdQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetEventByIdQuery, GetEventByIdQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetEventByIdQuery, GetEventByIdQueryVariables>(GetEventByIdDocument, baseOptions);
+      }
+export function useGetEventByIdLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetEventByIdQuery, GetEventByIdQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetEventByIdQuery, GetEventByIdQueryVariables>(GetEventByIdDocument, baseOptions);
+        }
+export type GetEventByIdQueryHookResult = ReturnType<typeof useGetEventByIdQuery>;
+export type GetEventByIdLazyQueryHookResult = ReturnType<typeof useGetEventByIdLazyQuery>;
+export type GetEventByIdQueryResult = ApolloReactCommon.QueryResult<GetEventByIdQuery, GetEventByIdQueryVariables>;
+export function refetchGetEventByIdQuery(variables?: GetEventByIdQueryVariables) {
+      return { query: GetEventByIdDocument, variables: variables }
     }

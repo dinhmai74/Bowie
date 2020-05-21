@@ -11,7 +11,7 @@
     "noImplicitThis": true,
     "noUnusedLocals": true,
     "sourceMap": true,
-    "target": "es2015",
+    "target": "es2019",
     "lib": ["es7"],
     "skipLibCheck": true,
     "baseUrl": ".",

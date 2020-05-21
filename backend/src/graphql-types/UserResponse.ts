@@ -7,8 +7,8 @@ export class UserResponse {
   @Field(() => User, { nullable: true })
   user?: User
 
-  @Field(() => [FieldError], { nullable: true })
-  errors?: FieldError[]
+  @Field(() => FieldError, { nullable: true })
+  error?: FieldError
 }
 
 @ObjectType()
@@ -16,6 +16,6 @@ export class UsersResponse {
   @Field(() => [User], { nullable: true })
   users?: User[]
 
-  @Field(() => [FieldError], { nullable: true })
-  errors?: FieldError[]
+  @Field(() => FieldError, { nullable: true })
+  error?: FieldError
 }

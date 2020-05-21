@@ -8,6 +8,8 @@ import MapView, { Marker as MapMarker, MarkerProps } from 'react-native-maps'
 import { images, metrics, useThemes } from 'theme'
 import { Color } from 'theme/color-model'
 import { appMapViewStyles as styles } from './app-map-view.styles'
+import { useNavigation } from '@react-navigation/native'
+import { Event } from 'graphql'
 
 export type Region = {
   latitude: number
@@ -31,38 +33,42 @@ const AppMarker: React.FC<AppMarker> = ({ coordinate, avatar, ...rest }) => {
 }
 
 interface AppMarkerCardProps {
-  marker: AppMarker
+  event: Event
   color: Color
 }
 
-const AppMarkerCard: React.FC<AppMarkerCardProps> = ({ marker, color }) => {
+const AppMarkerCard: React.FC<AppMarkerCardProps> = ({ event, color }) => {
+  const navigation = useNavigation()
   return (
     <AppCard style={styles.bottomInfoContent}>
-      <Image source={marker.avatar} style={styles.bottomInfoImage} />
+      <Image source={images.place} style={styles.bottomInfoImage} />
       <SizedBox h={4} />
-      <Text text={marker.title} preset="bold" />
+      <Text text={event.information.eventName} preset="bold" />
       <SizedBox h={4} />
-      <Text text={marker.description} />
+      <Text text={event.information.description} />
       <SizedBox h={4} />
       <Button
         style={[styles.bottomInfoButton, { backgroundColor: color['background-basic-color-1'] }]}
         appearance="outline"
+        onPress={() => navigation.navigate('eventDetail', { id: event.id })}
         tx="homeScreen.viewDetail"
       />
     </AppCard>
   )
 }
 
+export type MarkerField = {}
+
 export interface AppMapViewProps {
   region: Region
   onRegionChange?: (region: Region) => void
   onRegionChangeComplete?: (region: Region) => void
-  markers?: any[]
+  events?: Event[]
   style?: any
 }
 
 export const AppMapView: React.FunctionComponent<AppMapViewProps> = props => {
-  const { style, markers, children } = props
+  const { style, events, children } = props
   const [selected, setSelected] = useState<number>(null)
   const { color } = useThemes()
 
@@ -78,12 +84,13 @@ export const AppMapView: React.FunctionComponent<AppMapViewProps> = props => {
         showsUserLocation={true}
         {...props}
       >
-        {markers.map((marker, index) => {
+        {events.map((marker, index) => {
           return (
             <AppMarker
               key={index}
-              avatar={marker.avatar || images.place}
-              coordinate={marker.coordinate}
+              // TODO: replace avatar by iamge
+              avatar={images.place}
+              coordinate={marker.place.coord}
               onPress={location => onPressMarker(location, index)}
               // {...{ opacity }}
             />
@@ -100,7 +107,7 @@ export const AppMapView: React.FunctionComponent<AppMapViewProps> = props => {
             preset="raise"
           />
           <SizedBox h={5} />
-          <AppMarkerCard marker={markers[selected]} color={color} />
+          <AppMarkerCard event={events[selected]} color={color} />
         </View>
       )}
     </>

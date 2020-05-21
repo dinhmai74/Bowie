@@ -1,6 +1,6 @@
 import { CardStyleInterpolators, createStackNavigator } from '@react-navigation/stack'
 import React from 'react'
-import { CreateNewEventScreen } from 'screens'
+import { CreateNewEventScreen, EventDetailScreen } from 'screens'
 import { HomeStack } from './home-navigator'
 
 const Stack = createStackNavigator()
@@ -16,6 +16,7 @@ export function PrimaryStack() {
     >
       <Stack.Screen name="homeStack" component={HomeStack} />
       <Stack.Screen name="createNewEvent" component={CreateNewEventScreen} />
+      <Stack.Screen name="eventDetail" component={EventDetailScreen} />
     </Stack.Navigator>
   )
 }

@@ -26,12 +26,10 @@ export class EventTagResolver {
       }
     } catch (error) {
       return {
-        errors: [
-          {
-            message: error,
-            path: '',
-          },
-        ],
+        error: {
+          message: error,
+          path: '',
+        },
       }
     }
   }
@@ -44,12 +42,10 @@ export class EventTagResolver {
     console.log('tag', tag)
     if (!tag) {
       return {
-        errors: [
-          {
-            message: 'Cannot found id tag',
-            path: 'change tag quantity',
-          },
-        ],
+        error: {
+          message: 'Cannot found id tag',
+          path: 'change tag quantity',
+        },
       }
     }
 
@@ -69,12 +65,10 @@ export class EventTagResolver {
     const tag = await DI.eventTagRepos.findOne(id)
     if (!tag) {
       return {
-        errors: [
-          {
-            message: 'Cannot found id tag',
-            path: 'change tag quantity',
-          },
-        ],
+        error: {
+          message: 'Cannot found id tag',
+          path: 'change tag quantity',
+        },
       }
     }
 
