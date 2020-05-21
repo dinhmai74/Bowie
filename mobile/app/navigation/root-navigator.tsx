@@ -1,5 +1,5 @@
 import { NavigationContainer, NavigationContainerRef } from '@react-navigation/native'
-import { createNativeStackNavigator } from '@react-navigation/native-stack'
+import { createStackNavigator } from '@react-navigation/stack'
 import { useGetCurrentUserInfoLazyQuery } from 'app-graphql'
 import React, { useEffect } from 'react'
 import { useNetworkStatus } from 'react-offix-hooks'
@@ -11,7 +11,7 @@ import { RootParamList } from './types'
 
 export const AuthContext = React.createContext(null)
 
-const Stack = createNativeStackNavigator<RootParamList>()
+const Stack = createStackNavigator<RootParamList>()
 
 const LOGIN_KEY = 'login'
 const RootStack = () => {
