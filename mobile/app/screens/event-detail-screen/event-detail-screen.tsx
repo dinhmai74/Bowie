@@ -1,14 +1,14 @@
-import React from 'react'
-import { observer } from 'mobx-react-lite'
-import { ViewStyle, StyleSheet, Image } from 'react-native'
-import { Screen, Text, Header, View } from 'components'
-// import { useStores } from "models/root-store"
-import { spacing, images, metrics } from 'theme'
-import { NavigationScreenProp } from 'react-navigation'
-import { useRoute, RouteProp } from '@react-navigation/native'
-import { PrimaryParamList } from 'navigation/types'
-import { useGetEventByIdQuery, FieldError } from 'graphql'
+import { RouteProp, useRoute } from '@react-navigation/native'
 import { ApolloError } from 'apollo-client'
+import { FieldError, useGetEventByIdQuery } from 'app-graphql'
+import { AppError, AppLoading, Header, Screen, View } from 'components'
+import { observer } from 'mobx-react-lite'
+import { PrimaryParamList } from 'navigation/types'
+import React from 'react'
+import { StyleSheet } from 'react-native'
+import { NavigationScreenProp } from 'react-navigation'
+// import { useStores } from "models/root-store"
+import { images, spacing } from 'theme'
 import { EventPlace } from './components/EventPlace'
 
 const styles = StyleSheet.create({
@@ -28,9 +28,7 @@ const LoadingComponent = () => {
   return (
     <Screen>
       <Header headerTx="eventDetailScreen.header" leftIcon="back" />
-      <View style={styles.loadingContainer}>
-        <Image source={images.loading} style={metrics.images.md} />
-      </View>
+      <AppLoading />
     </Screen>
   )
 }
@@ -43,11 +41,7 @@ const ErrorComponent: React.FC<ErrorComponentProps> = ({ error }) => {
   return (
     <Screen>
       <Header headerTx="eventDetailScreen.header" leftIcon="back" />
-      <View style={styles.loadingContainer}>
-        <Image source={images.error} style={metrics.images.md} />
-        <Text tx="errors.common" />
-        <Text text={error?.message} />
-      </View>
+      <AppError messages={['errors.common', error.message]} heroImg={images.error} />
     </Screen>
   )
 }

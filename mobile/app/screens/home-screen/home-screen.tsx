@@ -1,13 +1,23 @@
-import { AppMapView, Header, Screen, View } from 'components'
+import { useNavigation } from '@react-navigation/native'
+import { Event, useQueryGetEventByCoordLazyQuery } from 'app-graphql'
+import { AppError, AppLoading, AppMapView, Header, Screen, SizedBox, View } from 'components'
 import * as Location from 'expo-location'
 import * as Permissions from 'expo-permissions'
-import { Event, useQueryGetEventByCoordLazyQuery } from 'app-graphql'
 import { observer } from 'mobx-react-lite'
 import * as React from 'react'
 import { StyleSheet } from 'react-native'
 import { Region } from 'react-native-maps'
 import { NavigationScreenProp } from 'react-navigation'
-import { images } from 'theme'
+
+const HomeWrapper: React.FC = ({ children }) => {
+  const { navigate } = useNavigation()
+  return (
+    <Screen preset="scroll">
+      <Header headerTx="homeScreen.header" onLeftPress={() => navigate('authStack')} />
+      {children}
+    </Screen>
+  )
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -34,14 +44,10 @@ const rad2deg = angle => {
 export const HomeScreen: React.FunctionComponent<HomeScreenProps> = observer(props => {
   // const { someStore } = useStores()
   const [location, setLocation] = React.useState<any>({})
+  const [errorGetLocation, setErrGetLocation] = React.useState<boolean>(false)
 
   const radiusInRad = radiusInKM / earthRadiusInKM
-  const [region, setRegion] = React.useState<Region>({
-    latitude: 45.52220671242907,
-    longitude: -122.6653281029795,
-    latitudeDelta: 0.04864195044303443,
-    longitudeDelta: 0.040142817690068,
-  })
+  const [region, setRegion] = React.useState<Region>(undefined)
 
   const [loadEvent, { data, error }] = useQueryGetEventByCoordLazyQuery({
     variables: {
@@ -77,9 +83,10 @@ export const HomeScreen: React.FunctionComponent<HomeScreenProps> = observer(pro
           longitudeDelta,
           latitudeDelta,
         })
+        setErrGetLocation(false)
+      } else {
+        setErrGetLocation(true)
       }
-
-      console.tlog('location', location)
 
       loadEvent()
     }
@@ -91,21 +98,26 @@ export const HomeScreen: React.FunctionComponent<HomeScreenProps> = observer(pro
   // @ts-ignore
   if (data?.getEventBaseOnPos?.events.length > 0) events = [...data.getEventBaseOnPos.events]
 
+  if (!region)
+    return (
+      <HomeWrapper>
+        <SizedBox h={4} />
+        <AppLoading />
+      </HomeWrapper>
+    )
+
+  if (errorGetLocation)
+    return (
+      <HomeWrapper>
+        <AppError messages={['homeScreen.errors.loadLocation']} />
+      </HomeWrapper>
+    )
+
   return (
-    <Screen preset="scroll">
-      <Header
-        headerTx="homeScreen.header"
-        onLeftPress={() => props.navigation.navigate('authStack')}
-      />
+    <HomeWrapper>
       <View style={styles.container}>
         {location !== null && (
           <AppMapView
-            // region={{
-            // latitude: location.coords.latitude,
-            // longitude: location.coords.longitude,
-            // latitudeDelta: 0.003,
-            // longitudeDelta: 0.003,
-            // }}
             events={events}
             region={region}
             onRegionChangeComplete={r => {
@@ -114,6 +126,6 @@ export const HomeScreen: React.FunctionComponent<HomeScreenProps> = observer(pro
           />
         )}
       </View>
-    </Screen>
+    </HomeWrapper>
   )
 })
