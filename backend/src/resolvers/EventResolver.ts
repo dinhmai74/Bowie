@@ -1,8 +1,9 @@
 import { Query, Resolver, Mutation, Arg } from 'type-graphql'
-import { EventResponse, EventsResponse } from '../graphql-types'
+import { EventResponse, EventsResponse, EventsWithHostResponse } from '../graphql-types'
 import { Event, Coord } from '../entity'
 import { DI } from '../mikroconfig'
 import { isInArea } from '../utils'
+import { mapAsync } from 'lodasync'
 
 @Resolver()
 export class EventResolver {
@@ -20,26 +21,31 @@ export class EventResolver {
     return { event }
   }
 
-  @Query(() => EventsResponse)
+  @Query(() => EventsWithHostResponse)
   async getEventBaseOnPos(@Arg('input') { latitude, longitude }: Coord) {
     const events = await DI.em.getRepository(Event).findAll()
     events.filter((v) => {
       return isInArea(v.place.coord.latitude, v.place.coord.longitude, latitude, longitude, 'K')
     })
+    const result = await mapAsync(async (e: Event) => {
+      const hostInfo = await DI.userRepos.findOne(e.hostId)
+      return { ...e, hostInfo, id: e._id }
+    }, events)
 
     return {
-      events,
+      events: result,
     }
   }
 
   @Mutation(() => EventResponse)
   async createEvent(
-    @Arg('input') { hostId, time, place, information, membersInfo, tags }: Event,
+    @Arg('input') { hostId, startTime, endTime, place, information, membersInfo, tags }: Event,
   ): Promise<EventResponse> {
     try {
       const event = new Event()
 
-      event.time = time
+      event.startTime = startTime
+      event.endTime = endTime
       event.place = place
       event.hostId = hostId
       event.information = information
