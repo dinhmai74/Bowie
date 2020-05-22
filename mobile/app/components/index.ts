@@ -17,3 +17,4 @@ export * from './text-field/text-field'
 export * from './text/text'
 export * from './view/view'
 export * from './wallpaper/wallpaper'
+export * from "./app-divider/app-divider"

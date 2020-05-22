@@ -22,6 +22,7 @@ import {
 } from 'utils'
 import { EyeIcon, FBicon } from './components/Icons'
 import { useSignInAnimations } from './hooks'
+import { ApolloError } from 'apollo-client'
 
 const styles = StyleSheet.create({
   btn: {
@@ -84,8 +85,8 @@ export const SignInScreen: React.FunctionComponent<SignInScreenProps> = observer
   const refForm = useRef(null)
   const { reAuth } = useContext(AuthContext)
 
-  const onError = err => {
-    Alert.alert(JSON.stringify(err))
+  const onError = (err: ApolloError) => {
+    Alert.alert(JSON.stringify(err.message))
     console.tlog('err', err)
   }
   const onCompleted = data => {

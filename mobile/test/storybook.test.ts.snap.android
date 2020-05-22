@@ -21,6 +21,27 @@ exports[`Storyshots App Loading Names 1`] = `
 </View>
 `;
 
+exports[`Storyshots AppDivider Style Presets 1`] = `
+<View
+  onLayout={[Function]}
+  style={
+    Object {
+      "backgroundColor": "#f0f0f0",
+      "flex": 1,
+    }
+  }
+>
+  <RNCSafeAreaView
+    onInsetsChange={[Function]}
+    style={
+      Object {
+        "flex": 1,
+      }
+    }
+  />
+</View>
+`;
+
 exports[`Storyshots Button Style Presets 1`] = `
 <View
   onLayout={[Function]}

@@ -56,7 +56,8 @@ export type Event = {
   updatedAt: Scalars['DateTime'];
   hostId: Scalars['String'];
   membersInfo: Array<MemberInfo>;
-  time: Scalars['DateTime'];
+  startTime: Scalars['DateTime'];
+  endTime: Scalars['DateTime'];
   tags: Array<Scalars['String']>;
   place: Place;
   information: Information;
@@ -65,7 +66,8 @@ export type Event = {
 export type EventCreateInput = {
   hostId: Scalars['String'];
   membersInfo: Array<EventMemberInfoInput>;
-  time: Scalars['DateTime'];
+  startTime: Scalars['DateTime'];
+  endTime: Scalars['DateTime'];
   tags: Array<Scalars['String']>;
   place: EventPlaceInput;
   information: EventInformationInput;
@@ -84,6 +86,7 @@ export type EventMemberInfoInput = {
 
 export type EventPlaceInput = {
   name: Scalars['String'];
+  address: Scalars['String'];
   coord: CoordInput;
 };
 
@@ -96,6 +99,12 @@ export type EventResponse = {
 export type EventsResponse = {
   __typename?: 'EventsResponse';
   events?: Maybe<Array<Event>>;
+  error?: Maybe<FieldError>;
+};
+
+export type EventsWithHostResponse = {
+  __typename?: 'EventsWithHostResponse';
+  events?: Maybe<Array<EventWithHost>>;
   error?: Maybe<FieldError>;
 };
 
@@ -125,6 +134,21 @@ export type EventTagsResponse = {
   __typename?: 'EventTagsResponse';
   eventTags?: Maybe<Array<EventTag>>;
   error?: Maybe<FieldError>;
+};
+
+export type EventWithHost = {
+  __typename?: 'EventWithHost';
+  id: Scalars['String'];
+  createdAt: Scalars['DateTime'];
+  updatedAt: Scalars['DateTime'];
+  hostId: Scalars['String'];
+  membersInfo: Array<MemberInfo>;
+  startTime: Scalars['DateTime'];
+  endTime: Scalars['DateTime'];
+  tags: Array<Scalars['String']>;
+  place: Place;
+  information: Information;
+  hostInfo: User;
 };
 
 export type FieldError = {
@@ -192,6 +216,7 @@ export type MutationIncreaseOrDecreaseTagQuantityArgs = {
 export type Place = {
   __typename?: 'Place';
   name: Scalars['String'];
+  address: Scalars['String'];
   coord: Coord;
 };
 
@@ -203,7 +228,7 @@ export type Query = {
   getBooks: BooksResponse;
   getEvents: EventsResponse;
   getEventById: EventResponse;
-  getEventBaseOnPos: EventsResponse;
+  getEventBaseOnPos: EventsWithHostResponse;
   getAllTag: EventTagsResponse;
 };
 
@@ -329,18 +354,16 @@ export type GetCurrentUserInfoQuery = (
   )> }
 );
 
-export type QueryGetEventByCoordQueryVariables = {
-  input: CoordInput;
-};
+export type GetAllEventsQueryVariables = {};
 
 
-export type QueryGetEventByCoordQuery = (
+export type GetAllEventsQuery = (
   { __typename?: 'Query' }
-  & { getEventBaseOnPos: (
+  & { getEvents: (
     { __typename?: 'EventsResponse' }
     & { events?: Maybe<Array<(
       { __typename?: 'Event' }
-      & Pick<Event, 'id' | 'hostId' | 'time'>
+      & Pick<Event, 'id' | 'hostId' | 'endTime' | 'startTime'>
       & { membersInfo: Array<(
         { __typename?: 'MemberInfo' }
         & Pick<MemberInfo, 'id' | 'type'>
@@ -349,7 +372,39 @@ export type QueryGetEventByCoordQuery = (
         & Pick<Information, 'eventName' | 'description'>
       ), place: (
         { __typename?: 'Place' }
-        & Pick<Place, 'name'>
+        & Pick<Place, 'name' | 'address'>
+        & { coord: (
+          { __typename?: 'Coord' }
+          & Pick<Coord, 'latitude' | 'longitude'>
+        ) }
+      ) }
+    )>>, error?: Maybe<(
+      { __typename?: 'FieldError' }
+      & Pick<FieldError, 'message'>
+    )> }
+  ) }
+);
+
+export type GetEventByCoordQueryVariables = {
+  input: CoordInput;
+};
+
+
+export type GetEventByCoordQuery = (
+  { __typename?: 'Query' }
+  & { getEventBaseOnPos: (
+    { __typename?: 'EventsWithHostResponse' }
+    & { events?: Maybe<Array<(
+      { __typename?: 'EventWithHost' }
+      & Pick<EventWithHost, 'id' | 'endTime' | 'startTime'>
+      & { hostInfo: (
+        { __typename?: 'User' }
+        & Pick<User, 'id' | 'name' | 'email'>
+      ), information: (
+        { __typename?: 'Information' }
+        & Pick<Information, 'eventName'>
+      ), place: (
+        { __typename?: 'Place' }
         & { coord: (
           { __typename?: 'Coord' }
           & Pick<Coord, 'latitude' | 'longitude'>
@@ -373,7 +428,7 @@ export type GetEventByIdQuery = (
     { __typename?: 'EventResponse' }
     & { event?: Maybe<(
       { __typename?: 'Event' }
-      & Pick<Event, 'id' | 'hostId' | 'time'>
+      & Pick<Event, 'id' | 'hostId' | 'endTime' | 'startTime'>
       & { membersInfo: Array<(
         { __typename?: 'MemberInfo' }
         & Pick<MemberInfo, 'id' | 'type'>
@@ -382,7 +437,7 @@ export type GetEventByIdQuery = (
         & Pick<Information, 'eventName' | 'description'>
       ), place: (
         { __typename?: 'Place' }
-        & Pick<Place, 'name'>
+        & Pick<Place, 'name' | 'address'>
         & { coord: (
           { __typename?: 'Coord' }
           & Pick<Coord, 'latitude' | 'longitude'>
@@ -607,9 +662,9 @@ export type GetCurrentUserInfoQueryResult = ApolloReactCommon.QueryResult<GetCur
 export function refetchGetCurrentUserInfoQuery(variables?: GetCurrentUserInfoQueryVariables) {
       return { query: GetCurrentUserInfoDocument, variables: variables }
     }
-export const QueryGetEventByCoordDocument = gql`
-    query queryGetEventByCoord($input: CoordInput!) {
-  getEventBaseOnPos(input: $input) {
+export const GetAllEventsDocument = gql`
+    query getAllEvents {
+  getEvents {
     events {
       id
       hostId
@@ -617,13 +672,15 @@ export const QueryGetEventByCoordDocument = gql`
         id
         type
       }
-      time
+      endTime
+      startTime
       information {
         eventName
         description
       }
       place {
         name
+        address
         coord {
           latitude
           longitude
@@ -638,32 +695,88 @@ export const QueryGetEventByCoordDocument = gql`
     `;
 
 /**
- * __useQueryGetEventByCoordQuery__
+ * __useGetAllEventsQuery__
  *
- * To run a query within a React component, call `useQueryGetEventByCoordQuery` and pass it any options that fit your needs.
- * When your component renders, `useQueryGetEventByCoordQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useGetAllEventsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAllEventsQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useQueryGetEventByCoordQuery({
+ * const { data, loading, error } = useGetAllEventsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetAllEventsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetAllEventsQuery, GetAllEventsQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetAllEventsQuery, GetAllEventsQueryVariables>(GetAllEventsDocument, baseOptions);
+      }
+export function useGetAllEventsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetAllEventsQuery, GetAllEventsQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetAllEventsQuery, GetAllEventsQueryVariables>(GetAllEventsDocument, baseOptions);
+        }
+export type GetAllEventsQueryHookResult = ReturnType<typeof useGetAllEventsQuery>;
+export type GetAllEventsLazyQueryHookResult = ReturnType<typeof useGetAllEventsLazyQuery>;
+export type GetAllEventsQueryResult = ApolloReactCommon.QueryResult<GetAllEventsQuery, GetAllEventsQueryVariables>;
+export function refetchGetAllEventsQuery(variables?: GetAllEventsQueryVariables) {
+      return { query: GetAllEventsDocument, variables: variables }
+    }
+export const GetEventByCoordDocument = gql`
+    query getEventByCoord($input: CoordInput!) {
+  getEventBaseOnPos(input: $input) {
+    events {
+      id
+      hostInfo {
+        id
+        name
+        email
+      }
+      endTime
+      startTime
+      information {
+        eventName
+      }
+      place {
+        coord {
+          latitude
+          longitude
+        }
+      }
+    }
+    error {
+      message
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetEventByCoordQuery__
+ *
+ * To run a query within a React component, call `useGetEventByCoordQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetEventByCoordQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetEventByCoordQuery({
  *   variables: {
  *      input: // value for 'input'
  *   },
  * });
  */
-export function useQueryGetEventByCoordQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<QueryGetEventByCoordQuery, QueryGetEventByCoordQueryVariables>) {
-        return ApolloReactHooks.useQuery<QueryGetEventByCoordQuery, QueryGetEventByCoordQueryVariables>(QueryGetEventByCoordDocument, baseOptions);
+export function useGetEventByCoordQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetEventByCoordQuery, GetEventByCoordQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetEventByCoordQuery, GetEventByCoordQueryVariables>(GetEventByCoordDocument, baseOptions);
       }
-export function useQueryGetEventByCoordLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<QueryGetEventByCoordQuery, QueryGetEventByCoordQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<QueryGetEventByCoordQuery, QueryGetEventByCoordQueryVariables>(QueryGetEventByCoordDocument, baseOptions);
+export function useGetEventByCoordLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetEventByCoordQuery, GetEventByCoordQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetEventByCoordQuery, GetEventByCoordQueryVariables>(GetEventByCoordDocument, baseOptions);
         }
-export type QueryGetEventByCoordQueryHookResult = ReturnType<typeof useQueryGetEventByCoordQuery>;
-export type QueryGetEventByCoordLazyQueryHookResult = ReturnType<typeof useQueryGetEventByCoordLazyQuery>;
-export type QueryGetEventByCoordQueryResult = ApolloReactCommon.QueryResult<QueryGetEventByCoordQuery, QueryGetEventByCoordQueryVariables>;
-export function refetchQueryGetEventByCoordQuery(variables?: QueryGetEventByCoordQueryVariables) {
-      return { query: QueryGetEventByCoordDocument, variables: variables }
+export type GetEventByCoordQueryHookResult = ReturnType<typeof useGetEventByCoordQuery>;
+export type GetEventByCoordLazyQueryHookResult = ReturnType<typeof useGetEventByCoordLazyQuery>;
+export type GetEventByCoordQueryResult = ApolloReactCommon.QueryResult<GetEventByCoordQuery, GetEventByCoordQueryVariables>;
+export function refetchGetEventByCoordQuery(variables?: GetEventByCoordQueryVariables) {
+      return { query: GetEventByCoordDocument, variables: variables }
     }
 export const GetEventByIdDocument = gql`
     query getEventById($id: String!) {
@@ -675,13 +788,15 @@ export const GetEventByIdDocument = gql`
         id
         type
       }
-      time
+      endTime
+      startTime
       information {
         eventName
         description
       }
       place {
         name
+        address
         coord {
           latitude
           longitude

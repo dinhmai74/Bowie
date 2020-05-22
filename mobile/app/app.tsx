@@ -26,6 +26,7 @@ import { IoniconsPack } from './theme/custom-eva-icons/ionicons'
 import { initFonts } from './theme/fonts'
 import * as storage from './utils/storage'
 import { loadString } from './utils/storage'
+import { ThemeProvider } from 'styled-components'
 
 // This puts screens in a native ViewController or Activity. If you want fully native
 // stack navigation, use `createNativeStackNavigator` in place of `createStackNavigator`:
@@ -135,26 +136,29 @@ const App: React.FunctionComponent<{}> = () => {
     const nextTheme = theme === 'light' ? 'dark' : 'light'
     setTheme(nextTheme)
   }
+  console.log('currentTheme', currentTheme)
 
   return (
-    <ApolloOfflineProvider client={offlineClient}>
-      <ApolloProvider client={offlineClient}>
-        <RootStoreProvider value={rootStore}>
-          <SafeAreaProvider initialSafeAreaInsets={initialWindowSafeAreaInsets}>
-            <IconRegistry icons={[IoniconsPack, FeatherIconsPack]} />
-            <AppThemeContext.Provider value={{ theme, toggle }}>
-              <ApplicationProvider mapping={mapping} theme={currentTheme}>
-                <RootNavigator
-                  ref={navigationRef}
-                  initialState={initialNavigationState}
-                  onStateChange={onNavigationStateChange}
-                />
-              </ApplicationProvider>
-            </AppThemeContext.Provider>
-          </SafeAreaProvider>
-        </RootStoreProvider>
-      </ApolloProvider>
-    </ApolloOfflineProvider>
+    <ThemeProvider theme={currentTheme}>
+      <ApolloOfflineProvider client={offlineClient}>
+        <ApolloProvider client={offlineClient}>
+          <RootStoreProvider value={rootStore}>
+            <SafeAreaProvider initialSafeAreaInsets={initialWindowSafeAreaInsets}>
+              <IconRegistry icons={[FeatherIconsPack, IoniconsPack]} />
+              <AppThemeContext.Provider value={{ theme, toggle }}>
+                <ApplicationProvider mapping={mapping} theme={currentTheme}>
+                  <RootNavigator
+                    ref={navigationRef}
+                    initialState={initialNavigationState}
+                    onStateChange={onNavigationStateChange}
+                  />
+                </ApplicationProvider>
+              </AppThemeContext.Provider>
+            </SafeAreaProvider>
+          </RootStoreProvider>
+        </ApolloProvider>
+      </ApolloOfflineProvider>
+    </ThemeProvider>
   )
 }
 

@@ -1,7 +1,8 @@
 import { RouteProp, useRoute } from '@react-navigation/native'
+import { Icon } from '@ui-kitten/components'
 import { ApolloError } from 'apollo-client'
 import { FieldError, useGetEventByIdQuery } from 'app-graphql'
-import { AppError, AppLoading, Header, Screen, View } from 'components'
+import { AppDivider, AppError, AppLoading, Header, Screen, SizedBox, Text, View } from 'components'
 import { observer } from 'mobx-react-lite'
 import { PrimaryParamList } from 'navigation/types'
 import React from 'react'
@@ -10,6 +11,8 @@ import { NavigationScreenProp } from 'react-navigation'
 // import { useStores } from "models/root-store"
 import { images, spacing } from 'theme'
 import { EventPlace } from './components/EventPlace'
+import moment from 'moment'
+import { DateFormat } from 'utils'
 
 const styles = StyleSheet.create({
   container: {
@@ -60,15 +63,29 @@ export const EventDetailScreen: React.FunctionComponent<EventDetailScreenProps> 
 
     if (loading) return <LoadingComponent />
 
-    if (error || data.getEventById.error)
+    if (error || data?.getEventById?.error) {
       return <ErrorComponent error={error || data.getEventById.error} />
-    const { place } = data.getEventById.event
+    }
+
+    const time = `${moment(data?.getEventById?.event?.startTime)
+      .local()
+      .format(DateFormat.fullDateTime)} - ${moment(data?.getEventById?.event?.endTime)
+      .local()
+      .format(DateFormat.fullDateTime)}`
 
     return (
       <Screen preset="scroll">
-        <Header headerTx={data.getEventById.event.information.eventName} leftIcon="back" />
+        <Header headerTx={data.getEventById?.event?.information?.eventName} leftIcon="back" />
         <View style={styles.container}>
-          <EventPlace place={place} />
+          <EventPlace place={data?.getEventById?.event?.place} />
+          <AppDivider />
+
+          <View row>
+            <Icon name="clock" />
+            <SizedBox w={3} />
+            <Text text={time} />
+          </View>
+          <AppDivider />
         </View>
       </Screen>
     )

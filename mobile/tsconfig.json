@@ -16,7 +16,9 @@
     "skipLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "*": ["node_modules/*", "app/*"],
+      "app-graphql": ["app/graphql"],
+      "app-graphql/*": ["app/graphql/*"],
+      "*": ["app/*"],
       "app": ["./app"],
       "api": ["./app/api"],
       "components": ["./app/components"],
@@ -26,8 +28,7 @@
       "theme": ["./app/theme"],
       "utils": ["./app/utils"],
       "models": ["./app/models"],
-      "i18n": ["./app/i18n"],
-      "app-graphql": ["./app/graphql"]
+      "i18n": ["./app/i18n"]
     }
   },
   "exclude": ["node_modules"],

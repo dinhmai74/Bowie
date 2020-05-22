@@ -1,6 +1,5 @@
 import { Layout, StyleService, useStyleSheet } from '@ui-kitten/components'
 import { AppIcon, Button, Header, Screen, SizedBox, Switch, Text, View } from 'components'
-import { useLogoutMutation } from 'graphql'
 import { i18n } from 'i18n/i18n'
 import { observer } from 'mobx-react-lite'
 import { AuthContext } from 'navigation'
@@ -17,6 +16,7 @@ import { palette, Palette } from 'theme/palette'
 import { getElevation, strings, useForceUpdate } from 'utils'
 import { saveString } from 'utils/storage'
 import { LangItem } from './components/LangModal'
+import { useLogoutMutation } from 'app-graphql'
 
 const langs = ['en', 'vi']
 

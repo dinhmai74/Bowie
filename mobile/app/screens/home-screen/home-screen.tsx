@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native'
-import { Event, useQueryGetEventByCoordLazyQuery } from 'app-graphql'
+import { Event, useGetEventByCoordQuery } from 'app-graphql'
 import { AppError, AppLoading, AppMapView, Header, Screen, SizedBox, View } from 'components'
 import * as Location from 'expo-location'
 import * as Permissions from 'expo-permissions'
@@ -49,18 +49,13 @@ export const HomeScreen: React.FunctionComponent<HomeScreenProps> = observer(pro
   const radiusInRad = radiusInKM / earthRadiusInKM
   const [region, setRegion] = React.useState<Region>(undefined)
 
-  const [loadEvent, { data, error }] = useQueryGetEventByCoordLazyQuery({
+  const { data, error } = useGetEventByCoordQuery({
     variables: {
       input: {
         longitude: location.coords?.longitude,
         latitude: location.coords?.latitude,
       },
     },
-    // onCompleted: data => {
-    // if (!data.getEventBaseOnPos.errors) {
-    // setMarkers(data.getEventBaseOnPos.events)
-    // }
-    // },
   })
 
   if (error) console.tron.log('error', error)
@@ -87,8 +82,6 @@ export const HomeScreen: React.FunctionComponent<HomeScreenProps> = observer(pro
       } else {
         setErrGetLocation(true)
       }
-
-      loadEvent()
     }
 
     getLocationAsync()

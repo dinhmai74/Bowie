@@ -1,3 +1,4 @@
+require("../app/components/app-divider/app-divider.story")
 require('../app/components/text/text.story')
 require('../app/components/AppLoading/AppLoading.story')
 require('../app/components/button/button.story')
