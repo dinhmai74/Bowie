@@ -11,6 +11,12 @@ import { RootParamList } from './types'
 
 export const AuthContext = React.createContext(null)
 
+interface AuthContextState {
+  reAuth: () => void
+}
+
+export const useAuthContext = (): AuthContextState => React.useContext(AuthContext)
+
 const Stack = createStackNavigator<RootParamList>()
 
 const LOGIN_KEY = 'login'
@@ -40,7 +46,6 @@ const RootStack = () => {
       if (isOnline) await auth()
       else {
         const key = await load(LOGIN_KEY)
-        console.tlog('key', key)
         if (key) setValidUser(true)
       }
     }

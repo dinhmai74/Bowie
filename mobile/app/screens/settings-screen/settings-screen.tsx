@@ -1,9 +1,10 @@
 import { Layout, StyleService, useStyleSheet } from '@ui-kitten/components'
+import { useLogoutMutation } from 'app-graphql'
 import { AppIcon, Button, Header, Screen, SizedBox, Switch, Text, View } from 'components'
 import { i18n } from 'i18n/i18n'
 import { observer } from 'mobx-react-lite'
-import { AuthContext } from 'navigation'
-import React, { useContext, useRef } from 'react'
+import { useAuthContext } from 'navigation'
+import React, { useRef } from 'react'
 import { StyleSheet, TouchableOpacity } from 'react-native'
 import { FlatList } from 'react-native-gesture-handler'
 import Animated from 'react-native-reanimated'
@@ -16,14 +17,13 @@ import { palette, Palette } from 'theme/palette'
 import { getElevation, strings, useForceUpdate } from 'utils'
 import { saveString } from 'utils/storage'
 import { LangItem } from './components/LangModal'
-import { useLogoutMutation } from 'app-graphql'
 
 const langs = ['en', 'vi']
 
 interface SettingItem {
   name: string
   navigateTo: string
-  color: Palette
+  color: keyof Palette
 }
 
 const settingItems: SettingItem[][] = [
@@ -111,7 +111,7 @@ export interface SettingsScreenProps {
 export const SettingsScreen: React.FunctionComponent<SettingsScreenProps> = observer(() => {
   // const { someStore } = useStores()
   // const { navigation } = props
-  const { reAuth } = useContext(AuthContext)
+  const { reAuth } = useAuthContext()
   const { toggle, theme } = useThemes()
   const [logout] = useLogoutMutation()
   const force = useForceUpdate()
@@ -174,7 +174,7 @@ export const SettingsScreen: React.FunctionComponent<SettingsScreenProps> = obse
       <View style={styles.modalHeaderContainer}>
         <AppIcon
           icon="close"
-          color={color.palette.white}
+          color={color.palette['white']}
           size={metrics.icon.lg}
           onPress={() => closeBs()}
           containerStyle={styles.closeIc}

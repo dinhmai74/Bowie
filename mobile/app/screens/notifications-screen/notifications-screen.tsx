@@ -1,10 +1,10 @@
-import { Header, Screen, Text, View } from 'components'
+import { Button, Header, Screen, View } from 'components'
 import { observer } from 'mobx-react-lite'
 import React from 'react'
 import { StyleSheet } from 'react-native'
 import { NavigationScreenProp } from 'react-navigation'
-// import { useStores } from "models/root-store"
 import { spacing } from 'theme'
+import { useSnackBars } from 'utils'
 
 const styles = StyleSheet.create({
   container: {
@@ -19,12 +19,24 @@ export interface NotificationsScreenProps {
 
 export const NotificationsScreen: React.FunctionComponent<NotificationsScreenProps> = observer(
   () => {
-    // const { someStore } = useStores()
+    // const { appSnackbackStore } = useStores()
+    const { addSnack } = useSnackBars()
+
     return (
       <Screen preset="scroll">
         <Header headerTx="notificationsScreen.header" leftIcon="back" />
         <View style={styles.container}>
-          <Text>123</Text>
+          <Button
+            onPress={() =>
+              addSnack({
+                message:
+                  'There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour,',
+              })
+            }
+          >
+            123
+          </Button>
+          <Button onPress={() => addSnack({ message: 'yep yep' })}>close</Button>
         </View>
       </Screen>
     )

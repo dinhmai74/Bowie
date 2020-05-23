@@ -13,7 +13,8 @@ import { YellowBox } from 'react-native'
 import { initialWindowSafeAreaInsets, SafeAreaProvider } from 'react-native-safe-area-context'
 import { enableScreens } from 'react-native-screens'
 import { ApolloOfflineProvider } from 'react-offix-hooks'
-import { strings } from 'utils'
+import { ThemeProvider } from 'styled-components'
+import { SnackBarProvider, strings } from 'utils'
 import { offlineClient } from './config/apollo'
 import './i18n'
 import { RootStore, RootStoreProvider, setupRootStore } from './models/root-store'
@@ -26,7 +27,6 @@ import { IoniconsPack } from './theme/custom-eva-icons/ionicons'
 import { initFonts } from './theme/fonts'
 import * as storage from './utils/storage'
 import { loadString } from './utils/storage'
-import { ThemeProvider } from 'styled-components'
 
 // This puts screens in a native ViewController or Activity. If you want fully native
 // stack navigation, use `createNativeStackNavigator` in place of `createStackNavigator`:
@@ -43,6 +43,7 @@ YellowBox.ignoreWarnings([
   'Require cycle:',
   "Can't perform a React state",
   'Story with',
+  'Expected style',
 ])
 
 /**
@@ -136,7 +137,6 @@ const App: React.FunctionComponent<{}> = () => {
     const nextTheme = theme === 'light' ? 'dark' : 'light'
     setTheme(nextTheme)
   }
-  console.log('currentTheme', currentTheme)
 
   return (
     <ThemeProvider theme={currentTheme}>
@@ -147,11 +147,13 @@ const App: React.FunctionComponent<{}> = () => {
               <IconRegistry icons={[FeatherIconsPack, IoniconsPack]} />
               <AppThemeContext.Provider value={{ theme, toggle }}>
                 <ApplicationProvider mapping={mapping} theme={currentTheme}>
-                  <RootNavigator
-                    ref={navigationRef}
-                    initialState={initialNavigationState}
-                    onStateChange={onNavigationStateChange}
-                  />
+                  <SnackBarProvider>
+                    <RootNavigator
+                      ref={navigationRef}
+                      initialState={initialNavigationState}
+                      onStateChange={onNavigationStateChange}
+                    />
+                  </SnackBarProvider>
                 </ApplicationProvider>
               </AppThemeContext.Provider>
             </SafeAreaProvider>

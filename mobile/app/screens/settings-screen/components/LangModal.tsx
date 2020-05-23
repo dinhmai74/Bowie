@@ -1,10 +1,10 @@
-import { Text, View } from "components"
-import React from "react"
-import { StyleSheet, TouchableOpacity as RnTouchable } from "react-native"
-import { spacing, useThemes } from "theme"
-import { Icon } from "@ui-kitten/components"
-import { TouchableOpacity } from "react-native-gesture-handler"
-import { isIos } from "utils"
+import { Text, View } from 'components'
+import React from 'react'
+import { StyleSheet, TouchableOpacity as RnTouchable } from 'react-native'
+import { spacing, useThemes } from 'theme'
+import { Icon } from '@ui-kitten/components'
+import { TouchableOpacity } from 'react-native-gesture-handler'
+import { isIos } from 'utils'
 
 interface LangItemProps {
   onPress: (value: string) => void
@@ -25,7 +25,7 @@ export const LangItem: React.FC<LangItemProps> = props => {
     >
       <View row style={styles.container}>
         <Text tx={value} />
-        <Icon name="ios-arrow-forward" color={color["color-basic-600"]} />
+        <Icon name="ios-arrow-forward" color={color['color-basic-600']} pack="ionicons" />
       </View>
     </Touchable>
   )
@@ -33,8 +33,8 @@ export const LangItem: React.FC<LangItemProps> = props => {
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: "row",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     marginBottom: spacing[4],
     paddingHorizontal: spacing[4],
   },

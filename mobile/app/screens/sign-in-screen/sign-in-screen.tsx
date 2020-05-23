@@ -19,6 +19,7 @@ import {
   nDelay,
   runTimingWithEndActionOB,
   useLayout,
+  useSnackBars,
 } from 'utils'
 import { EyeIcon, FBicon } from './components/Icons'
 import { useSignInAnimations } from './hooks'
@@ -84,15 +85,21 @@ export const SignInScreen: React.FunctionComponent<SignInScreenProps> = observer
   // const { someStore } = useStores()
   const refForm = useRef(null)
   const { reAuth } = useContext(AuthContext)
+  const { addSnack } = useSnackBars()
 
   const onError = (err: ApolloError) => {
-    Alert.alert(JSON.stringify(err.message))
-    console.tlog('err', err)
+    addSnack({
+      message: err.message,
+      type: 'alert',
+    })
   }
   const onCompleted = data => {
     const errMss = data?.register?.error || data?.login?.error
     if (errMss) {
-      Alert.alert(JSON.stringify(errMss?.message))
+      addSnack({
+        message: errMss?.message,
+        type: 'alert',
+      })
     } else {
       refForm.current.animateNextTransition()
       nDelay(200).then(() => setTriggerSpreadOut(true))

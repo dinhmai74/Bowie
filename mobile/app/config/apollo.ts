@@ -12,10 +12,8 @@ const cacheStorage = {
   getItem: async key => {
     const data = await AsyncStorage.getItem(key)
     if (typeof data === 'string') {
-      console.log('Get item string', data)
       return JSON.parse(data)
     }
-    console.log('Get item', data)
     return data
   },
   setItem: (key, value) => {

@@ -33,4 +33,5 @@ export const metrics = {
     md: 24,
     lg: 32,
   },
+  screenSize,
 }

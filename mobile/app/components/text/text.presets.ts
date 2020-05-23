@@ -1,6 +1,6 @@
-import { TextStyle } from "react-native"
-import { typography } from "theme"
-import { StyleService } from "@ui-kitten/components"
+import { TextStyle } from 'react-native'
+import { typography } from 'theme'
+import { StyleService } from '@ui-kitten/components'
 
 /**
  * All text will start off looking like this.
@@ -8,12 +8,12 @@ import { StyleService } from "@ui-kitten/components"
 const BASE: TextStyle = {
   fontFamily: typography.primary,
   fontSize: 16,
-  color: "text-basic-color",
+  color: 'text-basic-color',
 }
 
 const MEDIUM: TextStyle = {
   fontFamily: typography.medium,
-  color: "text-basic-color",
+  color: 'text-basic-color',
 }
 
 /**
@@ -45,7 +45,7 @@ export const TextPresets = StyleService.create({
   /**
    * A smaller piece of secondard information.
    */
-  secondary: { ...BASE, fontSize: 9 } as TextStyle,
+  secondary: { ...BASE, fontSize: 14 } as TextStyle,
   h1medium: {
     ...MEDIUM,
     fontSize: 32,
@@ -56,7 +56,7 @@ export const TextPresets = StyleService.create({
   } as TextStyle,
   primary: {
     ...BASE,
-    color: "text-primary-color",
+    color: 'text-primary-color',
   },
   h3: {
     ...MEDIUM,

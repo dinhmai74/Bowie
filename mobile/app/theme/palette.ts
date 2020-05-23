@@ -13,4 +13,4 @@ export const palette = {
   redMonaLisa: '#fe9391',
 }
 
-export type Palette = keyof typeof palette
+export type Palette = typeof palette
