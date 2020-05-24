@@ -1,10 +1,10 @@
 import { InMemoryCache } from 'apollo-cache-inmemory'
 import { HttpLink } from 'apollo-link-http'
+import Constants from 'expo-constants'
 // import NetInfo from "@react-native-community/netinfo"
 import { ApolloOfflineClient } from 'offix-client'
 import { AsyncStorage, Platform } from 'react-native'
 import { ReactNativeNetworkStatus } from './ReactNativeNetworkStatus'
-import Constants from 'expo-constants'
 
 const ip = Constants.manifest.extra.ip
 

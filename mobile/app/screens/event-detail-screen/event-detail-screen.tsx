@@ -4,26 +4,20 @@ import { ApolloError } from 'apollo-client'
 import { FieldError, useGetEventByIdQuery } from 'app-graphql'
 import { AppDivider, AppError, AppLoading, Header, Screen, SizedBox, Text, View } from 'components'
 import { observer } from 'mobx-react-lite'
+import moment from 'moment'
 import { PrimaryParamList } from 'navigation/types'
 import React from 'react'
 import { StyleSheet } from 'react-native'
 import { NavigationScreenProp } from 'react-navigation'
 // import { useStores } from "models/root-store"
 import { images, spacing } from 'theme'
-import { EventPlace } from './components/EventPlace'
-import moment from 'moment'
 import { DateFormat } from 'utils'
+import { EventPlace } from './components/EventPlace'
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: spacing[6],
-  },
-  loadingContainer: {
-    flex: 1,
-    paddingHorizontal: spacing[6],
-    alignItems: 'center',
-    paddingTop: spacing[8],
   },
 })
 

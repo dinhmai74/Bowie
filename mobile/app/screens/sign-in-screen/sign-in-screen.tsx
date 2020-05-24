@@ -1,10 +1,11 @@
+import { ApolloError } from 'apollo-client'
 import { useLoginMutation, useLogoutMutation } from 'app-graphql'
 import { AuthHeader, Button, Screen, SizedBox, Text, TextField, View } from 'components'
 import { observer } from 'mobx-react-lite'
-import { AuthContext } from 'navigation'
-import React, { useContext, useRef, useState } from 'react'
+import { useAuthContext } from 'navigation'
+import React, { useRef, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
-import { Alert, StyleSheet, TouchableOpacity } from 'react-native'
+import { StyleSheet, TouchableOpacity } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
 import Animated, { set, Transition, Transitioning, useCode } from 'react-native-reanimated'
 import { bInterpolate } from 'react-native-redash'
@@ -23,7 +24,6 @@ import {
 } from 'utils'
 import { EyeIcon, FBicon } from './components/Icons'
 import { useSignInAnimations } from './hooks'
-import { ApolloError } from 'apollo-client'
 
 const styles = StyleSheet.create({
   btn: {
@@ -84,13 +84,13 @@ const duration = 300
 export const SignInScreen: React.FunctionComponent<SignInScreenProps> = observer(() => {
   // const { someStore } = useStores()
   const refForm = useRef(null)
-  const { reAuth } = useContext(AuthContext)
+  const auth = useAuthContext()
   const { addSnack } = useSnackBars()
 
   const onError = (err: ApolloError) => {
     addSnack({
       message: err.message,
-      type: 'alert',
+      type: 'danger',
     })
   }
   const onCompleted = data => {
@@ -98,12 +98,12 @@ export const SignInScreen: React.FunctionComponent<SignInScreenProps> = observer
     if (errMss) {
       addSnack({
         message: errMss?.message,
-        type: 'alert',
+        type: 'danger',
       })
     } else {
       refForm.current.animateNextTransition()
       nDelay(200).then(() => setTriggerSpreadOut(true))
-      nDelay(600).then(() => reAuth())
+      nDelay(600).then(() => auth?.auth())
     }
   }
 

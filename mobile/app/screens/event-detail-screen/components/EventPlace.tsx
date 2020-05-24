@@ -1,17 +1,16 @@
 import { Icon } from '@ui-kitten/components'
 import { Place } from 'app-graphql'
-import { SizedBox, Text, View, Button } from 'components'
+import { Button, SizedBox, Text, View } from 'components'
 import React from 'react'
 import { StyleSheet } from 'react-native'
 
 const styles = StyleSheet.create({
-  container: {},
-  titleRow: {
-    justifyContent: 'space-between',
-  },
-
   titleLeft: {
     alignItems: 'center',
+  },
+
+  titleRow: {
+    justifyContent: 'space-between',
   },
 })
 

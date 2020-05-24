@@ -111,9 +111,11 @@ export interface SettingsScreenProps {
 export const SettingsScreen: React.FunctionComponent<SettingsScreenProps> = observer(() => {
   // const { someStore } = useStores()
   // const { navigation } = props
-  const { reAuth } = useAuthContext()
+  const authContxt = useAuthContext()
   const { toggle, theme } = useThemes()
-  const [logout] = useLogoutMutation()
+  const [logout] = useLogoutMutation({
+    onCompleted: () => authContxt?.auth(),
+  })
   const force = useForceUpdate()
   const { color } = useThemes()
   const styles = useStyleSheet(Styles)
@@ -123,9 +125,9 @@ export const SettingsScreen: React.FunctionComponent<SettingsScreenProps> = obse
 
   /* ------------- methods ------------- */
 
-  const signOut = async () => {
-    await logout()
-    if (reAuth) reAuth()
+  const signOut = () => {
+    logout()
+    console.log('out')
   }
 
   const changeLang = v => {
@@ -174,7 +176,7 @@ export const SettingsScreen: React.FunctionComponent<SettingsScreenProps> = obse
       <View style={styles.modalHeaderContainer}>
         <AppIcon
           icon="close"
-          color={color.palette['white']}
+          color={color.palette.white}
           size={metrics.icon.lg}
           onPress={() => closeBs()}
           containerStyle={styles.closeIc}

@@ -1,11 +1,9 @@
-import React, { useState, useEffect, createContext, useMemo, useCallback } from 'react'
-import { SnackbarValue, AppSnackbar } from 'components'
-import { useContext } from 'react'
+import { AppSnackbar, SnackbarValue } from 'components'
 import _ from 'lodash'
-import { useLayout } from '@react-native-community/hooks'
+import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import { View } from 'react-native'
-import { spacing } from 'theme'
 import styled from 'styled-components'
+import { spacing } from 'theme'
 
 export const SnackBarContext = createContext(null)
 
@@ -17,7 +15,7 @@ const Container = styled(View)<{}>`
   padding: ${spacing[6]}px;
 `
 
-const AUTO_DISMISS = 6000
+const AUTO_DISMISS = 2000
 
 interface SnackBarProviderState {
   addSnack: (value: SnackbarValue) => void
@@ -25,9 +23,6 @@ interface SnackBarProviderState {
 
 export const SnackBarProvider = ({ children }) => {
   const [values, setValues] = useState<SnackbarValue[]>([])
-  const { onLayout, ...layout } = useLayout()
-  const [currentHeight, setHeight] = useState<number>(0)
-  const [preH, setPH] = useState<number>(0)
 
   const activeAlertIds = values.join(',')
   // @ts-ignore
@@ -35,10 +30,6 @@ export const SnackBarProvider = ({ children }) => {
     if (activeAlertIds.length > 0) {
       const timer = setTimeout(() => {
         setValues(p => p.slice(0, p.length - 1))
-        if (values.length === 0) {
-          setHeight(0)
-          setPH(0)
-        }
       }, AUTO_DISMISS)
       return () => clearTimeout(timer)
     }
@@ -50,19 +41,11 @@ export const SnackBarProvider = ({ children }) => {
   }, [])
   const value = useMemo(() => ({ addSnack }), [addSnack])
 
-  useEffect(() => {
-    setPH(currentHeight)
-    setHeight(layout.height)
-  }, [layout])
-
-  console.tlog('currentHeight', preH)
-  console.tlog('values', values)
-
   return (
     <SnackBarContext.Provider value={value}>
       {children}
       <Container>
-        {_.uniqBy(values, 'message').map((v, i) => {
+        {values.map((v, i) => {
           return <AppSnackbar key={i} value={v} />
         })}
       </Container>

@@ -3,7 +3,7 @@ import { storiesOf } from "@storybook/react-native"
 import { StoryScreen, Story, UseCase } from "../../../storybook/views"
 import { AppDivider } from "./app-divider"
 
-declare var module
+declare let module
 
 storiesOf("AppDivider", module)
   .addDecorator(fn => <StoryScreen>{fn()}</StoryScreen>)

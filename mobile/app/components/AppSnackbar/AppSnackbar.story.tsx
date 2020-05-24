@@ -3,7 +3,7 @@ import { storiesOf } from "@storybook/react-native"
 import { StoryScreen, Story, UseCase } from "../../../storybook/views"
 import { AppSnackbar } from "./AppSnackbar"
 
-declare var module
+declare let module
 
 storiesOf("AppSnackbar", module)
   .addDecorator(fn => <StoryScreen>{fn()}</StoryScreen>)

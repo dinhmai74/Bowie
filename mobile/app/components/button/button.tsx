@@ -15,7 +15,6 @@ export const Button: React.FC<ButtonProps> = props => {
   const {
     preset = 'primary',
     tx,
-    txOptions,
     text,
     style: styleOverride,
     textStyle: textStyleOverride,

@@ -14,7 +14,7 @@ const VIEWSTYLE = {
 const Stack = createStackNavigator()
 
 const HeaderStory = () => (
-  <View style={{ flex: 1 }}>
+  <View>
     <UseCase noPad text="default" usage="The default usage">
       <View style={VIEWSTYLE}>
         <Header headerTx="demoScreen.howTo" />

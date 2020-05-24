@@ -9,3 +9,4 @@ export * from "./strings"
 
 export const isIos = Platform.OS === "ios"
 export * from "./AppSnackbarProvider/AppSnackbarProvider"
+export * from "./AppAuthProvider/AppAuthProvider"
