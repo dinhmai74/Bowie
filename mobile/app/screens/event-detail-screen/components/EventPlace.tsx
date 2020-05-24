@@ -3,6 +3,8 @@ import { Place } from 'app-graphql'
 import { Button, SizedBox, Text, View } from 'components'
 import React from 'react'
 import { StyleSheet } from 'react-native'
+import { AppRoutes } from 'utils'
+import { useNavigation } from '@react-navigation/native'
 
 const styles = StyleSheet.create({
   titleLeft: {
@@ -19,6 +21,7 @@ interface EventPlaceProps {
 }
 
 export const EventPlace: React.FC<EventPlaceProps> = ({ place }) => {
+  const { navigate } = useNavigation()
   return (
     <View>
       <View row style={styles.titleRow}>
@@ -29,7 +32,11 @@ export const EventPlace: React.FC<EventPlaceProps> = ({ place }) => {
         </View>
 
         <View>
-          <Button tx="eventDetailScreen.showMap" appearance="ghost" />
+          <Button
+            tx="eventDetailScreen.showMap"
+            appearance="ghost"
+            onPress={() => navigate(AppRoutes.viewMap, { coord: place.coord, title: place?.name })}
+          />
         </View>
       </View>
 

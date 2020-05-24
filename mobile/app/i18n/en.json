@@ -76,6 +76,9 @@
     "wannaJoinAs": "Wanna join as",
     "member": "Member"
   },
+  "viewMapScreen": {
+    "header": "Map"
+  },
   "en": "English",
   "vi": "Vietnamese"
 }

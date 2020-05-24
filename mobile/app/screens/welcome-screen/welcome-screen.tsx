@@ -1,23 +1,24 @@
-import { Button, Screen, SizedBox, Text, View } from "components"
-import React, { useState } from "react"
-import { Image, StyleSheet } from "react-native"
-import Animated, { Clock, set, useCode, Value } from "react-native-reanimated"
-import { bInterpolate } from "react-native-redash"
-import { useSafeArea } from "react-native-safe-area-context"
-import { NavigationInjectedProps } from "react-navigation"
-import { images, metrics, spacing } from "theme"
-import { useMemoOne } from "use-memo-one"
-import { runTiming, runTimingWithEndAction } from "utils/reanimated"
+import { Button, Screen, SizedBox, Text, View } from 'components'
+import React, { useState } from 'react'
+import { Image, StyleSheet } from 'react-native'
+import Animated, { Clock, set, useCode, Value } from 'react-native-reanimated'
+import { bInterpolate } from 'react-native-redash'
+import { useSafeArea } from 'react-native-safe-area-context'
+import { NavigationInjectedProps } from 'react-navigation'
+import { images, metrics, spacing } from 'theme'
+import { useMemoOne } from 'use-memo-one'
+import { AppRoutes } from 'utils'
+import { runTiming, runTimingWithEndAction } from 'utils/reanimated'
 
 const styles = StyleSheet.create({
   container: {
-    alignItems: "center",
+    alignItems: 'center',
     flex: 1,
-    justifyContent: "center",
+    justifyContent: 'center',
     paddingHorizontal: spacing[6],
   },
   footer: {
-    justifyContent: "flex-end",
+    justifyContent: 'flex-end',
     paddingHorizontal: spacing[6],
   },
   full: {
@@ -25,10 +26,10 @@ const styles = StyleSheet.create({
   },
   logo: {
     ...metrics.images.logo,
-    resizeMode: "contain",
+    resizeMode: 'contain',
   },
   subText: {
-    textAlign: "center",
+    textAlign: 'center',
   },
 })
 
@@ -85,7 +86,7 @@ export const WelcomeScreen: React.FunctionComponent<WelcomeScreenProps> = props 
         <Animated.View style={{ opacity: bInterpolate(welcomeAnim, -3, 1) }}>
           <Button
             onPress={() => {
-              props.navigation.navigate("signIn")
+              props.navigation.navigate(AppRoutes.signIn)
             }}
             full
           >

@@ -7,7 +7,7 @@ import { SnackBarProvider } from 'utils/AppSnackbarProvider'
 import { useForceUpdate } from 'utils/custom-hooks'
 import { load, remove, save } from 'utils/storage'
 import { AuthStack } from './auth-navigator'
-import { PrimaryStack } from './primary-navigator'
+import { PrimaryStackWithModal } from './primary-navigator'
 import { RootParamList } from './types'
 
 export const AuthContext = React.createContext(null)
@@ -80,8 +80,8 @@ const RootStack = () => {
             />
           ) : (
             <Stack.Screen
-              name="primaryStack"
-              component={PrimaryStack}
+              name="primaryStackWithModal"
+              component={PrimaryStackWithModal}
               options={{
                 headerShown: false,
               }}

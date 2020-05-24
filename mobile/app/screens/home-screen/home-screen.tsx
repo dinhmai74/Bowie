@@ -8,12 +8,13 @@ import * as React from 'react'
 import { StyleSheet } from 'react-native'
 import { Region } from 'react-native-maps'
 import { NavigationScreenProp } from 'react-navigation'
+import { AppRoutes, getCoordAlpha } from 'utils'
 
 const HomeWrapper: React.FC = ({ children }) => {
   const { navigate } = useNavigation()
   return (
     <Screen preset="scroll">
-      <Header headerTx="homeScreen.header" onLeftPress={() => navigate('authStack')} />
+      <Header headerTx="homeScreen.header" onLeftPress={() => navigate(AppRoutes.authStack)} />
       {children}
     </Screen>
   )
@@ -29,24 +30,11 @@ export interface HomeScreenProps {
   navigation: NavigationScreenProp<any, any>
 }
 
-const earthRadiusInKM = 6371
-const aspectRatio = 1
-const radiusInKM = 1.5
-
-const deg2rad = angle => {
-  return angle * 0.017453292519943295 // (angle / 180) * Math.PI;
-}
-
-const rad2deg = angle => {
-  return angle * 57.29577951308232 // angle / Math.PI * 180
-}
-
 export const HomeScreen: React.FunctionComponent<HomeScreenProps> = observer(props => {
   // const { someStore } = useStores()
   const [location, setLocation] = React.useState<any>({})
   const [errorGetLocation, setErrGetLocation] = React.useState<boolean>(false)
 
-  const radiusInRad = radiusInKM / earthRadiusInKM
   const [region, setRegion] = React.useState<Region>(undefined)
 
   const { data, error } = useGetEventByCoordQuery({
@@ -70,8 +58,7 @@ export const HomeScreen: React.FunctionComponent<HomeScreenProps> = observer(pro
       setLocation(location)
 
       if (location.coords) {
-        const longitudeDelta = rad2deg(radiusInRad / Math.cos(deg2rad(location.coords?.latitude)))
-        const latitudeDelta = aspectRatio * rad2deg(radiusInRad)
+        const { longitudeDelta, latitudeDelta } = getCoordAlpha(location.coords?.latitude)
         setRegion({
           latitude: location.coords?.latitude,
           longitude: location.coords?.longitude,

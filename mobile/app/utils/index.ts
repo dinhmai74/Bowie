@@ -7,3 +7,4 @@ export * from './reanimated'
 export * from './storage'
 export * from './strings'
 export * from './validate'
+export * from "./calcCoordAlpha/calcCoordAlpha"

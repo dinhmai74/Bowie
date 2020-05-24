@@ -1,5 +1,7 @@
+import { Coord } from 'app-graphql'
+
 export type RootParamList = {
-  primaryStack: undefined
+  primaryStackWithModal: undefined
   authStack: undefined
 }
 
@@ -12,8 +14,16 @@ export type HomeParamList = {
 
 export type PrimaryParamList = {
   homeStack: undefined
-  createNewEvent: undefined
   eventDetail: { id: string }
+}
+
+export type PrimaryModalParamList = {
+  primaryStack: undefined
+  createNewEvent: undefined
+  viewMap: {
+    coord: Coord
+    title: string
+  }
 }
 
 export type AuthParamList = {

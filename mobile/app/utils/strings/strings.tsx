@@ -5,6 +5,18 @@ export const strings = {
 
 export const AppRoutes = {
   welcome: 'welcome',
+  signIn: 'signIn',
+  authStack: 'authStack',
+  primaryWithModalStack: 'primaryStackWithModal',
+  Home: 'Home',
+  Saved: 'Saved',
+  Notifications: 'Notifications',
+  Settings: 'Settings',
+  homeStack: 'homeStack',
+  createNewEvent: 'createNewEvent',
+  eventDetail: 'eventDetail',
+  primaryStack: 'primaryStack',
+  viewMap: 'viewMap',
 }
 
 export const DateFormat = {
