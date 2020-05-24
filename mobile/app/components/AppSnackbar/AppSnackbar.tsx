@@ -2,6 +2,7 @@ import React from 'react'
 import { View } from 'react-native'
 import styled from 'styled-components'
 import { Color, spacing } from 'theme'
+import { palette } from 'theme/palette'
 import { getElevation } from 'utils'
 import { Text } from '../text/text'
 
@@ -40,7 +41,9 @@ export const AppSnackbar: React.FunctionComponent<AppSnackbarProps> = props => {
 
   return (
     <Wrapper c={`color-${type || 'success'}-500`}>
-      <Text preset="secondary">{message}</Text>
+      <Text preset="secondary" color={palette.black}>
+        {message}
+      </Text>
     </Wrapper>
   )
 }

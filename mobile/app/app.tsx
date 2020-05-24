@@ -7,7 +7,7 @@ import { NavigationContainerRef } from '@react-navigation/native'
 import { ApplicationProvider, IconRegistry } from '@ui-kitten/components'
 import { i18n } from 'i18n/i18n'
 import { contains } from 'ramda'
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { ApolloProvider } from 'react-apollo'
 import { YellowBox } from 'react-native'
 import { initialWindowSafeAreaInsets, SafeAreaProvider } from 'react-native-safe-area-context'
@@ -119,10 +119,10 @@ const App: React.FunctionComponent<{}> = () => {
 
   const currentTheme = themes[theme]
 
-  const toggle = useCallback(() => {
+  const toggle = () => {
     const nextTheme = theme === 'light' ? 'dark' : 'light'
     setTheme(nextTheme)
-  }, [])
+  }
 
   // Before we show the app, we have to wait for our state to be ready.
   // In the meantime, don't render anything. This will be the background

@@ -14,7 +14,7 @@ declare global {
      * Hey, it's Reactotron if we're in dev, and no-ops if we're in prod.
      */
     tron: typeof Tron
-    tlog: typeof Tron.display
+    tlog: (message: string, ...params: any[]) => void
   }
 }
 
