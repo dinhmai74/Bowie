@@ -41,9 +41,10 @@ export class AuthResolver {
       user.password = hashedPassword
       user.email = email
       user.name = name
-      DI.userRepos.persist(user)
-      console.log('user.id', user)
-      ctx.req.session!.userId = user.id
+      await DI.userRepos.persist(user)
+      const insertedUser = await DI.userRepos.findOne({ email })
+      console.log('user.id', insertedUser)
+      ctx.req.session!.userId = insertedUser?.id
       console.log('ctx.req.session!.userId', ctx.req.session!.userId)
       return { user }
     }
