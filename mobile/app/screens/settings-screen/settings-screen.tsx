@@ -261,7 +261,7 @@ export const SettingsScreen: React.FunctionComponent<SettingsScreenProps> = obse
         </View>
 
         <View style={styles.btnSignOutWrapper}>
-          <Button tx="auth.signOut" onPress={() => signOut()} full preset="ghostWithPrimaryBg" />
+          <Button tx="auth.signOut" onPress={() => signOut()} full preset="outlineWithoutBorder" />
         </View>
       </Screen>
       {renderShadow()}

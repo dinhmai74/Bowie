@@ -1,6 +1,6 @@
 import * as React from 'react'
-// import { Text as KittenText } from "@ui-kitten/components"
-import { Text as ReactNativeText } from 'react-native'
+import { Text as ReactNativeText } from '@ui-kitten/components'
+// import { Text as ReactNativeText } from 'react-native'
 import { TextPresets } from './text.presets'
 import { TextProps } from './text.props'
 import { translate } from 'i18n'

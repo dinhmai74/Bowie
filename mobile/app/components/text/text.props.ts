@@ -1,6 +1,7 @@
-import { TextProps as TextProperties, TextStyle } from 'react-native'
-// import { TextProps as TextProperties } from "@ui-kitten/components"
+// import { TextProps as TextProperties, TextStyle } from 'react-native'
+import { TextProps as TextProperties } from '@ui-kitten/components'
 import { TextPresets } from './text.presets'
+import { TextStyle } from 'react-native'
 
 export interface TextProps extends TextProperties {
   /**

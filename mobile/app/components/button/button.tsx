@@ -5,15 +5,17 @@ import * as React from 'react'
 import { ActivityIndicator, ViewStyle } from 'react-native'
 import { TextPresets, ViewPresets } from './button.presets'
 import { ButtonProps } from './button.props'
+import { useThemes } from 'theme'
 
 export const Button: React.FC<ButtonProps> = props => {
+  const { color } = useThemes()
   const renderLoading = () => {
     const { loadingColor, loadingSize } = props
     return <ActivityIndicator size={loadingSize} color={loadingColor || '#fff'} />
   }
 
   const {
-    preset = 'primary',
+    preset,
     tx,
     text,
     style: styleOverride,
@@ -31,13 +33,23 @@ export const Button: React.FC<ButtonProps> = props => {
 
   const notFullStyle: ViewStyle = !full && { alignSelf: 'flex-start' }
   const opacity = disabled ? 0.2 : 1
-  const viewStyle = mergeAll(
+
+  let viewStyle = mergeAll(
     // @ts-ignore
-    flatten([viewPresets[preset] || viewPresets.primary, notFullStyle, styleOverride, { opacity }]),
+    flatten([viewPresets[preset] && viewPresets[preset], notFullStyle, styleOverride, { opacity }]),
   )
-  const textStyle = mergeAll(
+
+  const status = props.status || 'primary'
+
+  if (preset) {
+    if (preset === 'outlineWithoutBorder') {
+      viewStyle = { ...viewStyle, backgroundColor: color[`color-${status}-100`] }
+    }
+  }
+
+  let textStyle = mergeAll(
     // @ts-ignore
-    flatten([textPresets[preset] || textPresets.primary, textStyleOverride]),
+    flatten([textPresets[preset] && textPresets[preset], textStyleOverride]),
   )
 
   const customProps = {}
@@ -45,7 +57,6 @@ export const Button: React.FC<ButtonProps> = props => {
   return (
     <KTButton
       style={viewStyle}
-      {...{ textStyle }}
       onPress={!disabled ? onPressProps : () => {}}
       activeOpacity={disabled ? opacity : 0.5}
       {...rest}
@@ -60,6 +71,12 @@ export const Button: React.FC<ButtonProps> = props => {
         if (children && typeof children !== 'string') {
           return React.cloneElement(children, { ...evaProps })
         } else if (children) content = children
+
+        // get color by preset
+        if (preset) {
+          if (preset === 'bordered' || preset === 'outlineWithoutBorder')
+            textStyle = { ...textStyle, color: color[`color-${status}-500`] }
+        }
 
         return <Text {...evaProps} style={[evaProps.style, textStyle]} tx={content} />
       }}

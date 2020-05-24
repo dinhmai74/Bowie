@@ -3,6 +3,7 @@
 // In this file, we'll be kicking off our app or storybook.
 
 import { mapping } from '@eva-design/eva'
+// import { default as mapping } from './theme/ui-kitten.mapping.json'
 import { NavigationContainerRef } from '@react-navigation/native'
 import { ApplicationProvider, IconRegistry } from '@ui-kitten/components'
 import { i18n } from 'i18n/i18n'
