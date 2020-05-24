@@ -14,7 +14,7 @@ import { initialWindowSafeAreaInsets, SafeAreaProvider } from 'react-native-safe
 import { enableScreens } from 'react-native-screens'
 import { ApolloOfflineProvider } from 'react-offix-hooks'
 import { ThemeProvider } from 'styled-components'
-import { strings } from 'utils'
+import { strings } from 'utils/strings'
 import './i18n'
 import { RootStore, RootStoreProvider, setupRootStore } from './models/root-store'
 import { exitRoutes, RootNavigator, setRootNavigation } from './navigation'

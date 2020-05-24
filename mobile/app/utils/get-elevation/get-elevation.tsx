@@ -1,7 +1,9 @@
 import { Platform } from 'react-native'
 
+export const isIos = Platform.OS === 'ios'
+
 export const getElevation = (elevation = 8) => {
-  if (Platform.OS === 'android') {
+  if (!isIos) {
     return { elevation }
   }
 

@@ -137,9 +137,9 @@ export class Reactotron {
       if (this.config.useAsyncStorage) {
         Tron.setAsyncStorageHandler(AsyncStorage)
       }
-      Tron.useReactNative({
-        asyncStorage: this.config.useAsyncStorage ? undefined : false,
-      })
+      // Tron.useReactNative({
+      //   asyncStorage: this.config.useAsyncStorage ? undefined : false,
+      // })
 
       // ignore some chatty `mobx-state-tree` actions
       const RX = /postProcessSnapshot|@APPLY_SNAPSHOT/

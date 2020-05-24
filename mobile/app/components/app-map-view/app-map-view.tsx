@@ -4,14 +4,14 @@ import { Event } from 'app-graphql'
 import { AppCard, Button, Text } from 'components'
 import { AppIcon } from 'components/app-icon/AppIcon'
 import { SizedBox } from 'components/sized-box/sized-box'
+import moment from 'moment'
 import React, { useState } from 'react'
 import { Image, View } from 'react-native'
 import MapView, { Marker as MapMarker, MarkerProps } from 'react-native-maps'
 import { images, metrics, useThemes } from 'theme'
 import { Color } from 'theme/color-model'
-import { appMapViewStyles as styles } from './app-map-view.styles'
-import moment from 'moment'
 import { DateFormat } from 'utils'
+import { appMapViewStyles as styles } from './app-map-view.styles'
 
 export type Region = {
   latitude: number
