@@ -14,8 +14,10 @@ export class ProfilePictureResolver {
   async addProfilePicture(
     @Ctx() ctx: MyContext,
     @Arg('picture', () => GraphQLUpload)
-    { createReadStream, filename }: Upload,
+    file: Upload,
   ): Promise<boolean> {
+    const { createReadStream, filename } = file
+    console.log('file', file)
     if (!ctx.req.session!.userId) return false
 
     const imgDir = `${baseImgDir}/${ctx.req.session!.userId}`

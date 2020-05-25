@@ -30,7 +30,7 @@ export interface HomeScreenProps {
   navigation: NavigationScreenProp<any, any>
 }
 
-export const HomeScreen: React.FunctionComponent<HomeScreenProps> = observer(props => {
+export const HomeScreen: React.FunctionComponent<HomeScreenProps> = observer(() => {
   // const { someStore } = useStores()
   const [location, setLocation] = React.useState<any>({})
   const [errorGetLocation, setErrGetLocation] = React.useState<boolean>(false)

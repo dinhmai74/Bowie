@@ -1,30 +1,30 @@
 import { RouteProp, useRoute } from '@react-navigation/native'
-import { Icon, Modal, Card } from '@ui-kitten/components'
+import { Icon } from '@ui-kitten/components'
 import { ApolloError } from 'apollo-client'
 import { FieldError, useGetEventByIdQuery } from 'app-graphql'
 import {
   AppDivider,
   AppError,
   AppLoading,
+  Button,
   Header,
   Screen,
   SizedBox,
   Text,
   View,
-  Button,
 } from 'components'
 import { observer } from 'mobx-react-lite'
 import moment from 'moment'
 import { PrimaryParamList } from 'navigation/types'
 import React from 'react'
-import { NavigationScreenProp } from 'react-navigation'
-// import { useStores } from "models/root-store"
-import { images, spacing, AppStyles } from 'theme'
-import { DateFormat } from 'utils'
-import { EventPlace } from './components/EventPlace'
-import styled from 'styled-components'
 import { ScrollView } from 'react-native'
 import { useSafeArea } from 'react-native-safe-area-context'
+import { NavigationScreenProp } from 'react-navigation'
+import styled from 'styled-components'
+// import { useStores } from "models/root-store"
+import { images, spacing } from 'theme'
+import { DateFormat } from 'utils'
+import { EventPlace } from './components/EventPlace'
 import { JoinModal } from './components/JoinModal'
 
 const Body = styled(ScrollView)`
@@ -73,6 +73,7 @@ export const EventDetailScreen: React.FunctionComponent<EventDetailScreenProps> 
     // const { someStore } = useStores()
     const { params } = useRoute<ScreenRouteProps>()
     const { loading, error, data } = useGetEventByIdQuery({ variables: { id: params.id } })
+    const insets = useSafeArea()
     const [joinModal, setJoinModalVisible] = React.useState(false)
 
     if (loading) return <LoadingComponent />
@@ -86,8 +87,6 @@ export const EventDetailScreen: React.FunctionComponent<EventDetailScreenProps> 
       .format(DateFormat.fullDateTime)} - ${moment(data?.getEventById?.event?.endTime)
       .local()
       .format(DateFormat.fullDateTime)}`
-
-    const insets = useSafeArea()
 
     return (
       <Screen>

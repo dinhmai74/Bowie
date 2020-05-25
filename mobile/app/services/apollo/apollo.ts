@@ -1,12 +1,14 @@
 import { InMemoryCache } from 'apollo-cache-inmemory'
-import { HttpLink } from 'apollo-link-http'
+import { ApolloLink } from 'apollo-link'
 import Constants from 'expo-constants'
 // import NetInfo from "@react-native-community/netinfo"
 import { ApolloOfflineClient } from 'offix-client'
 import { AsyncStorage, Platform } from 'react-native'
 import { ReactNativeNetworkStatus } from './ReactNativeNetworkStatus'
+const { createUploadLink } = require('apollo-upload-client')
 
 const ip = Constants.manifest.extra.ip
+const GRAPHQL_URL = `http://${Platform.OS === 'ios' ? 'localhost' : ip}:4000/graphql`
 
 const cacheStorage = {
   getItem: async key => {
@@ -30,11 +32,18 @@ const cacheStorage = {
 
 const networkStatus: any = new ReactNativeNetworkStatus()
 
+const uploadLink = createUploadLink({
+  uri: GRAPHQL_URL,
+  headers: {
+    'keep-alive': 'true',
+  },
+})
+
+const links = [uploadLink]
+
 export const offlineClient = new ApolloOfflineClient({
   cache: new InMemoryCache(),
-  link: new HttpLink({
-    uri: `http://${Platform.OS === 'ios' ? 'localhost' : ip}:4000/graphql`,
-  }),
+  link: ApolloLink.from(links),
   offlineStorage: cacheStorage,
   cacheStorage,
   networkStatus,

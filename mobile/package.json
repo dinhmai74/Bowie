@@ -46,9 +46,12 @@
     "apollo-link-error": "1.1.13",
     "apollo-link-http": "1.5.17",
     "apollo-link-retry": "2.2.16",
+    "apollo-upload-client": "^13.0.0",
     "expo": "~37.0.3",
+    "expo-image-picker": "~8.1.0",
     "expo-localization": "~8.1.0",
     "expo-location": "~8.1.0",
+    "extract-files": "^8.1.0",
     "firebase": "7.9.0",
     "graphql": "^14.6.0",
     "graphql-tag": "^2.10.3",
@@ -229,7 +232,8 @@
       "prettier/prettier": 0,
       "@typescript-eslint/no-empty-function": 0,
       "@typescript-eslint/no-non-null-assertion": 0,
-      "curly": 0
+      "curly": 0,
+      "arrow-spacing": 0
     }
   }
 }

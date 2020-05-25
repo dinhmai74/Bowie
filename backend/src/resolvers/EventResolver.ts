@@ -29,6 +29,7 @@ export class EventResolver {
     })
     const result = await mapAsync(async (e: Event) => {
       const hostInfo = await DI.userRepos.findOne(e.hostId)
+      console.log('hostInfo', hostInfo)
       return { ...e, hostInfo, id: e._id }
     }, events)
 

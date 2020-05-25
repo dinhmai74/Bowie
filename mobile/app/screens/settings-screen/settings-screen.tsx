@@ -1,18 +1,30 @@
 import { StyleService, useStyleSheet } from '@ui-kitten/components'
-import { useLogoutMutation } from 'app-graphql'
+import { useAddPictureMutation, useLogoutMutation } from 'app-graphql'
 import { Backdrop, Button, Header, Screen, SizedBox, Switch, Text, View } from 'components'
+import * as ImagePicker from 'expo-image-picker'
+import * as Permissions from 'expo-permissions'
+import { ReactNativeFile } from 'extract-files'
 import { useLocalization } from 'i18n/i18n'
 import { observer } from 'mobx-react-lite'
 import { useAuthContext } from 'navigation'
 import React, { useRef } from 'react'
-import { TouchableOpacity } from 'react-native'
+import { Image, TouchableOpacity } from 'react-native'
 import { Value } from 'react-native-reanimated'
 import { NavigationScreenProp } from 'react-navigation'
 import { SettingsCard } from 'screens/settings-screen/components/SettingsCard'
 // import { useStores } from "models/root-store"
 import { spacing, typography, useThemes } from 'theme'
 import { palette, Palette } from 'theme/palette'
+import { isIos, useSnackBars } from 'utils'
 import { LangBottomSheet } from './components/LangBottomSheet'
+const { useMutation } = require('@apollo/react-hooks')
+const gql = require('graphql-tag')
+
+const MUTATION = gql`
+  mutation addPicture($file: Upload!) {
+    addProfilePicture(picture: $file)
+  }
+`
 
 interface SettingItem {
   name: string
@@ -82,31 +94,90 @@ export interface SettingsScreenProps {
 }
 
 export const SettingsScreen: React.FunctionComponent<SettingsScreenProps> = observer(() => {
+  /* ------------------------ hooks ------------------------ */
   // const { someStore } = useStores()
   // const { navigation } = props
   const authContxt = useAuthContext()
   const { locale } = useLocalization()
   const { toggle, theme } = useThemes()
+  const { addSnack } = useSnackBars()
   const [logout] = useLogoutMutation({
     onCompleted: () => authContxt?.auth(),
   })
+  const [mutate] = useMutation(MUTATION, {
+    onCompleted: data => console.tlog('data', data),
+    onError: e => console.tlog('e', e),
+  })
+
+  const [addProfilePicture] = useAddPictureMutation({
+    onCompleted: data => console.tlog('data', data),
+    onError: e => console.tlog('e', e),
+  })
+
+  /* ------------------------ state ------------------------ */
   const { color } = useThemes()
   const styles = useStyleSheet(Styles)
+  const [img, setImg] = React.useState(null)
 
   const bs = useRef(null)
 
   const fall = new Value(1)
 
+  React.useEffect(() => {
+    ;(async () => {
+      if (isIos) {
+        const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL)
+        if (status !== 'granted') {
+          addSnack({
+            message: 'Sorry, we need camera roll permissions to make this work!',
+            type: 'warning',
+          })
+        }
+      }
+    })()
+  }, [])
+
   /* ------------- methods ------------- */
 
   const signOut = () => {
     logout()
-    console.log('out')
   }
 
   const openBs = () => {
     bs.current.snapTo(1)
     bs.current.snapTo(1)
+  }
+
+  const pickImage = async () => {
+    try {
+      const result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.All,
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 1,
+      })
+      if (result.cancelled === false) {
+        setImg(result?.uri)
+        // const file = new Blob(result?.uri, { type: 'image/png' })
+
+        const file = new ReactNativeFile({
+          uri: result?.uri,
+          name: 'a.png',
+          type: 'image/png',
+        })
+
+        console.tlog('file', file)
+        mutate({
+          variables: {
+            file: file,
+          },
+        })
+      }
+
+      console.tlog('result', result)
+    } catch (E) {
+      console.tlog('E', E)
+    }
   }
 
   /* ------------- renders ------------- */
@@ -132,7 +203,11 @@ export const SettingsScreen: React.FunctionComponent<SettingsScreenProps> = obse
 
       <Screen style={styles.container} preset="scroll">
         <View full>
-          <View></View>
+          <View>
+            <Button text="Testing pick img" onPress={() => pickImage()} />
+            {img && <Image source={{ uri: img }} style={{ width: 200, height: 200 }} />}
+          </View>
+
           <View row style={styles.rowWrapper}>
             <Text tx="settingsScreen.darkMode" style={styles.rowWrapper} />
             <Switch status="primary" checked={theme !== 'light'} onChange={toggle} />
