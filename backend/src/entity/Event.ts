@@ -13,8 +13,8 @@ export class Information {
 }
 
 export enum MemberInfoType {
-  'secret',
-  'public',
+  SECRET = 'secret',
+  PUBLIC = 'public',
 }
 
 @ObjectType()

@@ -1,9 +1,9 @@
 import bcrypt from 'bcryptjs'
 import { Arg, Ctx, Mutation, Query, Resolver } from 'type-graphql'
-import { User } from '../entity'
-import { AuthInput, SignUpInput, UserResponse, UsersResponse } from '../graphql-types'
-import { MyContext } from '../graphql-types/MyContext'
-import { DI } from '../mikroconfig'
+import { User } from '../../entity'
+import { AuthInput, SignUpInput, UserResponse, UsersResponse } from '../../graphql-types'
+import { MyContext } from '../../graphql-types/MyContext'
+import { DI } from '../../mikroconfig'
 
 const invalidLoginResponse = {
   error: {

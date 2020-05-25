@@ -3,22 +3,23 @@ import express from 'express'
 import session from 'express-session'
 import { MikroORM } from 'mikro-orm'
 import mongoose from 'mongoose'
-import { graphql } from 'graphql'
+import cron from 'node-cron'
 import 'reflect-metadata'
 import { buildSchema } from 'type-graphql'
 import { config } from './config'
-import { User, Event, EventTag } from './entity'
-import { BaseEntity } from './entity/BaseEntity'
+import { Event, EventTag, User } from './entity'
 import { Book } from './entity/Book'
 import { DI } from './mikroconfig'
-import { AuthResolver, BookResolver, EventResolver, EventTagResolver } from './resolvers'
-import cron from 'node-cron'
+import { graphqlUploadExpress } from 'graphql-upload'
 
 // eslint-disable-next-line
 const MongoStore = require('connect-mongo')(session)
 
 ;(async () => {
   const app = express()
+
+  app.use(graphqlUploadExpress({ maxFileSize: 10000000, maxFiles: 10 }))
+
   // Connect to MongoDB:
   mongoose.connect(`mongodb://${config.mongodb.host}:${config.mongodb.port}/${config.mongodb.db}`, {
     useNewUrlParser: true,
@@ -64,7 +65,11 @@ const MongoStore = require('connect-mongo')(session)
   )
 
   const schema = await buildSchema({
-    resolvers: [__dirname + '/modules/**/*.resolver.{ts,js}', __dirname + '/resolvers/*.{ts,js}'],
+    resolvers: [
+      __dirname + '/resolvers/**/*.resolver.{ts,js}',
+      __dirname + '/resolvers/**/*.{ts,js}',
+      __dirname + '/resolvers/*.{ts,js}',
+    ],
     validate: false,
   })
 
@@ -73,6 +78,7 @@ const MongoStore = require('connect-mongo')(session)
     context: ({ req, res }) => ({ req, res }),
     introspection: true,
     playground: true,
+    uploads: false, // disable apollo upload property
   })
 
   apolloServer.applyMiddleware({ app, cors: false })

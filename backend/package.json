@@ -27,6 +27,7 @@
     "express": "^4.17.1",
     "express-session": "^1.17.1",
     "graphql": "^15.0.0",
+    "graphql-upload": "^10.0.0",
     "lodash": "^4.17.15",
     "lodasync": "^1.0.7",
     "mikro-orm": "^3.6.13",
