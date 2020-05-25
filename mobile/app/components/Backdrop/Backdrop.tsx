@@ -1,6 +1,6 @@
 import React from 'react'
 import { StyleSheet } from 'react-native'
-import Animated from 'react-native-reanimated'
+import Animated, { block, call, cond, eq, useCode } from 'react-native-reanimated'
 
 const styles = StyleSheet.create({
   // Shadow
@@ -22,9 +22,21 @@ export const Backdrop: React.FunctionComponent<BackdropProps> = props => {
     outputRange: [0.8, 0],
   })
 
+  const [show, setShow] = React.useState(false)
+
+  useCode(() => {
+    return block([
+      cond(
+        eq(fall, 1),
+        call([], () => setShow(false)),
+        call([], () => setShow(true)),
+      ),
+    ])
+  }, [fall])
+
   return (
     <Animated.View
-      pointerEvents="none"
+      pointerEvents={show ? 'auto' : 'none'}
       style={[
         styles.shadowContainer,
         {
