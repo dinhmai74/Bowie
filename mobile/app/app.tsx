@@ -6,7 +6,7 @@ import { mapping } from '@eva-design/eva'
 // import { default as mapping } from './theme/ui-kitten.mapping.json'
 import { NavigationContainerRef } from '@react-navigation/native'
 import { ApplicationProvider, IconRegistry } from '@ui-kitten/components'
-import { i18n } from 'i18n/i18n'
+import { i18n, LocalizationContext } from 'i18n/i18n'
 import { contains } from 'ramda'
 import React, { useEffect, useRef, useState } from 'react'
 import { ApolloProvider } from 'react-apollo'
@@ -28,6 +28,8 @@ import { IoniconsPack } from './theme/custom-eva-icons/ionicons'
 import { initFonts } from './theme/fonts'
 import * as storage from './utils/storage'
 import { loadString } from './utils/storage'
+import { SnackBarProvider } from 'utils'
+import { translate } from './i18n'
 
 // This puts screens in a native ViewController or Activity. If you want fully native
 // stack navigation, use `createNativeStackNavigator` in place of `createStackNavigator`:
@@ -125,6 +127,17 @@ const App: React.FunctionComponent<{}> = () => {
     setTheme(nextTheme)
   }
 
+  const [locale, setLocale] = React.useState('en')
+
+  const localizationContextValue = React.useMemo(
+    () => ({
+      t: (scope: string, options: any) => translate(scope, { locale, ...options }),
+      locale,
+      setLocale,
+    }),
+    [locale],
+  )
+
   // Before we show the app, we have to wait for our state to be ready.
   // In the meantime, don't render anything. This will be the background
   // color set in native by rootView's background color.
@@ -138,26 +151,34 @@ const App: React.FunctionComponent<{}> = () => {
   }
 
   return (
-    <ThemeProvider theme={currentTheme}>
-      <ApolloOfflineProvider client={offlineClient}>
-        <ApolloProvider client={offlineClient}>
+    <ApolloOfflineProvider client={offlineClient}>
+      <ApolloProvider client={offlineClient}>
+        {/**-----------normal ----------------*/}
+        <SafeAreaProvider initialSafeAreaInsets={initialWindowSafeAreaInsets}>
           <RootStoreProvider value={rootStore}>
-            <SafeAreaProvider initialSafeAreaInsets={initialWindowSafeAreaInsets}>
-              <IconRegistry icons={[FeatherIconsPack, IoniconsPack]} />
+            {/**----------- theme ----------------*/}
+            <IconRegistry icons={[FeatherIconsPack, IoniconsPack]} />
+            <ThemeProvider theme={currentTheme}>
               <AppThemeContext.Provider value={{ theme, toggle }}>
                 <ApplicationProvider mapping={mapping} theme={currentTheme}>
-                  <RootNavigator
-                    ref={navigationRef}
-                    initialState={initialNavigationState}
-                    onStateChange={onNavigationStateChange}
-                  />
+                  {/**----------- utils ----------------*/}
+
+                  <SnackBarProvider>
+                    <LocalizationContext.Provider value={localizationContextValue}>
+                      <RootNavigator
+                        ref={navigationRef}
+                        initialState={initialNavigationState}
+                        onStateChange={onNavigationStateChange}
+                      />
+                    </LocalizationContext.Provider>
+                  </SnackBarProvider>
                 </ApplicationProvider>
               </AppThemeContext.Provider>
-            </SafeAreaProvider>
+            </ThemeProvider>
           </RootStoreProvider>
-        </ApolloProvider>
-      </ApolloOfflineProvider>
-    </ThemeProvider>
+        </SafeAreaProvider>
+      </ApolloProvider>
+    </ApolloOfflineProvider>
   )
 }
 

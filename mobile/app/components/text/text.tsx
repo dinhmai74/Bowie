@@ -1,12 +1,11 @@
+import { Text as ReactNativeText, useStyleSheet } from '@ui-kitten/components'
+import { useLocalization } from 'i18n/i18n'
+import { flatten, mergeAll } from 'ramda'
 import * as React from 'react'
-import { Text as ReactNativeText } from '@ui-kitten/components'
+import { useThemes } from 'theme'
 // import { Text as ReactNativeText } from 'react-native'
 import { TextPresets } from './text.presets'
 import { TextProps } from './text.props'
-import { translate } from 'i18n'
-import { mergeAll, flatten } from 'ramda'
-import { useThemes } from 'theme'
-import { useStyleSheet } from '@ui-kitten/components'
 
 export const Text = (props: TextProps) => {
   // grab the props
@@ -25,6 +24,7 @@ export const Text = (props: TextProps) => {
     maxLength,
     ...rest
   } = props
+  const { t: translate } = useLocalization()
 
   const presets: any = useStyleSheet(TextPresets)
 

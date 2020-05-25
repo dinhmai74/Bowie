@@ -2,7 +2,7 @@ import { Button, Screen, SizedBox, Text, View } from 'components'
 import React, { useState } from 'react'
 import { Image, StyleSheet } from 'react-native'
 import Animated, { Clock, set, useCode, Value } from 'react-native-reanimated'
-import { bInterpolate } from 'react-native-redash'
+import { mix } from 'react-native-redash'
 import { useSafeArea } from 'react-native-safe-area-context'
 import { NavigationInjectedProps } from 'react-navigation'
 import { images, metrics, spacing } from 'theme'
@@ -55,8 +55,8 @@ export const WelcomeScreen: React.FunctionComponent<WelcomeScreenProps> = props 
     )
   }, [showWelcome, welcomeAnim, subtextAnim])
 
-  const welcomeY: any = bInterpolate(welcomeAnim, 500, 1)
-  const welcomeOpacity: any = bInterpolate(welcomeAnim, 0, 1)
+  const welcomeY: any = mix(welcomeAnim, 500, 1)
+  const welcomeOpacity: any = mix(welcomeAnim, 0, 1)
   const insets = useSafeArea()
 
   return (
@@ -83,7 +83,7 @@ export const WelcomeScreen: React.FunctionComponent<WelcomeScreenProps> = props 
       </Screen>
 
       <View style={[styles.footer, { paddingBottom: insets.top || spacing[6] }]}>
-        <Animated.View style={{ opacity: bInterpolate(welcomeAnim, -3, 1) }}>
+        <Animated.View style={{ opacity: mix(welcomeAnim, -3, 1) }}>
           <Button
             onPress={() => {
               props.navigation.navigate(AppRoutes.signIn)

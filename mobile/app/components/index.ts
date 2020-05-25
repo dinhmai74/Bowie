@@ -19,3 +19,4 @@ export * from './view/view'
 export * from './wallpaper/wallpaper'
 export * from './app-divider/app-divider'
 export * from "./AppSnackbar/AppSnackbar"
+export * from "./Backdrop/Backdrop"

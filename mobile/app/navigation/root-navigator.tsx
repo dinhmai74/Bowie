@@ -3,7 +3,6 @@ import { createStackNavigator } from '@react-navigation/stack'
 import { useAuthMutation } from 'app-graphql'
 import React, { useEffect, useMemo } from 'react'
 import { useNetworkStatus } from 'react-offix-hooks'
-import { SnackBarProvider } from 'utils/AppSnackbarProvider'
 import { useForceUpdate } from 'utils/custom-hooks'
 import { load, remove, save } from 'utils/storage'
 import { AuthStack } from './auth-navigator'
@@ -62,34 +61,32 @@ const RootStack = () => {
   const isHaveCookie = isOnline ? validUser : true
 
   return (
-    <SnackBarProvider>
-      <AuthContext.Provider value={authContext}>
-        <Stack.Navigator
-          screenOptions={{
-            headerShown: false,
-            gestureEnabled: true,
-          }}
-        >
-          {!isHaveCookie ? (
-            <Stack.Screen
-              name="authStack"
-              component={AuthStack}
-              options={{
-                headerShown: false,
-              }}
-            />
-          ) : (
-            <Stack.Screen
-              name="primaryStackWithModal"
-              component={PrimaryStackWithModal}
-              options={{
-                headerShown: false,
-              }}
-            />
-          )}
-        </Stack.Navigator>
-      </AuthContext.Provider>
-    </SnackBarProvider>
+    <AuthContext.Provider value={authContext}>
+      <Stack.Navigator
+        screenOptions={{
+          headerShown: false,
+          gestureEnabled: true,
+        }}
+      >
+        {!isHaveCookie ? (
+          <Stack.Screen
+            name="authStack"
+            component={AuthStack}
+            options={{
+              headerShown: false,
+            }}
+          />
+        ) : (
+          <Stack.Screen
+            name="primaryStackWithModal"
+            component={PrimaryStackWithModal}
+            options={{
+              headerShown: false,
+            }}
+          />
+        )}
+      </Stack.Navigator>
+    </AuthContext.Provider>
   )
 }
 

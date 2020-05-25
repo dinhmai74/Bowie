@@ -7,7 +7,7 @@ import { Controller, useForm } from 'react-hook-form'
 import { StyleSheet, TouchableOpacity } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
 import Animated, { set, Transition, Transitioning, useCode } from 'react-native-reanimated'
-import { bInterpolate } from 'react-native-redash'
+import { mix } from 'react-native-redash'
 // import { useStores } from "models/root-store"
 import { NavigationScreenProp } from 'react-navigation'
 import { images, metrics, sh, spacing, sw, useThemes } from 'theme'
@@ -283,12 +283,12 @@ export const SignInScreen: React.FunctionComponent<SignInScreenProps> = observer
           // eslint-disable-next-line
           style={{
             position: 'absolute',
-            top: bInterpolate(animBtnCookOut, btnCookLayout ? btnCookLayout.y : 0, 0) || 0,
+            top: mix(animBtnCookOut, btnCookLayout ? btnCookLayout.y : 0, 0) || 0,
             right: (btnCookLayout ? btnCookLayout.x : 0) || 0,
             backgroundColor: color['color-success-default'],
-            width: bInterpolate(animBtnCookOut, 0, 900),
-            height: bInterpolate(animBtnCookOut, 0, sh),
-            opacity: bInterpolate(animBtnCookOut, 1, 0),
+            width: mix(animBtnCookOut, 0, 900),
+            height: mix(animBtnCookOut, 0, sh),
+            opacity: mix(animBtnCookOut, 1, 0),
           }}
         />
 
