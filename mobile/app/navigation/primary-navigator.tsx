@@ -1,11 +1,42 @@
-import { CardStyleInterpolators, createStackNavigator } from '@react-navigation/stack'
+import {
+  CardStyleInterpolators,
+  createStackNavigator,
+  TransitionPresets,
+} from '@react-navigation/stack'
 import React from 'react'
-import { CreateNewEventScreen, EventDetailScreen } from 'screens'
+import { CreateNewEventScreen, EventDetailScreen, ViewMapScreen } from 'screens'
 import { HomeStack } from './home-navigator'
+import { PrimaryModalParamList, PrimaryParamList } from './types'
 
-const Stack = createStackNavigator()
+const StackWithModal = createStackNavigator<PrimaryModalParamList>()
+const Stack = createStackNavigator<PrimaryParamList>()
 
-export function PrimaryStack() {
+export function PrimaryStackWithModal() {
+  return (
+    <StackWithModal.Navigator
+      // screenOptions={{
+      // headerShown: false,
+      // gestureEnabled: true,
+      // cardStyleInterpolator: CardStyleInterpolators.forScaleFromCenterAndroid,
+      // }}
+      screenOptions={({ route, navigation }) => ({
+        gestureEnabled: true,
+        cardOverlayEnabled: true,
+        headerStatusBarHeight:
+          navigation.dangerouslyGetState().routes.indexOf(route) > 0 ? 0 : undefined,
+        ...TransitionPresets.ModalPresentationIOS,
+      })}
+      mode="modal"
+      headerMode="none"
+    >
+      <StackWithModal.Screen name="primaryStack" component={PrimaryStack} />
+      <StackWithModal.Screen name="createNewEvent" component={CreateNewEventScreen} />
+      <StackWithModal.Screen name="viewMap" component={ViewMapScreen} />
+    </StackWithModal.Navigator>
+  )
+}
+
+function PrimaryStack() {
   return (
     <Stack.Navigator
       screenOptions={{
@@ -15,7 +46,6 @@ export function PrimaryStack() {
       }}
     >
       <Stack.Screen name="homeStack" component={HomeStack} />
-      <Stack.Screen name="createNewEvent" component={CreateNewEventScreen} />
       <Stack.Screen name="eventDetail" component={EventDetailScreen} />
     </Stack.Navigator>
   )

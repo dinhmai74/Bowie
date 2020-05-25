@@ -1,7 +1,7 @@
 import { ImageStyle, ViewStyle } from 'react-native'
 import { spacing } from 'theme'
 import { getElevation } from 'utils'
-import { IconTypes } from './icons'
+import { IconTypes } from './app-icons'
 
 export const AppIconPresets = {
   raise: {

@@ -5,6 +5,7 @@ import React from 'react'
 import { SafeAreaView } from 'react-native'
 // import { PrimaryParamList } from "./types"
 import { useThemes } from 'theme'
+import { AppRoutes } from 'utils'
 import { HomeScreen, NotificationsScreen, SavedScreen, SettingsScreen } from '../screens'
 
 const Tab = createBottomTabNavigator()
@@ -14,7 +15,7 @@ const tabs = ['home', 'saved', 'add', 'notifications', 'settings']
 const BottomTabBar = ({ navigation, state }) => {
   const onSelect = index => {
     if (index === 2) {
-      navigation.navigate('createNewEvent')
+      navigation.navigate(AppRoutes.createNewEvent)
     } else if (index > 2) navigation.navigate(state.routeNames[index - 1])
     else navigation.navigate(state.routeNames[index])
   }

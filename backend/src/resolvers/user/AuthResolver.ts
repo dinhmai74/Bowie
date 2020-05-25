@@ -1,9 +1,9 @@
 import bcrypt from 'bcryptjs'
 import { Arg, Ctx, Mutation, Query, Resolver } from 'type-graphql'
-import { User } from '../entity'
-import { AuthInput, SignUpInput, UserResponse, UsersResponse } from '../graphql-types'
-import { MyContext } from '../graphql-types/MyContext'
-import { DI } from '../mikroconfig'
+import { User } from '../../entity'
+import { AuthInput, SignUpInput, UserResponse, UsersResponse } from '../../graphql-types'
+import { MyContext } from '../../graphql-types/MyContext'
+import { DI } from '../../mikroconfig'
 
 const invalidLoginResponse = {
   error: {
@@ -41,9 +41,10 @@ export class AuthResolver {
       user.password = hashedPassword
       user.email = email
       user.name = name
-      DI.userRepos.persist(user)
-      console.log('user.id', user)
-      ctx.req.session!.userId = user.id
+      await DI.userRepos.persist(user)
+      const insertedUser = await DI.userRepos.findOne({ email })
+      console.log('user.id', insertedUser)
+      ctx.req.session!.userId = insertedUser?.id
       console.log('ctx.req.session!.userId', ctx.req.session!.userId)
       return { user }
     }

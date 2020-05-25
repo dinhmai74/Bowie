@@ -1,6 +1,6 @@
 import * as React from 'react'
-// import { Text as KittenText } from "@ui-kitten/components"
-import { Text as ReactNativeText } from 'react-native'
+import { Text as ReactNativeText } from '@ui-kitten/components'
+// import { Text as ReactNativeText } from 'react-native'
 import { TextPresets } from './text.presets'
 import { TextProps } from './text.props'
 import { translate } from 'i18n'
@@ -22,6 +22,7 @@ export const Text = (props: TextProps) => {
     underline,
     textAlign,
     fontFamily,
+    maxLength,
     ...rest
   } = props
 
@@ -29,7 +30,7 @@ export const Text = (props: TextProps) => {
 
   // figure out which content to use
   const i18nText = tx && translate(tx, txOptions)
-  let content: any
+  let content: string
   if (typeof children === 'string') {
     content = translate(children, txOptions)
   } else content = children || translate(text, txOptions) || i18nText
@@ -50,6 +51,11 @@ export const Text = (props: TextProps) => {
       styleOverride,
     ]),
   )
+
+  if (maxLength && content.length > maxLength) {
+    content = content.slice(0, maxLength)
+    content += ' ...'
+  }
 
   return (
     <ReactNativeText {...rest} style={style}>

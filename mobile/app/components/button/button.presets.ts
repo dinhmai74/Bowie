@@ -1,6 +1,7 @@
 import { StyleService } from '@ui-kitten/components'
 import { TextStyle, ViewStyle } from 'react-native'
 import { spacing } from 'theme'
+import { palette } from 'theme/palette'
 
 /**
  * All text will start off looking like this.
@@ -26,11 +27,14 @@ export const ViewPresets = StyleService.create({
   link: {
     ...BASE_VIEW,
   },
-  ghostWithPrimaryBg: {
+  outlineWithoutBorder: {
     paddingVertical: spacing[4],
-    backgroundColor: 'color-primary-100',
     borderColor: 'none',
     borderWidth: 0,
+  },
+  bordered: {
+    borderWidth: 1,
+    backgroundColor: palette.transparent,
   },
 })
 
@@ -39,9 +43,6 @@ export const TextPresets = StyleService.create({
   link: {
     ...BASE_TEXT,
   } as TextStyle,
-  ghostWithPrimaryBg: {
-    color: 'color-primary-500',
-  },
 })
 
 /**

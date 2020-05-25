@@ -3,7 +3,10 @@
     "ok": "OK!",
     "cancel": "Cancel",
     "back": "Back",
-    "loading": "Loading..."
+    "loading": "Loading...",
+    "or": "Or",
+    "public": "Public",
+    "secret": "Secret"
   },
   "errors": {
     "invalidEmail": "Invalid email address.",
@@ -66,7 +69,15 @@
     "feedBack": "Feedback"
   },
   "eventDetailScreen": {
-    "header": "Event"
+    "header": "Event",
+    "showMap": "Show map",
+    "information": "Information",
+    "join": "Join",
+    "wannaJoinAs": "Wanna join as",
+    "member": "Member"
+  },
+  "viewMapScreen": {
+    "header": "Map"
   },
   "en": "English",
   "vi": "Vietnamese"

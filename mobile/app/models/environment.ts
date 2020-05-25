@@ -1,8 +1,8 @@
-import { Api } from "../services/api"
+import { offlineClient } from '../services/apollo/apollo'
 
 let ReactotronDev
 if (__DEV__) {
-  const { Reactotron } = require("../services/reactotron")
+  const { Reactotron } = require('../services/reactotron')
   ReactotronDev = Reactotron
 }
 
@@ -17,7 +17,6 @@ export class Environment {
       // dev-only services
       this.reactotron = new ReactotronDev()
     }
-    this.api = new Api()
   }
 
   async setup() {
@@ -25,7 +24,7 @@ export class Environment {
     if (__DEV__) {
       await this.reactotron.setup()
     }
-    await this.api.setup()
+    await offlineClient.init()
   }
 
   /**
@@ -36,5 +35,4 @@ export class Environment {
   /**
    * Our api.
    */
-  api: Api
 }

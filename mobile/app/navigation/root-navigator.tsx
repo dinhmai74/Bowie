@@ -1,19 +1,27 @@
 import { NavigationContainer, NavigationContainerRef } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
-import { useGetCurrentUserInfoLazyQuery } from 'app-graphql'
-import React, { useEffect } from 'react'
+import { useAuthMutation } from 'app-graphql'
+import React, { useEffect, useMemo } from 'react'
 import { useNetworkStatus } from 'react-offix-hooks'
-import { useForceUpdate } from 'utils'
+import { SnackBarProvider } from 'utils/AppSnackbarProvider'
+import { useForceUpdate } from 'utils/custom-hooks'
 import { load, remove, save } from 'utils/storage'
 import { AuthStack } from './auth-navigator'
-import { PrimaryStack } from './primary-navigator'
+import { PrimaryStackWithModal } from './primary-navigator'
 import { RootParamList } from './types'
 
 export const AuthContext = React.createContext(null)
 
+interface AuthContextState {
+  auth: () => void
+}
+
+export const useAuthContext = (): AuthContextState => React.useContext(AuthContext)
+
 const Stack = createStackNavigator<RootParamList>()
 
 const LOGIN_KEY = 'login'
+
 const RootStack = () => {
   const [validUser, setValidUser] = React.useState(false)
   const refresh = useForceUpdate()
@@ -22,14 +30,16 @@ const RootStack = () => {
     setValidUser(false)
     remove(LOGIN_KEY)
   }
-  const [auth] = useGetCurrentUserInfoLazyQuery({
+  const [auth] = useAuthMutation({
     onCompleted(d) {
-      if (d.me.email) {
+      if (d.auth.email) {
         setValidUser(true)
         save(LOGIN_KEY, 'login')
+        refresh()
       } else handleErr()
     },
-    onError(e) {
+    onError() {
+      refresh()
       handleErr()
     },
   })
@@ -40,7 +50,6 @@ const RootStack = () => {
       if (isOnline) await auth()
       else {
         const key = await load(LOGIN_KEY)
-        console.tlog('key', key)
         if (key) setValidUser(true)
       }
     }
@@ -48,45 +57,39 @@ const RootStack = () => {
     bootstrapAsync()
   }, [])
 
-  const authContext = React.useMemo(
-    () => ({
-      reAuth: async () => {
-        await auth()
-        refresh()
-      },
-    }),
-    [],
-  )
+  const authContext = useMemo(() => ({ auth }), [auth])
 
   const isHaveCookie = isOnline ? validUser : true
 
   return (
-    <AuthContext.Provider value={authContext}>
-      <Stack.Navigator
-        screenOptions={{
-          headerShown: false,
-          gestureEnabled: true,
-        }}
-      >
-        {!isHaveCookie ? (
-          <Stack.Screen
-            name="authStack"
-            component={AuthStack}
-            options={{
-              headerShown: false,
-            }}
-          />
-        ) : (
-          <Stack.Screen
-            name="primaryStack"
-            component={PrimaryStack}
-            options={{
-              headerShown: false,
-            }}
-          />
-        )}
-      </Stack.Navigator>
-    </AuthContext.Provider>
+    <SnackBarProvider>
+      <AuthContext.Provider value={authContext}>
+        <Stack.Navigator
+          screenOptions={{
+            headerShown: false,
+            gestureEnabled: true,
+          }}
+        >
+          {!isHaveCookie ? (
+            <Stack.Screen
+              name="authStack"
+              component={AuthStack}
+              options={{
+                headerShown: false,
+              }}
+            />
+          ) : (
+            <Stack.Screen
+              name="primaryStackWithModal"
+              component={PrimaryStackWithModal}
+              options={{
+                headerShown: false,
+              }}
+            />
+          )}
+        </Stack.Navigator>
+      </AuthContext.Provider>
+    </SnackBarProvider>
   )
 }
 

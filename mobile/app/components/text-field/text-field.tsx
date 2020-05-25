@@ -13,5 +13,5 @@ export const TextField = (props: TextFieldProps) => {
   const placeholder = translate(PPlaceholder)
   const caption = typeof cap === 'string' ? translate(cap) : cap
 
-  return <Input {...{ label, placeholder, caption }} {...rest} ref={inputRef} />
+  return <Input {...{ label, placeholder, caption }} {...rest} ref={inputRef} style={style} />
 }

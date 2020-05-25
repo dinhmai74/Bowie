@@ -1,5 +1,6 @@
 export const palette = {
   black: '#1d1d1d',
+  transparent: 'rgba(0, 0, 0, 0)',
   white: '#ffffff',
   offWhite: '#e6e6e6',
   orange: '#FBA928',
@@ -11,6 +12,7 @@ export const palette = {
   blueLightState: '#7480ff',
   orangeRajah: '#f8aa71',
   redMonaLisa: '#fe9391',
+  backdrop: 'rgba(0, 0, 0, 0.5)',
 }
 
-export type Palette = keyof typeof palette
+export type Palette = typeof palette

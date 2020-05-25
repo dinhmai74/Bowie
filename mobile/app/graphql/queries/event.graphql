@@ -1,5 +1,5 @@
-query queryGetEventByCoord($input: CoordInput!) {
-  getEventBaseOnPos(input: $input) {
+query getAllEvents {
+  getEvents {
     events {
       id
       hostId
@@ -7,13 +7,42 @@ query queryGetEventByCoord($input: CoordInput!) {
         id
         type
       }
-      time
+      endTime
+      startTime
       information {
         eventName
         description
       }
       place {
         name
+        address
+        coord {
+          latitude
+          longitude
+        }
+      }
+    }
+    error {
+      message
+    }
+  }
+}
+
+query getEventByCoord($input: CoordInput!) {
+  getEventBaseOnPos(input: $input) {
+    events {
+      id
+      hostInfo {
+        id
+        name
+        email
+      }
+      endTime
+      startTime
+      information {
+        eventName
+      }
+      place {
         coord {
           latitude
           longitude
@@ -35,13 +64,15 @@ query getEventById($id: String!) {
         id
         type
       }
-      time
+      endTime
+      startTime
       information {
         eventName
         description
       }
       place {
         name
+        address
         coord {
           latitude
           longitude

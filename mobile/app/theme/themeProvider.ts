@@ -1,10 +1,10 @@
 // @ts-ignore
-import React, { useContext } from "react"
-import { useTheme } from "@ui-kitten/components"
-import { Color } from "./color-model"
+import { useTheme } from '@ui-kitten/components'
+import React, { useContext } from 'react'
+import { Color } from './color-model'
 
 export const AppThemeContext = React.createContext({
-  theme: "light",
+  theme: 'light',
   // eslint-disable-next-line
   toggle: () => {},
 })
@@ -18,6 +18,7 @@ interface UseThemes {
 export const useThemes = (): UseThemes => {
   const themeContext = useContext(AppThemeContext)
   const toggle = () => {
+    console.tlog('toggle theme')
     themeContext.toggle()
   }
 

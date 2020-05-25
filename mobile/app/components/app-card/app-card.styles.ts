@@ -1,12 +1,10 @@
-import { StyleSheet } from "react-native"
-import { getElevation } from "utils"
-import { spacing } from "theme"
+import { StyleSheet } from 'react-native'
+import { spacing } from 'theme'
 
 export const appCardStyles = StyleSheet.create({
   wrapper: {
-    alignItems: "center",
+    alignItems: 'center',
     borderRadius: spacing[3],
-    justifyContent: "center",
-    ...getElevation(),
+    justifyContent: 'center',
   },
 })

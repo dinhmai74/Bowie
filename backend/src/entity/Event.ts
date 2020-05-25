@@ -13,8 +13,8 @@ export class Information {
 }
 
 export enum MemberInfoType {
-  'secret',
-  'public',
+  SECRET = 'secret',
+  PUBLIC = 'public',
 }
 
 @ObjectType()
@@ -44,6 +44,9 @@ export class Place {
   name: string
 
   @Field()
+  address: string
+
+  @Field()
   coord: Coord
 }
 
@@ -70,7 +73,11 @@ export class Event extends BaseEntity {
 
   @Field()
   @Property()
-  time: Date
+  startTime: Date
+
+  @Field()
+  @Property()
+  endTime: Date
 
   @Field(() => String)
   @Property()

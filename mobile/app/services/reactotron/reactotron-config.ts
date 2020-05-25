@@ -22,6 +22,7 @@ export interface ReactotronConfig {
  * The default Reactotron configuration.
  */
 export const DEFAULT_REACTOTRON_CONFIG: ReactotronConfig = {
+  name: 'bowie',
   clearOnLoad: true,
   host: Constants.manifest.extra.ip,
   useAsyncStorage: true,

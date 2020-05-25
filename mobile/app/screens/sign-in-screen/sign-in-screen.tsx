@@ -1,10 +1,10 @@
-import { useLoginMutation, useLogoutMutation } from 'app-graphql'
+import { useLoginMutation, useSignUpMutation } from 'app-graphql'
 import { AuthHeader, Button, Screen, SizedBox, Text, TextField, View } from 'components'
 import { observer } from 'mobx-react-lite'
-import { AuthContext } from 'navigation'
-import React, { useContext, useRef, useState } from 'react'
+import { useAuthContext } from 'navigation'
+import React, { useRef, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
-import { Alert, StyleSheet, TouchableOpacity } from 'react-native'
+import { StyleSheet, TouchableOpacity } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
 import Animated, { set, Transition, Transitioning, useCode } from 'react-native-reanimated'
 import { bInterpolate } from 'react-native-redash'
@@ -19,6 +19,7 @@ import {
   nDelay,
   runTimingWithEndActionOB,
   useLayout,
+  useSnackBars,
 } from 'utils'
 import { EyeIcon, FBicon } from './components/Icons'
 import { useSignInAnimations } from './hooks'
@@ -82,29 +83,34 @@ const duration = 300
 export const SignInScreen: React.FunctionComponent<SignInScreenProps> = observer(() => {
   // const { someStore } = useStores()
   const refForm = useRef(null)
-  const { reAuth } = useContext(AuthContext)
+  const auth = useAuthContext()
+  const { addSnack } = useSnackBars()
 
   const onError = err => {
-    Alert.alert(JSON.stringify(err))
-    console.tlog('err', err)
+    addSnack({
+      message: err.message,
+      type: 'danger',
+    })
   }
-  const onCompleted = data => {
-    const errMss = data?.register?.error || data?.login?.error
-    if (errMss) {
-      Alert.alert(JSON.stringify(errMss?.message))
-    } else {
-      refForm.current.animateNextTransition()
-      nDelay(200).then(() => setTriggerSpreadOut(true))
-      nDelay(600).then(() => reAuth())
-    }
+
+  const handleSuccess = () => {
+    refForm.current.animateNextTransition()
+    nDelay(200).then(() => setTriggerSpreadOut(true))
+    nDelay(600).then(() => auth?.auth())
   }
 
   const [login, loginResult] = useLoginMutation({
-    onCompleted,
+    onCompleted: data => {
+      if (data.login.error) onError(data.login.error)
+      else handleSuccess()
+    },
     onError,
   })
-  const [signUp, signUpResult] = useLogoutMutation({
-    onCompleted,
+  const [signUp, signUpResult] = useSignUpMutation({
+    onCompleted: data => {
+      if (data.register.error) onError(data.register.error)
+      else handleSuccess()
+    },
     onError,
   })
 

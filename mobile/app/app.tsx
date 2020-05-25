@@ -3,6 +3,7 @@
 // In this file, we'll be kicking off our app or storybook.
 
 import { mapping } from '@eva-design/eva'
+// import { default as mapping } from './theme/ui-kitten.mapping.json'
 import { NavigationContainerRef } from '@react-navigation/native'
 import { ApplicationProvider, IconRegistry } from '@ui-kitten/components'
 import { i18n } from 'i18n/i18n'
@@ -13,13 +14,14 @@ import { YellowBox } from 'react-native'
 import { initialWindowSafeAreaInsets, SafeAreaProvider } from 'react-native-safe-area-context'
 import { enableScreens } from 'react-native-screens'
 import { ApolloOfflineProvider } from 'react-offix-hooks'
-import { strings } from 'utils'
-import { offlineClient } from './config/apollo'
+import { ThemeProvider } from 'styled-components'
+import { strings } from 'utils/strings'
 import './i18n'
 import { RootStore, RootStoreProvider, setupRootStore } from './models/root-store'
 import { exitRoutes, RootNavigator, setRootNavigation } from './navigation'
 import getActiveRouteName from './navigation/get-active-routename'
 import { useBackButtonHandler } from './navigation/use-back-button-handler'
+import { offlineClient } from './services/apollo/apollo'
 import { AppThemeContext, themes } from './theme'
 import { FeatherIconsPack } from './theme/custom-eva-icons/feather-icon'
 import { IoniconsPack } from './theme/custom-eva-icons/ionicons'
@@ -42,6 +44,7 @@ YellowBox.ignoreWarnings([
   'Require cycle:',
   "Can't perform a React state",
   'Story with',
+  'Expected style',
 ])
 
 /**
@@ -59,7 +62,6 @@ export const NAVIGATION_PERSISTENCE_KEY = 'NAVIGATION_STATE'
  */
 const App: React.FunctionComponent<{}> = () => {
   const navigationRef = useRef<NavigationContainerRef>()
-  const [initialized, setInitialized] = useState(false)
   const [rootStore, setRootStore] = useState<RootStore | undefined>(undefined)
   const [initialNavigationState, setInitialNavigationState] = useState()
   const [isRestoringNavigationState, setIsRestoringNavigationState] = useState(true)
@@ -93,10 +95,9 @@ const App: React.FunctionComponent<{}> = () => {
   useEffect(() => {
     ;(async () => {
       await initFonts()
-      if (!rootStore) setupRootStore().then(setRootStore)
+      setupRootStore().then(setRootStore)
       i18n.locale = await loadString(strings.lang)
     })()
-    offlineClient.init().then(() => setInitialized(true))
   }, [])
 
   useEffect(() => {
@@ -117,6 +118,13 @@ const App: React.FunctionComponent<{}> = () => {
     }
   }, [isRestoringNavigationState])
 
+  const currentTheme = themes[theme]
+
+  const toggle = () => {
+    const nextTheme = theme === 'light' ? 'dark' : 'light'
+    setTheme(nextTheme)
+  }
+
   // Before we show the app, we have to wait for our state to be ready.
   // In the meantime, don't render anything. This will be the background
   // color set in native by rootView's background color.
@@ -125,36 +133,31 @@ const App: React.FunctionComponent<{}> = () => {
   //
   // You're welcome to swap in your own component to render if your boot up
   // sequence is too slow though.
-  if (!rootStore || !initialized) {
+  if (!rootStore) {
     return null
   }
 
-  const currentTheme = themes[theme]
-
-  const toggle = () => {
-    const nextTheme = theme === 'light' ? 'dark' : 'light'
-    setTheme(nextTheme)
-  }
-
   return (
-    <ApolloOfflineProvider client={offlineClient}>
-      <ApolloProvider client={offlineClient}>
-        <RootStoreProvider value={rootStore}>
-          <SafeAreaProvider initialSafeAreaInsets={initialWindowSafeAreaInsets}>
-            <IconRegistry icons={[IoniconsPack, FeatherIconsPack]} />
-            <AppThemeContext.Provider value={{ theme, toggle }}>
-              <ApplicationProvider mapping={mapping} theme={currentTheme}>
-                <RootNavigator
-                  ref={navigationRef}
-                  initialState={initialNavigationState}
-                  onStateChange={onNavigationStateChange}
-                />
-              </ApplicationProvider>
-            </AppThemeContext.Provider>
-          </SafeAreaProvider>
-        </RootStoreProvider>
-      </ApolloProvider>
-    </ApolloOfflineProvider>
+    <ThemeProvider theme={currentTheme}>
+      <ApolloOfflineProvider client={offlineClient}>
+        <ApolloProvider client={offlineClient}>
+          <RootStoreProvider value={rootStore}>
+            <SafeAreaProvider initialSafeAreaInsets={initialWindowSafeAreaInsets}>
+              <IconRegistry icons={[FeatherIconsPack, IoniconsPack]} />
+              <AppThemeContext.Provider value={{ theme, toggle }}>
+                <ApplicationProvider mapping={mapping} theme={currentTheme}>
+                  <RootNavigator
+                    ref={navigationRef}
+                    initialState={initialNavigationState}
+                    onStateChange={onNavigationStateChange}
+                  />
+                </ApplicationProvider>
+              </AppThemeContext.Provider>
+            </SafeAreaProvider>
+          </RootStoreProvider>
+        </ApolloProvider>
+      </ApolloOfflineProvider>
+    </ThemeProvider>
   )
 }
 

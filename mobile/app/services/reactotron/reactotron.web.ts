@@ -1,11 +1,10 @@
-import Tron from 'reactotron-react-js'
-import { AsyncStorage } from 'react-native'
-import { RootStore } from '../../models/root-store/root-store'
 import { onSnapshot } from 'mobx-state-tree'
-import { ReactotronConfig, DEFAULT_REACTOTRON_CONFIG } from './reactotron-config'
 import { mst } from 'reactotron-mst'
-import { clear } from '../../utils/storage'
+import Tron from 'reactotron-react-native'
+import { RootStore } from '../../models/root-store/root-store'
 import { RootNavigation } from '../../navigation'
+import { clear } from '../../utils/storage'
+import { DEFAULT_REACTOTRON_CONFIG, ReactotronConfig } from './reactotron-config'
 
 // Teach TypeScript about the bad things we want to do.
 declare global {
@@ -13,8 +12,8 @@ declare global {
     /**
      * Hey, it's Reactotron if we're in dev, and no-ops if we're in prod.
      */
-    // tron: typeof Tron
-    tlog: any
+    tron: typeof Tron
+    tlog: typeof Tron.display
   }
 }
 
@@ -37,7 +36,6 @@ const noop = () => undefined
 
 // in dev, we attach Reactotron, in prod we attach a interface-compatible mock.
 if (__DEV__) {
-  // @ts-ignore
   console.tron = Tron // attach reactotron to `console.tron`
 } else {
   // attach a mock so if things sneaky by our __DEV__ guards, we won't crash.
@@ -133,6 +131,14 @@ export class Reactotron {
         name: this.config.name || require('../../../package.json').name,
         host: this.config.host,
       })
+
+      // // hookup middleware
+      // if (this.config.useAsyncStorage) {
+      //   Tron.setAsyncStorageHandler(AsyncStorage)
+      // }
+      // Tron.useReactNative({
+      //   asyncStorage: this.config.useAsyncStorage ? undefined : false,
+      // })
 
       // ignore some chatty `mobx-state-tree` actions
       const RX = /postProcessSnapshot|@APPLY_SNAPSHOT/

@@ -4,11 +4,13 @@ import { Event } from 'app-graphql'
 import { AppCard, Button, Text } from 'components'
 import { AppIcon } from 'components/app-icon/AppIcon'
 import { SizedBox } from 'components/sized-box/sized-box'
+import moment from 'moment'
 import React, { useState } from 'react'
 import { Image, View } from 'react-native'
 import MapView, { Marker as MapMarker, MarkerProps } from 'react-native-maps'
 import { images, metrics, useThemes } from 'theme'
 import { Color } from 'theme/color-model'
+import { AppRoutes, DateFormat } from 'utils'
 import { appMapViewStyles as styles } from './app-map-view.styles'
 
 export type Region = {
@@ -39,18 +41,24 @@ interface AppMarkerCardProps {
 
 const AppMarkerCard: React.FC<AppMarkerCardProps> = ({ event, color }) => {
   const navigation = useNavigation()
+  const time = `${moment(event.startTime)
+    .local()
+    .format(DateFormat.hourMinuteWithIndicator)} - ${moment(event.endTime)
+    .local()
+    .format(DateFormat.hourMinuteWithIndicator)}`
+
   return (
     <AppCard style={styles.bottomInfoContent}>
       <Image source={images.place} style={styles.bottomInfoImage} />
       <SizedBox h={4} />
       <Text text={event.information.eventName} preset="bold" />
       <SizedBox h={4} />
-      <Text text={event.information.description} />
+      <Text text={time} />
       <SizedBox h={4} />
       <Button
-        style={[styles.bottomInfoButton, { backgroundColor: color['background-basic-color-1'] }]}
-        appearance="outline"
-        onPress={() => navigation.navigate('eventDetail', { id: event.id })}
+        style={styles.bottomInfoButton}
+        onPress={() => navigation.navigate(AppRoutes.eventDetail, { id: event.id })}
+        preset="bordered"
         tx="homeScreen.viewDetail"
       />
     </AppCard>
