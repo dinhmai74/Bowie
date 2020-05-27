@@ -42,14 +42,18 @@ export class ProfilePictureResolver {
         .pipe(createWriteStream(__dirname + `${imgDir}/${filename}`))
         .on('finish', async () => {
           const tempId = v4()
+          // find old avatar and delete if have
           const img = new Image()
+          if (!user) return resolve(false)
+          const oldImage = await DI.imageRepos.findOne({ id: user?.avatarId })
+          if (oldImage) await DI.imageRepos.removeAndFlush(oldImage)
+
           img.data = readFileSync(__dirname + `${imgDir}/${filename}`)
           img.contentType = 'image/png'
           img.tempId = tempId
           await DI.imageRepos.persist(img)
           const imgSave = await DI.imageRepos.findOne({ tempId })
 
-          if (!user) return resolve(false)
           user.avatarId = imgSave!.id
           await DI.em.flush()
           // DI.userRepos.persist(user)
