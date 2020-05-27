@@ -36,6 +36,10 @@ query getEventByCoord($input: CoordInput!) {
         id
         name
         email
+        avatar {
+          data
+          contentType
+        }
       }
       endTime
       startTime

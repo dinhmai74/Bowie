@@ -165,7 +165,7 @@ export type EventWithHost = {
   tags: Array<Scalars['String']>;
   place: Place;
   information: Information;
-  hostInfo?: Maybe<User>;
+  hostInfo?: Maybe<UserWithAvt>;
 };
 
 export type FieldError = {
@@ -440,8 +440,12 @@ export type GetEventByCoordQuery = (
       { __typename?: 'EventWithHost' }
       & Pick<EventWithHost, 'id' | 'endTime' | 'startTime'>
       & { hostInfo?: Maybe<(
-        { __typename?: 'User' }
-        & Pick<User, 'id' | 'name' | 'email'>
+        { __typename?: 'UserWithAvt' }
+        & Pick<UserWithAvt, 'id' | 'name' | 'email'>
+        & { avatar?: Maybe<(
+          { __typename?: 'Image' }
+          & Pick<Image, 'data' | 'contentType'>
+        )> }
       )>, information: (
         { __typename?: 'Information' }
         & Pick<Information, 'eventName'>
@@ -768,6 +772,10 @@ export const GetEventByCoordDocument = gql`
         id
         name
         email
+        avatar {
+          data
+          contentType
+        }
       }
       endTime
       startTime

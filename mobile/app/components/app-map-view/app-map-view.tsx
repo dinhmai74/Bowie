@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native'
 import { Avatar } from '@ui-kitten/components'
-import { Event } from 'app-graphql'
+import { Event, EventWithHost } from 'app-graphql'
 import { AppCard, Button, Text } from 'components'
 import { AppIcon } from 'components/app-icon/AppIcon'
 import { SizedBox } from 'components/sized-box/sized-box'
@@ -10,7 +10,7 @@ import { Image, View } from 'react-native'
 import MapView, { Marker as MapMarker, MarkerProps } from 'react-native-maps'
 import { images, metrics, useThemes } from 'theme'
 import { Color } from 'theme/color-model'
-import { AppRoutes, DateFormat } from 'utils'
+import { AppRoutes, DateFormat, getBase64UriFromUnknownSource } from 'utils'
 import { appMapViewStyles as styles } from './app-map-view.styles'
 
 export type Region = {
@@ -71,7 +71,7 @@ export interface AppMapViewProps {
   region: Region
   onRegionChange?: (region: Region) => void
   onRegionChangeComplete?: (region: Region) => void
-  events?: Event[]
+  events?: EventWithHost[]
   style?: any
 }
 
@@ -97,7 +97,7 @@ export const AppMapView: React.FunctionComponent<AppMapViewProps> = props => {
             <AppMarker
               key={index}
               // TODO: replace avatar by iamge
-              avatar={images.place}
+              avatar={{ uri: getBase64UriFromUnknownSource(marker?.hostInfo?.avatar?.data) }}
               coordinate={marker.place.coord}
               onPress={location => onPressMarker(location, index)}
               // {...{ opacity }}

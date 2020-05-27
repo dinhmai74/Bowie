@@ -1,6 +1,5 @@
 import { Avatar as KittenAvatar } from '@ui-kitten/components'
 import { GetCurrentUserInfoQuery } from 'app-graphql'
-import base64 from 'base64-js'
 import { Text, View } from 'components'
 import React from 'react'
 import { ImageStyle, StyleSheet } from 'react-native'
@@ -8,7 +7,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler'
 import SkeletonContent from 'react-native-skeleton-content'
 import styled from 'styled-components'
 import { spacing, useThemes } from 'theme'
-import { toCapitalize } from 'utils'
+import { toCapitalize, getBase64Uri, getBase64UriFromUnknownSource } from 'utils'
 
 const Container = styled(View)`
   margin: ${spacing[4]}px 0;
@@ -43,11 +42,7 @@ export const Avatar: React.FC<AvatarProps> = props => {
   let avatarUri: string
 
   if (getInfoData?.me) {
-    const data = getInfoData?.me?.user?.avatar?.data
-    const base = 'data:image/png;base64,'
-    if (data?.data)
-      avatarUri = base + base64.fromByteArray(getInfoData?.me?.user?.avatar?.data?.data)
-    else avatarUri = base + data
+    avatarUri = getBase64UriFromUnknownSource(getInfoData?.me?.user?.avatar?.data)
   }
 
   const userName = getInfoData?.me?.user?.name

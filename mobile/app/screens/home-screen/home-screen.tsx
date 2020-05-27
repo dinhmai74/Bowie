@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native'
-import { Event, useGetEventByCoordQuery, useGetEventByCoordLazyQuery } from 'app-graphql'
+import { Event, useGetEventByCoordLazyQuery } from 'app-graphql'
 import { AppError, AppLoading, AppMapView, Header, Screen, SizedBox, View } from 'components'
 import * as Location from 'expo-location'
 import * as Permissions from 'expo-permissions'
