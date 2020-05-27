@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native'
-import { Event, useGetEventByCoordLazyQuery } from 'app-graphql'
+import { Event, useGetEventByCoordLazyQuery, EventWithHost } from 'app-graphql'
 import { AppError, AppLoading, AppMapView, Header, Screen, SizedBox, View } from 'components'
 import * as Location from 'expo-location'
 import * as Permissions from 'expo-permissions'
@@ -85,7 +85,7 @@ export const HomeScreen: React.FunctionComponent<HomeScreenProps> = observer(() 
     getLocationAsync()
   }, [])
 
-  let events: Event[] = []
+  let events: EventWithHost[] = []
   // @ts-ignore
   if (data?.getEventBaseOnPos?.events.length > 0) events = [...data.getEventBaseOnPos.events]
 

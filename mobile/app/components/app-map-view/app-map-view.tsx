@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native'
 import { Avatar } from '@ui-kitten/components'
-import { Event, EventWithHost } from 'app-graphql'
+import { EventWithHost } from 'app-graphql'
 import { AppCard, Button, Text } from 'components'
 import { AppIcon } from 'components/app-icon/AppIcon'
 import { SizedBox } from 'components/sized-box/sized-box'
@@ -35,7 +35,7 @@ const AppMarker: React.FC<AppMarker> = ({ coordinate, avatar, ...rest }) => {
 }
 
 interface AppMarkerCardProps {
-  event: Event
+  event: EventWithHost
   color: Color
 }
 
