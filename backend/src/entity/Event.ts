@@ -63,9 +63,9 @@ export class Event extends BaseEntity {
   @Property()
   metaArrayOfStrings?: string[]
 
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   @Property()
-  hostId: string
+  hostId?: string
 
   @Field(() => MemberInfo)
   @Property()

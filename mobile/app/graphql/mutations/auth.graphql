@@ -31,17 +31,3 @@ mutation auth {
     name
   }
 }
-
-query getAllUsers {
-  getAllUsers {
-    users {
-      email
-    }
-  }
-}
-
-query getCurrentUserInfo {
-  me {
-    email
-  }
-}

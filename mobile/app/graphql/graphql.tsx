@@ -66,7 +66,7 @@ export type Event = {
   id: Scalars['String'];
   createdAt: Scalars['DateTime'];
   updatedAt: Scalars['DateTime'];
-  hostId: Scalars['String'];
+  hostId?: Maybe<Scalars['String']>;
   membersInfo: Array<MemberInfo>;
   startTime: Scalars['DateTime'];
   endTime: Scalars['DateTime'];
@@ -76,7 +76,7 @@ export type Event = {
 };
 
 export type EventCreateInput = {
-  hostId: Scalars['String'];
+  hostId?: Maybe<Scalars['String']>;
   membersInfo: Array<EventMemberInfoInput>;
   startTime: Scalars['DateTime'];
   endTime: Scalars['DateTime'];
@@ -158,14 +158,14 @@ export type EventWithHost = {
   id: Scalars['String'];
   createdAt: Scalars['DateTime'];
   updatedAt: Scalars['DateTime'];
-  hostId: Scalars['String'];
+  hostId?: Maybe<Scalars['String']>;
   membersInfo: Array<MemberInfo>;
   startTime: Scalars['DateTime'];
   endTime: Scalars['DateTime'];
   tags: Array<Scalars['String']>;
   place: Place;
   information: Information;
-  hostInfo: User;
+  hostInfo?: Maybe<User>;
 };
 
 export type FieldError = {
@@ -176,6 +176,9 @@ export type FieldError = {
 
 export type Image = {
   __typename?: 'Image';
+  id: Scalars['String'];
+  createdAt: Scalars['DateTime'];
+  updatedAt: Scalars['DateTime'];
   data: Scalars['Buffer'];
   contentType: Scalars['String'];
 };
@@ -264,7 +267,7 @@ export type Query = {
   getAllTag: EventTagsResponse;
   hello: Scalars['String'];
   getAllUsers: UsersResponse;
-  me?: Maybe<User>;
+  me?: Maybe<UserWithAvtResponse>;
 };
 
 
@@ -291,7 +294,7 @@ export type User = {
   updatedAt: Scalars['DateTime'];
   email: Scalars['String'];
   name: Scalars['String'];
-  avatar: Image;
+  avatarId: Scalars['String'];
 };
 
 export type UserResponse = {
@@ -303,6 +306,23 @@ export type UserResponse = {
 export type UsersResponse = {
   __typename?: 'UsersResponse';
   users?: Maybe<Array<User>>;
+  error?: Maybe<FieldError>;
+};
+
+export type UserWithAvt = {
+  __typename?: 'UserWithAvt';
+  id: Scalars['String'];
+  createdAt: Scalars['DateTime'];
+  updatedAt: Scalars['DateTime'];
+  email: Scalars['String'];
+  name: Scalars['String'];
+  avatarId: Scalars['String'];
+  avatar?: Maybe<Image>;
+};
+
+export type UserWithAvtResponse = {
+  __typename?: 'UserWithAvtResponse';
+  user?: Maybe<UserWithAvt>;
   error?: Maybe<FieldError>;
 };
 
@@ -366,31 +386,6 @@ export type AuthMutation = (
   )> }
 );
 
-export type GetAllUsersQueryVariables = {};
-
-
-export type GetAllUsersQuery = (
-  { __typename?: 'Query' }
-  & { getAllUsers: (
-    { __typename?: 'UsersResponse' }
-    & { users?: Maybe<Array<(
-      { __typename?: 'User' }
-      & Pick<User, 'email'>
-    )>> }
-  ) }
-);
-
-export type GetCurrentUserInfoQueryVariables = {};
-
-
-export type GetCurrentUserInfoQuery = (
-  { __typename?: 'Query' }
-  & { me?: Maybe<(
-    { __typename?: 'User' }
-    & Pick<User, 'email'>
-  )> }
-);
-
 export type AddPictureMutationVariables = {
   file: Scalars['Upload'];
 };
@@ -444,10 +439,10 @@ export type GetEventByCoordQuery = (
     & { events?: Maybe<Array<(
       { __typename?: 'EventWithHost' }
       & Pick<EventWithHost, 'id' | 'endTime' | 'startTime'>
-      & { hostInfo: (
+      & { hostInfo?: Maybe<(
         { __typename?: 'User' }
         & Pick<User, 'id' | 'name' | 'email'>
-      ), information: (
+      )>, information: (
         { __typename?: 'Information' }
         & Pick<Information, 'eventName'>
       ), place: (
@@ -495,6 +490,44 @@ export type GetEventByIdQuery = (
       & Pick<FieldError, 'path' | 'message'>
     )> }
   ) }
+);
+
+export type GetAllUsersQueryVariables = {};
+
+
+export type GetAllUsersQuery = (
+  { __typename?: 'Query' }
+  & { getAllUsers: (
+    { __typename?: 'UsersResponse' }
+    & { users?: Maybe<Array<(
+      { __typename?: 'User' }
+      & Pick<User, 'id' | 'email'>
+    )>>, error?: Maybe<(
+      { __typename?: 'FieldError' }
+      & Pick<FieldError, 'message' | 'path'>
+    )> }
+  ) }
+);
+
+export type GetCurrentUserInfoQueryVariables = {};
+
+
+export type GetCurrentUserInfoQuery = (
+  { __typename?: 'Query' }
+  & { me?: Maybe<(
+    { __typename?: 'UserWithAvtResponse' }
+    & { user?: Maybe<(
+      { __typename?: 'UserWithAvt' }
+      & Pick<UserWithAvt, 'email' | 'id' | 'name' | 'avatarId'>
+      & { avatar?: Maybe<(
+        { __typename?: 'Image' }
+        & Pick<Image, 'data' | 'contentType'>
+      )> }
+    )>, error?: Maybe<(
+      { __typename?: 'FieldError' }
+      & Pick<FieldError, 'path' | 'message'>
+    )> }
+  )> }
 );
 
 
@@ -637,78 +670,6 @@ export function useAuthMutation(baseOptions?: ApolloReactHooks.MutationHookOptio
 export type AuthMutationHookResult = ReturnType<typeof useAuthMutation>;
 export type AuthMutationResult = ApolloReactCommon.MutationResult<AuthMutation>;
 export type AuthMutationOptions = ApolloReactCommon.BaseMutationOptions<AuthMutation, AuthMutationVariables>;
-export const GetAllUsersDocument = gql`
-    query getAllUsers {
-  getAllUsers {
-    users {
-      email
-    }
-  }
-}
-    `;
-
-/**
- * __useGetAllUsersQuery__
- *
- * To run a query within a React component, call `useGetAllUsersQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetAllUsersQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetAllUsersQuery({
- *   variables: {
- *   },
- * });
- */
-export function useGetAllUsersQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetAllUsersQuery, GetAllUsersQueryVariables>) {
-        return ApolloReactHooks.useQuery<GetAllUsersQuery, GetAllUsersQueryVariables>(GetAllUsersDocument, baseOptions);
-      }
-export function useGetAllUsersLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetAllUsersQuery, GetAllUsersQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<GetAllUsersQuery, GetAllUsersQueryVariables>(GetAllUsersDocument, baseOptions);
-        }
-export type GetAllUsersQueryHookResult = ReturnType<typeof useGetAllUsersQuery>;
-export type GetAllUsersLazyQueryHookResult = ReturnType<typeof useGetAllUsersLazyQuery>;
-export type GetAllUsersQueryResult = ApolloReactCommon.QueryResult<GetAllUsersQuery, GetAllUsersQueryVariables>;
-export function refetchGetAllUsersQuery(variables?: GetAllUsersQueryVariables) {
-      return { query: GetAllUsersDocument, variables: variables }
-    }
-export const GetCurrentUserInfoDocument = gql`
-    query getCurrentUserInfo {
-  me {
-    email
-  }
-}
-    `;
-
-/**
- * __useGetCurrentUserInfoQuery__
- *
- * To run a query within a React component, call `useGetCurrentUserInfoQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetCurrentUserInfoQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetCurrentUserInfoQuery({
- *   variables: {
- *   },
- * });
- */
-export function useGetCurrentUserInfoQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetCurrentUserInfoQuery, GetCurrentUserInfoQueryVariables>) {
-        return ApolloReactHooks.useQuery<GetCurrentUserInfoQuery, GetCurrentUserInfoQueryVariables>(GetCurrentUserInfoDocument, baseOptions);
-      }
-export function useGetCurrentUserInfoLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetCurrentUserInfoQuery, GetCurrentUserInfoQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<GetCurrentUserInfoQuery, GetCurrentUserInfoQueryVariables>(GetCurrentUserInfoDocument, baseOptions);
-        }
-export type GetCurrentUserInfoQueryHookResult = ReturnType<typeof useGetCurrentUserInfoQuery>;
-export type GetCurrentUserInfoLazyQueryHookResult = ReturnType<typeof useGetCurrentUserInfoLazyQuery>;
-export type GetCurrentUserInfoQueryResult = ApolloReactCommon.QueryResult<GetCurrentUserInfoQuery, GetCurrentUserInfoQueryVariables>;
-export function refetchGetCurrentUserInfoQuery(variables?: GetCurrentUserInfoQueryVariables) {
-      return { query: GetCurrentUserInfoDocument, variables: variables }
-    }
 export const AddPictureDocument = gql`
     mutation addPicture($file: Upload!) {
   addProfilePicture(picture: $file)
@@ -915,4 +876,94 @@ export type GetEventByIdLazyQueryHookResult = ReturnType<typeof useGetEventByIdL
 export type GetEventByIdQueryResult = ApolloReactCommon.QueryResult<GetEventByIdQuery, GetEventByIdQueryVariables>;
 export function refetchGetEventByIdQuery(variables?: GetEventByIdQueryVariables) {
       return { query: GetEventByIdDocument, variables: variables }
+    }
+export const GetAllUsersDocument = gql`
+    query getAllUsers {
+  getAllUsers {
+    users {
+      id
+      email
+    }
+    error {
+      message
+      path
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetAllUsersQuery__
+ *
+ * To run a query within a React component, call `useGetAllUsersQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAllUsersQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAllUsersQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetAllUsersQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetAllUsersQuery, GetAllUsersQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetAllUsersQuery, GetAllUsersQueryVariables>(GetAllUsersDocument, baseOptions);
+      }
+export function useGetAllUsersLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetAllUsersQuery, GetAllUsersQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetAllUsersQuery, GetAllUsersQueryVariables>(GetAllUsersDocument, baseOptions);
+        }
+export type GetAllUsersQueryHookResult = ReturnType<typeof useGetAllUsersQuery>;
+export type GetAllUsersLazyQueryHookResult = ReturnType<typeof useGetAllUsersLazyQuery>;
+export type GetAllUsersQueryResult = ApolloReactCommon.QueryResult<GetAllUsersQuery, GetAllUsersQueryVariables>;
+export function refetchGetAllUsersQuery(variables?: GetAllUsersQueryVariables) {
+      return { query: GetAllUsersDocument, variables: variables }
+    }
+export const GetCurrentUserInfoDocument = gql`
+    query getCurrentUserInfo {
+  me {
+    user {
+      email
+      id
+      name
+      avatarId
+      avatar {
+        data
+        contentType
+      }
+    }
+    error {
+      path
+      message
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetCurrentUserInfoQuery__
+ *
+ * To run a query within a React component, call `useGetCurrentUserInfoQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetCurrentUserInfoQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetCurrentUserInfoQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetCurrentUserInfoQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetCurrentUserInfoQuery, GetCurrentUserInfoQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetCurrentUserInfoQuery, GetCurrentUserInfoQueryVariables>(GetCurrentUserInfoDocument, baseOptions);
+      }
+export function useGetCurrentUserInfoLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetCurrentUserInfoQuery, GetCurrentUserInfoQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetCurrentUserInfoQuery, GetCurrentUserInfoQueryVariables>(GetCurrentUserInfoDocument, baseOptions);
+        }
+export type GetCurrentUserInfoQueryHookResult = ReturnType<typeof useGetCurrentUserInfoQuery>;
+export type GetCurrentUserInfoLazyQueryHookResult = ReturnType<typeof useGetCurrentUserInfoLazyQuery>;
+export type GetCurrentUserInfoQueryResult = ApolloReactCommon.QueryResult<GetCurrentUserInfoQuery, GetCurrentUserInfoQueryVariables>;
+export function refetchGetCurrentUserInfoQuery(variables?: GetCurrentUserInfoQueryVariables) {
+      return { query: GetCurrentUserInfoDocument, variables: variables }
     }

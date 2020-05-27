@@ -1,5 +1,8 @@
-import { StyleService, useStyleSheet } from '@ui-kitten/components'
-import { useAddPictureMutation, useLogoutMutation } from 'app-graphql'
+import {
+  useAddPictureMutation,
+  useGetCurrentUserInfoLazyQuery,
+  useLogoutMutation,
+} from 'app-graphql'
 import { Backdrop, Button, Header, Screen, SizedBox, Switch, Text, View } from 'components'
 import * as ImagePicker from 'expo-image-picker'
 import * as Permissions from 'expo-permissions'
@@ -8,23 +11,16 @@ import { useLocalization } from 'i18n/i18n'
 import { observer } from 'mobx-react-lite'
 import { useAuthContext } from 'navigation'
 import React, { useRef } from 'react'
-import { Image, TouchableOpacity } from 'react-native'
+import { ScrollView, StyleSheet, TouchableOpacity } from 'react-native'
 import { Value } from 'react-native-reanimated'
 import { NavigationScreenProp } from 'react-navigation'
 import { SettingsCard } from 'screens/settings-screen/components/SettingsCard'
 // import { useStores } from "models/root-store"
 import { spacing, typography, useThemes } from 'theme'
 import { palette, Palette } from 'theme/palette'
-import { isIos, useSnackBars } from 'utils'
+import { isIos, nDelay, useSnackBars } from 'utils'
+import { Avatar } from './components/Avatar'
 import { LangBottomSheet } from './components/LangBottomSheet'
-const { useMutation } = require('@apollo/react-hooks')
-const gql = require('graphql-tag')
-
-const MUTATION = gql`
-  mutation addPicture($file: Upload!) {
-    addProfilePicture(picture: $file)
-  }
-`
 
 interface SettingItem {
   name: string
@@ -59,7 +55,14 @@ const settingItems: SettingItem[][] = [
   ],
 ]
 
-const Styles = StyleService.create({
+const styles = StyleSheet.create({
+  btnSignOutWrapper: {
+    bottom: spacing[6],
+    left: spacing[6],
+    marginTop: spacing[6],
+    position: 'absolute',
+    right: spacing[6],
+  },
   card: {
     alignSelf: 'stretch',
     margin: spacing[4],
@@ -68,20 +71,14 @@ const Styles = StyleService.create({
     flexDirection: 'row',
   },
   cardWrapper: {
-    flex: 1,
     alignItems: 'center',
+    flex: 1,
     justifyContent: 'center',
-  },
-  btnSignOutWrapper: {
-    position: 'absolute',
-    left: spacing[6],
-    right: spacing[6],
-    bottom: spacing[6],
   },
   container: {
     flex: 1,
-    paddingHorizontal: spacing[6],
     height: '100%',
+    paddingHorizontal: spacing[6],
   },
   rowWrapper: {
     flexDirection: 'row',
@@ -104,20 +101,26 @@ export const SettingsScreen: React.FunctionComponent<SettingsScreenProps> = obse
   const [logout] = useLogoutMutation({
     onCompleted: () => authContxt?.auth(),
   })
-  const [mutate] = useMutation(MUTATION, {
-    onCompleted: data => console.tlog('data', data),
-    onError: e => console.tlog('e', e),
-  })
 
+  const [
+    triggerGetCurrentUser,
+    { data: getInfoData, error: getInfoError, loading: getInfoLoading },
+  ] = useGetCurrentUserInfoLazyQuery({
+    fetchPolicy: 'network-only',
+  })
+  if (getInfoError) console.tron.log('get usererror', getInfoError)
   const [addProfilePicture] = useAddPictureMutation({
-    onCompleted: data => console.tlog('data', data),
-    onError: e => console.tlog('e', e),
+    onCompleted: () => {
+      addSnack({ message: 'added' })
+      triggerGetCurrentUser()
+    },
+    onError: e => {
+      addSnack({ message: 'Cannot add avatar' + e.message, type: 'danger' })
+    },
   })
 
   /* ------------------------ state ------------------------ */
   const { color } = useThemes()
-  const styles = useStyleSheet(Styles)
-  const [img, setImg] = React.useState(null)
 
   const bs = useRef(null)
 
@@ -134,6 +137,10 @@ export const SettingsScreen: React.FunctionComponent<SettingsScreenProps> = obse
           })
         }
       }
+
+      nDelay(100).then(() => {
+        triggerGetCurrentUser()
+      })
     })()
   }, [])
 
@@ -157,17 +164,15 @@ export const SettingsScreen: React.FunctionComponent<SettingsScreenProps> = obse
         quality: 1,
       })
       if (result.cancelled === false) {
-        setImg(result?.uri)
         // const file = new Blob(result?.uri, { type: 'image/png' })
 
         const file = new ReactNativeFile({
           uri: result?.uri,
-          name: 'a.png',
+          name: 'avatar.png',
           type: 'image/png',
         })
 
-        console.tlog('file', file)
-        mutate({
+        addProfilePicture({
           variables: {
             file: file,
           },
@@ -199,14 +204,16 @@ export const SettingsScreen: React.FunctionComponent<SettingsScreenProps> = obse
 
   return (
     <Screen>
-      <Header headerTx="settingsScreen.header" leftIcon="back" />
+      <Header headerTx="settingsScreen.header" />
 
-      <Screen style={styles.container} preset="scroll">
+      <ScrollView style={styles.container}>
         <View full>
-          <View>
-            <Button text="Testing pick img" onPress={() => pickImage()} />
-            {img && <Image source={{ uri: img }} style={{ width: 200, height: 200 }} />}
-          </View>
+          <Avatar
+            data={getInfoData}
+            loading={getInfoLoading}
+            onAvatarPress={() => pickImage()}
+            onEditPress={() => {}}
+          />
 
           <View row style={styles.rowWrapper}>
             <Text tx="settingsScreen.darkMode" style={styles.rowWrapper} />
@@ -224,20 +231,21 @@ export const SettingsScreen: React.FunctionComponent<SettingsScreenProps> = obse
               />
             </TouchableOpacity>
           </View>
+          <SizedBox h={4} />
 
           <View style={styles.cardWrapper}>
             {settingItems.map((datum, i) => {
               return renderRow(datum, i)
             })}
           </View>
-
-          <SizedBox h={8} />
         </View>
+      </ScrollView>
+      <SizedBox h={8} />
+      <SizedBox h={8} />
+      <View style={styles.btnSignOutWrapper}>
+        <Button tx="auth.signOut" onPress={() => signOut()} full preset="outlineWithoutBorder" />
+      </View>
 
-        <View style={styles.btnSignOutWrapper}>
-          <Button tx="auth.signOut" onPress={() => signOut()} full preset="outlineWithoutBorder" />
-        </View>
-      </Screen>
       <LangBottomSheet bs={bs} fall={fall} />
       <Backdrop fall={fall} />
     </Screen>

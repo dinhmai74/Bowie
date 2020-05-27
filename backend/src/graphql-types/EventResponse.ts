@@ -1,11 +1,11 @@
-import { ObjectType, Field } from 'type-graphql'
-import { FieldError } from './FieldError'
-import { Event } from '../entity/Event'
+import { Field, ObjectType } from 'type-graphql'
 import { User } from '../entity'
+import { Event } from '../entity/Event'
+import { FieldError } from './FieldError'
 
 @ObjectType()
 class EventWithHost extends Event {
-  @Field(() => User)
+  @Field(() => User, { nullable: true })
   hostInfo: User
 }
 

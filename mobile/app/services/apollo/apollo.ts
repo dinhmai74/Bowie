@@ -5,6 +5,8 @@ import Constants from 'expo-constants'
 import { ApolloOfflineClient } from 'offix-client'
 import { AsyncStorage, Platform } from 'react-native'
 import { ReactNativeNetworkStatus } from './ReactNativeNetworkStatus'
+import { HttpLink } from 'apollo-link-http'
+
 const { createUploadLink } = require('apollo-upload-client')
 
 const ip = Constants.manifest.extra.ip
@@ -44,6 +46,8 @@ const links = [uploadLink]
 export const offlineClient = new ApolloOfflineClient({
   cache: new InMemoryCache(),
   link: ApolloLink.from(links),
+  // link: new HttpLink({ uri: GRAPHQL_URL }),
+
   offlineStorage: cacheStorage,
   cacheStorage,
   networkStatus,

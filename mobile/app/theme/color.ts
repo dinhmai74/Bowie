@@ -1,13 +1,13 @@
-import { palette } from "./palette"
-import { Color } from "./color-model"
-import { darkColor, lightColor } from "./custom-color"
+import { palette } from './palette'
+import { Color } from './color-model'
+import { darkColor, lightColor } from './custom-color'
 
 export const colors: Color = {
   /**
    * The palette is available to use, but prefer using the name.
    */
   palette,
-  transparent: "rgba(0, 0, 0, 0)",
+  transparent: 'rgba(0, 0, 0, 0)',
   ...lightColor,
 }
 

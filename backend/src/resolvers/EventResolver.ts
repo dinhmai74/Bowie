@@ -1,9 +1,10 @@
-import { Query, Resolver, Mutation, Arg } from 'type-graphql'
+import { mapAsync } from 'lodasync'
+import { Arg, Ctx, Mutation, Query, Resolver } from 'type-graphql'
+import { Coord, Event } from '../entity'
 import { EventResponse, EventsResponse, EventsWithHostResponse } from '../graphql-types'
-import { Event, Coord } from '../entity'
+import { MyContext } from '../graphql-types/MyContext'
 import { DI } from '../mikroconfig'
 import { isInArea } from '../utils'
-import { mapAsync } from 'lodasync'
 
 @Resolver()
 export class EventResolver {
@@ -28,9 +29,8 @@ export class EventResolver {
       return isInArea(v.place.coord.latitude, v.place.coord.longitude, latitude, longitude, 'K')
     })
     const result = await mapAsync(async (e: Event) => {
-      const hostInfo = await DI.userRepos.findOne(e.hostId)
-      console.log('hostInfo', hostInfo)
-      return { ...e, hostInfo, id: e._id }
+      const hostInfo = await DI.userRepos.findOne({ id: e.hostId })
+      return { ...e, hostInfo, id: e.id }
     }, events)
 
     return {
@@ -40,20 +40,38 @@ export class EventResolver {
 
   @Mutation(() => EventResponse)
   async createEvent(
-    @Arg('input') { hostId, startTime, endTime, place, information, membersInfo, tags }: Event,
+    @Arg('input') { startTime, endTime, place, information, membersInfo, tags }: Event,
+    @Ctx() ctx: MyContext,
   ): Promise<EventResponse> {
     try {
+      const err = {
+        message: 'Unauthorized',
+        path: 'create event',
+      }
+      if (!ctx.req.session!.userId) {
+        return {
+          error: err,
+        }
+      }
+
+      const user = await DI.userRepos.findOne({ id: ctx.req.session!.userId })
+      if (!user) {
+        return {
+          error: err,
+        }
+      }
+
       const event = new Event()
 
       event.startTime = startTime
       event.endTime = endTime
       event.place = place
-      event.hostId = hostId
       event.information = information
       event.membersInfo = membersInfo
       event.tags = tags
+      event.hostId = user.id
 
-      DI.eventRepos.persist(event)
+      await DI.eventRepos.persist(event)
 
       // update tags amount
       const tagsEntity = await DI.eventTagRepos.find({
@@ -64,9 +82,9 @@ export class EventResolver {
 
       tagsEntity.forEach((v) => {
         v.currentUse += 1
-        DI.eventTagRepos.persist(v)
       })
 
+      await DI.em.flush()
       return {
         event,
       }

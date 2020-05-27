@@ -1,10 +1,11 @@
 import { createWriteStream, mkdir, readFileSync } from 'fs'
 import { GraphQLUpload } from 'graphql-upload'
 import { Arg, Ctx, Mutation, Resolver } from 'type-graphql'
+import { v4 } from 'uuid'
+import { Image } from '../../entity/Image'
 import { MyContext } from '../../graphql-types/MyContext'
 import { Upload } from '../../graphql-types/Upload'
 import { DI } from '../../mikroconfig'
-import { Image } from '../../graphql-types/Image'
 
 const baseImgDir = '/../../../images'
 
@@ -21,9 +22,7 @@ export class ProfilePictureResolver {
     if (!ctx.req.session!.userId) return false
 
     const imgDir = `${baseImgDir}/${ctx.req.session!.userId}`
-    console.log('newDir', imgDir)
     const user = await DI.userRepos.findOne({ id: ctx.req.session!.userId })
-    console.log('user', user)
     mkdir(
       __dirname + imgDir,
       {
@@ -41,12 +40,19 @@ export class ProfilePictureResolver {
     return new Promise(async (resolve, reject) =>
       createReadStream()
         .pipe(createWriteStream(__dirname + `${imgDir}/${filename}`))
-        .on('finish', () => {
+        .on('finish', async () => {
+          const tempId = v4()
+          const img = new Image()
+          img.data = readFileSync(__dirname + `${imgDir}/${filename}`)
+          img.contentType = 'image/png'
+          img.tempId = tempId
+          await DI.imageRepos.persist(img)
+          const imgSave = await DI.imageRepos.findOne({ tempId })
+
           if (!user) return resolve(false)
-          if (!user!.avatar) user!.avatar = new Image()
-          user!.avatar.contentType = 'image/png'
-          user!.avatar.data = readFileSync(__dirname + `${imgDir}/${filename}`)
-          DI.userRepos.persist(user)
+          user.avatarId = imgSave!.id
+          await DI.em.flush()
+          // DI.userRepos.persist(user)
           resolve(true)
         })
         .on('error', () => reject(false)),

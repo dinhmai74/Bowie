@@ -1,7 +1,13 @@
 import bcrypt from 'bcryptjs'
 import { Arg, Ctx, Mutation, Query, Resolver } from 'type-graphql'
 import { User } from '../../entity'
-import { AuthInput, SignUpInput, UserResponse, UsersResponse } from '../../graphql-types'
+import {
+  AuthInput,
+  SignUpInput,
+  UserResponse,
+  UsersResponse,
+  UserWithAvtResponse,
+} from '../../graphql-types'
 import { MyContext } from '../../graphql-types/MyContext'
 import { DI } from '../../mikroconfig'
 
@@ -78,14 +84,28 @@ export class AuthResolver {
     return user || undefined
   }
 
-  @Query(() => User, { nullable: true })
-  async me(@Ctx() ctx: MyContext): Promise<User | undefined> {
+  @Query(() => UserWithAvtResponse, { nullable: true })
+  async me(@Ctx() ctx: MyContext): Promise<any> {
     console.log('ctx.req.session!.userId', ctx.req.session!.userId)
     if (!ctx.req.session!.userId) {
-      return undefined
+      return {
+        error: {
+          message: 'Unauthorized',
+          path: 'me query',
+        },
+      }
     }
     const user = await DI.userRepos.findOne({ id: ctx.req.session!.userId })
-    return user || undefined
+    const avatar = await DI.imageRepos.findOne({ id: user?.avatarId })
+    console.log('user?.avatarId', user?.avatarId)
+    const rs = {
+      ...user,
+      avatar,
+      id: user?.id,
+    }
+    return {
+      user: rs,
+    }
   }
 
   @Mutation(() => Boolean)

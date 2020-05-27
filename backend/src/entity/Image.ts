@@ -1,6 +1,7 @@
 import { GraphQLScalarType, Kind } from 'graphql'
-import { Property } from 'mikro-orm'
+import { Entity, Property } from 'mikro-orm'
 import { Field, InputType, ObjectType } from 'type-graphql'
+import { BaseEntity } from './BaseEntity'
 
 export const BufferScalar = new GraphQLScalarType({
   name: 'Buffer',
@@ -21,7 +22,8 @@ export const BufferScalar = new GraphQLScalarType({
 
 @ObjectType()
 @InputType('ImageInput')
-export class Image {
+@Entity()
+export class Image extends BaseEntity {
   @Field(() => BufferScalar)
   @Property()
   data: Buffer

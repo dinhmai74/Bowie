@@ -1,0 +1,31 @@
+query getAllUsers {
+  getAllUsers {
+    users {
+      id
+      email
+    }
+    error {
+      message
+      path
+    }
+  }
+}
+
+query getCurrentUserInfo {
+  me {
+    user {
+      email
+      id
+      name
+      avatarId
+      avatar {
+        data
+        contentType
+      }
+    }
+    error {
+      path
+      message
+    }
+  }
+}

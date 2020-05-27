@@ -1,5 +1,6 @@
 import { Text as ReactNativeText, useStyleSheet } from '@ui-kitten/components'
 import { useLocalization } from 'i18n/i18n'
+import { translate as i18nTranslate } from 'i18n'
 import { flatten, mergeAll } from 'ramda'
 import * as React from 'react'
 import { useThemes } from 'theme'
@@ -22,9 +23,13 @@ export const Text = (props: TextProps) => {
     textAlign,
     fontFamily,
     maxLength,
+    autoTranslate,
     ...rest
   } = props
-  const { t: translate } = useLocalization()
+  const location = useLocalization()
+  let translate
+  if (location) translate = location?.t
+  else translate = i18nTranslate
 
   const presets: any = useStyleSheet(TextPresets)
 
@@ -32,11 +37,14 @@ export const Text = (props: TextProps) => {
   const i18nText = tx && translate(tx, txOptions)
   let content: string
   if (typeof children === 'string') {
-    content = translate(children, txOptions)
-  } else content = children || translate(text, txOptions) || i18nText
+    content = autoTranslate ? translate(children, txOptions) : children
+  } else {
+    const normalText = autoTranslate ? translate(text, txOptions) : text
+    content = children || normalText || i18nText
+  }
 
   const { color } = useThemes()
-  let defaultColor: string
+  let defaultColor: any
   if (colorProps) {
     defaultColor = colorProps
   } else if (themeColor) defaultColor = color[themeColor]

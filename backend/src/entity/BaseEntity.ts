@@ -18,4 +18,7 @@ export abstract class BaseEntity implements MongoEntity<BaseEntity> {
   @Property({ onUpdate: () => new Date() })
   @Field(() => Date)
   updatedAt = new Date()
+
+  @Property()
+  tempId: string
 }
