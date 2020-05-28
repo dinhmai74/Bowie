@@ -30,7 +30,7 @@ export class User extends BaseEntity {
   @Property()
   avatarId: string
 
-  @Field(() => [String])
+  @Field(() => [String], { nullable: true })
   @Property()
   joinedEvent: string[]
 }

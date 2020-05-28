@@ -1,7 +1,7 @@
 import { RouteProp, useRoute } from '@react-navigation/native'
 import { Icon } from '@ui-kitten/components'
 import { ApolloError } from 'apollo-client'
-import { FieldError, useGetEventByIdQuery } from 'app-graphql'
+import { useGetEventByIdQuery, useJoinEventMutation } from 'app-graphql'
 import {
   AppDivider,
   AppError,
@@ -23,7 +23,7 @@ import { NavigationScreenProp } from 'react-navigation'
 import styled from 'styled-components'
 // import { useStores } from "models/root-store"
 import { images, spacing } from 'theme'
-import { DateFormat } from 'utils'
+import { DateFormat, useSnackBars } from 'utils'
 import { EventPlace } from './components/EventPlace'
 import { JoinModal } from './components/JoinModal'
 
@@ -50,7 +50,7 @@ const LoadingComponent = () => {
 }
 
 interface ErrorComponentProps {
-  error: ApolloError | FieldError
+  error: ApolloError
 }
 
 const ErrorComponent: React.FC<ErrorComponentProps> = ({ error }) => {
@@ -72,27 +72,39 @@ export const EventDetailScreen: React.FunctionComponent<EventDetailScreenProps> 
   props => {
     // const { someStore } = useStores()
     const { params } = useRoute<ScreenRouteProps>()
-    const { loading, error, data } = useGetEventByIdQuery({ variables: { id: params.id } })
-    const insets = useSafeArea()
     const [joinModal, setJoinModalVisible] = React.useState(false)
+    const { addSnack } = useSnackBars()
+    const insets = useSafeArea()
+
+    const { loading, error, data } = useGetEventByIdQuery({ variables: { id: params.id } })
+    const [joinEvent, { loading: joinEventLoading }] = useJoinEventMutation({
+      onError: e => {
+        console.tron.log(e)
+        addSnack({ message: e.message, type: 'danger' })
+      },
+      onCompleted: d => {
+        addSnack({ message: 'Join success!' })
+      },
+    })
 
     if (loading) return <LoadingComponent />
 
-    if (error || data?.getEventById?.error) {
-      return <ErrorComponent error={error || data.getEventById.error} />
+    if (error) {
+      return <ErrorComponent error={error} />
     }
 
-    const time = `${moment(data?.getEventById?.event?.startTime)
+    const event = data?.getEventById
+    const time = `${moment(event?.startTime)
       .local()
-      .format(DateFormat.fullDateTime)} - ${moment(data?.getEventById?.event?.endTime)
+      .format(DateFormat.fullDateTime)} - ${moment(event?.endTime)
       .local()
       .format(DateFormat.fullDateTime)}`
 
     return (
       <Screen>
-        <Header headerTx={data.getEventById?.event?.information?.eventName} leftIcon="back" />
+        <Header headerTx={event?.information?.eventName} leftIcon="back" />
         <Body>
-          <EventPlace place={data?.getEventById?.event?.place} />
+          <EventPlace place={event?.place} />
           <AppDivider />
 
           <View row>
@@ -103,9 +115,9 @@ export const EventDetailScreen: React.FunctionComponent<EventDetailScreenProps> 
           <AppDivider />
 
           <View>
-            <Text text="eventDetailScreen.information" preset="h3" />
+            <Text tx="eventDetailScreen.information" preset="h3" />
             <SizedBox w={3} />
-            <Text text={data.getEventById.event.information.description} />
+            <Text tx={event.information.description} />
           </View>
           <AppDivider />
         </Body>
@@ -119,6 +131,14 @@ export const EventDetailScreen: React.FunctionComponent<EventDetailScreenProps> 
           onBackdropPress={() => setJoinModalVisible(false)}
           onAccepted={type => {
             setJoinModalVisible(false)
+            joinEvent({
+              variables: {
+                input: {
+                  type,
+                  eventId: event?.id,
+                },
+              },
+            })
           }}
         />
       </Screen>

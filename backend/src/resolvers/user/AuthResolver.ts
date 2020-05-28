@@ -1,80 +1,59 @@
+import { ApolloError } from 'apollo-server-express'
 import bcrypt from 'bcryptjs'
-import { Arg, Ctx, Mutation, Query, Resolver } from 'type-graphql'
+import { Arg, Ctx, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql'
 import { User } from '../../entity'
-import {
-  AuthInput,
-  SignUpInput,
-  UserResponse,
-  UsersResponse,
-  UserWithAvtResponse,
-} from '../../graphql-types'
+import { AuthInput, SignUpInput, UserWithAvt } from '../../graphql-types'
 import { MyContext } from '../../graphql-types/MyContext'
+import { isAuth } from '../../middleware/isAuth'
 import { DI } from '../../mikroconfig'
-
-const invalidLoginResponse = {
-  error: {
-    path: 'email',
-    message: 'invalid login',
-  },
-}
+import { ErrorMess } from '../../utils'
 
 @Resolver()
 export class AuthResolver {
-  @Query(() => UsersResponse)
+  @Query(() => [User])
   async getAllUsers() {
     const users = await DI.em.find(User, {})
 
-    return { users }
+    return users
   }
 
-  @Mutation(() => UserResponse)
+  @Mutation(() => User)
   async register(
     @Arg('input')
     { email, password, name }: SignUpInput,
     @Ctx() ctx: MyContext,
-  ): Promise<UserResponse> {
+  ): Promise<User> {
     const hashedPassword = await bcrypt.hash(password, 12)
     const existingUser = await DI.userRepos.findOne({ email })
-    if (existingUser) {
-      return {
-        error: {
-          path: 'email',
-          message: 'already in use',
-        },
-      }
-    } else {
-      const user = new User()
-      user.password = hashedPassword
-      user.email = email
-      user.name = name
-      await DI.userRepos.persist(user)
-      const insertedUser = await DI.userRepos.findOne({ email })
-      console.log('user.id', insertedUser)
-      ctx.req.session!.userId = insertedUser?.id
-      console.log('ctx.req.session!.userId', ctx.req.session!.userId)
-      return { user }
-    }
+    if (existingUser) throw new ApolloError(ErrorMess.user.emailUsed)
+
+    const user = new User()
+    user.password = hashedPassword
+    user.email = email
+    user.name = name
+    await DI.userRepos.persist(user)
+    const insertedUser = await DI.userRepos.findOne({ email })
+    console.log('user.id', insertedUser)
+    ctx.req.session!.userId = insertedUser?.id
+    console.log('ctx.req.session!.userId', ctx.req.session!.userId)
+    return user
   }
 
-  @Mutation(() => UserResponse)
-  async login(
-    @Arg('input') { email, password }: AuthInput,
-    @Ctx() ctx: MyContext,
-  ): Promise<UserResponse> {
+  @Mutation(() => User)
+  async login(@Arg('input') { email, password }: AuthInput, @Ctx() ctx: MyContext): Promise<User> {
     const user = await DI.userRepos.findOne({ email })
     console.log('user', user)
-    if (!user) {
-      return invalidLoginResponse
-    }
+    if (!user) throw new ApolloError(ErrorMess.user.invalidLogin)
+
     const valid = await bcrypt.compare(password, user.password)
-    if (!valid) {
-      return invalidLoginResponse
-    }
+    if (!valid) throw new ApolloError(ErrorMess.user.invalidLogin)
+
     ctx.req.session!.userId = user.id
-    return { user }
+    return user
   }
 
   @Mutation(() => User, { nullable: true })
+  @UseMiddleware(isAuth)
   async auth(@Ctx() ctx: MyContext): Promise<User | undefined> {
     if (!ctx.req.session!.userId) {
       return undefined
@@ -84,17 +63,9 @@ export class AuthResolver {
     return user || undefined
   }
 
-  @Query(() => UserWithAvtResponse, { nullable: true })
+  @Query(() => UserWithAvt, { nullable: true })
+  @UseMiddleware(isAuth)
   async me(@Ctx() ctx: MyContext): Promise<any> {
-    console.log('ctx.req.session!.userId', ctx.req.session!.userId)
-    if (!ctx.req.session!.userId) {
-      return {
-        error: {
-          message: 'Unauthorized',
-          path: 'me query',
-        },
-      }
-    }
     const user = await DI.userRepos.findOne({ id: ctx.req.session!.userId })
     const avatar = await DI.imageRepos.findOne({ id: user?.avatarId })
     console.log('user?.avatarId', user?.avatarId)
@@ -103,9 +74,7 @@ export class AuthResolver {
       avatar,
       id: user?.id,
     }
-    return {
-      user: rs,
-    }
+    return rs
   }
 
   @Mutation(() => Boolean)

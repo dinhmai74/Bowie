@@ -1,6 +1,5 @@
-import { useNavigation } from '@react-navigation/native'
-import { Event, useGetEventByCoordLazyQuery, EventWithHost } from 'app-graphql'
-import { AppError, AppLoading, AppMapView, Header, Screen, SizedBox, View } from 'components'
+import { EventWithHost, useGetEventByCoordLazyQuery } from 'app-graphql'
+import { AppError, AppLoading, AppMapView, Screen, SizedBox, View } from 'components'
 import * as Location from 'expo-location'
 import * as Permissions from 'expo-permissions'
 import { observer } from 'mobx-react-lite'
@@ -8,13 +7,13 @@ import * as React from 'react'
 import { StyleSheet } from 'react-native'
 import { Region } from 'react-native-maps'
 import { NavigationScreenProp } from 'react-navigation'
-import { AppRoutes, getCoordAlpha, useSnackBars } from 'utils'
+import { getCoordAlpha, useSnackBars } from 'utils'
+import { Header } from './components/Header'
 
-const HomeWrapper: React.FC = ({ children }) => {
-  const { navigate } = useNavigation()
+const HomeWrapper: React.FC<{ onRefresh: () => void }> = ({ children, onRefresh }) => {
   return (
     <Screen preset="scroll">
-      <Header headerTx="homeScreen.header" onLeftPress={() => navigate(AppRoutes.authStack)} />
+      <Header onRefresh={onRefresh} />
       {children}
     </Screen>
   )
@@ -45,6 +44,10 @@ export const HomeScreen: React.FunctionComponent<HomeScreenProps> = observer(() 
         latitude: location.coords?.latitude,
       },
     },
+    onCompleted: data => {
+      console.tron.log(data)
+    },
+    fetchPolicy: 'network-only',
   })
 
   if (error) {
@@ -87,11 +90,11 @@ export const HomeScreen: React.FunctionComponent<HomeScreenProps> = observer(() 
 
   let events: EventWithHost[] = []
   // @ts-ignore
-  if (data?.getEventBaseOnPos?.events.length > 0) events = [...data.getEventBaseOnPos.events]
+  if (data?.getEventBaseOnPos?.length > 0) events = [...data.getEventBaseOnPos]
 
   if (!region)
     return (
-      <HomeWrapper>
+      <HomeWrapper onRefresh={() => fetchEvent()}>
         <SizedBox h={4} />
         <AppLoading />
       </HomeWrapper>
@@ -99,13 +102,13 @@ export const HomeScreen: React.FunctionComponent<HomeScreenProps> = observer(() 
 
   if (errorGetLocation)
     return (
-      <HomeWrapper>
+      <HomeWrapper onRefresh={() => fetchEvent()}>
         <AppError messages={['homeScreen.errors.loadLocation']} />
       </HomeWrapper>
     )
 
   return (
-    <HomeWrapper>
+    <HomeWrapper onRefresh={() => fetchEvent()}>
       <View style={styles.container}>
         {location !== null && (
           <AppMapView

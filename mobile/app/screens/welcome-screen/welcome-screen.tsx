@@ -78,7 +78,7 @@ export const WelcomeScreen: React.FunctionComponent<WelcomeScreenProps> = props 
             opacity: subtextAnim,
           }}
         >
-          <Text style={styles.subText}>welcomeScreen.subText</Text>
+          <Text style={styles.subText} tx="welcomeScreen.subText" />
         </Animated.View>
       </Screen>
 
@@ -89,9 +89,8 @@ export const WelcomeScreen: React.FunctionComponent<WelcomeScreenProps> = props 
               props.navigation.navigate(AppRoutes.signIn)
             }}
             full
-          >
-            welcomeScreen.getStarted
-          </Button>
+            tx="welcomeScreen.getStarted"
+          />
         </Animated.View>
       </View>
     </Screen>

@@ -1,7 +1,6 @@
 export * from './event/EventInput'
 export * from './event/EventResponse'
 export * from './event/EventTagInput'
-export * from './event/EventTagResponse'
 export * from './FieldError'
 export * from './user/AuthInput'
 export * from './user/UserResponse'

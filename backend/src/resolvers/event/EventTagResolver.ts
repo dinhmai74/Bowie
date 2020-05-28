@@ -1,29 +1,30 @@
+import { ApolloError } from 'apollo-server-express'
 import { Arg, Mutation, Query, Resolver } from 'type-graphql'
 import { EventTag } from '../../entity'
-import { ChangeQuantityTagInput, EventTagResponse, EventTagsResponse } from '../../graphql-types'
+import { ChangeQuantityTagInput } from '../../graphql-types'
 import { DI } from '../../mikroconfig'
-import { removeStringDecoration } from '../../utils'
+import { ErrorMess, removeStringDecoration } from '../../utils'
 
 @Resolver()
 export class EventTagResolver {
-  @Query(() => EventTagsResponse)
-  async getAllTag(): Promise<EventTagsResponse> {
+  @Query(() => [EventTag])
+  async getAllTag(): Promise<EventTag[]> {
     const eventTags = await DI.eventTagRepos.findAll()
 
-    return { eventTags }
+    return eventTags
   }
 
-  @Query(() => EventTagsResponse)
-  async getTopTenHotTag(): Promise<EventTagsResponse> {
+  @Query(() => [EventTag])
+  async getTopTenHotTag(): Promise<EventTag[]> {
     const eventTags = (await DI.eventTagRepos.findAll())
       .sort((a, b) => b.currentUse - a.currentUse)
       .slice(0, 9)
 
-    return { eventTags }
+    return eventTags
   }
 
-  @Mutation(() => EventTagResponse)
-  async createTag(@Arg('input') { name }: EventTag): Promise<EventTagResponse> {
+  @Mutation(() => EventTag)
+  async createTag(@Arg('input') { name }: EventTag): Promise<EventTag> {
     try {
       const tag = new EventTag()
       let formatedName = name
@@ -35,62 +36,33 @@ export class EventTagResolver {
 
       DI.eventTagRepos.persist(tag)
 
-      return {
-        eventTag: tag,
-      }
+      return tag
     } catch (error) {
-      return {
-        error: {
-          message: error,
-          path: '',
-        },
-      }
+      throw new ApolloError(JSON.stringify(error))
     }
   }
 
-  @Mutation(() => EventTagResponse)
-  async changeTagQuantity(
-    @Arg('input') { amount, id }: ChangeQuantityTagInput,
-  ): Promise<EventTagResponse> {
+  @Mutation(() => EventTag)
+  async changeTagQuantity(@Arg('input') { amount, id }: ChangeQuantityTagInput): Promise<EventTag> {
     const tag = await DI.eventTagRepos.findOne({ id })
     console.log('tag', tag)
-    if (!tag) {
-      return {
-        error: {
-          message: 'Cannot found id tag',
-          path: 'change tag quantity',
-        },
-      }
-    }
-
+    if (!tag) throw new ApolloError(ErrorMess.eventTag.cantFindId)
     tag.currentUse = amount
     DI.eventTagRepos.persist(tag)
 
-    return {
-      eventTag: tag,
-    }
+    return tag
   }
 
-  @Mutation(() => EventTagResponse)
+  @Mutation(() => EventTag)
   async IncreaseOrDecreaseTagQuantity(
     @Arg('id') id: string,
     @Arg('increase') increase: boolean,
-  ): Promise<EventTagResponse> {
+  ): Promise<EventTag> {
     const tag = await DI.eventTagRepos.findOne(id)
-    if (!tag) {
-      return {
-        error: {
-          message: 'Cannot found id tag',
-          path: 'change tag quantity',
-        },
-      }
-    }
-
+    if (!tag) throw new ApolloError(ErrorMess.eventTag.cantFindId)
     tag.currentUse = increase ? tag.currentUse + 1 : tag.currentUse - 1
     DI.eventTagRepos.persist(tag)
 
-    return {
-      eventTag: tag,
-    }
+    return tag
   }
 }

@@ -15,3 +15,21 @@ export const removeStringDecoration = (str: string) => {
   str = str.replace(/Đ/g, 'D')
   return str
 }
+
+export const ErrorMess = {
+  common: {
+    auth: 'Unauthorized',
+  },
+  event: {
+    sameHost: 'Did you hosted this event!',
+    cantFindEvent: "Can't not find the event!",
+    notInEvent: "You didn't in the event!",
+  },
+  eventTag: {
+    cantFindId: 'Cannot found id tag',
+  },
+  user: {
+    emailUsed: 'Email is used!',
+    invalidLogin: 'Invalid login',
+  },
+}

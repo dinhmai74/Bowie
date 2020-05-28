@@ -1,52 +1,49 @@
-import { Resolver, Mutation, UseMiddleware, Arg, Ctx, Query } from 'type-graphql'
+import { ApolloError, UserInputError } from 'apollo-server-express'
 import _ from 'lodash'
-import { EventResponse, EventsResponse } from '../../graphql-types'
-import { isAuth } from '../../middleware/isAuth'
-import { JoinEventInput, MemberInfo, Event } from '../../entity'
+import { Arg, Ctx, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql'
+import { Event, JoinEventInput, MemberInfo } from '../../entity'
 import { MyContext } from '../../graphql-types/MyContext'
+import { isAuth } from '../../middleware/isAuth'
 import { DI } from '../../mikroconfig'
+import { ErrorMess } from '../../utils'
 
 @Resolver()
 export class InteractiveEventResolver {
-  @Query(() => EventsResponse)
+  @Query(() => [Event], { nullable: true })
   @UseMiddleware(isAuth)
-  async getMyJoinedEvent(@Ctx() ctx: MyContext): Promise<EventsResponse> {
+  async getMyJoinedEvent(@Ctx() ctx: MyContext): Promise<Event[] | null> {
     const userId = ctx.req!.session!.userId
     const user = await DI.userRepos.findOne(userId)
+    if (!user?.joinedEvent) return null
     const events = await DI.eventRepos.find({
       id: { $in: user!.joinedEvent },
     })
 
-    return {
-      events,
-    }
+    return events
   }
 
-  @Query(() => EventsResponse)
+  @Query(() => [Event])
   @UseMiddleware(isAuth)
-  async getMyHostedEvent(@Ctx() ctx: MyContext): Promise<EventsResponse> {
+  async getMyHostedEvent(@Ctx() ctx: MyContext): Promise<Event[]> {
     const userId = ctx.req!.session!.userId
     const events = await DI.eventRepos.find({
       hostId: { $eq: userId },
     })
 
-    return {
-      events,
-    }
+    return events
   }
 
-  @Mutation(() => EventResponse)
+  @Mutation(() => Event)
   @UseMiddleware(isAuth)
   async joinEvent(
     @Arg('input') { type, eventId }: JoinEventInput,
     @Ctx() ctx: MyContext,
-  ): Promise<EventResponse> {
+  ): Promise<Event> {
     const event = await DI.eventRepos.findOne(eventId)
-    if (!event) return { error: { message: "Can't not find the event!", path: 'joinEvent' } }
+    if (!event) throw new ApolloError(ErrorMess.event.cantFindEvent)
 
     const userId = ctx.req!.session!.userId
-    if (event.hostId === userId)
-      return { error: { message: 'Did you hosted this event?', path: 'joinEvent' } }
+    if (event.hostId === userId) throw new ApolloError(ErrorMess.event.sameHost)
 
     const user = await DI.userRepos.findOne(userId)
     const memberInfo = new MemberInfo()
@@ -62,36 +59,25 @@ export class InteractiveEventResolver {
 
     await DI.em.flush()
 
-    return {
-      event,
-    }
+    return event
   }
 
-  @Mutation(() => EventResponse)
+  @Mutation(() => Event)
   async editJoinTypeEventInfo(
     @Arg('input') { type, eventId }: JoinEventInput,
     @Ctx() ctx: MyContext,
-  ): Promise<EventResponse> {
+  ): Promise<Event> {
     const event = await DI.eventRepos.findOne(eventId)
-    if (!event)
-      return {
-        error: { message: "Can't not find the event!", path: 'joinEvent' },
-      }
+    if (!event) throw new UserInputError(ErrorMess.event.cantFindEvent)
     const userId = ctx.req!.session!.userId
 
     const memberInfo = event!.membersInfo.find((v) => v.id === userId)
-    console.log('memberInfos', memberInfo)
 
-    if (!memberInfo)
-      return {
-        error: { message: "You didn't in the event!", path: 'joinEvent' },
-      }
+    if (!memberInfo) throw new ApolloError(ErrorMess.event.notInEvent)
 
     memberInfo.type = type
     await DI.em.flush()
 
-    return {
-      event,
-    }
+    return event
   }
 }

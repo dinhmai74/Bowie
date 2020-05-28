@@ -94,13 +94,11 @@ export const SettingsScreen: React.FunctionComponent<SettingsScreenProps> = obse
   /* ------------------------ hooks ------------------------ */
   // const { someStore } = useStores()
   // const { navigation } = props
-  const authContxt = useAuthContext()
+  const authContext = useAuthContext()
   const { locale } = useLocalization()
   const { toggle, theme } = useThemes()
   const { addSnack } = useSnackBars()
-  const [logout] = useLogoutMutation({
-    onCompleted: () => authContxt?.auth(),
-  })
+  const [logout] = useLogoutMutation()
 
   const [
     triggerGetCurrentUser,
@@ -148,6 +146,7 @@ export const SettingsScreen: React.FunctionComponent<SettingsScreenProps> = obse
 
   const signOut = () => {
     logout()
+    authContext!.logout()
   }
 
   const openBs = () => {

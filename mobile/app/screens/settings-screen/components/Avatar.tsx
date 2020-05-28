@@ -7,7 +7,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler'
 import SkeletonContent from 'react-native-skeleton-content'
 import styled from 'styled-components'
 import { spacing, useThemes } from 'theme'
-import { toCapitalize, getBase64Uri, getBase64UriFromUnknownSource } from 'utils'
+import { getBase64UriFromUnknownSource, toCapitalize } from 'utils'
 
 const Container = styled(View)`
   margin: ${spacing[4]}px 0;
@@ -37,15 +37,13 @@ export const Avatar: React.FC<AvatarProps> = props => {
   const { data: getInfoData, loading } = props
   if (getInfoData) console.tron.log('get user data', getInfoData)
   const { theme } = useThemes()
-  if (getInfoData?.me?.error) console.tron.log('data.me.error', getInfoData.me?.error?.message)
-
   let avatarUri: string
 
-  if (getInfoData?.me) {
-    avatarUri = getBase64UriFromUnknownSource(getInfoData?.me?.user?.avatar?.data)
+  if (getInfoData) {
+    avatarUri = getBase64UriFromUnknownSource(getInfoData?.me?.avatar?.data)
   }
 
-  const userName = getInfoData?.me?.user?.name
+  const userName = getInfoData?.me?.name
 
   return (
     <Container row>

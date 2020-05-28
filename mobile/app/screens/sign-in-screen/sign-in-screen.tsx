@@ -101,15 +101,13 @@ export const SignInScreen: React.FunctionComponent<SignInScreenProps> = observer
 
   const [login, loginResult] = useLoginMutation({
     onCompleted: data => {
-      if (data.login.error) onError(data.login.error)
-      else handleSuccess()
+      handleSuccess()
     },
     onError,
   })
   const [signUp, signUpResult] = useSignUpMutation({
     onCompleted: data => {
-      if (data.register.error) onError(data.register.error)
-      else handleSuccess()
+      handleSuccess()
     },
     onError,
   })
@@ -184,7 +182,7 @@ export const SignInScreen: React.FunctionComponent<SignInScreenProps> = observer
 
       <Transitioning.View transition={formTransition} ref={refForm}>
         <ScrollView style={styles.container}>
-          <Text preset="h1medium">{isSignIn ? 'signInScreen.title' : 'signUpScreen.title'}</Text>
+          <Text preset="h1medium" tx={isSignIn ? 'signInScreen.title' : 'signUpScreen.title'} />
           <SizedBox h={5} />
 
           <Animated.View style={getTranslateX(animEmail, sw, 0)}>
@@ -261,9 +259,7 @@ export const SignInScreen: React.FunctionComponent<SignInScreenProps> = observer
 
           <Animated.View style={[getOpacity(animFgpw), styles.linkView]}>
             <TouchableOpacity style={styles.btnForgot}>
-              <Text themeColor="color-basic-600" underline>
-                signInScreen.forgotPassword
-              </Text>
+              <Text themeColor="color-basic-600" underline tx="signInScreen.forgotPassword" />
             </TouchableOpacity>
 
             <TouchableOpacity
@@ -273,7 +269,7 @@ export const SignInScreen: React.FunctionComponent<SignInScreenProps> = observer
                 setIsSignIn(p => !p)
               }}
             >
-              <Text themeColor="color-basic-600">{isSignIn ? 'auth.signUp' : 'auth.signIn'}</Text>
+              <Text themeColor="color-basic-600" tx={isSignIn ? 'auth.signUp' : 'auth.signIn'} />
             </TouchableOpacity>
           </Animated.View>
         </ScrollView>

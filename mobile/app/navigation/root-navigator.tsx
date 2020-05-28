@@ -13,6 +13,7 @@ export const AuthContext = React.createContext(null)
 
 interface AuthContextState {
   auth: () => void
+  logout: () => void
 }
 
 export const useAuthContext = (): AuthContextState => React.useContext(AuthContext)
@@ -25,21 +26,21 @@ const RootStack = () => {
   const [validUser, setValidUser] = React.useState(false)
   const refresh = useForceUpdate()
 
-  const handleErr = () => {
+  const removeUserInfo = () => {
     setValidUser(false)
     remove(LOGIN_KEY)
   }
+
   const [auth] = useAuthMutation({
     onCompleted(d) {
       if (d.auth.email) {
         setValidUser(true)
         save(LOGIN_KEY, 'login')
         refresh()
-      } else handleErr()
+      } else removeUserInfo()
     },
     onError() {
-      refresh()
-      handleErr()
+      removeUserInfo()
     },
   })
   const isOnline = useNetworkStatus()
@@ -56,7 +57,7 @@ const RootStack = () => {
     bootstrapAsync()
   }, [])
 
-  const authContext = useMemo(() => ({ auth }), [auth])
+  const authContext = useMemo(() => ({ auth, logout: removeUserInfo }), [auth])
 
   const isHaveCookie = isOnline ? validUser : true
 

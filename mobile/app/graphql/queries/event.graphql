@@ -1,91 +1,76 @@
 query getAllEvents {
   getEvents {
-    events {
+    id
+    hostId
+    membersInfo {
       id
-      hostId
-      membersInfo {
-        id
-        type
-      }
-      endTime
-      startTime
-      information {
-        eventName
-        description
-      }
-      place {
-        name
-        address
-        coord {
-          latitude
-          longitude
-        }
-      }
+      type
     }
-    error {
-      message
+    endTime
+    startTime
+    information {
+      eventName
+      description
+    }
+    place {
+      name
+      address
+      coord {
+        latitude
+        longitude
+      }
     }
   }
 }
 
 query getEventByCoord($input: CoordInput!) {
   getEventBaseOnPos(input: $input) {
-    events {
+    id
+    hostInfo {
       id
-      hostInfo {
+      name
+      email
+      avatar {
         id
-        name
-        email
-        avatar {
-          data
-          contentType
-        }
-      }
-      endTime
-      startTime
-      information {
-        eventName
-      }
-      place {
-        coord {
-          latitude
-          longitude
-        }
+        data
+        contentType
       }
     }
-    error {
-      message
+    endTime
+    startTime
+    information {
+      eventName
+    }
+    place {
+      coord {
+        latitude
+        longitude
+      }
     }
   }
 }
 
 query getEventById($id: String!) {
   getEventById(id: $id) {
-    event {
+    id
+    hostId
+    membersInfo {
       id
-      hostId
-      membersInfo {
-        id
-        type
-      }
-      endTime
-      startTime
-      information {
-        eventName
-        description
-      }
-      place {
-        name
-        address
-        coord {
-          latitude
-          longitude
-        }
-      }
+      type
     }
-    error {
-      path
-      message
+    endTime
+    startTime
+    information {
+      eventName
+      description
+    }
+    place {
+      name
+      address
+      coord {
+        latitude
+        longitude
+      }
     }
   }
 }

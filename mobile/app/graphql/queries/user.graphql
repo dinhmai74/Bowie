@@ -1,31 +1,42 @@
 query getAllUsers {
   getAllUsers {
-    users {
-      id
-      email
-    }
-    error {
-      message
-      path
-    }
+    id
+    email
   }
 }
 
 query getCurrentUserInfo {
   me {
-    user {
-      email
+    email
+    id
+    name
+    avatar {
       id
-      name
-      avatarId
-      avatar {
-        data
-        contentType
-      }
+      createdAt
+      updatedAt
+      data
+      contentType
     }
-    error {
-      path
-      message
+    joinedEvent
+    createdAt
+    updatedAt
+  }
+}
+
+query getMyJoinedEvent {
+  getMyJoinedEvent {
+    id
+    place {
+      address
+    }
+  }
+}
+
+query getMyHostedEvent {
+  getMyHostedEvent {
+    id
+    place {
+      address
     }
   }
 }
