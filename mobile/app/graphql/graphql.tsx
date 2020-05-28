@@ -192,7 +192,7 @@ export type Mutation = {
   IncreaseOrDecreaseTagQuantity: EventTag;
   register: User;
   login: User;
-  auth?: Maybe<User>;
+  auth?: Maybe<UserWithAvt>;
   logout: Scalars['Boolean'];
   addProfilePicture: Scalars['Boolean'];
 };
@@ -378,7 +378,7 @@ export type LoginMutation = (
   { __typename?: 'Mutation' }
   & { login: (
     { __typename?: 'User' }
-    & Pick<User, 'email'>
+    & Pick<User, 'id' | 'name' | 'email' | 'createdAt' | 'updatedAt' | 'avatarId'>
   ) }
 );
 
@@ -393,7 +393,7 @@ export type SignUpMutation = (
   { __typename?: 'Mutation' }
   & { register: (
     { __typename?: 'User' }
-    & Pick<User, 'email' | 'name'>
+    & Pick<User, 'id' | 'name' | 'email' | 'createdAt' | 'updatedAt' | 'avatarId'>
   ) }
 );
 
@@ -411,8 +411,8 @@ export type AuthMutationVariables = {};
 export type AuthMutation = (
   { __typename?: 'Mutation' }
   & { auth?: Maybe<(
-    { __typename?: 'User' }
-    & Pick<User, 'email' | 'name' | 'avatarId'>
+    { __typename?: 'UserWithAvt' }
+    & Pick<UserWithAvt, 'email' | 'name' | 'avatarId' | 'id' | 'createdAt' | 'updatedAt' | 'joinedEvent'>
   )> }
 );
 
@@ -787,7 +787,12 @@ export function refetchGetTopTagsQuery(variables?: GetTopTagsQueryVariables) {
 export const LoginDocument = gql`
     mutation login($email: String!, $password: String!) {
   login(input: {email: $email, password: $password}) {
+    id
+    name
     email
+    createdAt
+    updatedAt
+    avatarId
   }
 }
     `;
@@ -820,8 +825,12 @@ export type LoginMutationOptions = ApolloReactCommon.BaseMutationOptions<LoginMu
 export const SignUpDocument = gql`
     mutation signUp($email: String!, $password: String!, $name: String!) {
   register(input: {email: $email, password: $password, name: $name}) {
-    email
+    id
     name
+    email
+    createdAt
+    updatedAt
+    avatarId
   }
 }
     `;
@@ -887,6 +896,10 @@ export const AuthDocument = gql`
     email
     name
     avatarId
+    id
+    createdAt
+    updatedAt
+    joinedEvent
   }
 }
     `;

@@ -93,21 +93,24 @@ export const SignInScreen: React.FunctionComponent<SignInScreenProps> = observer
     })
   }
 
-  const handleSuccess = () => {
+  const handleSuccess = d => {
+    addSnack({
+      message: 'signInScreen.signInScreen',
+    })
     refForm.current.animateNextTransition()
     nDelay(200).then(() => setTriggerSpreadOut(true))
-    nDelay(600).then(() => auth?.auth())
+    nDelay(600).then(() => auth?.navigateHome(d))
   }
 
   const [login, loginResult] = useLoginMutation({
     onCompleted: data => {
-      handleSuccess()
+      handleSuccess(data.login)
     },
     onError,
   })
   const [signUp, signUpResult] = useSignUpMutation({
     onCompleted: data => {
-      handleSuccess()
+      handleSuccess(data.register)
     },
     onError,
   })

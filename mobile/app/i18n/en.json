@@ -9,6 +9,7 @@
     "secret": "Secret"
   },
   "errors": {
+    "invalidUser": "Invalid user.",
     "invalidEmail": "Invalid email address.",
     "required": "This field is required",
     "common": "Sorry, something wrong happen",
@@ -38,7 +39,8 @@
     "title": "Sign In",
     "letsCook": "Let's cook!",
     "forgotPassword": "Forgot password?",
-    "loginWithFb": "Login with Facebook"
+    "loginWithFb": "Login with Facebook",
+    "loginSuccess": "Request successfully"
   },
   "auth": {
     "signUp": "Sign Up",

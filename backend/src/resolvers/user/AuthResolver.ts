@@ -52,15 +52,18 @@ export class AuthResolver {
     return user
   }
 
-  @Mutation(() => User, { nullable: true })
+  @Mutation(() => UserWithAvt, { nullable: true })
   @UseMiddleware(isAuth)
-  async auth(@Ctx() ctx: MyContext): Promise<User | undefined> {
-    if (!ctx.req.session!.userId) {
-      return undefined
-    }
-
+  async auth(@Ctx() ctx: MyContext): Promise<any> {
     const user = await DI.userRepos.findOne({ id: ctx.req.session!.userId })
-    return user || undefined
+    const avatar = await DI.imageRepos.findOne({ id: user?.avatarId })
+    console.log('user?.avatarId', user?.avatarId)
+    const rs = {
+      ...user,
+      avatar,
+      id: user?.id,
+    }
+    return rs
   }
 
   @Query(() => UserWithAvt, { nullable: true })
