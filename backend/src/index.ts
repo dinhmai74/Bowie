@@ -69,6 +69,7 @@ const MongoStore = require('connect-mongo')(session)
       __dirname + '/resolvers/**/*.resolver.{ts,js}',
       __dirname + '/resolvers/**/*.{ts,js}',
       __dirname + '/resolvers/*.{ts,js}',
+      __dirname + '/resolvers/*.resolver.{ts,js}',
     ],
     validate: false,
   })

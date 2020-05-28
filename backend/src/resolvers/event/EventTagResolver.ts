@@ -1,7 +1,8 @@
-import { Query, Resolver, Arg, Mutation } from 'type-graphql'
-import { DI } from '../mikroconfig'
-import { EventTagsResponse, EventTagResponse, ChangeQuantityTagInput } from '../graphql-types'
-import { EventTag } from '../entity'
+import { Arg, Mutation, Query, Resolver } from 'type-graphql'
+import { EventTag } from '../../entity'
+import { ChangeQuantityTagInput, EventTagResponse, EventTagsResponse } from '../../graphql-types'
+import { DI } from '../../mikroconfig'
+import { removeStringDecoration } from '../../utils'
 
 @Resolver()
 export class EventTagResolver {
@@ -12,11 +13,24 @@ export class EventTagResolver {
     return { eventTags }
   }
 
+  @Query(() => EventTagsResponse)
+  async getTopTenHotTag(): Promise<EventTagsResponse> {
+    const eventTags = (await DI.eventTagRepos.findAll())
+      .sort((a, b) => b.currentUse - a.currentUse)
+      .slice(0, 9)
+
+    return { eventTags }
+  }
+
   @Mutation(() => EventTagResponse)
   async createTag(@Arg('input') { name }: EventTag): Promise<EventTagResponse> {
     try {
       const tag = new EventTag()
-      tag.name = name
+      let formatedName = name
+      if (formatedName[0] === '#') formatedName = formatedName.slice(0, 1)
+      formatedName = formatedName.replace(' ', '')
+      formatedName = removeStringDecoration(formatedName)
+      tag.name = formatedName
       tag.currentUse = 0
 
       DI.eventTagRepos.persist(tag)

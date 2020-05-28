@@ -1,6 +1,7 @@
 import { Entity, Property } from 'mikro-orm'
 import { Field, InputType, ObjectType } from 'type-graphql'
 import { BaseEntity } from './BaseEntity'
+import { registerEnumType } from 'type-graphql'
 
 @ObjectType()
 @InputType('EventInformationInput')
@@ -15,6 +16,20 @@ export class Information {
 export enum MemberInfoType {
   SECRET = 'secret',
   PUBLIC = 'public',
+}
+
+registerEnumType(MemberInfoType, {
+  name: 'MemberInfoType', // this one is mandatory
+  description: 'The type of member when join event: secret or public', // this one is optional
+})
+
+@InputType()
+export class JoinEventInput {
+  @Field(() => MemberInfoType)
+  type: MemberInfoType
+
+  @Field()
+  eventId: string
 }
 
 @ObjectType()

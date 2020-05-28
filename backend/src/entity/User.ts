@@ -26,7 +26,11 @@ export class User extends BaseEntity {
   @Property()
   password: string
 
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   @Property()
-  avatarId?: string
+  avatarId: string
+
+  @Field(() => [String])
+  @Property()
+  joinedEvent: string[]
 }

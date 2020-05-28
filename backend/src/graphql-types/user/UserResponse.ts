@@ -1,7 +1,7 @@
 import { Field, ObjectType } from 'type-graphql'
-import { Image } from '../entity'
-import { User } from '../entity/User'
-import { FieldError } from './FieldError'
+import { Image } from '../../entity'
+import { User } from '../../entity/User'
+import { FieldError } from '../FieldError'
 
 @ObjectType()
 export class UserWithAvt extends User {

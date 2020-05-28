@@ -1,7 +1,7 @@
 import { Field, ObjectType } from 'type-graphql'
-import { Event } from '../entity/Event'
-import { FieldError } from './FieldError'
-import { UserWithAvt } from './UserResponse'
+import { Event } from '../../entity/Event'
+import { FieldError } from '../FieldError'
+import { UserWithAvt } from '../user/UserResponse'
 
 @ObjectType()
 class EventWithHost extends Event {
@@ -12,7 +12,7 @@ class EventWithHost extends Event {
 @ObjectType()
 export class EventResponse {
   @Field(() => Event, { nullable: true })
-  event?: Event
+  event?: Event | null
 
   @Field(() => FieldError, { nullable: true })
   error?: FieldError

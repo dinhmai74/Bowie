@@ -1,6 +1,6 @@
-import { ObjectType, Field } from 'type-graphql'
-import { FieldError } from './FieldError'
-import { EventTag } from '../entity/EventTag'
+import { Field, ObjectType } from 'type-graphql'
+import { EventTag } from '../../entity/EventTag'
+import { FieldError } from '../FieldError'
 
 @ObjectType()
 export class EventTagResponse {

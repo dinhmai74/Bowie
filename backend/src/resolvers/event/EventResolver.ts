@@ -1,10 +1,11 @@
 import { mapAsync } from 'lodasync'
-import { Arg, Ctx, Mutation, Query, Resolver } from 'type-graphql'
-import { Coord, Event } from '../entity'
-import { EventResponse, EventsResponse, EventsWithHostResponse } from '../graphql-types'
-import { MyContext } from '../graphql-types/MyContext'
-import { DI } from '../mikroconfig'
-import { isInArea } from '../utils'
+import { Arg, Ctx, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql'
+import { Coord, Event } from '../../entity'
+import { EventResponse, EventsResponse, EventsWithHostResponse } from '../../graphql-types'
+import { MyContext } from '../../graphql-types/MyContext'
+import { isAuth } from '../../middleware/isAuth'
+import { DI } from '../../mikroconfig'
+import { isInArea } from '../../utils'
 
 @Resolver()
 export class EventResolver {
@@ -14,7 +15,6 @@ export class EventResolver {
 
     return { events }
   }
-
   @Query(() => EventResponse)
   async getEventById(@Arg('id') id: string) {
     const event = await DI.eventRepos.findOne(id)
@@ -40,27 +40,13 @@ export class EventResolver {
   }
 
   @Mutation(() => EventResponse)
+  @UseMiddleware(isAuth)
   async createEvent(
     @Arg('input') { startTime, endTime, place, information, membersInfo, tags }: Event,
     @Ctx() ctx: MyContext,
   ): Promise<EventResponse> {
     try {
-      const err = {
-        message: 'Unauthorized',
-        path: 'create event',
-      }
-      if (!ctx.req.session!.userId) {
-        return {
-          error: err,
-        }
-      }
-
       const user = await DI.userRepos.findOne({ id: ctx.req.session!.userId })
-      if (!user) {
-        return {
-          error: err,
-        }
-      }
 
       const event = new Event()
 
@@ -70,7 +56,7 @@ export class EventResolver {
       event.information = information
       event.membersInfo = membersInfo
       event.tags = tags
-      event.hostId = user.id
+      event.hostId = user?.id
 
       await DI.eventRepos.persist(event)
 
