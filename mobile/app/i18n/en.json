@@ -83,6 +83,11 @@
   "viewMapScreen": {
     "header": "Map"
   },
+  "savedScreen": {
+    "header": "Joined events",
+    "myHostedEvent": "My hosted's events",
+    "myJoinedEvent": "My joined's events"
+  },
   "en": "English",
   "vi": "Vietnamese"
 }
