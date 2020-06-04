@@ -38,11 +38,13 @@ export const Header: React.FunctionComponent<HeaderProps> = props => {
   }
 
   const LeftWrapper: any = leftIcon ? TouchableOpacity : View
+
+  const iconOpacity = leftIcon ? 1 : 0
   return (
     <View style={{ ...styles.root, ...style }}>
       <LeftWrapper style={styles.header} onPress={onLeftPress}>
-        {leftIcon && <LeftIcon style={styles.leftIcon} />}
-        <Text text={headerTx} preset="h2medium" />
+        <LeftIcon style={[styles.leftIcon, { opacity: iconOpacity }]} />
+        <Text tx={headerTx} preset="h2medium" />
       </LeftWrapper>
     </View>
   )

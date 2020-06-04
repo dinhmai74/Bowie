@@ -1,4 +1,5 @@
 export * from './BaseEntity'
+export * from './Event'
+export * from './EventTag'
+export * from './Image'
 export * from './User'
-export * from "./Event"
-export * from "./EventTag"

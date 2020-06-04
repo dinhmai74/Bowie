@@ -9,9 +9,11 @@
     "secret": "Secret"
   },
   "errors": {
+    "invalidUser": "Invalid user.",
     "invalidEmail": "Invalid email address.",
     "required": "This field is required",
-    "common": "Sorry, something wrong happen"
+    "common": "Sorry, something wrong happen",
+    "permissionLocation": "Permission to access location was denied"
   },
   "welcomeScreen": {
     "poweredBy": "POWERED BY BOWSER",
@@ -37,7 +39,8 @@
     "title": "Sign In",
     "letsCook": "Let's cook!",
     "forgotPassword": "Forgot password?",
-    "loginWithFb": "Login with Facebook"
+    "loginWithFb": "Login with Facebook",
+    "loginSuccess": "Request successfully"
   },
   "auth": {
     "signUp": "Sign Up",
@@ -66,7 +69,8 @@
     "noti": "Notifications",
     "term": "Term of service",
     "getHelp": "Get help",
-    "feedBack": "Feedback"
+    "feedBack": "Feedback",
+    "viewAndEdit": "View and edit"
   },
   "eventDetailScreen": {
     "header": "Event",
@@ -78,6 +82,11 @@
   },
   "viewMapScreen": {
     "header": "Map"
+  },
+  "savedScreen": {
+    "header": "Joined events",
+    "myHostedEvent": "My hosted's events",
+    "myJoinedEvent": "My joined's events"
   },
   "en": "English",
   "vi": "Vietnamese"

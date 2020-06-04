@@ -35,7 +35,7 @@ export const AuthHeader: React.FunctionComponent<AuthHeaderProps> = props => {
           fill={color['color-basic-600']}
           pack="ionicons"
         />
-        <Text style={styles.title}>auth.welcome</Text>
+        <Text style={styles.title} tx="auth.welcome" />
       </TouchableOpacity>
 
       <Icon

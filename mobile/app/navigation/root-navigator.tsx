@@ -1,8 +1,10 @@
 import { NavigationContainer, NavigationContainerRef } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
-import { useAuthMutation } from 'app-graphql'
+import { useAuthMutation, User, UserWithAvt } from 'app-graphql'
+import { useStores } from 'models/root-store'
 import React, { useEffect, useMemo } from 'react'
 import { useNetworkStatus } from 'react-offix-hooks'
+import { useSnackBars } from 'utils'
 import { useForceUpdate } from 'utils/custom-hooks'
 import { load, remove, save } from 'utils/storage'
 import { AuthStack } from './auth-navigator'
@@ -13,6 +15,8 @@ export const AuthContext = React.createContext(null)
 
 interface AuthContextState {
   auth: () => void
+  logout: () => void
+  navigateHome: (d: User) => void
 }
 
 export const useAuthContext = (): AuthContextState => React.useContext(AuthContext)
@@ -22,24 +26,32 @@ const Stack = createStackNavigator<RootParamList>()
 const LOGIN_KEY = 'login'
 
 const RootStack = () => {
+  const { userInfoStore } = useStores()
   const [validUser, setValidUser] = React.useState(false)
   const refresh = useForceUpdate()
+  const { addSnack } = useSnackBars()
 
-  const handleErr = () => {
+  const removeUserInfo = () => {
+    userInfoStore.clear()
     setValidUser(false)
     remove(LOGIN_KEY)
   }
+
+  const saveUserInfo = (d: User | UserWithAvt) => {
+    const { email, name, avatarId } = d
+    setValidUser(true)
+    save(LOGIN_KEY, 'login')
+    userInfoStore.setInfo({ name, email, avt: avatarId })
+    refresh()
+  }
+
   const [auth] = useAuthMutation({
-    onCompleted(d) {
-      if (d.auth.email) {
-        setValidUser(true)
-        save(LOGIN_KEY, 'login')
-        refresh()
-      } else handleErr()
+    onCompleted: d => {
+      saveUserInfo(d.auth)
     },
-    onError() {
-      refresh()
-      handleErr()
+    onError: e => {
+      addSnack({ message: e.message, type: 'danger' })
+      removeUserInfo()
     },
   })
   const isOnline = useNetworkStatus()
@@ -56,7 +68,10 @@ const RootStack = () => {
     bootstrapAsync()
   }, [])
 
-  const authContext = useMemo(() => ({ auth }), [auth])
+  const authContext = useMemo(
+    () => ({ auth, logout: removeUserInfo, navigateHome: saveUserInfo }),
+    [auth],
+  )
 
   const isHaveCookie = isOnline ? validUser : true
 

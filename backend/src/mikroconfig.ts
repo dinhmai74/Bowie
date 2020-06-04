@@ -1,5 +1,5 @@
 import { EntityManager, EntityRepository, MikroORM } from 'mikro-orm'
-import { User, Event, EventTag } from './entity'
+import { Event, EventTag, User } from './entity'
 import { Book } from './entity/Book'
 
 export const DI = {} as {

@@ -1,6 +1,5 @@
-import { useNavigation } from '@react-navigation/native'
-import { Event, useGetEventByCoordQuery } from 'app-graphql'
-import { AppError, AppLoading, AppMapView, Header, Screen, SizedBox, View } from 'components'
+import { EventWithHost, useGetEventByCoordLazyQuery } from 'app-graphql'
+import { AppError, AppLoading, AppMapView, Screen, SizedBox, View } from 'components'
 import * as Location from 'expo-location'
 import * as Permissions from 'expo-permissions'
 import { observer } from 'mobx-react-lite'
@@ -8,13 +7,13 @@ import * as React from 'react'
 import { StyleSheet } from 'react-native'
 import { Region } from 'react-native-maps'
 import { NavigationScreenProp } from 'react-navigation'
-import { AppRoutes, getCoordAlpha } from 'utils'
+import { getCoordAlpha, useSnackBars } from 'utils'
+import { Header } from './components/Header'
 
-const HomeWrapper: React.FC = ({ children }) => {
-  const { navigate } = useNavigation()
+const HomeWrapper: React.FC<{ onRefresh: () => void }> = ({ children, onRefresh }) => {
   return (
     <Screen preset="scroll">
-      <Header headerTx="homeScreen.header" onLeftPress={() => navigate(AppRoutes.authStack)} />
+      <Header onRefresh={onRefresh} />
       {children}
     </Screen>
   )
@@ -30,31 +29,45 @@ export interface HomeScreenProps {
   navigation: NavigationScreenProp<any, any>
 }
 
-export const HomeScreen: React.FunctionComponent<HomeScreenProps> = observer(props => {
+export const HomeScreen: React.FunctionComponent<HomeScreenProps> = observer(() => {
   // const { someStore } = useStores()
   const [location, setLocation] = React.useState<any>({})
   const [errorGetLocation, setErrGetLocation] = React.useState<boolean>(false)
+  const { addSnack } = useSnackBars()
 
   const [region, setRegion] = React.useState<Region>(undefined)
 
-  const { data, error } = useGetEventByCoordQuery({
+  const [fetchEvent, { data, error }] = useGetEventByCoordLazyQuery({
     variables: {
       input: {
         longitude: location.coords?.longitude,
         latitude: location.coords?.latitude,
       },
     },
+    onCompleted: data => {
+      console.tron.log(data)
+    },
+    fetchPolicy: 'network-only',
   })
 
-  if (error) console.tron.log('error', error)
+  if (error) {
+    console.tron.log('errorg get lcoation', error)
+    console.tron.log('location', location)
+  }
 
   React.useEffect(() => {
     const getLocationAsync = async () => {
       const { status } = await Permissions.askAsync(Permissions.LOCATION)
       if (status !== 'granted') {
+        addSnack({
+          message: 'permissionLocation',
+          type: 'danger',
+        })
       }
 
       const location = await Location.getCurrentPositionAsync({})
+      console.tron.log('location', location)
+
       setLocation(location)
 
       if (location.coords) {
@@ -65,6 +78,7 @@ export const HomeScreen: React.FunctionComponent<HomeScreenProps> = observer(pro
           longitudeDelta,
           latitudeDelta,
         })
+        fetchEvent()
         setErrGetLocation(false)
       } else {
         setErrGetLocation(true)
@@ -74,13 +88,13 @@ export const HomeScreen: React.FunctionComponent<HomeScreenProps> = observer(pro
     getLocationAsync()
   }, [])
 
-  let events: Event[] = []
+  let events: EventWithHost[] = []
   // @ts-ignore
-  if (data?.getEventBaseOnPos?.events.length > 0) events = [...data.getEventBaseOnPos.events]
+  if (data?.getEventBaseOnPos?.length > 0) events = [...data.getEventBaseOnPos]
 
   if (!region)
     return (
-      <HomeWrapper>
+      <HomeWrapper onRefresh={() => fetchEvent()}>
         <SizedBox h={4} />
         <AppLoading />
       </HomeWrapper>
@@ -88,13 +102,13 @@ export const HomeScreen: React.FunctionComponent<HomeScreenProps> = observer(pro
 
   if (errorGetLocation)
     return (
-      <HomeWrapper>
+      <HomeWrapper onRefresh={() => fetchEvent()}>
         <AppError messages={['homeScreen.errors.loadLocation']} />
       </HomeWrapper>
     )
 
   return (
-    <HomeWrapper>
+    <HomeWrapper onRefresh={() => fetchEvent()}>
       <View style={styles.container}>
         {location !== null && (
           <AppMapView

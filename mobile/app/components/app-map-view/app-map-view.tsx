@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native'
 import { Avatar } from '@ui-kitten/components'
-import { Event } from 'app-graphql'
+import { EventWithHost, useGetImgQuery } from 'app-graphql'
 import { AppCard, Button, Text } from 'components'
 import { AppIcon } from 'components/app-icon/AppIcon'
 import { SizedBox } from 'components/sized-box/sized-box'
@@ -10,7 +10,7 @@ import { Image, View } from 'react-native'
 import MapView, { Marker as MapMarker, MarkerProps } from 'react-native-maps'
 import { images, metrics, useThemes } from 'theme'
 import { Color } from 'theme/color-model'
-import { AppRoutes, DateFormat } from 'utils'
+import { AppRoutes, DateFormat, getBase64UriFromUnknownSource } from 'utils'
 import { appMapViewStyles as styles } from './app-map-view.styles'
 
 export type Region = {
@@ -27,15 +27,24 @@ export interface AppMarker extends MarkerProps {
 
 const AppMarker: React.FC<AppMarker> = ({ coordinate, avatar, ...rest }) => {
   // const [track, setTrack] = useState(true)
+  const { data } = useGetImgQuery({
+    variables: {
+      id: avatar,
+    },
+  })
+
+  let imgUri: any
+  if (data?.getImg) imgUri = getBase64UriFromUnknownSource(data?.getImg?.data)
+
   return (
     <MapMarker coordinate={coordinate} {...rest}>
-      <Avatar source={avatar} />
+      <Avatar source={{ uri: imgUri }} />
     </MapMarker>
   )
 }
 
 interface AppMarkerCardProps {
-  event: Event
+  event: EventWithHost
   color: Color
 }
 
@@ -71,7 +80,7 @@ export interface AppMapViewProps {
   region: Region
   onRegionChange?: (region: Region) => void
   onRegionChangeComplete?: (region: Region) => void
-  events?: Event[]
+  events?: EventWithHost[]
   style?: any
 }
 
@@ -97,7 +106,7 @@ export const AppMapView: React.FunctionComponent<AppMapViewProps> = props => {
             <AppMarker
               key={index}
               // TODO: replace avatar by iamge
-              avatar={images.place}
+              avatar={marker?.hostInfo?.avatarId}
               coordinate={marker.place.coord}
               onPress={location => onPressMarker(location, index)}
               // {...{ opacity }}

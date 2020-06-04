@@ -1,0 +1,34 @@
+mutation createEventTags($input: EventTagInput!) {
+  createTag(input: $input) {
+    name
+  }
+}
+
+mutation updateTag($updateTagInput: ChangeQuantityTagInput!) {
+  changeTagQuantity(input: $updateTagInput) {
+    name
+    currentUse
+  }
+}
+
+mutation changeTagQuantity($increase: Boolean!, $id: String!) {
+  IncreaseOrDecreaseTagQuantity(increase: $increase, id: $id) {
+    name
+    currentUse
+  }
+}
+
+query getAllTag {
+  getAllTag {
+    id
+    name
+    currentUse
+  }
+}
+
+query getTopTags {
+  getTopTenHotTag {
+    name
+    currentUse
+  }
+}

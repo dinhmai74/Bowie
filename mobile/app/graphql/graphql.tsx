@@ -66,7 +66,7 @@ export type Event = {
   id: Scalars['String'];
   createdAt: Scalars['DateTime'];
   updatedAt: Scalars['DateTime'];
-  hostId: Scalars['String'];
+  hostId?: Maybe<Scalars['String']>;
   membersInfo: Array<MemberInfo>;
   startTime: Scalars['DateTime'];
   endTime: Scalars['DateTime'];
@@ -76,7 +76,7 @@ export type Event = {
 };
 
 export type EventCreateInput = {
-  hostId: Scalars['String'];
+  hostId?: Maybe<Scalars['String']>;
   membersInfo: Array<EventMemberInfoInput>;
   startTime: Scalars['DateTime'];
   endTime: Scalars['DateTime'];
@@ -107,24 +107,6 @@ export type EventPlaceInput = {
   coord: CoordInput;
 };
 
-export type EventResponse = {
-  __typename?: 'EventResponse';
-  event?: Maybe<Event>;
-  error?: Maybe<FieldError>;
-};
-
-export type EventsResponse = {
-  __typename?: 'EventsResponse';
-  events?: Maybe<Array<Event>>;
-  error?: Maybe<FieldError>;
-};
-
-export type EventsWithHostResponse = {
-  __typename?: 'EventsWithHostResponse';
-  events?: Maybe<Array<EventWithHost>>;
-  error?: Maybe<FieldError>;
-};
-
 export type EventTag = {
   __typename?: 'EventTag';
   id: Scalars['String'];
@@ -141,31 +123,19 @@ export type EventTagInput = {
   currentUse: Scalars['Float'];
 };
 
-export type EventTagResponse = {
-  __typename?: 'EventTagResponse';
-  eventTag?: Maybe<EventTag>;
-  error?: Maybe<FieldError>;
-};
-
-export type EventTagsResponse = {
-  __typename?: 'EventTagsResponse';
-  eventTags?: Maybe<Array<EventTag>>;
-  error?: Maybe<FieldError>;
-};
-
 export type EventWithHost = {
   __typename?: 'EventWithHost';
   id: Scalars['String'];
   createdAt: Scalars['DateTime'];
   updatedAt: Scalars['DateTime'];
-  hostId: Scalars['String'];
+  hostId?: Maybe<Scalars['String']>;
   membersInfo: Array<MemberInfo>;
   startTime: Scalars['DateTime'];
   endTime: Scalars['DateTime'];
   tags: Array<Scalars['String']>;
   place: Place;
   information: Information;
-  hostInfo: User;
+  hostInfo?: Maybe<User>;
 };
 
 export type FieldError = {
@@ -180,15 +150,15 @@ export type Image = {
   contentType: Scalars['String'];
 };
 
-export type ImageInput = {
-  data: Scalars['Buffer'];
-  contentType: Scalars['String'];
-};
-
 export type Information = {
   __typename?: 'Information';
   eventName: Scalars['String'];
   description: Scalars['String'];
+};
+
+export type JoinEventInput = {
+  type: MemberInfoType;
+  eventId: Scalars['String'];
 };
 
 export type MemberInfo = {
@@ -198,17 +168,36 @@ export type MemberInfo = {
   type: Scalars['String'];
 };
 
+/** The type of member when join event: secret or public */
+export enum MemberInfoType {
+  SECRET = 'SECRET',
+  PUBLIC = 'PUBLIC'
+}
+
 export type Mutation = {
   __typename?: 'Mutation';
-  createEvent: EventResponse;
-  createTag: EventTagResponse;
-  changeTagQuantity: EventTagResponse;
-  IncreaseOrDecreaseTagQuantity: EventTagResponse;
-  register: UserResponse;
-  login: UserResponse;
+  joinEvent: Event;
+  editJoinTypeEventInfo: Event;
+  createEvent: Event;
+  createTag: EventTag;
+  changeTagQuantity: EventTag;
+  IncreaseOrDecreaseTagQuantity: EventTag;
+  createPhoto: Scalars['Boolean'];
+  register: User;
+  login: User;
   auth?: Maybe<User>;
   logout: Scalars['Boolean'];
   addProfilePicture: Scalars['Boolean'];
+};
+
+
+export type MutationJoinEventArgs = {
+  input: JoinEventInput;
+};
+
+
+export type MutationEditJoinTypeEventInfoArgs = {
+  input: JoinEventInput;
 };
 
 
@@ -230,6 +219,11 @@ export type MutationChangeTagQuantityArgs = {
 export type MutationIncreaseOrDecreaseTagQuantityArgs = {
   increase: Scalars['Boolean'];
   id: Scalars['String'];
+};
+
+
+export type MutationCreatePhotoArgs = {
+  input: Scalars['Upload'];
 };
 
 
@@ -256,14 +250,18 @@ export type Place = {
 
 export type Query = {
   __typename?: 'Query';
+  getMyJoinedEvent?: Maybe<Array<Event>>;
+  getMyHostedEvent: Array<Event>;
   book: Scalars['String'];
   getBooks: BooksResponse;
-  getEvents: EventsResponse;
-  getEventById: EventResponse;
-  getEventBaseOnPos: EventsWithHostResponse;
-  getAllTag: EventTagsResponse;
+  getEvents: Array<Event>;
+  getEventById?: Maybe<Event>;
+  getEventBaseOnPos: Array<EventWithHost>;
+  getAllTag: Array<EventTag>;
+  getTopTenHotTag: Array<EventTag>;
   hello: Scalars['String'];
-  getAllUsers: UsersResponse;
+  getImg: Image;
+  getAllUsers: Array<User>;
   me?: Maybe<User>;
 };
 
@@ -275,6 +273,11 @@ export type QueryGetEventByIdArgs = {
 
 export type QueryGetEventBaseOnPosArgs = {
   input: CoordInput;
+};
+
+
+export type QueryGetImgArgs = {
+  id: Scalars['String'];
 };
 
 export type SignUpInput = {
@@ -291,20 +294,83 @@ export type User = {
   updatedAt: Scalars['DateTime'];
   email: Scalars['String'];
   name: Scalars['String'];
-  avatar: Image;
+  avatarId?: Maybe<Scalars['String']>;
+  joinedEvent?: Maybe<Array<Scalars['String']>>;
 };
 
-export type UserResponse = {
-  __typename?: 'UserResponse';
-  user?: Maybe<User>;
-  error?: Maybe<FieldError>;
+export type UserWithAvt = {
+  __typename?: 'UserWithAvt';
+  id: Scalars['String'];
+  createdAt: Scalars['DateTime'];
+  updatedAt: Scalars['DateTime'];
+  email: Scalars['String'];
+  name: Scalars['String'];
+  avatarId?: Maybe<Scalars['String']>;
+  joinedEvent?: Maybe<Array<Scalars['String']>>;
+  avatar?: Maybe<Image>;
 };
 
-export type UsersResponse = {
-  __typename?: 'UsersResponse';
-  users?: Maybe<Array<User>>;
-  error?: Maybe<FieldError>;
+export type CreateEventTagsMutationVariables = {
+  input: EventTagInput;
 };
+
+
+export type CreateEventTagsMutation = (
+  { __typename?: 'Mutation' }
+  & { createTag: (
+    { __typename?: 'EventTag' }
+    & Pick<EventTag, 'name'>
+  ) }
+);
+
+export type UpdateTagMutationVariables = {
+  updateTagInput: ChangeQuantityTagInput;
+};
+
+
+export type UpdateTagMutation = (
+  { __typename?: 'Mutation' }
+  & { changeTagQuantity: (
+    { __typename?: 'EventTag' }
+    & Pick<EventTag, 'name' | 'currentUse'>
+  ) }
+);
+
+export type ChangeTagQuantityMutationVariables = {
+  increase: Scalars['Boolean'];
+  id: Scalars['String'];
+};
+
+
+export type ChangeTagQuantityMutation = (
+  { __typename?: 'Mutation' }
+  & { IncreaseOrDecreaseTagQuantity: (
+    { __typename?: 'EventTag' }
+    & Pick<EventTag, 'name' | 'currentUse'>
+  ) }
+);
+
+export type GetAllTagQueryVariables = {};
+
+
+export type GetAllTagQuery = (
+  { __typename?: 'Query' }
+  & { getAllTag: Array<(
+    { __typename?: 'EventTag' }
+    & Pick<EventTag, 'id' | 'name' | 'currentUse'>
+  )> }
+);
+
+export type GetTopTagsQueryVariables = {};
+
+
+export type GetTopTagsQuery = (
+  { __typename?: 'Query' }
+  & { getTopTenHotTag: Array<(
+    { __typename?: 'EventTag' }
+    & Pick<EventTag, 'name' | 'currentUse'>
+  )> }
+);
 
 export type LoginMutationVariables = {
   email: Scalars['String'];
@@ -315,14 +381,8 @@ export type LoginMutationVariables = {
 export type LoginMutation = (
   { __typename?: 'Mutation' }
   & { login: (
-    { __typename?: 'UserResponse' }
-    & { user?: Maybe<(
-      { __typename?: 'User' }
-      & Pick<User, 'email'>
-    )>, error?: Maybe<(
-      { __typename?: 'FieldError' }
-      & Pick<FieldError, 'message'>
-    )> }
+    { __typename?: 'User' }
+    & Pick<User, 'id' | 'name' | 'email' | 'createdAt' | 'updatedAt' | 'avatarId'>
   ) }
 );
 
@@ -336,14 +396,8 @@ export type SignUpMutationVariables = {
 export type SignUpMutation = (
   { __typename?: 'Mutation' }
   & { register: (
-    { __typename?: 'UserResponse' }
-    & { user?: Maybe<(
-      { __typename?: 'User' }
-      & Pick<User, 'email' | 'name'>
-    )>, error?: Maybe<(
-      { __typename?: 'FieldError' }
-      & Pick<FieldError, 'message'>
-    )> }
+    { __typename?: 'User' }
+    & Pick<User, 'id' | 'name' | 'email' | 'createdAt' | 'updatedAt' | 'avatarId'>
   ) }
 );
 
@@ -362,33 +416,21 @@ export type AuthMutation = (
   { __typename?: 'Mutation' }
   & { auth?: Maybe<(
     { __typename?: 'User' }
-    & Pick<User, 'email' | 'name'>
+    & Pick<User, 'email' | 'name' | 'avatarId' | 'id' | 'createdAt' | 'updatedAt' | 'joinedEvent'>
   )> }
 );
 
-export type GetAllUsersQueryVariables = {};
+export type CreateEventMutationVariables = {
+  input: EventCreateInput;
+};
 
 
-export type GetAllUsersQuery = (
-  { __typename?: 'Query' }
-  & { getAllUsers: (
-    { __typename?: 'UsersResponse' }
-    & { users?: Maybe<Array<(
-      { __typename?: 'User' }
-      & Pick<User, 'email'>
-    )>> }
+export type CreateEventMutation = (
+  { __typename?: 'Mutation' }
+  & { createEvent: (
+    { __typename?: 'Event' }
+    & Pick<Event, 'hostId'>
   ) }
-);
-
-export type GetCurrentUserInfoQueryVariables = {};
-
-
-export type GetCurrentUserInfoQuery = (
-  { __typename?: 'Query' }
-  & { me?: Maybe<(
-    { __typename?: 'User' }
-    & Pick<User, 'email'>
-  )> }
 );
 
 export type AddPictureMutationVariables = {
@@ -401,35 +443,63 @@ export type AddPictureMutation = (
   & Pick<Mutation, 'addProfilePicture'>
 );
 
+export type JoinEventMutationVariables = {
+  input: JoinEventInput;
+};
+
+
+export type JoinEventMutation = (
+  { __typename?: 'Mutation' }
+  & { joinEvent: (
+    { __typename?: 'Event' }
+    & Pick<Event, 'id'>
+    & { membersInfo: Array<(
+      { __typename?: 'MemberInfo' }
+      & Pick<MemberInfo, 'id' | 'type'>
+    )> }
+  ) }
+);
+
+export type EditJoinTypeEventInfoMutationVariables = {
+  input: JoinEventInput;
+};
+
+
+export type EditJoinTypeEventInfoMutation = (
+  { __typename?: 'Mutation' }
+  & { editJoinTypeEventInfo: (
+    { __typename?: 'Event' }
+    & Pick<Event, 'id'>
+    & { membersInfo: Array<(
+      { __typename?: 'MemberInfo' }
+      & Pick<MemberInfo, 'id' | 'type'>
+    )> }
+  ) }
+);
+
 export type GetAllEventsQueryVariables = {};
 
 
 export type GetAllEventsQuery = (
   { __typename?: 'Query' }
-  & { getEvents: (
-    { __typename?: 'EventsResponse' }
-    & { events?: Maybe<Array<(
-      { __typename?: 'Event' }
-      & Pick<Event, 'id' | 'hostId' | 'endTime' | 'startTime'>
-      & { membersInfo: Array<(
-        { __typename?: 'MemberInfo' }
-        & Pick<MemberInfo, 'id' | 'type'>
-      )>, information: (
-        { __typename?: 'Information' }
-        & Pick<Information, 'eventName' | 'description'>
-      ), place: (
-        { __typename?: 'Place' }
-        & Pick<Place, 'name' | 'address'>
-        & { coord: (
-          { __typename?: 'Coord' }
-          & Pick<Coord, 'latitude' | 'longitude'>
-        ) }
+  & { getEvents: Array<(
+    { __typename?: 'Event' }
+    & Pick<Event, 'id' | 'hostId' | 'endTime' | 'startTime'>
+    & { membersInfo: Array<(
+      { __typename?: 'MemberInfo' }
+      & Pick<MemberInfo, 'id' | 'type'>
+    )>, information: (
+      { __typename?: 'Information' }
+      & Pick<Information, 'eventName' | 'description'>
+    ), place: (
+      { __typename?: 'Place' }
+      & Pick<Place, 'name' | 'address'>
+      & { coord: (
+        { __typename?: 'Coord' }
+        & Pick<Coord, 'latitude' | 'longitude'>
       ) }
-    )>>, error?: Maybe<(
-      { __typename?: 'FieldError' }
-      & Pick<FieldError, 'message'>
-    )> }
-  ) }
+    ) }
+  )> }
 );
 
 export type GetEventByCoordQueryVariables = {
@@ -439,29 +509,23 @@ export type GetEventByCoordQueryVariables = {
 
 export type GetEventByCoordQuery = (
   { __typename?: 'Query' }
-  & { getEventBaseOnPos: (
-    { __typename?: 'EventsWithHostResponse' }
-    & { events?: Maybe<Array<(
-      { __typename?: 'EventWithHost' }
-      & Pick<EventWithHost, 'id' | 'endTime' | 'startTime'>
-      & { hostInfo: (
-        { __typename?: 'User' }
-        & Pick<User, 'id' | 'name' | 'email'>
-      ), information: (
-        { __typename?: 'Information' }
-        & Pick<Information, 'eventName'>
-      ), place: (
-        { __typename?: 'Place' }
-        & { coord: (
-          { __typename?: 'Coord' }
-          & Pick<Coord, 'latitude' | 'longitude'>
-        ) }
+  & { getEventBaseOnPos: Array<(
+    { __typename?: 'EventWithHost' }
+    & Pick<EventWithHost, 'id' | 'endTime' | 'startTime'>
+    & { hostInfo?: Maybe<(
+      { __typename?: 'User' }
+      & Pick<User, 'id' | 'name' | 'email' | 'avatarId'>
+    )>, information: (
+      { __typename?: 'Information' }
+      & Pick<Information, 'eventName'>
+    ), place: (
+      { __typename?: 'Place' }
+      & { coord: (
+        { __typename?: 'Coord' }
+        & Pick<Coord, 'latitude' | 'longitude'>
       ) }
-    )>>, error?: Maybe<(
-      { __typename?: 'FieldError' }
-      & Pick<FieldError, 'message'>
-    )> }
-  ) }
+    ) }
+  )> }
 );
 
 export type GetEventByIdQueryVariables = {
@@ -471,42 +535,273 @@ export type GetEventByIdQueryVariables = {
 
 export type GetEventByIdQuery = (
   { __typename?: 'Query' }
-  & { getEventById: (
-    { __typename?: 'EventResponse' }
-    & { event?: Maybe<(
-      { __typename?: 'Event' }
-      & Pick<Event, 'id' | 'hostId' | 'endTime' | 'startTime'>
-      & { membersInfo: Array<(
-        { __typename?: 'MemberInfo' }
-        & Pick<MemberInfo, 'id' | 'type'>
-      )>, information: (
-        { __typename?: 'Information' }
-        & Pick<Information, 'eventName' | 'description'>
-      ), place: (
-        { __typename?: 'Place' }
-        & Pick<Place, 'name' | 'address'>
-        & { coord: (
-          { __typename?: 'Coord' }
-          & Pick<Coord, 'latitude' | 'longitude'>
-        ) }
+  & { getEventById?: Maybe<(
+    { __typename?: 'Event' }
+    & Pick<Event, 'id' | 'hostId' | 'endTime' | 'startTime'>
+    & { membersInfo: Array<(
+      { __typename?: 'MemberInfo' }
+      & Pick<MemberInfo, 'id' | 'type'>
+    )>, information: (
+      { __typename?: 'Information' }
+      & Pick<Information, 'eventName' | 'description'>
+    ), place: (
+      { __typename?: 'Place' }
+      & Pick<Place, 'name' | 'address'>
+      & { coord: (
+        { __typename?: 'Coord' }
+        & Pick<Coord, 'latitude' | 'longitude'>
       ) }
-    )>, error?: Maybe<(
-      { __typename?: 'FieldError' }
-      & Pick<FieldError, 'path' | 'message'>
-    )> }
+    ) }
+  )> }
+);
+
+export type GetImgQueryVariables = {
+  id: Scalars['String'];
+};
+
+
+export type GetImgQuery = (
+  { __typename?: 'Query' }
+  & { getImg: (
+    { __typename?: 'Image' }
+    & Pick<Image, 'data'>
   ) }
 );
 
+export type GetAllUsersQueryVariables = {};
 
+
+export type GetAllUsersQuery = (
+  { __typename?: 'Query' }
+  & { getAllUsers: Array<(
+    { __typename?: 'User' }
+    & Pick<User, 'id' | 'email'>
+  )> }
+);
+
+export type GetCurrentUserInfoQueryVariables = {};
+
+
+export type GetCurrentUserInfoQuery = (
+  { __typename?: 'Query' }
+  & { me?: Maybe<(
+    { __typename?: 'User' }
+    & Pick<User, 'email' | 'id' | 'avatarId' | 'name' | 'joinedEvent' | 'createdAt' | 'updatedAt'>
+  )> }
+);
+
+export type GetMyJoinedEventQueryVariables = {};
+
+
+export type GetMyJoinedEventQuery = (
+  { __typename?: 'Query' }
+  & { getMyJoinedEvent?: Maybe<Array<(
+    { __typename?: 'Event' }
+    & Pick<Event, 'id'>
+    & { place: (
+      { __typename?: 'Place' }
+      & Pick<Place, 'address'>
+    ) }
+  )>> }
+);
+
+export type GetMyHostedEventQueryVariables = {};
+
+
+export type GetMyHostedEventQuery = (
+  { __typename?: 'Query' }
+  & { getMyHostedEvent: Array<(
+    { __typename?: 'Event' }
+    & Pick<Event, 'id'>
+    & { place: (
+      { __typename?: 'Place' }
+      & Pick<Place, 'address'>
+    ) }
+  )> }
+);
+
+
+export const CreateEventTagsDocument = gql`
+    mutation createEventTags($input: EventTagInput!) {
+  createTag(input: $input) {
+    name
+  }
+}
+    `;
+export type CreateEventTagsMutationFn = ApolloReactCommon.MutationFunction<CreateEventTagsMutation, CreateEventTagsMutationVariables>;
+
+/**
+ * __useCreateEventTagsMutation__
+ *
+ * To run a mutation, you first call `useCreateEventTagsMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateEventTagsMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createEventTagsMutation, { data, loading, error }] = useCreateEventTagsMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCreateEventTagsMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<CreateEventTagsMutation, CreateEventTagsMutationVariables>) {
+        return ApolloReactHooks.useMutation<CreateEventTagsMutation, CreateEventTagsMutationVariables>(CreateEventTagsDocument, baseOptions);
+      }
+export type CreateEventTagsMutationHookResult = ReturnType<typeof useCreateEventTagsMutation>;
+export type CreateEventTagsMutationResult = ApolloReactCommon.MutationResult<CreateEventTagsMutation>;
+export type CreateEventTagsMutationOptions = ApolloReactCommon.BaseMutationOptions<CreateEventTagsMutation, CreateEventTagsMutationVariables>;
+export const UpdateTagDocument = gql`
+    mutation updateTag($updateTagInput: ChangeQuantityTagInput!) {
+  changeTagQuantity(input: $updateTagInput) {
+    name
+    currentUse
+  }
+}
+    `;
+export type UpdateTagMutationFn = ApolloReactCommon.MutationFunction<UpdateTagMutation, UpdateTagMutationVariables>;
+
+/**
+ * __useUpdateTagMutation__
+ *
+ * To run a mutation, you first call `useUpdateTagMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateTagMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateTagMutation, { data, loading, error }] = useUpdateTagMutation({
+ *   variables: {
+ *      updateTagInput: // value for 'updateTagInput'
+ *   },
+ * });
+ */
+export function useUpdateTagMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<UpdateTagMutation, UpdateTagMutationVariables>) {
+        return ApolloReactHooks.useMutation<UpdateTagMutation, UpdateTagMutationVariables>(UpdateTagDocument, baseOptions);
+      }
+export type UpdateTagMutationHookResult = ReturnType<typeof useUpdateTagMutation>;
+export type UpdateTagMutationResult = ApolloReactCommon.MutationResult<UpdateTagMutation>;
+export type UpdateTagMutationOptions = ApolloReactCommon.BaseMutationOptions<UpdateTagMutation, UpdateTagMutationVariables>;
+export const ChangeTagQuantityDocument = gql`
+    mutation changeTagQuantity($increase: Boolean!, $id: String!) {
+  IncreaseOrDecreaseTagQuantity(increase: $increase, id: $id) {
+    name
+    currentUse
+  }
+}
+    `;
+export type ChangeTagQuantityMutationFn = ApolloReactCommon.MutationFunction<ChangeTagQuantityMutation, ChangeTagQuantityMutationVariables>;
+
+/**
+ * __useChangeTagQuantityMutation__
+ *
+ * To run a mutation, you first call `useChangeTagQuantityMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useChangeTagQuantityMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [changeTagQuantityMutation, { data, loading, error }] = useChangeTagQuantityMutation({
+ *   variables: {
+ *      increase: // value for 'increase'
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useChangeTagQuantityMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<ChangeTagQuantityMutation, ChangeTagQuantityMutationVariables>) {
+        return ApolloReactHooks.useMutation<ChangeTagQuantityMutation, ChangeTagQuantityMutationVariables>(ChangeTagQuantityDocument, baseOptions);
+      }
+export type ChangeTagQuantityMutationHookResult = ReturnType<typeof useChangeTagQuantityMutation>;
+export type ChangeTagQuantityMutationResult = ApolloReactCommon.MutationResult<ChangeTagQuantityMutation>;
+export type ChangeTagQuantityMutationOptions = ApolloReactCommon.BaseMutationOptions<ChangeTagQuantityMutation, ChangeTagQuantityMutationVariables>;
+export const GetAllTagDocument = gql`
+    query getAllTag {
+  getAllTag {
+    id
+    name
+    currentUse
+  }
+}
+    `;
+
+/**
+ * __useGetAllTagQuery__
+ *
+ * To run a query within a React component, call `useGetAllTagQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAllTagQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAllTagQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetAllTagQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetAllTagQuery, GetAllTagQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetAllTagQuery, GetAllTagQueryVariables>(GetAllTagDocument, baseOptions);
+      }
+export function useGetAllTagLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetAllTagQuery, GetAllTagQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetAllTagQuery, GetAllTagQueryVariables>(GetAllTagDocument, baseOptions);
+        }
+export type GetAllTagQueryHookResult = ReturnType<typeof useGetAllTagQuery>;
+export type GetAllTagLazyQueryHookResult = ReturnType<typeof useGetAllTagLazyQuery>;
+export type GetAllTagQueryResult = ApolloReactCommon.QueryResult<GetAllTagQuery, GetAllTagQueryVariables>;
+export function refetchGetAllTagQuery(variables?: GetAllTagQueryVariables) {
+      return { query: GetAllTagDocument, variables: variables }
+    }
+export const GetTopTagsDocument = gql`
+    query getTopTags {
+  getTopTenHotTag {
+    name
+    currentUse
+  }
+}
+    `;
+
+/**
+ * __useGetTopTagsQuery__
+ *
+ * To run a query within a React component, call `useGetTopTagsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetTopTagsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetTopTagsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetTopTagsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetTopTagsQuery, GetTopTagsQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetTopTagsQuery, GetTopTagsQueryVariables>(GetTopTagsDocument, baseOptions);
+      }
+export function useGetTopTagsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetTopTagsQuery, GetTopTagsQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetTopTagsQuery, GetTopTagsQueryVariables>(GetTopTagsDocument, baseOptions);
+        }
+export type GetTopTagsQueryHookResult = ReturnType<typeof useGetTopTagsQuery>;
+export type GetTopTagsLazyQueryHookResult = ReturnType<typeof useGetTopTagsLazyQuery>;
+export type GetTopTagsQueryResult = ApolloReactCommon.QueryResult<GetTopTagsQuery, GetTopTagsQueryVariables>;
+export function refetchGetTopTagsQuery(variables?: GetTopTagsQueryVariables) {
+      return { query: GetTopTagsDocument, variables: variables }
+    }
 export const LoginDocument = gql`
     mutation login($email: String!, $password: String!) {
   login(input: {email: $email, password: $password}) {
-    user {
-      email
-    }
-    error {
-      message
-    }
+    id
+    name
+    email
+    createdAt
+    updatedAt
+    avatarId
   }
 }
     `;
@@ -539,13 +834,12 @@ export type LoginMutationOptions = ApolloReactCommon.BaseMutationOptions<LoginMu
 export const SignUpDocument = gql`
     mutation signUp($email: String!, $password: String!, $name: String!) {
   register(input: {email: $email, password: $password, name: $name}) {
-    user {
-      email
-      name
-    }
-    error {
-      message
-    }
+    id
+    name
+    email
+    createdAt
+    updatedAt
+    avatarId
   }
 }
     `;
@@ -610,6 +904,11 @@ export const AuthDocument = gql`
   auth {
     email
     name
+    avatarId
+    id
+    createdAt
+    updatedAt
+    joinedEvent
   }
 }
     `;
@@ -637,78 +936,38 @@ export function useAuthMutation(baseOptions?: ApolloReactHooks.MutationHookOptio
 export type AuthMutationHookResult = ReturnType<typeof useAuthMutation>;
 export type AuthMutationResult = ApolloReactCommon.MutationResult<AuthMutation>;
 export type AuthMutationOptions = ApolloReactCommon.BaseMutationOptions<AuthMutation, AuthMutationVariables>;
-export const GetAllUsersDocument = gql`
-    query getAllUsers {
-  getAllUsers {
-    users {
-      email
-    }
+export const CreateEventDocument = gql`
+    mutation createEvent($input: EventCreateInput!) {
+  createEvent(input: $input) {
+    hostId
   }
 }
     `;
+export type CreateEventMutationFn = ApolloReactCommon.MutationFunction<CreateEventMutation, CreateEventMutationVariables>;
 
 /**
- * __useGetAllUsersQuery__
+ * __useCreateEventMutation__
  *
- * To run a query within a React component, call `useGetAllUsersQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetAllUsersQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
+ * To run a mutation, you first call `useCreateEventMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateEventMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
  *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const { data, loading, error } = useGetAllUsersQuery({
+ * const [createEventMutation, { data, loading, error }] = useCreateEventMutation({
  *   variables: {
+ *      input: // value for 'input'
  *   },
  * });
  */
-export function useGetAllUsersQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetAllUsersQuery, GetAllUsersQueryVariables>) {
-        return ApolloReactHooks.useQuery<GetAllUsersQuery, GetAllUsersQueryVariables>(GetAllUsersDocument, baseOptions);
+export function useCreateEventMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<CreateEventMutation, CreateEventMutationVariables>) {
+        return ApolloReactHooks.useMutation<CreateEventMutation, CreateEventMutationVariables>(CreateEventDocument, baseOptions);
       }
-export function useGetAllUsersLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetAllUsersQuery, GetAllUsersQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<GetAllUsersQuery, GetAllUsersQueryVariables>(GetAllUsersDocument, baseOptions);
-        }
-export type GetAllUsersQueryHookResult = ReturnType<typeof useGetAllUsersQuery>;
-export type GetAllUsersLazyQueryHookResult = ReturnType<typeof useGetAllUsersLazyQuery>;
-export type GetAllUsersQueryResult = ApolloReactCommon.QueryResult<GetAllUsersQuery, GetAllUsersQueryVariables>;
-export function refetchGetAllUsersQuery(variables?: GetAllUsersQueryVariables) {
-      return { query: GetAllUsersDocument, variables: variables }
-    }
-export const GetCurrentUserInfoDocument = gql`
-    query getCurrentUserInfo {
-  me {
-    email
-  }
-}
-    `;
-
-/**
- * __useGetCurrentUserInfoQuery__
- *
- * To run a query within a React component, call `useGetCurrentUserInfoQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetCurrentUserInfoQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetCurrentUserInfoQuery({
- *   variables: {
- *   },
- * });
- */
-export function useGetCurrentUserInfoQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetCurrentUserInfoQuery, GetCurrentUserInfoQueryVariables>) {
-        return ApolloReactHooks.useQuery<GetCurrentUserInfoQuery, GetCurrentUserInfoQueryVariables>(GetCurrentUserInfoDocument, baseOptions);
-      }
-export function useGetCurrentUserInfoLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetCurrentUserInfoQuery, GetCurrentUserInfoQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<GetCurrentUserInfoQuery, GetCurrentUserInfoQueryVariables>(GetCurrentUserInfoDocument, baseOptions);
-        }
-export type GetCurrentUserInfoQueryHookResult = ReturnType<typeof useGetCurrentUserInfoQuery>;
-export type GetCurrentUserInfoLazyQueryHookResult = ReturnType<typeof useGetCurrentUserInfoLazyQuery>;
-export type GetCurrentUserInfoQueryResult = ApolloReactCommon.QueryResult<GetCurrentUserInfoQuery, GetCurrentUserInfoQueryVariables>;
-export function refetchGetCurrentUserInfoQuery(variables?: GetCurrentUserInfoQueryVariables) {
-      return { query: GetCurrentUserInfoDocument, variables: variables }
-    }
+export type CreateEventMutationHookResult = ReturnType<typeof useCreateEventMutation>;
+export type CreateEventMutationResult = ApolloReactCommon.MutationResult<CreateEventMutation>;
+export type CreateEventMutationOptions = ApolloReactCommon.BaseMutationOptions<CreateEventMutation, CreateEventMutationVariables>;
 export const AddPictureDocument = gql`
     mutation addPicture($file: Upload!) {
   addProfilePicture(picture: $file)
@@ -739,33 +998,100 @@ export function useAddPictureMutation(baseOptions?: ApolloReactHooks.MutationHoo
 export type AddPictureMutationHookResult = ReturnType<typeof useAddPictureMutation>;
 export type AddPictureMutationResult = ApolloReactCommon.MutationResult<AddPictureMutation>;
 export type AddPictureMutationOptions = ApolloReactCommon.BaseMutationOptions<AddPictureMutation, AddPictureMutationVariables>;
+export const JoinEventDocument = gql`
+    mutation joinEvent($input: JoinEventInput!) {
+  joinEvent(input: $input) {
+    id
+    membersInfo {
+      id
+      type
+    }
+  }
+}
+    `;
+export type JoinEventMutationFn = ApolloReactCommon.MutationFunction<JoinEventMutation, JoinEventMutationVariables>;
+
+/**
+ * __useJoinEventMutation__
+ *
+ * To run a mutation, you first call `useJoinEventMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useJoinEventMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [joinEventMutation, { data, loading, error }] = useJoinEventMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useJoinEventMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<JoinEventMutation, JoinEventMutationVariables>) {
+        return ApolloReactHooks.useMutation<JoinEventMutation, JoinEventMutationVariables>(JoinEventDocument, baseOptions);
+      }
+export type JoinEventMutationHookResult = ReturnType<typeof useJoinEventMutation>;
+export type JoinEventMutationResult = ApolloReactCommon.MutationResult<JoinEventMutation>;
+export type JoinEventMutationOptions = ApolloReactCommon.BaseMutationOptions<JoinEventMutation, JoinEventMutationVariables>;
+export const EditJoinTypeEventInfoDocument = gql`
+    mutation editJoinTypeEventInfo($input: JoinEventInput!) {
+  editJoinTypeEventInfo(input: $input) {
+    id
+    membersInfo {
+      id
+      type
+    }
+  }
+}
+    `;
+export type EditJoinTypeEventInfoMutationFn = ApolloReactCommon.MutationFunction<EditJoinTypeEventInfoMutation, EditJoinTypeEventInfoMutationVariables>;
+
+/**
+ * __useEditJoinTypeEventInfoMutation__
+ *
+ * To run a mutation, you first call `useEditJoinTypeEventInfoMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useEditJoinTypeEventInfoMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [editJoinTypeEventInfoMutation, { data, loading, error }] = useEditJoinTypeEventInfoMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useEditJoinTypeEventInfoMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<EditJoinTypeEventInfoMutation, EditJoinTypeEventInfoMutationVariables>) {
+        return ApolloReactHooks.useMutation<EditJoinTypeEventInfoMutation, EditJoinTypeEventInfoMutationVariables>(EditJoinTypeEventInfoDocument, baseOptions);
+      }
+export type EditJoinTypeEventInfoMutationHookResult = ReturnType<typeof useEditJoinTypeEventInfoMutation>;
+export type EditJoinTypeEventInfoMutationResult = ApolloReactCommon.MutationResult<EditJoinTypeEventInfoMutation>;
+export type EditJoinTypeEventInfoMutationOptions = ApolloReactCommon.BaseMutationOptions<EditJoinTypeEventInfoMutation, EditJoinTypeEventInfoMutationVariables>;
 export const GetAllEventsDocument = gql`
     query getAllEvents {
   getEvents {
-    events {
+    id
+    hostId
+    membersInfo {
       id
-      hostId
-      membersInfo {
-        id
-        type
-      }
-      endTime
-      startTime
-      information {
-        eventName
-        description
-      }
-      place {
-        name
-        address
-        coord {
-          latitude
-          longitude
-        }
-      }
+      type
     }
-    error {
-      message
+    endTime
+    startTime
+    information {
+      eventName
+      description
+    }
+    place {
+      name
+      address
+      coord {
+        latitude
+        longitude
+      }
     }
   }
 }
@@ -801,27 +1127,23 @@ export function refetchGetAllEventsQuery(variables?: GetAllEventsQueryVariables)
 export const GetEventByCoordDocument = gql`
     query getEventByCoord($input: CoordInput!) {
   getEventBaseOnPos(input: $input) {
-    events {
+    id
+    hostInfo {
       id
-      hostInfo {
-        id
-        name
-        email
-      }
-      endTime
-      startTime
-      information {
-        eventName
-      }
-      place {
-        coord {
-          latitude
-          longitude
-        }
-      }
+      name
+      email
+      avatarId
     }
-    error {
-      message
+    endTime
+    startTime
+    information {
+      eventName
+    }
+    place {
+      coord {
+        latitude
+        longitude
+      }
     }
   }
 }
@@ -858,31 +1180,25 @@ export function refetchGetEventByCoordQuery(variables?: GetEventByCoordQueryVari
 export const GetEventByIdDocument = gql`
     query getEventById($id: String!) {
   getEventById(id: $id) {
-    event {
+    id
+    hostId
+    membersInfo {
       id
-      hostId
-      membersInfo {
-        id
-        type
-      }
-      endTime
-      startTime
-      information {
-        eventName
-        description
-      }
-      place {
-        name
-        address
-        coord {
-          latitude
-          longitude
-        }
-      }
+      type
     }
-    error {
-      path
-      message
+    endTime
+    startTime
+    information {
+      eventName
+      description
+    }
+    place {
+      name
+      address
+      coord {
+        latitude
+        longitude
+      }
     }
   }
 }
@@ -915,4 +1231,193 @@ export type GetEventByIdLazyQueryHookResult = ReturnType<typeof useGetEventByIdL
 export type GetEventByIdQueryResult = ApolloReactCommon.QueryResult<GetEventByIdQuery, GetEventByIdQueryVariables>;
 export function refetchGetEventByIdQuery(variables?: GetEventByIdQueryVariables) {
       return { query: GetEventByIdDocument, variables: variables }
+    }
+export const GetImgDocument = gql`
+    query getImg($id: String!) {
+  getImg(id: $id) {
+    data
+  }
+}
+    `;
+
+/**
+ * __useGetImgQuery__
+ *
+ * To run a query within a React component, call `useGetImgQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetImgQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetImgQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetImgQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetImgQuery, GetImgQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetImgQuery, GetImgQueryVariables>(GetImgDocument, baseOptions);
+      }
+export function useGetImgLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetImgQuery, GetImgQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetImgQuery, GetImgQueryVariables>(GetImgDocument, baseOptions);
+        }
+export type GetImgQueryHookResult = ReturnType<typeof useGetImgQuery>;
+export type GetImgLazyQueryHookResult = ReturnType<typeof useGetImgLazyQuery>;
+export type GetImgQueryResult = ApolloReactCommon.QueryResult<GetImgQuery, GetImgQueryVariables>;
+export function refetchGetImgQuery(variables?: GetImgQueryVariables) {
+      return { query: GetImgDocument, variables: variables }
+    }
+export const GetAllUsersDocument = gql`
+    query getAllUsers {
+  getAllUsers {
+    id
+    email
+  }
+}
+    `;
+
+/**
+ * __useGetAllUsersQuery__
+ *
+ * To run a query within a React component, call `useGetAllUsersQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAllUsersQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAllUsersQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetAllUsersQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetAllUsersQuery, GetAllUsersQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetAllUsersQuery, GetAllUsersQueryVariables>(GetAllUsersDocument, baseOptions);
+      }
+export function useGetAllUsersLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetAllUsersQuery, GetAllUsersQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetAllUsersQuery, GetAllUsersQueryVariables>(GetAllUsersDocument, baseOptions);
+        }
+export type GetAllUsersQueryHookResult = ReturnType<typeof useGetAllUsersQuery>;
+export type GetAllUsersLazyQueryHookResult = ReturnType<typeof useGetAllUsersLazyQuery>;
+export type GetAllUsersQueryResult = ApolloReactCommon.QueryResult<GetAllUsersQuery, GetAllUsersQueryVariables>;
+export function refetchGetAllUsersQuery(variables?: GetAllUsersQueryVariables) {
+      return { query: GetAllUsersDocument, variables: variables }
+    }
+export const GetCurrentUserInfoDocument = gql`
+    query getCurrentUserInfo {
+  me {
+    email
+    id
+    avatarId
+    name
+    joinedEvent
+    createdAt
+    updatedAt
+  }
+}
+    `;
+
+/**
+ * __useGetCurrentUserInfoQuery__
+ *
+ * To run a query within a React component, call `useGetCurrentUserInfoQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetCurrentUserInfoQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetCurrentUserInfoQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetCurrentUserInfoQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetCurrentUserInfoQuery, GetCurrentUserInfoQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetCurrentUserInfoQuery, GetCurrentUserInfoQueryVariables>(GetCurrentUserInfoDocument, baseOptions);
+      }
+export function useGetCurrentUserInfoLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetCurrentUserInfoQuery, GetCurrentUserInfoQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetCurrentUserInfoQuery, GetCurrentUserInfoQueryVariables>(GetCurrentUserInfoDocument, baseOptions);
+        }
+export type GetCurrentUserInfoQueryHookResult = ReturnType<typeof useGetCurrentUserInfoQuery>;
+export type GetCurrentUserInfoLazyQueryHookResult = ReturnType<typeof useGetCurrentUserInfoLazyQuery>;
+export type GetCurrentUserInfoQueryResult = ApolloReactCommon.QueryResult<GetCurrentUserInfoQuery, GetCurrentUserInfoQueryVariables>;
+export function refetchGetCurrentUserInfoQuery(variables?: GetCurrentUserInfoQueryVariables) {
+      return { query: GetCurrentUserInfoDocument, variables: variables }
+    }
+export const GetMyJoinedEventDocument = gql`
+    query getMyJoinedEvent {
+  getMyJoinedEvent {
+    id
+    place {
+      address
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetMyJoinedEventQuery__
+ *
+ * To run a query within a React component, call `useGetMyJoinedEventQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetMyJoinedEventQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetMyJoinedEventQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetMyJoinedEventQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetMyJoinedEventQuery, GetMyJoinedEventQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetMyJoinedEventQuery, GetMyJoinedEventQueryVariables>(GetMyJoinedEventDocument, baseOptions);
+      }
+export function useGetMyJoinedEventLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetMyJoinedEventQuery, GetMyJoinedEventQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetMyJoinedEventQuery, GetMyJoinedEventQueryVariables>(GetMyJoinedEventDocument, baseOptions);
+        }
+export type GetMyJoinedEventQueryHookResult = ReturnType<typeof useGetMyJoinedEventQuery>;
+export type GetMyJoinedEventLazyQueryHookResult = ReturnType<typeof useGetMyJoinedEventLazyQuery>;
+export type GetMyJoinedEventQueryResult = ApolloReactCommon.QueryResult<GetMyJoinedEventQuery, GetMyJoinedEventQueryVariables>;
+export function refetchGetMyJoinedEventQuery(variables?: GetMyJoinedEventQueryVariables) {
+      return { query: GetMyJoinedEventDocument, variables: variables }
+    }
+export const GetMyHostedEventDocument = gql`
+    query getMyHostedEvent {
+  getMyHostedEvent {
+    id
+    place {
+      address
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetMyHostedEventQuery__
+ *
+ * To run a query within a React component, call `useGetMyHostedEventQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetMyHostedEventQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetMyHostedEventQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetMyHostedEventQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetMyHostedEventQuery, GetMyHostedEventQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetMyHostedEventQuery, GetMyHostedEventQueryVariables>(GetMyHostedEventDocument, baseOptions);
+      }
+export function useGetMyHostedEventLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetMyHostedEventQuery, GetMyHostedEventQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetMyHostedEventQuery, GetMyHostedEventQueryVariables>(GetMyHostedEventDocument, baseOptions);
+        }
+export type GetMyHostedEventQueryHookResult = ReturnType<typeof useGetMyHostedEventQuery>;
+export type GetMyHostedEventLazyQueryHookResult = ReturnType<typeof useGetMyHostedEventLazyQuery>;
+export type GetMyHostedEventQueryResult = ApolloReactCommon.QueryResult<GetMyHostedEventQuery, GetMyHostedEventQueryVariables>;
+export function refetchGetMyHostedEventQuery(variables?: GetMyHostedEventQueryVariables) {
+      return { query: GetMyHostedEventDocument, variables: variables }
     }

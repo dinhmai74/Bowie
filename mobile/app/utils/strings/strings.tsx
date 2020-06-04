@@ -3,6 +3,15 @@ export const strings = {
   token: 'userToken',
 }
 
+export const toCapitalize = (text: string) => {
+  if (!text) return ''
+  return text.charAt(0).toUpperCase() + text.slice(1).toLowerCase()
+}
+
+export const getBase64Uri = (data: string) => {
+  return 'data:image/png;base64,' + data
+}
+
 export const AppRoutes = {
   welcome: 'welcome',
   signIn: 'signIn',

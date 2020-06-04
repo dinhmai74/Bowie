@@ -2,3 +2,22 @@ mutation addPicture($file: Upload!) {
   addProfilePicture(picture: $file)
 }
 
+mutation joinEvent($input: JoinEventInput!) {
+  joinEvent(input: $input) {
+    id
+    membersInfo {
+      id
+      type
+    }
+  }
+}
+
+mutation editJoinTypeEventInfo($input: JoinEventInput!) {
+  editJoinTypeEventInfo(input: $input) {
+    id
+    membersInfo {
+      id
+      type
+    }
+  }
+}

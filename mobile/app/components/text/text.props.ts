@@ -2,6 +2,7 @@
 import { TextProps as TextProperties } from '@ui-kitten/components'
 import { TextPresets } from './text.presets'
 import { TextStyle } from 'react-native'
+import { Color } from 'theme'
 
 export interface TextProps extends TextProperties {
   /**
@@ -26,10 +27,11 @@ export interface TextProps extends TextProperties {
   style?: TextStyle | TextStyle[]
   preset?: TextPresets
   color?: string
-  themeColor?: string
+  themeColor?: keyof Color
   underline?: boolean
   children?: any
   textAlign?: 'auto' | 'left' | 'right' | 'center' | 'justify'
   fontFamily?: string
   maxLength?: number
+  autoTranslate?: boolean
 }

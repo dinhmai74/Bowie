@@ -1,16 +1,15 @@
 import { ApolloServer } from 'apollo-server-express'
 import express from 'express'
 import session from 'express-session'
+import { graphqlUploadExpress } from 'graphql-upload'
 import { MikroORM } from 'mikro-orm'
 import mongoose from 'mongoose'
-import cron from 'node-cron'
 import 'reflect-metadata'
 import { buildSchema } from 'type-graphql'
 import { config } from './config'
 import { Event, EventTag, User } from './entity'
 import { Book } from './entity/Book'
 import { DI } from './mikroconfig'
-import { graphqlUploadExpress } from 'graphql-upload'
 
 // eslint-disable-next-line
 const MongoStore = require('connect-mongo')(session)
@@ -69,6 +68,7 @@ const MongoStore = require('connect-mongo')(session)
       __dirname + '/resolvers/**/*.resolver.{ts,js}',
       __dirname + '/resolvers/**/*.{ts,js}',
       __dirname + '/resolvers/*.{ts,js}',
+      __dirname + '/resolvers/*.resolver.{ts,js}',
     ],
     validate: false,
   })
@@ -84,20 +84,20 @@ const MongoStore = require('connect-mongo')(session)
   apolloServer.applyMiddleware({ app, cors: false })
 
   // schedule
-  cron.schedule('0 0 * * * *', () => {
-    const request = {
-      query: `{
-  getBooks{
-    books{
-      title
-    }
-  }
-}`,
-    }
-    const rs = apolloServer.executeOperation(request).then((d) => {
-      console.log('rs', d)
-    })
-  })
+  // cron.schedule('0 0 * * * *', () => {
+  // const request = {
+  // query: `{
+  // getBooks{
+  // books{
+  // title
+  // }
+  // }
+  // }`,
+  // }
+  // const rs = apolloServer.executeOperation(request).then((d) => {
+  // console.log('rs', d)
+  // })
+  // })
 
   app.listen(config.express.port, (err) => {
     if (err) return console.error(err)

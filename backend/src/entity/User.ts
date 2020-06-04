@@ -1,6 +1,5 @@
 import { Entity, Property, Unique } from 'mikro-orm'
 import { Field, ObjectType } from 'type-graphql'
-import { Image } from '../graphql-types/Image'
 import { BaseEntity } from './BaseEntity'
 
 @ObjectType()
@@ -24,10 +23,14 @@ export class User extends BaseEntity {
   @Property()
   name: string
 
-  @Field(() => Image)
-  @Property()
-  avatar: Image
-
   @Property()
   password: string
+
+  @Field(() => String, { nullable: true })
+  @Property()
+  avatarId: string
+
+  @Field(() => [String], { nullable: true })
+  @Property()
+  joinedEvent: string[]
 }
