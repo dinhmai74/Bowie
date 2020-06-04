@@ -9,14 +9,8 @@ query getCurrentUserInfo {
   me {
     email
     id
+    avatarId
     name
-    avatar {
-      id
-      createdAt
-      updatedAt
-      data
-      contentType
-    }
     joinedEvent
     createdAt
     updatedAt

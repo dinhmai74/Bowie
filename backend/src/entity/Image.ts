@@ -21,9 +21,7 @@ export const BufferScalar = new GraphQLScalarType({
 })
 
 @ObjectType()
-@InputType('ImageInput')
-@Entity()
-export class Image extends BaseEntity {
+export class Image {
   @Field(() => BufferScalar)
   @Property()
   data: Buffer

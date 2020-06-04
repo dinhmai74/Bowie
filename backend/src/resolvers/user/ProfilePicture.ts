@@ -1,4 +1,4 @@
-import { createWriteStream, mkdir, readFileSync } from 'fs'
+import { createWriteStream, mkdir, readFileSync, unlinkSync, existsSync } from 'fs'
 import { GraphQLUpload } from 'graphql-upload'
 import { Arg, Ctx, Mutation, Resolver } from 'type-graphql'
 import { v4 } from 'uuid'
@@ -21,42 +21,19 @@ export class ProfilePictureResolver {
     console.log('file', file)
     if (!ctx.req.session!.userId) return false
 
-    const imgDir = `${baseImgDir}/${ctx.req.session!.userId}`
+    const imgDir = `${baseImgDir}`
+    const id = v4()
     const user = await DI.userRepos.findOne({ id: ctx.req.session!.userId })
-    mkdir(
-      __dirname + imgDir,
-      {
-        recursive: true,
-      },
-      // @ts-ignore
-      (err) => {
-        if (err) {
-          console.log('err', err)
-          return false
-        }
-      },
-    )
 
     return new Promise(async (resolve, reject) =>
       createReadStream()
-        .pipe(createWriteStream(__dirname + `${imgDir}/${filename}`))
+        .pipe(createWriteStream(__dirname + `${imgDir}/${id}.png`))
         .on('finish', async () => {
-          const tempId = v4()
-          // find old avatar and delete if have
-          const img = new Image()
-          if (!user) return resolve(false)
-          const oldImage = await DI.imageRepos.findOne({ id: user?.avatarId })
-          if (oldImage) await DI.imageRepos.removeAndFlush(oldImage)
-
-          img.data = readFileSync(__dirname + `${imgDir}/${filename}`)
-          img.contentType = 'image/png'
-          img.tempId = tempId
-          await DI.imageRepos.persist(img)
-          const imgSave = await DI.imageRepos.findOne({ tempId })
-
-          user.avatarId = imgSave!.id
-          await DI.em.flush()
-          // DI.userRepos.persist(user)
+          if (user && existsSync(__dirname + `${imgDir}/${user.avatarId}.png`)) {
+            unlinkSync(__dirname + `${imgDir}/${user.avatarId}.png`)
+          }
+          user!.avatarId = id
+          DI.em.flush()
           resolve(true)
         })
         .on('error', () => reject(false)),

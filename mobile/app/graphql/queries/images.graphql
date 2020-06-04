@@ -1,0 +1,5 @@
+query getImg($id: String!) {
+  getImg(id: $id) {
+    data
+  }
+}

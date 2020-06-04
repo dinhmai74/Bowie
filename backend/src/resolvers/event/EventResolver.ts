@@ -32,8 +32,8 @@ export class EventResolver {
     })
     const result = await mapAsync(async (e: Event) => {
       const hostInfo = await DI.userRepos.findOne({ id: e.hostId })
-      const avatar = await DI.imageRepos.findOne({ id: hostInfo?.avatarId })
-      return { ...e, hostInfo: { ...hostInfo, id: hostInfo!.id, avatar }, id: e.id }
+
+      return { ...e, hostInfo: { ...hostInfo, id: hostInfo!.id }, id: e.id }
     }, events)
 
     return result

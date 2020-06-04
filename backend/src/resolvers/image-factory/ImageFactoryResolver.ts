@@ -1,16 +1,18 @@
-import { Query, Resolver, UseMiddleware, Arg, Mutation } from 'type-graphql'
-import { DI } from '../../mikroconfig'
-import { Image } from '../../entity'
+import { createWriteStream, readFileSync } from 'fs'
 import { GraphQLUpload } from 'graphql-upload'
+import { Arg, Mutation, Query, Resolver } from 'type-graphql'
+import { Image } from '../../entity'
 import { Upload } from '../../graphql-types/Upload'
-import { createWriteStream } from 'fs'
 
 const baseImgDir = '/../../../images'
 @Resolver()
 export class ImageFactoryResolver {
   @Query(() => Image)
   async getImg(@Arg('id') id: string): Promise<Image | null> {
-    const img = await DI.imageRepos.findOne(id)
+    const data = readFileSync(__dirname + `${baseImgDir}/${id}.png`)
+    const img = new Image()
+    img.data = data
+    img.contentType = 'image/png'
     return img
   }
 

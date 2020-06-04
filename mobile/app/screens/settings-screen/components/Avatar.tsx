@@ -1,5 +1,5 @@
 import { Avatar as KittenAvatar } from '@ui-kitten/components'
-import { GetCurrentUserInfoQuery } from 'app-graphql'
+import { GetCurrentUserInfoQuery, useGetImgLazyQuery, useGetImgQuery } from 'app-graphql'
 import { Text, View } from 'components'
 import React from 'react'
 import { ImageStyle, StyleSheet } from 'react-native'
@@ -35,12 +35,19 @@ interface AvatarProps {
 
 export const Avatar: React.FC<AvatarProps> = props => {
   const { data: getInfoData, loading } = props
-  if (getInfoData) console.tron.log('get user data', getInfoData)
+
+  const { data: imgData, loading: loadingImg } = useGetImgQuery({
+    variables: {
+      id: getInfoData?.me?.avatarId,
+    },
+    fetchPolicy: 'network-only',
+  })
+
   const { theme } = useThemes()
   let avatarUri: string
 
-  if (getInfoData) {
-    avatarUri = getBase64UriFromUnknownSource(getInfoData?.me?.avatar?.data)
+  if (imgData) {
+    avatarUri = getBase64UriFromUnknownSource(imgData.getImg!.data)
   }
 
   const userName = getInfoData?.me?.name
@@ -50,7 +57,7 @@ export const Avatar: React.FC<AvatarProps> = props => {
       <TouchableOpacity onPress={props.onAvatarPress}>
         <SkeletonContent
           containerStyle={styles.skeContainer}
-          isLoading={loading}
+          isLoading={loading || loadingImg}
           layout={[skeAvatar]}
         >
           {!loading && <KittenAvatar source={{ uri: avatarUri }} style={{ ...skeAvatar }} />}

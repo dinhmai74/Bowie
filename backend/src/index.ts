@@ -7,7 +7,7 @@ import mongoose from 'mongoose'
 import 'reflect-metadata'
 import { buildSchema } from 'type-graphql'
 import { config } from './config'
-import { Event, EventTag, Image, User } from './entity'
+import { Event, EventTag, User } from './entity'
 import { Book } from './entity/Book'
 import { DI } from './mikroconfig'
 
@@ -45,7 +45,6 @@ const MongoStore = require('connect-mongo')(session)
   DI.userRepos = DI.orm.em.getRepository(User)
   DI.eventRepos = DI.orm.em.getRepository(Event)
   DI.eventTagRepos = DI.orm.em.getRepository(EventTag)
-  DI.imageRepos = DI.orm.em.getRepository(Image)
 
   app.use(
     session({

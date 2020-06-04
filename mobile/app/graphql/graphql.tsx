@@ -135,7 +135,7 @@ export type EventWithHost = {
   tags: Array<Scalars['String']>;
   place: Place;
   information: Information;
-  hostInfo?: Maybe<UserWithAvt>;
+  hostInfo?: Maybe<User>;
 };
 
 export type FieldError = {
@@ -146,14 +146,6 @@ export type FieldError = {
 
 export type Image = {
   __typename?: 'Image';
-  id: Scalars['String'];
-  createdAt: Scalars['DateTime'];
-  updatedAt: Scalars['DateTime'];
-  data: Scalars['Buffer'];
-  contentType: Scalars['String'];
-};
-
-export type ImageInput = {
   data: Scalars['Buffer'];
   contentType: Scalars['String'];
 };
@@ -190,9 +182,10 @@ export type Mutation = {
   createTag: EventTag;
   changeTagQuantity: EventTag;
   IncreaseOrDecreaseTagQuantity: EventTag;
+  createPhoto: Scalars['Boolean'];
   register: User;
   login: User;
-  auth?: Maybe<UserWithAvt>;
+  auth?: Maybe<User>;
   logout: Scalars['Boolean'];
   addProfilePicture: Scalars['Boolean'];
 };
@@ -229,6 +222,11 @@ export type MutationIncreaseOrDecreaseTagQuantityArgs = {
 };
 
 
+export type MutationCreatePhotoArgs = {
+  input: Scalars['Upload'];
+};
+
+
 export type MutationRegisterArgs = {
   input: SignUpInput;
 };
@@ -262,8 +260,9 @@ export type Query = {
   getAllTag: Array<EventTag>;
   getTopTenHotTag: Array<EventTag>;
   hello: Scalars['String'];
+  getImg: Image;
   getAllUsers: Array<User>;
-  me?: Maybe<UserWithAvt>;
+  me?: Maybe<User>;
 };
 
 
@@ -274,6 +273,11 @@ export type QueryGetEventByIdArgs = {
 
 export type QueryGetEventBaseOnPosArgs = {
   input: CoordInput;
+};
+
+
+export type QueryGetImgArgs = {
+  id: Scalars['String'];
 };
 
 export type SignUpInput = {
@@ -411,8 +415,8 @@ export type AuthMutationVariables = {};
 export type AuthMutation = (
   { __typename?: 'Mutation' }
   & { auth?: Maybe<(
-    { __typename?: 'UserWithAvt' }
-    & Pick<UserWithAvt, 'email' | 'name' | 'avatarId' | 'id' | 'createdAt' | 'updatedAt' | 'joinedEvent'>
+    { __typename?: 'User' }
+    & Pick<User, 'email' | 'name' | 'avatarId' | 'id' | 'createdAt' | 'updatedAt' | 'joinedEvent'>
   )> }
 );
 
@@ -509,12 +513,8 @@ export type GetEventByCoordQuery = (
     { __typename?: 'EventWithHost' }
     & Pick<EventWithHost, 'id' | 'endTime' | 'startTime'>
     & { hostInfo?: Maybe<(
-      { __typename?: 'UserWithAvt' }
-      & Pick<UserWithAvt, 'id' | 'name' | 'email'>
-      & { avatar?: Maybe<(
-        { __typename?: 'Image' }
-        & Pick<Image, 'id' | 'data' | 'contentType'>
-      )> }
+      { __typename?: 'User' }
+      & Pick<User, 'id' | 'name' | 'email' | 'avatarId'>
     )>, information: (
       { __typename?: 'Information' }
       & Pick<Information, 'eventName'>
@@ -555,6 +555,19 @@ export type GetEventByIdQuery = (
   )> }
 );
 
+export type GetImgQueryVariables = {
+  id: Scalars['String'];
+};
+
+
+export type GetImgQuery = (
+  { __typename?: 'Query' }
+  & { getImg: (
+    { __typename?: 'Image' }
+    & Pick<Image, 'data'>
+  ) }
+);
+
 export type GetAllUsersQueryVariables = {};
 
 
@@ -572,12 +585,8 @@ export type GetCurrentUserInfoQueryVariables = {};
 export type GetCurrentUserInfoQuery = (
   { __typename?: 'Query' }
   & { me?: Maybe<(
-    { __typename?: 'UserWithAvt' }
-    & Pick<UserWithAvt, 'email' | 'id' | 'name' | 'joinedEvent' | 'createdAt' | 'updatedAt'>
-    & { avatar?: Maybe<(
-      { __typename?: 'Image' }
-      & Pick<Image, 'id' | 'createdAt' | 'updatedAt' | 'data' | 'contentType'>
-    )> }
+    { __typename?: 'User' }
+    & Pick<User, 'email' | 'id' | 'avatarId' | 'name' | 'joinedEvent' | 'createdAt' | 'updatedAt'>
   )> }
 );
 
@@ -1123,11 +1132,7 @@ export const GetEventByCoordDocument = gql`
       id
       name
       email
-      avatar {
-        id
-        data
-        contentType
-      }
+      avatarId
     }
     endTime
     startTime
@@ -1227,6 +1232,42 @@ export type GetEventByIdQueryResult = ApolloReactCommon.QueryResult<GetEventById
 export function refetchGetEventByIdQuery(variables?: GetEventByIdQueryVariables) {
       return { query: GetEventByIdDocument, variables: variables }
     }
+export const GetImgDocument = gql`
+    query getImg($id: String!) {
+  getImg(id: $id) {
+    data
+  }
+}
+    `;
+
+/**
+ * __useGetImgQuery__
+ *
+ * To run a query within a React component, call `useGetImgQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetImgQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetImgQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetImgQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetImgQuery, GetImgQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetImgQuery, GetImgQueryVariables>(GetImgDocument, baseOptions);
+      }
+export function useGetImgLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetImgQuery, GetImgQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetImgQuery, GetImgQueryVariables>(GetImgDocument, baseOptions);
+        }
+export type GetImgQueryHookResult = ReturnType<typeof useGetImgQuery>;
+export type GetImgLazyQueryHookResult = ReturnType<typeof useGetImgLazyQuery>;
+export type GetImgQueryResult = ApolloReactCommon.QueryResult<GetImgQuery, GetImgQueryVariables>;
+export function refetchGetImgQuery(variables?: GetImgQueryVariables) {
+      return { query: GetImgDocument, variables: variables }
+    }
 export const GetAllUsersDocument = gql`
     query getAllUsers {
   getAllUsers {
@@ -1268,14 +1309,8 @@ export const GetCurrentUserInfoDocument = gql`
   me {
     email
     id
+    avatarId
     name
-    avatar {
-      id
-      createdAt
-      updatedAt
-      data
-      contentType
-    }
     joinedEvent
     createdAt
     updatedAt

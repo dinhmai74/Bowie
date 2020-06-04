@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native'
 import { Avatar } from '@ui-kitten/components'
-import { EventWithHost } from 'app-graphql'
+import { EventWithHost, useGetImgQuery } from 'app-graphql'
 import { AppCard, Button, Text } from 'components'
 import { AppIcon } from 'components/app-icon/AppIcon'
 import { SizedBox } from 'components/sized-box/sized-box'
@@ -27,9 +27,18 @@ export interface AppMarker extends MarkerProps {
 
 const AppMarker: React.FC<AppMarker> = ({ coordinate, avatar, ...rest }) => {
   // const [track, setTrack] = useState(true)
+  const { data } = useGetImgQuery({
+    variables: {
+      id: avatar,
+    },
+  })
+
+  let imgUri: any
+  if (data?.getImg) imgUri = getBase64UriFromUnknownSource(data?.getImg?.data)
+
   return (
     <MapMarker coordinate={coordinate} {...rest}>
-      <Avatar source={avatar} />
+      <Avatar source={{ uri: imgUri }} />
     </MapMarker>
   )
 }
@@ -97,7 +106,7 @@ export const AppMapView: React.FunctionComponent<AppMapViewProps> = props => {
             <AppMarker
               key={index}
               // TODO: replace avatar by iamge
-              avatar={{ uri: getBase64UriFromUnknownSource(marker?.hostInfo?.avatar?.data) }}
+              avatar={marker?.hostInfo?.avatarId}
               coordinate={marker.place.coord}
               onPress={location => onPressMarker(location, index)}
               // {...{ opacity }}

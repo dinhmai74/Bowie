@@ -1,9 +1,9 @@
 import { Field, ObjectType } from 'type-graphql'
 import { Event } from '../../entity/Event'
-import { UserWithAvt } from '../user/UserResponse'
+import { User } from '../../entity'
 
 @ObjectType()
 export class EventWithHost extends Event {
-  @Field(() => UserWithAvt, { nullable: true })
-  hostInfo: UserWithAvt
+  @Field(() => User, { nullable: true })
+  hostInfo: User
 }
