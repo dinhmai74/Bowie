@@ -1,4 +1,3 @@
-import { ThemeStoreModel } from '../../models/theme-store'
 import { UserInfoStoreModel } from '../../models/user-info-store'
 import { Instance, SnapshotOut, types } from 'mobx-state-tree'
 
@@ -7,9 +6,6 @@ import { Instance, SnapshotOut, types } from 'mobx-state-tree'
  */
 // prettier-ignore
 export const RootStoreModel = types.model("RootStore").props({
-  themeStore: types.optional(ThemeStoreModel, {
-    theme: "light"
-  }),
   userInfoStore: types.optional(UserInfoStoreModel, {}),
 })
 

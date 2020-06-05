@@ -16,7 +16,6 @@ import { enableScreens } from 'react-native-screens'
 import { ApolloOfflineProvider } from 'react-offix-hooks'
 import { ThemeProvider } from 'styled-components'
 import { strings } from 'utils/strings'
-import './i18n'
 import { RootStore, RootStoreProvider, setupRootStore } from './models/root-store'
 import { exitRoutes, RootNavigator, setRootNavigation } from './navigation'
 import getActiveRouteName from './navigation/get-active-routename'
@@ -58,6 +57,8 @@ YellowBox.ignoreWarnings([
 const canExit = (routeName: string) => contains(routeName, exitRoutes)
 
 export const NAVIGATION_PERSISTENCE_KEY = 'NAVIGATION_STATE'
+export const THEME_PERSISTENCE_KEY = 'THEME_STATE'
+export const LOCALE_PERSISTENCE_KEY = 'LOCALE_STATE'
 
 /**
  * This is the root component of our app.
@@ -68,7 +69,19 @@ const App: React.FunctionComponent<{}> = () => {
   const [initialNavigationState, setInitialNavigationState] = useState()
   const [isRestoringNavigationState, setIsRestoringNavigationState] = useState(true)
   const [theme, setTheme] = React.useState('light')
+  const [locale, setLocale] = React.useState('en')
 
+  const localizationContextValue = React.useMemo(
+    () => ({
+      t: (scope: string, options: any) => translate(scope, { locale, ...options }),
+      locale,
+      setLocale: (l: string) => {
+        setLocale(l)
+        storage.save(LOCALE_PERSISTENCE_KEY, l)
+      },
+    }),
+    [locale],
+  )
   setRootNavigation(navigationRef)
   useBackButtonHandler(navigationRef, canExit)
 
@@ -98,7 +111,16 @@ const App: React.FunctionComponent<{}> = () => {
     ;(async () => {
       await initFonts()
       setupRootStore().then(setRootStore)
-      i18n.locale = await loadString(strings.lang)
+
+      // load persist local
+      const localeState = await storage.load(LOCALE_PERSISTENCE_KEY)
+      if (localeState) {
+        if (locale !== localeState) setLocale(localeState)
+        if (i18n.locale !== localeState) i18n.locale = localeState
+      }
+      // load persist theme
+      const storeTheme = await storage.load(THEME_PERSISTENCE_KEY)
+      if (storeTheme && storeTheme !== theme) setTheme(storeTheme)
     })()
   }, [])
 
@@ -123,29 +145,11 @@ const App: React.FunctionComponent<{}> = () => {
   const currentTheme = themes[theme]
 
   const toggle = () => {
-    const nextTheme = theme === 'light' ? 'dark' : 'light'
+    const nextTheme = theme === 'dark' ? 'light' : 'dark'
     setTheme(nextTheme)
+    storage.save(THEME_PERSISTENCE_KEY, nextTheme)
   }
 
-  const [locale, setLocale] = React.useState('en')
-
-  const localizationContextValue = React.useMemo(
-    () => ({
-      t: (scope: string, options: any) => translate(scope, { locale, ...options }),
-      locale,
-      setLocale,
-    }),
-    [locale],
-  )
-
-  // Before we show the app, we have to wait for our state to be ready.
-  // In the meantime, don't render anything. This will be the background
-  // color set in native by rootView's background color.
-  //
-  // This step should be completely covered over by the splash screen though.
-  //
-  // You're welcome to swap in your own component to render if your boot up
-  // sequence is too slow though.
   if (!rootStore) {
     return null
   }

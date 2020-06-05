@@ -5,7 +5,6 @@ import { metrics } from 'theme/metrics'
 
 function NewIcon({ name, style, size, onPress, Icon, ...rest }) {
   const { height, tintColor, ...iconStyle } = StyleSheet.flatten(style || {})
-  console.tron.log('tintColor', tintColor)
   if (onPress) {
     return (
       <TouchableOpacity onPress={onPress}>

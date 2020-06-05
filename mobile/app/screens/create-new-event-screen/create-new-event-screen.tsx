@@ -1,10 +1,8 @@
 import { useNavigation } from '@react-navigation/native'
-import { CreateEventDocument } from 'app-graphql'
-import { Button, Screen, TextField, View, Wallpaper, SizedBox } from 'components'
+import { Button, Screen, SizedBox, TextField, View, Wallpaper } from 'components'
 import { observer } from 'mobx-react-lite'
 import React from 'react'
 import { NavigationScreenProp } from 'react-navigation'
-import { useOfflineMutation } from 'react-offix-hooks'
 import styled from 'styled-components'
 // import { useStores } from "models/root-store"
 import { metrics, spacing, sw } from 'theme'
