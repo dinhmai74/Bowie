@@ -28,7 +28,7 @@ interface TimePickerProps {
   setDate: (m: Moment) => void
 }
 
-export const TimePicker: React.FC<TimePickerProps> = props => {
+export const DatePicker: React.FC<TimePickerProps> = props => {
   const { date, setDate } = props
   const [visible, setVisible] = React.useState(false)
   const renderLayout = () => <Layout />
@@ -55,9 +55,6 @@ export const TimePicker: React.FC<TimePickerProps> = props => {
       >
         <Calendar
           dateService={dateService}
-          eva={{
-            style: 'success',
-          }}
           date={date}
           onSelect={nextDate => {
             setDate(nextDate)
@@ -68,10 +65,3 @@ export const TimePicker: React.FC<TimePickerProps> = props => {
     </>
   )
 }
-
-// <Modal
-// visible={visible}
-// backdropStyle={AppStyles.backdrop}
-// onBackdropPress={() => setVisible(false)}
-// >
-// </Modal>

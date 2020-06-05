@@ -2749,6 +2749,13 @@
     wcwidth "^1.0.1"
     ws "^1.1.0"
 
+"@react-native-community/datetimepicker@2.2.2":
+  version "2.2.2"
+  resolved "https://registry.yarnpkg.com/@react-native-community/datetimepicker/-/datetimepicker-2.2.2.tgz#4c6388631179098cc5b289146e879764f79af4c1"
+  integrity sha512-J4Z1tuZQszLR+BNu+UusZlK6/S+CpI6AHzolqTdPS2tRlyVbVim3KyjXrn8trtKxQncR5LEqF9OHw9zsRfEdXA==
+  dependencies:
+    invariant "^2.2.4"
+
 "@react-native-community/hooks@^2.4.8":
   version "2.5.1"
   resolved "https://registry.yarnpkg.com/@react-native-community/hooks/-/hooks-2.5.1.tgz#545c76d1a6203532a8e776578bbaaa64bb754cf6"
@@ -18151,10 +18158,10 @@ use-callback-ref@^1.2.1:
   resolved "https://registry.yarnpkg.com/use-callback-ref/-/use-callback-ref-1.2.3.tgz#9f939dfb5740807bbf9dd79cdd4e99d27e827756"
   integrity sha512-DPBPh1i2adCZoIArRlTuKRy7yue7QogtEnfv0AKrWsY+GA+4EKe37zhRDouNnyWMoNQFYZZRF+2dLHsWE4YvJA==
 
-use-immer@^0.3.5:
-  version "0.3.5"
-  resolved "https://registry.yarnpkg.com/use-immer/-/use-immer-0.3.5.tgz#e9aa5a4e82ef7eab4fced977d4daa1c3ef466725"
-  integrity sha512-0CNaJ/CtnF8/OmM4NBG7R0rhWMMQtgXPmWbakv8CK5z8dXeMaBYValFDXpkjBnToknjKJZuEPcoUZYd0rnQL2Q==
+use-immer@^0.4.0:
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/use-immer/-/use-immer-0.4.0.tgz#9992280c2d8b5777e5bfc4827c69dbdcc1b219eb"
+  integrity sha512-mxx4jbRRc1/56geSc3VHx8gg3FvlzUpQPfVNJXtU1NRK/iTdK0pV3k3YPi7iFUcCM8YJ6/0dUBENyuk3WO/gxw==
 
 use-memo-one@^1.1.1:
   version "1.1.1"

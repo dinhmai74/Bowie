@@ -21,3 +21,4 @@ export * from './app-divider/app-divider'
 export * from "./AppSnackbar/AppSnackbar"
 export * from "./Backdrop/Backdrop"
 export * from "./AppKittenIcon/AppKittenIcon"
+export * from "./AppFooter/AppFooter"

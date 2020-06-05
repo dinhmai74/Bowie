@@ -6,5 +6,7 @@ export const images = {
   error: require('./i-happy.png'),
   warning: require('./undraw_warning_cyit.png'),
   dfWallpaper: require('./i-party.png'),
+  iBooking: require('./i-booking.png'),
+  iCalendar: require('./i-calendar.png'),
 }
 export type ImagesTypes = keyof typeof images

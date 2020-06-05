@@ -8,7 +8,9 @@
     "public": "Public",
     "secret": "Secret",
     "next": "Next",
-    "pre": "Prev"
+    "pre": "Prev",
+    "from": "From",
+    "to": "To"
   },
   "errors": {
     "invalidUser": "Invalid user.",

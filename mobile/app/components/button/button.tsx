@@ -1,6 +1,6 @@
 import { Button as KTButton, useStyleSheet } from '@ui-kitten/components'
 import { Text } from 'components/text/text'
-import { flatten, mergeAll } from 'ramda'
+import { flatten, mergeAll, view } from 'ramda'
 import * as React from 'react'
 import { ActivityIndicator, ViewStyle } from 'react-native'
 import { TextPresets, ViewPresets } from './button.presets'
@@ -40,10 +40,14 @@ export const Button: React.FC<ButtonProps> = props => {
   )
 
   const status = props.status || 'primary'
+  let density = 500
+  if (status === 'basic') density = 600
 
   if (preset) {
     if (preset === 'outlineWithoutBorder') {
       viewStyle = { ...viewStyle, backgroundColor: color[`color-${status}-100`] }
+    } else if (preset === 'bordered') {
+      viewStyle = { ...viewStyle, borderColor: color[`color-${status}-${density}`] }
     }
   }
 
@@ -74,8 +78,9 @@ export const Button: React.FC<ButtonProps> = props => {
 
         // get color by preset
         if (preset) {
-          if (preset === 'bordered' || preset === 'outlineWithoutBorder')
-            textStyle = { ...textStyle, color: color[`color-${status}-500`] }
+          if (preset === 'bordered' || preset === 'outlineWithoutBorder') {
+            textStyle = { ...textStyle, color: color[`color-${status}-${density}`] }
+          }
         }
 
         return <Text {...evaProps} style={[evaProps.style, textStyle]} tx={content} />

@@ -20,14 +20,14 @@ export function PrimaryStackWithModal() {
       // gestureEnabled: true,
       // cardStyleInterpolator: CardStyleInterpolators.forScaleFromCenterAndroid,
       // }}
-      // screenOptions={({ route, navigation }) => ({
-      // gestureEnabled: true,
-      // cardOverlayEnabled: true,
-      // headerStatusBarHeight:
-      // navigation.dangerouslyGetState().routes.indexOf(route) > 0 ? 0 : undefined,
-      // ...TransitionPresets.ModalPresentationIOS,
-      // })}
-      // // mode="modal"
+      screenOptions={({ route, navigation }) => ({
+        gestureEnabled: true,
+        cardOverlayEnabled: true,
+        headerStatusBarHeight:
+          navigation.dangerouslyGetState().routes.indexOf(route) > 0 ? 0 : undefined,
+        ...TransitionPresets.ModalPresentationIOS,
+      })}
+      // mode="modal"
       headerMode="none"
     >
       <StackWithModal.Screen name="primaryStack" component={PrimaryStack} />
