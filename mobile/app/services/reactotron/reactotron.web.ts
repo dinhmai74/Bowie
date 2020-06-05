@@ -1,6 +1,6 @@
 import { onSnapshot } from 'mobx-state-tree'
 import { mst } from 'reactotron-mst'
-import Tron from 'reactotron-react-native'
+import Tron from 'reactotron-react-js'
 import { RootStore } from '../../models/root-store/root-store'
 import { RootNavigation } from '../../navigation'
 import { clear } from '../../utils/storage'
