@@ -5,7 +5,7 @@
 import { mapping } from '@eva-design/eva'
 // import { default as mapping } from './theme/ui-kitten.mapping.json'
 import { NavigationContainerRef } from '@react-navigation/native'
-import { ApplicationProvider, IconRegistry } from '@ui-kitten/components'
+import { ApplicationProvider, IconRegistry, useTheme } from '@ui-kitten/components'
 import { i18n, LocalizationContext } from 'i18n/i18n'
 import { contains } from 'ramda'
 import React, { useEffect, useRef, useState } from 'react'
@@ -21,7 +21,7 @@ import { exitRoutes, RootNavigator, setRootNavigation } from './navigation'
 import getActiveRouteName from './navigation/get-active-routename'
 import { useBackButtonHandler } from './navigation/use-back-button-handler'
 import { offlineClient } from './services/apollo/apollo'
-import { AppThemeContext, themes } from './theme'
+import { AppThemeContext, themes, useThemes } from './theme'
 import { FeatherIconsPack } from './theme/custom-eva-icons/feather-icon'
 import { IoniconsPack } from './theme/custom-eva-icons/ionicons'
 import { initFonts } from './theme/fonts'
@@ -162,9 +162,9 @@ const App: React.FunctionComponent<{}> = () => {
           <RootStoreProvider value={rootStore}>
             {/* ----------- theme ---------------- */}
             <IconRegistry icons={[FeatherIconsPack, IoniconsPack]} />
-            <ThemeProvider theme={currentTheme}>
-              <AppThemeContext.Provider value={{ theme, toggle }}>
-                <ApplicationProvider mapping={mapping} theme={currentTheme}>
+            <AppThemeContext.Provider value={{ theme, toggle }}>
+              <ApplicationProvider mapping={mapping} theme={currentTheme}>
+                <ThemeProvider theme={currentTheme}>
                   {/* ----------- utils ---------------- */}
 
                   <SnackBarProvider>
@@ -176,9 +176,9 @@ const App: React.FunctionComponent<{}> = () => {
                       />
                     </LocalizationContext.Provider>
                   </SnackBarProvider>
-                </ApplicationProvider>
-              </AppThemeContext.Provider>
-            </ThemeProvider>
+                </ThemeProvider>
+              </ApplicationProvider>
+            </AppThemeContext.Provider>
           </RootStoreProvider>
         </SafeAreaProvider>
       </ApolloProvider>

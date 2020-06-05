@@ -32,4 +32,5 @@ export const AppRoutes = {
 export const DateFormat = {
   hourMinuteWithIndicator: 'HH:mm a',
   fullDateTime: 'DD MMM [at] HH:mm a',
+  monthDate: 'MMM[,] DD',
 }

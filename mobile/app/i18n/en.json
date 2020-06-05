@@ -7,7 +7,8 @@
     "or": "Or",
     "public": "Public",
     "secret": "Secret",
-    "next": "Next"
+    "next": "Next",
+    "pre": "Prev"
   },
   "errors": {
     "invalidUser": "Invalid user.",
@@ -93,7 +94,9 @@
     "header": "Host new event",
     "chosePosLabel": "Chose the place's position",
     "chosePlaceTitleLabel": "Chose the place's title",
-    "time": {}
+    "time": {
+      "willBeHeldOn": "Will be held on:"
+    }
   },
   "en": "English",
   "vi": "Vietnamese"

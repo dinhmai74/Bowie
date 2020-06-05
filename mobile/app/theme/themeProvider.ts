@@ -18,7 +18,6 @@ interface UseThemes {
 export const useThemes = (): UseThemes => {
   const themeContext = useContext(AppThemeContext)
   const toggle = () => {
-    console.tlog('toggle theme')
     themeContext.toggle()
   }
 
