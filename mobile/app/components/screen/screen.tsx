@@ -7,6 +7,7 @@ import {
   View,
   StatusBarStyle,
   SafeAreaView,
+  StyleSheet,
 } from 'react-native'
 import { useSafeArea } from 'react-native-safe-area-context'
 import { ScreenProps } from './screen.props'
@@ -33,7 +34,7 @@ function ScreenWithoutScrolling(props: ScreenProps) {
 
   return (
     <KeyboardAvoidingView
-      style={[preset.outer, { backgroundColor }]}
+      style={[preset.outer, { backgroundColor }, style]}
       behavior={isIos ? 'padding' : null}
       keyboardVerticalOffset={offsets[props.keyboardOffset || 'none']}
     >
@@ -49,10 +50,10 @@ function ScreenWithScrolling(props: ScreenProps) {
   const preset = presets.scroll
   const style = props.style || {}
   const { color, theme } = useThemes()
+  const { backgroundColor: bgFromStyle } = StyleSheet.flatten(style)
   const backgroundColor = props.backgroundColor
     ? props.backgroundColor
     : color['background-basic-color-1']
-  const insetStyle = { paddingTop: props.unsafe ? 0 : insets.top }
 
   const isDark = theme === 'dark'
   let statusBar: StatusBarStyle = 'dark-content'
@@ -62,7 +63,7 @@ function ScreenWithScrolling(props: ScreenProps) {
 
   return (
     <ScrollView
-      style={[preset.outer, { backgroundColor }]}
+      style={[preset.outer, { backgroundColor }, bgFromStyle && { backgroundColor: bgFromStyle }]}
       contentContainerStyle={[preset.inner, style]}
     >
       {props.children}

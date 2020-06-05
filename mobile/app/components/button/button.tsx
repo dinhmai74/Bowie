@@ -15,7 +15,7 @@ export const Button: React.FC<ButtonProps> = props => {
   }
 
   const {
-    preset,
+    preset = 'primary',
     tx,
     text,
     style: styleOverride,
@@ -36,7 +36,7 @@ export const Button: React.FC<ButtonProps> = props => {
 
   let viewStyle = mergeAll(
     // @ts-ignore
-    flatten([viewPresets[preset] && viewPresets[preset], notFullStyle, styleOverride, { opacity }]),
+    flatten([preset && viewPresets[preset], notFullStyle, styleOverride, { opacity }]),
   )
 
   const status = props.status || 'primary'

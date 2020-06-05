@@ -5,5 +5,6 @@ export const images = {
   loading: require('./i-loading.png'),
   error: require('./i-happy.png'),
   warning: require('./undraw_warning_cyit.png'),
+  dfWallpaper: require('./i-party.png'),
 }
 export type ImagesTypes = keyof typeof images

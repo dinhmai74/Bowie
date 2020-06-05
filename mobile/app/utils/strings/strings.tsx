@@ -23,6 +23,7 @@ export const AppRoutes = {
   Settings: 'Settings',
   homeStack: 'homeStack',
   createNewEvent: 'createNewEvent',
+  createNewEventTime: 'createNewEventTime',
   eventDetail: 'eventDetail',
   primaryStack: 'primaryStack',
   viewMap: 'viewMap',

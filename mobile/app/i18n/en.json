@@ -6,7 +6,8 @@
     "loading": "Loading...",
     "or": "Or",
     "public": "Public",
-    "secret": "Secret"
+    "secret": "Secret",
+    "next": "Next"
   },
   "errors": {
     "invalidUser": "Invalid user.",
@@ -87,6 +88,12 @@
     "header": "Joined events",
     "myHostedEvent": "My hosted's events",
     "myJoinedEvent": "My joined's events"
+  },
+  "createNewEventScreen": {
+    "header": "Host new event",
+    "chosePosLabel": "Chose the place's position",
+    "chosePlaceTitleLabel": "Chose the place's title",
+    "time": {}
   },
   "en": "English",
   "vi": "Vietnamese"

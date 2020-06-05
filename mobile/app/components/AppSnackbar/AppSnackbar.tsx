@@ -3,7 +3,7 @@ import { View } from 'react-native'
 import styled from 'styled-components'
 import { Color, spacing } from 'theme'
 import { palette } from 'theme/palette'
-import { getElevation } from 'utils'
+import { getElevation } from '../../utils/get-elevation/get-elevation'
 import { Text } from '../text/text'
 
 interface WrapperProps {

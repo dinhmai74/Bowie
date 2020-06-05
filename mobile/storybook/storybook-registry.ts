@@ -1,3 +1,4 @@
+require("../app/components/AppKittenIcon/AppKittenIcon.story")
 require('../app/components/AppSnackbar/AppSnackbar.story')
 require('../app/components/app-divider/app-divider.story')
 require('../app/components/text/text.story')

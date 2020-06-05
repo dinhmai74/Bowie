@@ -44,7 +44,7 @@ export const Header: React.FunctionComponent<HeaderProps> = props => {
     <View style={{ ...styles.root, ...style }}>
       <LeftWrapper style={styles.header} onPress={onLeftPress}>
         <LeftIcon style={[styles.leftIcon, { opacity: iconOpacity }]} />
-        <Text tx={headerTx} preset="h2medium" />
+        <Text tx={headerTx} preset="h1medium" />
       </LeftWrapper>
     </View>
   )

@@ -5,6 +5,12 @@ export type RootParamList = {
   authStack: undefined
 }
 
+export type CreateNewEventParamList = {
+  place: undefined
+  time: undefined
+  info: undefined
+}
+
 export type HomeParamList = {
   Home: undefined
   Saved: undefined
@@ -22,6 +28,9 @@ export type PrimaryModalParamList = {
   createNewEvent: undefined
   viewMap: {
     coord: Coord
+    title: string
+  }
+  createNewEventTime: {
     title: string
   }
 }

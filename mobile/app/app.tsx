@@ -153,15 +153,15 @@ const App: React.FunctionComponent<{}> = () => {
   return (
     <ApolloOfflineProvider client={offlineClient}>
       <ApolloProvider client={offlineClient}>
-        {/**-----------normal ----------------*/}
+        {/* -----------normal ---------------- */}
         <SafeAreaProvider initialSafeAreaInsets={initialWindowSafeAreaInsets}>
           <RootStoreProvider value={rootStore}>
-            {/**----------- theme ----------------*/}
+            {/* ----------- theme ---------------- */}
             <IconRegistry icons={[FeatherIconsPack, IoniconsPack]} />
             <ThemeProvider theme={currentTheme}>
               <AppThemeContext.Provider value={{ theme, toggle }}>
                 <ApplicationProvider mapping={mapping} theme={currentTheme}>
-                  {/**----------- utils ----------------*/}
+                  {/* ----------- utils ---------------- */}
 
                   <SnackBarProvider>
                     <LocalizationContext.Provider value={localizationContextValue}>

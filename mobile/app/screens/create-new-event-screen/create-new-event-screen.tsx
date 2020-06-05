@@ -1,17 +1,37 @@
-import { Header, Screen, Text, View } from 'components'
+import { useNavigation } from '@react-navigation/native'
+import { CreateEventDocument } from 'app-graphql'
+import { Button, Screen, TextField, View, Wallpaper, SizedBox } from 'components'
 import { observer } from 'mobx-react-lite'
 import React from 'react'
-import { StyleSheet } from 'react-native'
 import { NavigationScreenProp } from 'react-navigation'
+import { useOfflineMutation } from 'react-offix-hooks'
+import styled from 'styled-components'
 // import { useStores } from "models/root-store"
-import { spacing } from 'theme'
+import { metrics, spacing, sw } from 'theme'
+import { AppRoutes } from 'utils'
+import { NewEventHeader } from './components/NewEventHeader'
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingHorizontal: spacing[6],
-  },
+const Container = styled(View)({
+  flex: 1,
+  paddingHorizontal: spacing[6],
+  paddingVertical: spacing[2],
 })
+
+const StyledScreen = styled(Screen)({
+  backgroundColor: 'transparent',
+  flex: 1,
+  height: '100%',
+})
+
+const StyledWallpaper = styled(Wallpaper)(() => ({
+  ...metrics.images.md,
+  left: sw / 2 - metrics.images.md.width / 2,
+  bottom: spacing[7],
+}))
+
+const StyledButton = styled(Button)(() => ({
+  alignSelf: 'flex-end',
+}))
 
 export interface CreateNewEventScreenProps {
   navigation: NavigationScreenProp<any, any>
@@ -20,13 +40,29 @@ export interface CreateNewEventScreenProps {
 export const CreateNewEventScreen: React.FunctionComponent<CreateNewEventScreenProps> = observer(
   () => {
     // const { someStore } = useStores()
+    const navigation = useNavigation()
     return (
-      <Screen preset="scroll">
-        <Header headerTx="createNewEventScreen.header" leftIcon="back" />
-        <View style={styles.container}>
-          <Text>123</Text>
-        </View>
-      </Screen>
+      <View full bgBaseOnTheme>
+        <StyledWallpaper preset="bottom" />
+
+        <StyledScreen preset="scroll">
+          <NewEventHeader headerTx="createNewEventScreen.header" />
+          <Container>
+            <TextField label="createNewEventScreen.chosePosLabel" />
+            <SizedBox h={4} />
+            <TextField label="createNewEventScreen.chosePlaceTitleLabel" />
+            <SizedBox h={6} />
+            <StyledButton
+              tx="common.next"
+              onPress={() =>
+                navigation.navigate(AppRoutes.createNewEventTime, {
+                  title: 'Testing',
+                })
+              }
+            />
+          </Container>
+        </StyledScreen>
+      </View>
     )
   },
 )
