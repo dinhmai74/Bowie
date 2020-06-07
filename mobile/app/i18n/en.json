@@ -10,7 +10,8 @@
     "next": "Next",
     "pre": "Prev",
     "from": "From",
-    "to": "To"
+    "to": "To",
+    "done": "Done"
   },
   "errors": {
     "invalidUser": "Invalid user.",
@@ -99,6 +100,11 @@
     "chosePlaceTitleLabel": "Chose the place's title",
     "time": {
       "willBeHeldOn": "Will be held on:"
+    },
+    "info": {
+      "yourEventWillBeName": "Your events will name:",
+      "details": "Details",
+      "eventstag": "Event's tags"
     }
   },
   "en": "English",

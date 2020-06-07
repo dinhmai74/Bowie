@@ -1,10 +1,12 @@
 import { mapping } from '@eva-design/eva'
 import { configure, getStorybookUI } from '@storybook/react-native'
-import { ApplicationProvider } from '@ui-kitten/components'
+import { ApplicationProvider, IconRegistry } from '@ui-kitten/components'
 import React, { useEffect } from 'react'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import { AppThemeContext, themes } from '../app/theme'
 import { initFonts } from '../app/theme/fonts'
+import { FeatherIconsPack } from 'theme/custom-eva-icons/feather-icon'
+import { IoniconsPack } from 'theme/custom-eva-icons/ionicons'
 
 // eslint-disable-next-line
 declare var module
@@ -44,6 +46,7 @@ export const StorybookUIRoot: React.FunctionComponent = () => {
   return (
     <SafeAreaProvider>
       <AppThemeContext.Provider value={{ theme, toggle }}>
+        <IconRegistry icons={[FeatherIconsPack, IoniconsPack]} />
         <ApplicationProvider mapping={mapping} theme={currentTheme}>
           <StorybookUI />
         </ApplicationProvider>

@@ -94,7 +94,7 @@
     "reactotron-react-js": "^3.3.7",
     "reactotron-react-native": "^4.0.0-beta.1",
     "reanimated-bottom-sheet": "^1.0.0-alpha.19",
-    "styled-components": "^5.1.0",
+    "styled-components": "^5.1.1",
     "use-immer": "^0.4.0",
     "use-memo-one": "^1.1.1",
     "uuid": "^7.0.2",

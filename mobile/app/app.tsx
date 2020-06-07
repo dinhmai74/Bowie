@@ -5,7 +5,7 @@
 import { mapping } from '@eva-design/eva'
 // import { default as mapping } from './theme/ui-kitten.mapping.json'
 import { NavigationContainerRef } from '@react-navigation/native'
-import { ApplicationProvider, IconRegistry, useTheme } from '@ui-kitten/components'
+import { ApplicationProvider, IconRegistry } from '@ui-kitten/components'
 import { i18n, LocalizationContext } from 'i18n/i18n'
 import { contains } from 'ramda'
 import React, { useEffect, useRef, useState } from 'react'
@@ -15,20 +15,22 @@ import { initialWindowSafeAreaInsets, SafeAreaProvider } from 'react-native-safe
 import { enableScreens } from 'react-native-screens'
 import { ApolloOfflineProvider } from 'react-offix-hooks'
 import { ThemeProvider } from 'styled-components'
-import { strings } from 'utils/strings'
+import { SnackBarProvider } from 'utils'
+import { translate } from './i18n'
 import { RootStore, RootStoreProvider, setupRootStore } from './models/root-store'
-import { exitRoutes, RootNavigator, setRootNavigation } from './navigation'
-import getActiveRouteName from './navigation/get-active-routename'
+import {
+  exitRoutes,
+  RootNavigator,
+  setRootNavigation,
+  useNavigationPersistence,
+} from './navigation'
 import { useBackButtonHandler } from './navigation/use-back-button-handler'
 import { offlineClient } from './services/apollo/apollo'
-import { AppThemeContext, themes, useThemes } from './theme'
+import { AppThemeContext, themes } from './theme'
 import { FeatherIconsPack } from './theme/custom-eva-icons/feather-icon'
 import { IoniconsPack } from './theme/custom-eva-icons/ionicons'
 import { initFonts } from './theme/fonts'
 import * as storage from './utils/storage'
-import { loadString } from './utils/storage'
-import { SnackBarProvider } from 'utils'
-import { translate } from './i18n'
 
 // This puts screens in a native ViewController or Activity. If you want fully native
 // stack navigation, use `createNativeStackNavigator` in place of `createStackNavigator`:
@@ -66,8 +68,6 @@ export const LOCALE_PERSISTENCE_KEY = 'LOCALE_STATE'
 const App: React.FunctionComponent<{}> = () => {
   const navigationRef = useRef<NavigationContainerRef>()
   const [rootStore, setRootStore] = useState<RootStore | undefined>(undefined)
-  const [initialNavigationState, setInitialNavigationState] = useState()
-  const [isRestoringNavigationState, setIsRestoringNavigationState] = useState(true)
   const [theme, setTheme] = React.useState('light')
   const [locale, setLocale] = React.useState('en')
 
@@ -85,27 +85,10 @@ const App: React.FunctionComponent<{}> = () => {
   setRootNavigation(navigationRef)
   useBackButtonHandler(navigationRef, canExit)
 
-  /**
-   * Keep track of state changes
-   * Track Screens
-   * Persist State
-   */
-  const routeNameRef = useRef()
-  const onNavigationStateChange = state => {
-    const previousRouteName = routeNameRef.current
-    const currentRouteName = getActiveRouteName(state)
-
-    if (previousRouteName !== currentRouteName) {
-      // track screens.
-      __DEV__ && console.tron.log(currentRouteName)
-    }
-
-    // Save the current route name for later comparision
-    routeNameRef.current = currentRouteName
-
-    // Persist state to storage
-    storage.save(NAVIGATION_PERSISTENCE_KEY, state)
-  }
+  const { initialNavigationState, onNavigationStateChange } = useNavigationPersistence(
+    storage,
+    NAVIGATION_PERSISTENCE_KEY,
+  )
 
   useEffect(() => {
     ;(async () => {
@@ -123,24 +106,6 @@ const App: React.FunctionComponent<{}> = () => {
       if (storeTheme && storeTheme !== theme) setTheme(storeTheme)
     })()
   }, [])
-
-  useEffect(() => {
-    const restoreState = async () => {
-      try {
-        const state = await storage.load(NAVIGATION_PERSISTENCE_KEY)
-
-        if (state) {
-          setInitialNavigationState(state)
-        }
-      } finally {
-        setIsRestoringNavigationState(false)
-      }
-    }
-
-    if (isRestoringNavigationState) {
-      restoreState()
-    }
-  }, [isRestoringNavigationState])
 
   const currentTheme = themes[theme]
 

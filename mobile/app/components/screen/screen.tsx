@@ -16,10 +16,10 @@ function ScreenWithoutScrolling(props: ScreenProps) {
   const backgroundStyle = props.backgroundColor ? { backgroundColor: props.backgroundColor } : {}
   const insetStyle = { paddingTop: props.unsafe ? 0 : insets.top }
 
-  const isDark = theme === 'dark'
-  let statusBar: StatusBarStyle = 'dark-content'
+  const isLight = theme === 'light'
+  let statusBar: StatusBarStyle = 'light-content'
   if (props.statusBar) statusBar = props.statusBar
-  else if (isDark) statusBar = 'light-content'
+  else if (isLight && insets.top !== 0) statusBar = 'dark-content'
 
   const { autoPaddingHorizontal, bgBaseOnTheme } = props
   const paddingHorizontal = autoPaddingHorizontal && { paddingHorizontal: spacing[6] }
@@ -48,10 +48,11 @@ function ScreenWithScrolling(props: ScreenProps) {
   const style = props.style || {}
   const { autoPaddingHorizontal, bgBaseOnTheme } = props
 
-  const isDark = theme === 'dark'
-  let statusBar: StatusBarStyle = 'dark-content'
+  const isLight = theme === 'light'
+  let statusBar: StatusBarStyle = 'light-content'
   if (props.statusBar) statusBar = props.statusBar
-  else if (isDark) statusBar = 'light-content'
+  else if (isLight && insets.top !== 0) statusBar = 'dark-content'
+
   let backgroundStyle: any = bgBaseOnTheme && { backgroundColor: color['background-basic-color-1'] }
   backgroundStyle = props.backgroundColor
     ? { backgroundColor: props.backgroundColor }

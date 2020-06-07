@@ -1,27 +1,18 @@
 import { useNavigation } from '@react-navigation/native'
 import { Button, Screen, SizedBox, TextField, View, Wallpaper } from 'components'
 import { observer } from 'mobx-react-lite'
+import { useStores } from 'models/root-store'
 import React from 'react'
+import { useForm } from 'react-hook-form'
 import { NavigationScreenProp } from 'react-navigation'
 import styled from 'styled-components'
 // import { useStores } from "models/root-store"
 import { metrics, spacing, sw } from 'theme'
 import { AppRoutes } from 'utils'
 import { NewEventHeader } from './components/NewEventHeader'
-import { useStores } from 'models/root-store'
-import { useForm, Controller } from 'react-hook-form'
-import * as yup from 'yup'
-
-const Container = styled(View)({
-  flex: 1,
-  paddingHorizontal: spacing[6],
-  paddingVertical: spacing[2],
-})
 
 const StyledScreen = styled(Screen)({
   backgroundColor: 'transparent',
-  flex: 1,
-  height: '100%',
 })
 
 const StyledWallpaper = styled(Wallpaper)(() => ({
@@ -81,24 +72,22 @@ export const CreateNewEventScreen: React.FunctionComponent<CreateNewEventScreenP
       <View full bgBaseOnTheme>
         <StyledWallpaper preset="bottom" />
 
-        <StyledScreen preset="scroll">
+        <StyledScreen preset="scroll" autoPaddingHorizontal>
           <NewEventHeader headerTx="createNewEventScreen.header" />
-          <Container>
-            <TextField
-              onChangeText={text => setValue('pos', text, true)}
-              label="createNewEventScreen.chosePosLabel"
-              caption={errors.pos?.message.toString()}
-            />
-            <SizedBox h={4} />
-            <TextField
-              onChangeText={text => setValue('title', text, true)}
-              label="createNewEventScreen.chosePlaceTitleLabel"
-              caption={errors.title?.message.toString()}
-            />
+          <TextField
+            onChangeText={text => setValue('pos', text, true)}
+            label="createNewEventScreen.chosePosLabel"
+            caption={errors.pos?.message.toString()}
+          />
+          <SizedBox h={4} />
+          <TextField
+            onChangeText={text => setValue('title', text, true)}
+            label="createNewEventScreen.chosePlaceTitleLabel"
+            caption={errors.title?.message.toString()}
+          />
 
-            <SizedBox h={6} />
-            <StyledButton tx="common.next" onPress={handleSubmit(onSubmit)} />
-          </Container>
+          <SizedBox h={6} />
+          <StyledButton tx="common.next" onPress={handleSubmit(onSubmit)} />
         </StyledScreen>
       </View>
     )

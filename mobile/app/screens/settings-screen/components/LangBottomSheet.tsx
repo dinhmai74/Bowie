@@ -1,9 +1,10 @@
 import { Icon, Layout } from '@ui-kitten/components'
-import { AppIcon, SizedBox, Text, View } from 'components'
+import { AppIcon, Backdrop, SizedBox, Text, View } from 'components'
 import { langTranslations, useLocalization } from 'i18n/i18n'
 import React from 'react'
 import { FlatList, StyleSheet, TouchableOpacity as RnTouchable } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
+import Animated from 'react-native-reanimated'
 import BottomSheet from 'reanimated-bottom-sheet'
 import { metrics, spacing, typography, useThemes } from 'theme'
 import { palette } from 'theme/palette'
@@ -38,13 +39,13 @@ const styles = StyleSheet.create({
 
 interface LangBottomSheetProps {
   bs?: any
-  fall: any
 }
 
 const langs = Object.keys(langTranslations)
 
-export const LangBottomSheet: React.FC<LangBottomSheetProps> = ({ bs, fall }) => {
+export const LangBottomSheet: React.FC<LangBottomSheetProps> = ({ bs }) => {
   const { setLocale, locale } = useLocalization()
+  const fall = new Animated.Value(1)
   const changeLang = v => {
     setLocale(v)
     saveString(strings.lang, v)
@@ -95,14 +96,18 @@ export const LangBottomSheet: React.FC<LangBottomSheetProps> = ({ bs, fall }) =>
   }
 
   return (
-    <BottomSheet
-      ref={bs}
-      snapPoints={[-100, '40%', '50%']}
-      renderContent={() => renderBottomSheetContent()}
-      renderHeader={() => renderHeaderBottomSheet()}
-      callbackNode={fall}
-      borderRadius={spacing[4]}
-    />
+    <>
+      <BottomSheet
+        ref={bs}
+        snapPoints={[-100, '40%', '50%']}
+        renderContent={() => renderBottomSheetContent()}
+        renderHeader={() => renderHeaderBottomSheet()}
+        callbackNode={fall}
+        borderRadius={spacing[4]}
+      />
+
+      <Backdrop fall={fall} onPress={closeBs} />
+    </>
   )
 }
 

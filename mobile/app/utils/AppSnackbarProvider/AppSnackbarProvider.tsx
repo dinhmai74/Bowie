@@ -44,11 +44,13 @@ export const SnackBarProvider = ({ children }) => {
   return (
     <SnackBarContext.Provider value={value}>
       {children}
-      <Container>
-        {values.map((v, i) => {
-          return <AppSnackbar key={i} value={v} />
-        })}
-      </Container>
+      {values.length > 0 && (
+        <Container>
+          {values.map((v, i) => {
+            return <AppSnackbar key={i} value={v} />
+          })}
+        </Container>
+      )}
     </SnackBarContext.Provider>
   )
 }

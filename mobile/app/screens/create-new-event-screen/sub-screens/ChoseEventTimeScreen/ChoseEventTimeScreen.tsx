@@ -1,22 +1,20 @@
 import DateTimePicker from '@react-native-community/datetimepicker'
-import { RouteProp, useNavigation, useRoute } from '@react-navigation/native'
+import { useNavigation } from '@react-navigation/native'
 import { AppDivider, AppIcon, Button, Screen, SizedBox, Text, View } from 'components'
 import { AppFooter } from 'components/AppFooter/AppFooter'
+import { useStores } from 'models/root-store'
 import moment from 'moment'
-import { PrimaryModalParamList } from 'navigation/types'
 import React from 'react'
 import { Platform } from 'react-native'
 import { NewEventHeader } from 'screens/create-new-event-screen/components/NewEventHeader'
 import styled from 'styled-components'
 import { images, metrics, spacing } from 'theme'
-import { DatePicker } from './DatePicker'
 import { useImmer } from 'use-immer'
-import { useStores } from 'models/root-store'
-import { DateFormat, combineDateAndTime, combineDateAndTimeToUTC, AppRoutes } from 'utils'
+import { AppRoutes, combineDateAndTime } from 'utils'
+import { DatePicker } from './DatePicker'
 
 const Container = styled(View)({
   flex: 1,
-  paddingHorizontal: spacing[6],
 })
 
 const FooterRow = styled(View)({
@@ -68,7 +66,7 @@ export const ChoseEventTimeScreen: React.FC = () => {
 
   return (
     <View full bgBaseOnTheme>
-      <Screen preset="scroll">
+      <Screen preset="scroll" autoPaddingHorizontal>
         <NewEventHeader headerTx={createNewEventStore.place?.name} />
 
         <Container>

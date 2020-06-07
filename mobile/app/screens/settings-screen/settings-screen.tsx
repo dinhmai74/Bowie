@@ -3,7 +3,7 @@ import {
   useGetCurrentUserInfoLazyQuery,
   useLogoutMutation,
 } from 'app-graphql'
-import { Backdrop, Button, Header, Screen, SizedBox, Switch, Text, View } from 'components'
+import { Button, Header, Screen, SizedBox, Switch, Text, View } from 'components'
 import * as ImagePicker from 'expo-image-picker'
 import * as Permissions from 'expo-permissions'
 import { ReactNativeFile } from 'extract-files'
@@ -12,7 +12,6 @@ import { observer } from 'mobx-react-lite'
 import { useAuthContext } from 'navigation'
 import React, { useRef } from 'react'
 import { StyleSheet, TouchableOpacity } from 'react-native'
-import { Value } from 'react-native-reanimated'
 import { NavigationScreenProp } from 'react-navigation'
 import { SettingsCard } from 'screens/settings-screen/components/SettingsCard'
 // import { useStores } from "models/root-store"
@@ -56,13 +55,6 @@ const settingItems: SettingItem[][] = [
 ]
 
 const styles = StyleSheet.create({
-  btnSignOutWrapper: {
-    bottom: spacing[6],
-    left: spacing[6],
-    marginTop: spacing[6],
-    position: 'absolute',
-    right: spacing[6],
-  },
   card: {
     alignSelf: 'stretch',
     margin: spacing[4],
@@ -72,12 +64,11 @@ const styles = StyleSheet.create({
   },
   cardWrapper: {
     alignItems: 'center',
-    flex: 1,
     justifyContent: 'center',
+    marginVertical: spacing[4],
   },
   container: {
-    flex: 1,
-    height: '100%',
+    paddingBottom: spacing[6],
   },
   rowWrapper: {
     flexDirection: 'row',
@@ -120,8 +111,6 @@ export const SettingsScreen: React.FunctionComponent<SettingsScreenProps> = obse
   const { color } = useThemes()
 
   const bs = useRef(null)
-
-  const fall = new Value(1)
 
   React.useEffect(() => {
     ;(async () => {
@@ -204,47 +193,40 @@ export const SettingsScreen: React.FunctionComponent<SettingsScreenProps> = obse
     <View full bgBaseOnTheme>
       <Screen style={styles.container} preset="scroll" autoPaddingHorizontal>
         <Header headerTx="settingsScreen.header" />
-        <View full>
-          <Avatar
-            data={getInfoData}
-            loading={getInfoLoading}
-            onAvatarPress={() => pickImage()}
-            onEditPress={() => {}}
-          />
+        <Avatar
+          data={getInfoData}
+          loading={getInfoLoading}
+          onAvatarPress={() => pickImage()}
+          onEditPress={() => {}}
+        />
 
-          <View row style={styles.rowWrapper}>
-            <Text tx="settingsScreen.darkMode" style={styles.rowWrapper} />
-            <Switch status="primary" checked={theme !== 'light'} onChange={toggle} />
-          </View>
-          <SizedBox h={4} />
-
-          <View row style={styles.rowWrapper}>
-            <Text tx="settingsScreen.lang" />
-            <TouchableOpacity onPress={() => openBs()}>
-              <Text
-                tx={locale || 'en'}
-                color={color['text-primary-color']}
-                fontFamily={typography.medium}
-              />
-            </TouchableOpacity>
-          </View>
-          <SizedBox h={4} />
-
-          <View style={styles.cardWrapper}>
-            {settingItems.map((datum, i) => {
-              return renderRow(datum, i)
-            })}
-          </View>
+        <View row style={styles.rowWrapper}>
+          <Text tx="settingsScreen.darkMode" style={styles.rowWrapper} />
+          <Switch status="primary" checked={theme !== 'light'} onChange={toggle} />
         </View>
-      </Screen>
-      <SizedBox h={8} />
-      <SizedBox h={8} />
-      <View style={styles.btnSignOutWrapper}>
-        <Button tx="auth.signOut" onPress={() => signOut()} full preset="outlineWithoutBorder" />
-      </View>
+        <SizedBox h={3} />
 
-      <LangBottomSheet bs={bs} fall={fall} />
-      <Backdrop fall={fall} />
+        <View row style={styles.rowWrapper}>
+          <Text tx="settingsScreen.lang" />
+          <TouchableOpacity onPress={() => openBs()}>
+            <Text
+              tx={locale || 'en'}
+              color={color['text-primary-color']}
+              fontFamily={typography.medium}
+            />
+          </TouchableOpacity>
+        </View>
+
+        <View style={styles.cardWrapper}>
+          {settingItems.map((datum, i) => {
+            return renderRow(datum, i)
+          })}
+        </View>
+
+        <Button tx="auth.signOut" onPress={() => signOut()} full preset="outlineWithoutBorder" />
+      </Screen>
+
+      <LangBottomSheet bs={bs} />
     </View>
   )
 })

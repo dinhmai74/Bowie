@@ -36,9 +36,6 @@ export const HomeScreen: React.FunctionComponent<HomeScreenProps> = observer(() 
   const [location, setLocation] = React.useState<any>({})
   const [errorGetLocation, setErrGetLocation] = React.useState<boolean>(false)
   const { addSnack } = useSnackBars()
-  const [visible, setVisible] = React.useState(false)
-
-  const renderToggleButton = () => <Button onPress={() => setVisible(true)}>TOGGLE POPOVER</Button>
 
   const [region, setRegion] = React.useState<Region>(undefined)
 
