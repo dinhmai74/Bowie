@@ -33,6 +33,7 @@ export type PrimaryModalParamList = {
   createNewEventTime: {
     title: string
   }
+  createNewEventInfo: undefined
 }
 
 export type AuthParamList = {

@@ -1,3 +1,4 @@
+import { CreateNewEventStoreModel } from '../../models/create-new-event-store'
 import { UserInfoStoreModel } from '../../models/user-info-store'
 import { Instance, SnapshotOut, types } from 'mobx-state-tree'
 
@@ -6,6 +7,7 @@ import { Instance, SnapshotOut, types } from 'mobx-state-tree'
  */
 // prettier-ignore
 export const RootStoreModel = types.model("RootStore").props({
+  createNewEventStore: types.optional(CreateNewEventStoreModel, {}),
   userInfoStore: types.optional(UserInfoStoreModel, {}),
 })
 

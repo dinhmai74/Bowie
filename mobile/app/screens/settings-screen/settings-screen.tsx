@@ -11,7 +11,7 @@ import { useLocalization } from 'i18n/i18n'
 import { observer } from 'mobx-react-lite'
 import { useAuthContext } from 'navigation'
 import React, { useRef } from 'react'
-import { ScrollView, StyleSheet, TouchableOpacity } from 'react-native'
+import { StyleSheet, TouchableOpacity } from 'react-native'
 import { Value } from 'react-native-reanimated'
 import { NavigationScreenProp } from 'react-navigation'
 import { SettingsCard } from 'screens/settings-screen/components/SettingsCard'
@@ -78,7 +78,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     height: '100%',
-    paddingHorizontal: spacing[6],
   },
   rowWrapper: {
     flexDirection: 'row',
@@ -202,10 +201,9 @@ export const SettingsScreen: React.FunctionComponent<SettingsScreenProps> = obse
   }
 
   return (
-    <Screen>
-      <Header headerTx="settingsScreen.header" />
-
-      <ScrollView style={styles.container}>
+    <View full bgBaseOnTheme>
+      <Screen style={styles.container} preset="scroll" autoPaddingHorizontal>
+        <Header headerTx="settingsScreen.header" />
         <View full>
           <Avatar
             data={getInfoData}
@@ -238,7 +236,7 @@ export const SettingsScreen: React.FunctionComponent<SettingsScreenProps> = obse
             })}
           </View>
         </View>
-      </ScrollView>
+      </Screen>
       <SizedBox h={8} />
       <SizedBox h={8} />
       <View style={styles.btnSignOutWrapper}>
@@ -247,6 +245,6 @@ export const SettingsScreen: React.FunctionComponent<SettingsScreenProps> = obse
 
       <LangBottomSheet bs={bs} fall={fall} />
       <Backdrop fall={fall} />
-    </Screen>
+    </View>
   )
 })

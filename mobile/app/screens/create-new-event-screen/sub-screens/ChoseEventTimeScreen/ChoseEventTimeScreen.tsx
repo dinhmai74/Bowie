@@ -11,6 +11,8 @@ import styled from 'styled-components'
 import { images, metrics, spacing } from 'theme'
 import { DatePicker } from './DatePicker'
 import { useImmer } from 'use-immer'
+import { useStores } from 'models/root-store'
+import { DateFormat, combineDateAndTime, combineDateAndTimeToUTC, AppRoutes } from 'utils'
 
 const Container = styled(View)({
   flex: 1,
@@ -33,13 +35,10 @@ const RowSpaceBetween = styled(View)({
   flexDirection: 'row',
 })
 
-type ScreenRouteProps = RouteProp<PrimaryModalParamList, 'createNewEventTime'>
-
 export const ChoseEventTimeScreen: React.FC = () => {
   const navigation = useNavigation()
-  const { params } = useRoute<ScreenRouteProps>()
+  const { createNewEventStore } = useStores()
   const [date, setDate] = React.useState(moment())
-  const [show, setShow] = React.useState(false)
   const [showTimepicker, setShowTimepicker] = useImmer({
     to: false,
     from: false,
@@ -59,10 +58,18 @@ export const ChoseEventTimeScreen: React.FC = () => {
     })
   }
 
+  const onSubmit = () => {
+    const startDate = combineDateAndTime(date, moment(time.from))
+    const endDate = combineDateAndTime(date, moment(time.to))
+
+    createNewEventStore.setEventTime(startDate, endDate)
+    navigation.navigate(AppRoutes.createNewEventInfo)
+  }
+
   return (
     <View full bgBaseOnTheme>
       <Screen preset="scroll">
-        <NewEventHeader headerTx={params.title} />
+        <NewEventHeader headerTx={createNewEventStore.place?.name} />
 
         <Container>
           <AppDivider />
@@ -117,7 +124,12 @@ export const ChoseEventTimeScreen: React.FC = () => {
       <AppFooter>
         <FooterRow>
           <Button tx="common.pre" onPress={() => navigation.goBack()} />
-          <Button tx="common.next" onPress={() => {}} />
+          <Button
+            tx="common.next"
+            onPress={() => {
+              onSubmit()
+            }}
+          />
         </FooterRow>
       </AppFooter>
       {showTimepicker.from && (

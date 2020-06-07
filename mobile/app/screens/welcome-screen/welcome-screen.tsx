@@ -82,7 +82,7 @@ export const WelcomeScreen: React.FunctionComponent<WelcomeScreenProps> = props 
         </Animated.View>
       </Screen>
 
-      <View style={[styles.footer, { paddingBottom: insets.top || spacing[6] }]}>
+      <View style={[styles.footer, { paddingBottom: insets.bottom || spacing[8] }]}>
         <Animated.View style={{ opacity: mix(welcomeAnim, -3, 1) }}>
           <Button
             onPress={() => {

@@ -7,17 +7,13 @@ import styled from 'styled-components'
 import { spacing } from 'theme'
 import { useGetMyHostedEventQuery, useGetMyJoinedEventQuery } from 'app-graphql'
 
-const Container = styled(View)(() => ({
+const Container = styled(Screen)(() => ({
   flex: 1,
-  paddingHorizontal: spacing[6],
 }))
 
-const MyHostedWrapper = styled(View)(() => ({
-  flex: 1,
-}))
+const MyHostedWrapper = styled(View)(() => ({}))
 
 const MyJoinedWrapper = styled(View)(() => ({
-  flex: 1,
   marginVertical: spacing[5],
 }))
 
@@ -30,21 +26,21 @@ export const SavedScreen: React.FunctionComponent<SavedScreenProps> = observer((
   const { data: myHostedEvents, loading: loadingGetHosted } = useGetMyHostedEventQuery()
   const { data: myJoinedEvents, loading: loadingGetJoin } = useGetMyJoinedEventQuery()
 
-  let isLoading = loadingGetJoin || loadingGetHosted
+  const isLoading = loadingGetJoin || loadingGetHosted
   if (isLoading)
     return (
-      <Screen>
+      <View bgBaseOnTheme full>
         <Header headerTx="savedScreen.header" />
-        <Container>
+        <Container autoPaddingHorizontal>
           <AppLoading />
         </Container>
-      </Screen>
+      </View>
     )
 
   return (
-    <Screen preset="scroll">
-      <Header headerTx="savedScreen.header" />
-      <Container>
+    <View full bgBaseOnTheme>
+      <Container autoPaddingHorizontal>
+        <Header headerTx="savedScreen.header" />
         <MyHostedWrapper>
           <Text tx="savedScreen.myHostedEvent" preset="bold" />
           {myHostedEvents.getMyHostedEvent.map(v => {
@@ -59,6 +55,6 @@ export const SavedScreen: React.FunctionComponent<SavedScreenProps> = observer((
           })}
         </MyJoinedWrapper>
       </Container>
-    </Screen>
+    </View>
   )
 })

@@ -1,22 +1,23 @@
 import { EventWithHost, useGetEventByCoordLazyQuery } from 'app-graphql'
-import { AppError, AppLoading, AppMapView, Screen, SizedBox, View, Button } from 'components'
+import { AppError, AppLoading, AppMapView, Button, Screen, SizedBox, View } from 'components'
 import * as Location from 'expo-location'
 import * as Permissions from 'expo-permissions'
 import { observer } from 'mobx-react-lite'
 import React from 'react'
-import { StyleSheet, Text } from 'react-native'
+import { StyleSheet } from 'react-native'
 import { Region } from 'react-native-maps'
 import { NavigationScreenProp } from 'react-navigation'
 import { getCoordAlpha, useSnackBars } from 'utils'
 import { Header } from './components/Header'
-import { Popover, Layout } from '@ui-kitten/components'
 
 const HomeWrapper: React.FC<{ onRefresh: () => void }> = ({ children, onRefresh }) => {
   return (
-    <Screen preset="scroll">
-      <Header onRefresh={onRefresh} />
-      {children}
-    </Screen>
+    <View full bgBaseOnTheme>
+      <Screen preset="scroll">
+        <Header onRefresh={onRefresh} />
+        {children}
+      </Screen>
+    </View>
   )
 }
 
@@ -49,7 +50,7 @@ export const HomeScreen: React.FunctionComponent<HomeScreenProps> = observer(() 
       },
     },
     onCompleted: data => {
-      console.tron.log(data)
+      // console.tron.log(data)
     },
     fetchPolicy: 'network-only',
   })

@@ -15,5 +15,5 @@ export const AppFooter: React.FunctionComponent<AppFooterProps> = props => {
   // const { someStore } = useStores()
   const { children } = props
   const insets = useSafeArea()
-  return <Footer style={{ paddingBottom: insets.top || spacing[7] }}>{children}</Footer>
+  return <Footer style={{ paddingBottom: insets.bottom || spacing[7] }}>{children}</Footer>
 }

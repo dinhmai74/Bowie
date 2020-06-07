@@ -175,7 +175,7 @@ export const SignInScreen: React.FunctionComponent<SignInScreenProps> = observer
   const loading = loginResult?.loading || signUpResult?.loading
 
   return (
-    <Screen>
+    <Screen bgBaseOnTheme>
       <Animated.Image
         source={images.tasting}
         style={[styles.wallpaper, getOpacity(animWallpaper)]}

@@ -8,4 +8,5 @@ export * from './storage'
 export * from './strings'
 export * from './validate'
 export * from './calcCoordAlpha/calcCoordAlpha'
-export * from "./ImageConverter/ImageConverter"
+export * from './ImageConverter/ImageConverter'
+export * from './DateHelper/DateHelper'

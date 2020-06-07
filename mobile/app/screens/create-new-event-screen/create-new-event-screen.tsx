@@ -8,6 +8,9 @@ import styled from 'styled-components'
 import { metrics, spacing, sw } from 'theme'
 import { AppRoutes } from 'utils'
 import { NewEventHeader } from './components/NewEventHeader'
+import { useStores } from 'models/root-store'
+import { useForm, Controller } from 'react-hook-form'
+import * as yup from 'yup'
 
 const Container = styled(View)({
   flex: 1,
@@ -35,10 +38,45 @@ export interface CreateNewEventScreenProps {
   navigation: NavigationScreenProp<any, any>
 }
 
+type FormData = {
+  pos: string
+  title: string
+}
+
 export const CreateNewEventScreen: React.FunctionComponent<CreateNewEventScreenProps> = observer(
   () => {
-    // const { someStore } = useStores()
+    const { createNewEventStore } = useStores()
     const navigation = useNavigation()
+    const { setValue, register, handleSubmit, errors } = useForm<FormData>()
+
+    React.useEffect(() => {
+      register(
+        { name: 'pos' },
+        {
+          // required: 'errors.requiredField',
+          // pattern: {
+          // message: 'You should fill with coord like : 1232.100,120.222',
+          // value: /^([0-9/.\s]*),([0-9/.\s]*)$/,
+          // },
+        },
+      )
+      register(
+        { name: 'title' },
+        {
+          // required: 'errors.requiredField'
+        },
+      )
+    }, [register])
+
+    const onSubmit = (data: FormData) => {
+      // const pos = data.pos.replace(/ /g, '').split(',')
+      // createNewEventStore.setPlaceInfo(Number(pos[0]), Number(pos[1]), data.title)
+      navigation.navigate(AppRoutes.createNewEventTime, {
+        // title: data.title,
+        title: '21321',
+      })
+    }
+
     return (
       <View full bgBaseOnTheme>
         <StyledWallpaper preset="bottom" />
@@ -46,18 +84,20 @@ export const CreateNewEventScreen: React.FunctionComponent<CreateNewEventScreenP
         <StyledScreen preset="scroll">
           <NewEventHeader headerTx="createNewEventScreen.header" />
           <Container>
-            <TextField label="createNewEventScreen.chosePosLabel" />
-            <SizedBox h={4} />
-            <TextField label="createNewEventScreen.chosePlaceTitleLabel" />
-            <SizedBox h={6} />
-            <StyledButton
-              tx="common.next"
-              onPress={() =>
-                navigation.navigate(AppRoutes.createNewEventTime, {
-                  title: 'Testing',
-                })
-              }
+            <TextField
+              onChangeText={text => setValue('pos', text, true)}
+              label="createNewEventScreen.chosePosLabel"
+              caption={errors.pos?.message.toString()}
             />
+            <SizedBox h={4} />
+            <TextField
+              onChangeText={text => setValue('title', text, true)}
+              label="createNewEventScreen.chosePlaceTitleLabel"
+              caption={errors.title?.message.toString()}
+            />
+
+            <SizedBox h={6} />
+            <StyledButton tx="common.next" onPress={handleSubmit(onSubmit)} />
           </Container>
         </StyledScreen>
       </View>

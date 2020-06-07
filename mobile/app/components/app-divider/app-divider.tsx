@@ -12,7 +12,7 @@ export const AppDivider: React.FunctionComponent<AppDividerProps> = props => {
   const { style: propsStyle, space, ...rest } = props
   const { color } = useThemes()
   const style: ViewStyle = {
-    backgroundColor: color['color-basic-300'],
+    backgroundColor: color['color-basic-500'],
     marginVertical: spacing[space],
   }
 

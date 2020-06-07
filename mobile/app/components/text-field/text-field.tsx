@@ -6,6 +6,7 @@ import { Text } from 'components/text/text'
 
 export interface TextFieldProps extends InputProps {
   inputRef?: any
+  ref?: any
 }
 
 const presets = {
@@ -19,7 +20,15 @@ const presets = {
 export const TextField = (props: TextFieldProps) => {
   // grab the props
   const { t: translate } = useLocalization()
-  const { style, caption: cap, label: PLabel, placeholder: PPlaceholder, inputRef, ...rest } = props
+  const {
+    style,
+    caption: cap,
+    label: PLabel,
+    placeholder: PPlaceholder,
+    ref,
+    status: PStatus,
+    ...rest
+  } = props
   const label =
     typeof PLabel === 'string'
       ? (evaProps: any) => (
@@ -28,6 +37,8 @@ export const TextField = (props: TextFieldProps) => {
       : PLabel
   const placeholder = translate(PPlaceholder)
   const caption = typeof cap === 'string' ? translate(cap) : cap
+  let status = PStatus
+  if (caption) status = 'danger'
 
-  return <Input {...{ placeholder, caption, label }} {...rest} ref={inputRef} style={style} />
+  return <Input {...{ placeholder, caption, label, status }} {...rest} ref={ref} style={style} />
 }

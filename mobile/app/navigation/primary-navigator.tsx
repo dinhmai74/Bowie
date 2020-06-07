@@ -8,6 +8,7 @@ import { CreateNewEventScreen, EventDetailScreen, ViewMapScreen } from 'screens'
 import { HomeStack } from './home-navigator'
 import { PrimaryModalParamList, PrimaryParamList } from './types'
 import { ChoseEventTimeScreen } from 'screens/create-new-event-screen/sub-screens/ChoseEventTimeScreen'
+import { FillEventInfoScreen } from 'screens/create-new-event-screen/sub-screens/fill-event-info-screen/FillEventInfoScreen'
 
 const StackWithModal = createStackNavigator<PrimaryModalParamList>()
 const Stack = createStackNavigator<PrimaryParamList>()
@@ -33,6 +34,7 @@ export function PrimaryStackWithModal() {
       <StackWithModal.Screen name="primaryStack" component={PrimaryStack} />
       <StackWithModal.Screen name="createNewEvent" component={CreateNewEventScreen} />
       <StackWithModal.Screen name="createNewEventTime" component={ChoseEventTimeScreen} />
+      <StackWithModal.Screen name="createNewEventInfo" component={FillEventInfoScreen} />
       <StackWithModal.Screen name="viewMap" component={ViewMapScreen} />
     </StackWithModal.Navigator>
   )

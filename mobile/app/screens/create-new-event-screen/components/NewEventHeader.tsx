@@ -1,6 +1,5 @@
 import { useNavigation } from '@react-navigation/native'
-import { Icon } from '@ui-kitten/components'
-import { Text, AppKittenIcon } from 'components'
+import { AppKittenIcon, Text } from 'components'
 import * as React from 'react'
 import { StyleSheet, View, ViewStyle } from 'react-native'
 import { metrics, spacing } from 'theme'
