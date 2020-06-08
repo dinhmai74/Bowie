@@ -1,4 +1,4 @@
-import { AppSnackbar, SnackbarValue } from 'components'
+import { AppSnackbar, SnackbarType, SnackbarValue } from 'components'
 import _ from 'lodash'
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import { View } from 'react-native'
@@ -19,6 +19,7 @@ const AUTO_DISMISS = 2000
 
 interface SnackBarProviderState {
   addSnack: (value: SnackbarValue) => void
+  addMess: (value: string, type: SnackbarType) => void
 }
 
 export const SnackBarProvider = ({ children }) => {
@@ -39,7 +40,10 @@ export const SnackBarProvider = ({ children }) => {
   const addSnack = useCallback((content: SnackbarValue) => {
     setValues(v => _.uniqBy([...v, content], v => v.message))
   }, [])
-  const value = useMemo(() => ({ addSnack }), [addSnack])
+  const addMess = useCallback((message, type) => {
+    setValues(v => _.uniqBy([...v, { message, type }], v => v.message))
+  }, [])
+  const value = useMemo(() => ({ addSnack, addMess }), [addSnack, addMess])
 
   return (
     <SnackBarContext.Provider value={value}>

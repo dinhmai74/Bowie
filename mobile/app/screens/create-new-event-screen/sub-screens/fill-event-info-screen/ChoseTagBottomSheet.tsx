@@ -1,48 +1,129 @@
-import { Backdrop, Text, View } from 'components'
-import React from 'react'
-import Animated from 'react-native-reanimated'
-import BottomSheet from 'reanimated-bottom-sheet'
+import { EventTag, useCreateEventTagsMutation } from 'app-graphql'
+import { Button, SizedBox, Text, TextField, View } from 'components'
+import _ from 'lodash'
+import React, { useEffect, useState } from 'react'
+import { Alert, KeyboardAvoidingView, Platform, ScrollView } from 'react-native'
+import Modal from 'react-native-modal'
 import styled from 'styled-components'
 import { spacing } from 'theme'
-import { getElevation } from 'utils'
 
-const Wrapper = styled(View)({
-  height: '100%',
-  padding: spacing[4],
-  width: '100%',
-  ...getElevation(),
+const SModal = styled(Modal)({
+  justifyContent: 'flex-end',
+  margin: 0,
 })
 
+const Wrapper = styled(View)({
+  padding: 22,
+  justifyContent: 'center',
+  borderRadius: 4,
+  borderColor: 'rgba(0, 0, 0, 0.1)',
+  paddingVertical: spacing[4],
+})
+
+const SButton = styled(Button)({
+  marginHorizontal: spacing[2],
+})
+
+export type Tag = Pick<EventTag, 'name' | 'id'>
+
 interface ChoseTagBottomSheetProps {
-  bsref: React.MutableRefObject<any>
+  isVisible?: boolean
+  close: () => void
+  tags?: Tag[]
+  onDone: (tags: Tag[]) => void
 }
 
 export const ChoseTagBottomSheet: React.FC<ChoseTagBottomSheetProps> = props => {
-  const { bsref } = props
-  const fall = new Animated.Value(0)
+  const { tags, isVisible, close } = props
+  const [selected, setSelected] = React.useState<Tag[]>([])
+  const [news, setNews] = useState<Tag[]>([])
 
-  const renderContent = () => (
-    <Wrapper bgBaseOnTheme>
-      <Text>contonet</Text>
-    </Wrapper>
-  )
+  useEffect(() => {
+    setSelected([])
+  }, [isVisible])
 
-  const closeBs = () => {
-    bsref.current.snapTo(0)
-  }
+  const [createNewTags] = useCreateEventTagsMutation({
+    onCompleted(d) {
+      setNews(p => [...p, d.createTag])
+    },
+    onError(e) {
+      Alert.alert(e.message)
+    },
+  })
 
   return (
-    <>
-      <BottomSheet
-        ref={bsref}
-        snapPoints={[-100, '40%', '50%']}
-        renderContent={() => renderContent()}
-        callbackNode={fall}
-        borderRadius={spacing[4]}
-        initialSnap={0}
-      />
+    <SModal
+      testID={'modal'}
+      isVisible={isVisible}
+      onSwipeComplete={close}
+      swipeDirection={['down']}
+      onBackdropPress={close}
+    >
+      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+        <Wrapper bgBaseOnTheme>
+          <SizedBox h={2} />
+          <Text tx="createNewEventScreen.info.trendingTags" />
+          <SizedBox h={2} />
+          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+            {tags.map((v: EventTag) => {
+              return (
+                <SButton
+                  key={v.id}
+                  preset="bordered"
+                  status="basic"
+                  onPress={() => setSelected(p => _.uniqBy([...p, v], v => v.id))}
+                >
+                  {'#' + v.name}
+                </SButton>
+              )
+            })}
+          </ScrollView>
+          <SizedBox h={6} />
+          <View row>
+            <Text tx="createNewEventScreen.info.orNewOne" />
+            <SizedBox w={4} />
+            <TextField
+              full
+              clearButtonMode="always"
+              onSubmitEditing={e => {
+                if (e.nativeEvent?.text)
+                  createNewTags({
+                    variables: {
+                      input: { name: e.nativeEvent.text, currentUse: 0 },
+                    },
+                  })
+              }}
+            />
+          </View>
 
-      <Backdrop fall={fall} onPress={closeBs} />
-    </>
+          <SizedBox h={4} />
+          <Text tx="createNewEventScreen.info.selectedTags" />
+          <SizedBox h={2} />
+          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+            {news.map((v: EventTag) => {
+              return (
+                <SButton key={v.id} preset="bordered">
+                  {'#' + v.name}
+                </SButton>
+              )
+            })}
+            {selected.map((v: EventTag) => {
+              return (
+                <SButton
+                  key={v.id}
+                  preset="bordered"
+                  onPress={() => setSelected(p => p.filter(x => x.id !== v.id))}
+                >
+                  {'#' + v.name}
+                </SButton>
+              )
+            })}
+          </ScrollView>
+
+          <SizedBox h={6} />
+          <Button tx="common.done" full onPress={() => props.onDone(selected)} />
+        </Wrapper>
+      </KeyboardAvoidingView>
+    </SModal>
   )
 }

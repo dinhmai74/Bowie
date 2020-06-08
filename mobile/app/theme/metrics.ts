@@ -14,6 +14,10 @@ export const metrics = {
       width: 300,
       height: 150,
     },
+    x2m: {
+      width: 100,
+      height: 100,
+    },
     xsm: {
       width: 120,
       height: 120,

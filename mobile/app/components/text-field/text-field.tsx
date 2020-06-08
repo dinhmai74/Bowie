@@ -1,12 +1,11 @@
 import { Input, InputProps, TextProps } from '@ui-kitten/components'
 import { useLocalization } from 'i18n/i18n'
-import React from 'react'
+import React, { useImperativeHandle, useRef } from 'react'
 import { spacing } from 'theme'
 import { Text } from 'components/text/text'
 
 export interface TextFieldProps extends InputProps {
-  inputRef?: any
-  ref?: any
+  full?: boolean
 }
 
 const presets = {
@@ -17,16 +16,16 @@ const presets = {
   },
 }
 
-export const TextField = (props: TextFieldProps) => {
-  // grab the props
+const TextFieldComp = (props: TextFieldProps, ref) => {
   const { t: translate } = useLocalization()
   const {
-    style,
+    style: PStyle,
     caption: cap,
     label: PLabel,
     placeholder: PPlaceholder,
-    ref,
     status: PStatus,
+    full,
+    size = 'small',
     ...rest
   } = props
   const label =
@@ -36,9 +35,12 @@ export const TextField = (props: TextFieldProps) => {
         )
       : PLabel
   const placeholder = translate(PPlaceholder)
+  const style = [full && { flex: 1 }, PStyle]
   const caption = typeof cap === 'string' ? translate(cap) : cap
   let status = PStatus
   if (caption) status = 'danger'
 
-  return <Input {...{ placeholder, caption, label, status }} {...rest} ref={ref} style={style} />
+  return <Input {...{ size, placeholder, caption, label, status, style }} {...rest} ref={ref} />
 }
+
+export const TextField = React.forwardRef(TextFieldComp)

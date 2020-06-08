@@ -319,7 +319,7 @@ export type CreateEventTagsMutation = (
   { __typename?: 'Mutation' }
   & { createTag: (
     { __typename?: 'EventTag' }
-    & Pick<EventTag, 'name'>
+    & Pick<EventTag, 'name' | 'id'>
   ) }
 );
 
@@ -367,8 +367,8 @@ export type GetTopTagsQueryVariables = {};
 export type GetTopTagsQuery = (
   { __typename?: 'Query' }
   & { getTopTenHotTag: Array<(
-    { __typename?: 'EventTag' }
-    & Pick<EventTag, 'name' | 'currentUse'>
+    { __typename: 'EventTag' }
+    & Pick<EventTag, 'name' | 'currentUse' | 'id' | 'createdAt' | 'updatedAt'>
   )> }
 );
 
@@ -625,6 +625,7 @@ export const CreateEventTagsDocument = gql`
     mutation createEventTags($input: EventTagInput!) {
   createTag(input: $input) {
     name
+    id
   }
 }
     `;
@@ -762,6 +763,10 @@ export const GetTopTagsDocument = gql`
   getTopTenHotTag {
     name
     currentUse
+    id
+    createdAt
+    updatedAt
+    __typename
   }
 }
     `;

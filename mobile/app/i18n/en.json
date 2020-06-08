@@ -104,7 +104,10 @@
     "info": {
       "yourEventWillBeName": "Your events will name:",
       "details": "Details",
-      "eventstag": "Event's tags"
+      "eventstag": "Event's tags",
+      "trendingTags": "Trending tags:",
+      "selectedTags": "Selected tags:",
+      "orNewOne": "Or new one:"
     }
   },
   "en": "English",
