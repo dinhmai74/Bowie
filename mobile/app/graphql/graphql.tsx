@@ -635,7 +635,7 @@ export type GetMyJoinedEventQuery = (
     & Pick<Event, 'id'>
     & { place: (
       { __typename?: 'Place' }
-      & Pick<Place, 'address'>
+      & Pick<Place, 'name' | 'address'>
     ) }
   )>> }
 );
@@ -650,7 +650,7 @@ export type GetMyHostedEventQuery = (
     & Pick<Event, 'id'>
     & { place: (
       { __typename?: 'Place' }
-      & Pick<Place, 'address'>
+      & Pick<Place, 'name' | 'address'>
     ) }
   )> }
 );
@@ -1397,6 +1397,7 @@ export const GetMyJoinedEventDocument = gql`
   getMyJoinedEvent {
     id
     place {
+      name
       address
     }
   }
@@ -1435,6 +1436,7 @@ export const GetMyHostedEventDocument = gql`
   getMyHostedEvent {
     id
     place {
+      name
       address
     }
   }

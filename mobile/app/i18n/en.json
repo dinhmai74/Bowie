@@ -15,6 +15,9 @@
     "exit": "Exit",
     "choose": "Choose"
   },
+  "warning": {
+    "youAreOffline": "You are offline now, we will send a request when you online later"
+  },
   "errors": {
     "invalidUser": "Invalid user.",
     "invalidEmail": "Invalid email address.",

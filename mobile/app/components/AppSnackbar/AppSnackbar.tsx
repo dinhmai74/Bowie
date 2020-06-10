@@ -43,9 +43,7 @@ export const AppSnackbar: React.FunctionComponent<AppSnackbarProps> = props => {
 
   return (
     <Wrapper c={`color-${type || 'success'}-500`}>
-      <Text preset="secondary" color={palette.black}>
-        {message}
-      </Text>
+      <Text preset="secondary" color={palette.black} tx={message} />
     </Wrapper>
   )
 }

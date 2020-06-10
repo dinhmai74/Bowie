@@ -1,5 +1,10 @@
 import { useNavigation } from '@react-navigation/native'
-import { useCreateEventMutation, useGetTopTagsQuery } from 'app-graphql'
+import {
+  useCreateEventMutation,
+  useGetTopTagsQuery,
+  CreateEventDocument,
+  GetEventByCoordDocument,
+} from 'app-graphql'
 import {
   AppCircleButton,
   AppFooter,
@@ -28,8 +33,9 @@ import { metrics, spacing, images } from 'theme'
 import { LoadingScreen } from '../LoadingScreen/LoadingScreen'
 import { SuccessScreen } from '../SuccessScreen/SuccessScreen'
 import { ChoseTagBottomSheet, Tag } from './ChoseTagBottomSheet'
-import { useSnackBars } from 'utils'
+import { useSnackBars, AppRoutes } from 'utils'
 import moment from 'moment'
+import { useOfflineMutation, useNetworkStatus } from 'react-offix-hooks'
 
 const PickThumbnailWrapper = styled(View)({
   alignItems: 'flex-end',
@@ -83,26 +89,27 @@ type FormValue = {
 
 export const FillEventInfoScreen: React.FC<FillEventInfoScreenProps> = props => {
   const { createNewEventStore } = useStores()
-  const { setValue, register, handleSubmit, errors } = useForm<FormValue>()
-  const [selectedTags, setSelectedTags] = React.useState<Tag[]>([])
   const { data: tagsData, loading: loadingTags } = useGetTopTagsQuery()
+  const { addSnack } = useSnackBars()
+
+  const { setValue, register, handleSubmit, errors, getValues } = useForm<FormValue>({
+    defaultValues: {
+      name: createNewEventStore?.information?.eventName,
+      description: createNewEventStore?.information?.description,
+    },
+  })
+
+  const [selectedTags, setSelectedTags] = React.useState<Tag[]>([])
   const [isModalVisible, setModalVisible] = React.useState(false)
   const [imageBrowserOpen, setImageBrowserOpen] = React.useState(false)
   const [gallaries, setGallaries] = React.useState<MediaLibrary.Asset[]>([])
   const [thumbnail, setThumbnail] = React.useState<any>(null)
-  const { addSnack } = useSnackBars()
+  const [error, setError] = React.useState<string>('')
 
   const [
     muCreatNewEvent,
     { loading: loadingCreateEvent, data: dataCreateEvent },
-  ] = useCreateEventMutation({
-    onError(e) {
-      console.tron.log(e.message)
-    },
-    onCompleted(d) {
-      console.tron.log('d', d)
-    },
-  })
+  ] = useOfflineMutation(CreateEventDocument)
 
   const toggleModal = () => {
     setModalVisible(!isModalVisible)
@@ -113,7 +120,8 @@ export const FillEventInfoScreen: React.FC<FillEventInfoScreenProps> = props => 
     register({ name: 'description' })
   }, [register])
 
-  const onSubmit = (data: FormValue) => {
+  const onSubmit = async (data: FormValue) => {
+    createNewEventStore.setEventInfo(data.name, data.description)
     const files = []
     gallaries.forEach(v => {
       const file = new ReactNativeFile({
@@ -123,28 +131,42 @@ export const FillEventInfoScreen: React.FC<FillEventInfoScreenProps> = props => 
       })
       files.push(file)
     })
-    muCreatNewEvent({
-      variables: {
-        event: {
-          startTime: moment(createNewEventStore.startTime).utc(),
-          endTime: moment(createNewEventStore.endTime).utc(),
-          tags: selectedTags.map(v => v.id),
-          // place: {
-          // address: '1232ccc',
-          // name: 'Ho chi minhh coffe',
-          // coord: { latitude: 10.943009870934329, longitude: 106.74740731729867 },
-          // },
-          place: createNewEventStore.place,
-          information: { eventName: data.name, description: data.description },
-          galleries: {
-            files,
-          },
-          thumbnail: thumbnail && {
-            file: thumbnail,
+
+    try {
+      await muCreatNewEvent({
+        variables: {
+          event: {
+            startTime: moment(createNewEventStore.startTime).utc(),
+            endTime: moment(createNewEventStore.endTime).utc(),
+            tags: selectedTags.map(v => v.id),
+            // place: {
+            // address: '1232ccc',
+            // name: 'Ho chi minhh coffe',
+            // coord: { latitude: 10.943009870934329, longitude: 106.74740731729867 },
+            // },
+            place: createNewEventStore.place,
+            information: { eventName: data.name, description: data.description },
+            galleries: {
+              files,
+            },
+            thumbnail: thumbnail && {
+              file: thumbnail,
+            },
           },
         },
-      },
-    })
+      })
+      console.tron.log('create')
+    } catch (e) {
+      if (e.offline) {
+        // 2. We can still track when offline change is going to be replicated.
+        addSnack('warning.youAreOffline', { type: 'warning' })
+        navigation.navigate(AppRoutes.primaryStack)
+        e.watchOfflineChange().then(d => {
+          console.tron.log('offline changed', d)
+          setError(JSON.stringify(d))
+        })
+      }
+    }
   }
 
   const navigation = useNavigation()
@@ -193,6 +215,7 @@ export const FillEventInfoScreen: React.FC<FillEventInfoScreenProps> = props => 
         size="small"
         caption={errors?.name?.message.toString()}
         onChangeText={t => setValue('name', t, true)}
+        defaultValue={getValues().name}
       />
     </NameInputWrapper>
   )
@@ -207,6 +230,7 @@ export const FillEventInfoScreen: React.FC<FillEventInfoScreenProps> = props => 
           numberOfLines={5}
           textStyle={TEXT_AREA_STYLE}
           onChangeText={t => setValue('description', t)}
+          defaultValue={getValues().description}
         />
       </>
     )
@@ -324,6 +348,7 @@ export const FillEventInfoScreen: React.FC<FillEventInfoScreenProps> = props => 
     <View full bgBaseOnTheme>
       <Screen autoPaddingHorizontal>
         <NewEventHeader headerTx={createNewEventStore.place?.name} />
+        <Text text={error} />
 
         <ScrollView keyboardDismissMode="none" showsVerticalScrollIndicator={false}>
           {renderNameInput()}

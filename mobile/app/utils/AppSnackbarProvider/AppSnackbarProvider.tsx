@@ -40,7 +40,7 @@ export const SnackBarProvider = ({ children }) => {
   }, [activeAlertIds])
 
   // const addAlert = (v: SnackbarValue) => setValues(p => [...p, v])
-  const addSnack = useCallback((message, type) => {
+  const addSnack = useCallback((message, { type } = { type: 'success' }) => {
     setValues(v => _.uniqBy([...v, { message, type }], v => v.message))
   }, [])
   const value = useMemo(() => ({ addSnack }), [addSnack])

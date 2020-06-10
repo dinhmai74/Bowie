@@ -32,9 +32,9 @@ export const CreateNewEventStoreModel = types
   .views(self => ({})) // eslint-disable-line @typescript-eslint/no-unused-vars
   .actions(self => ({
     reset() {
-      self.place = null
-      self.information = null
-      self.tags = null
+      self.place = undefined
+      self.information = undefined
+      self.tags = undefined
     },
     setPlaceInfo(latitude: number, longitude: number, title: string) {
       self.place = {
@@ -52,6 +52,12 @@ export const CreateNewEventStoreModel = types
     },
     setTags(v: any) {
       self.tags = v
+    },
+    setEventInfo(name: string, des: string) {
+      self.information = {
+        description: des,
+        eventName: name,
+      }
     },
   })) // eslint-disable-line @typescript-eslint/no-unused-vars
 

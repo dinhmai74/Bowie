@@ -33,6 +33,7 @@
     "lodash": "^4.17.15",
     "lodasync": "^1.0.7",
     "mikro-orm": "^3.6.13",
+    "moment": "^2.26.0",
     "mongodb": "^3.5.7",
     "mongoose": "^5.9.13",
     "node-cron": "^2.0.3",

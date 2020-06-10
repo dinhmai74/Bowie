@@ -4,6 +4,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { images, metrics, spacing, sw } from 'theme'
 import { nDelay, AppRoutes } from 'utils'
+import { useStores } from 'models/root-store'
 
 interface SuccessScreenProps {}
 const Container = styled(View)({
@@ -19,8 +20,10 @@ const Description = styled(Text)({
 
 export const SuccessScreen: React.FC<SuccessScreenProps> = props => {
   const navigation = useNavigation()
+  const { createNewEventStore } = useStores()
   React.useEffect(() => {
     nDelay(2000).then(() => {
+      createNewEventStore.reset()
       navigation.navigate(AppRoutes.Home)
     })
   }, [])

@@ -35,7 +35,7 @@ export const NotificationsScreen: React.FunctionComponent<NotificationsScreenPro
           >
             123
           </Button>
-          <Button onPress={() => addSnack('yep yep')}>close</Button>
+          <Button onPress={() => addSnack('yep yep', { type: 'warning' })}>close</Button>
         </View>
       </Screen>
     )

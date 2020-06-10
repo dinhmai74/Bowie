@@ -31,7 +31,7 @@ export interface HomeScreenProps {
   navigation: NavigationScreenProp<any, any>
 }
 
-export const HomeScreen: React.FunctionComponent<HomeScreenProps> = observer(() => {
+export const HomeScreen: React.FunctionComponent<HomeScreenProps> = observer(({ navigation }) => {
   // const { someStore } = useStores()
   const [location, setLocation] = React.useState<any>({})
   const [errorGetLocation, setErrGetLocation] = React.useState<boolean>(false)
@@ -47,14 +47,16 @@ export const HomeScreen: React.FunctionComponent<HomeScreenProps> = observer(() 
       },
     },
     onCompleted: data => {
-      // console.tron.log(data)
+      console.tron.log(data)
+    },
+    onError: e => {
+      addSnack(e.message, { type: 'warning' })
     },
     fetchPolicy: 'network-only',
   })
 
   if (error) {
     console.tron.log('errorg get lcoation', error)
-    console.tron.log('location', location)
   }
 
   React.useEffect(() => {
@@ -67,7 +69,6 @@ export const HomeScreen: React.FunctionComponent<HomeScreenProps> = observer(() 
       }
 
       const location = await Location.getCurrentPositionAsync({})
-      console.tron.log('location', location)
 
       setLocation(location)
 
@@ -87,6 +88,10 @@ export const HomeScreen: React.FunctionComponent<HomeScreenProps> = observer(() 
     }
 
     getLocationAsync()
+
+    navigation.addListener('focus', () => {
+      fetchEvent()
+    })
   }, [])
 
   let events: EventWithHost[] = []

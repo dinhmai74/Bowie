@@ -26,6 +26,7 @@ export class InteractiveEventResolver {
   @UseMiddleware(isAuth)
   async getMyHostedEvent(@Ctx() ctx: MyContext): Promise<Event[]> {
     const userId = ctx.req!.session!.userId
+    console.log('userId get my host', userId)
     const events = await DI.eventRepos.find({
       hostId: { $eq: userId },
     })

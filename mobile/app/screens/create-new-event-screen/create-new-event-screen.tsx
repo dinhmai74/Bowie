@@ -38,7 +38,17 @@ export const CreateNewEventScreen: React.FunctionComponent<CreateNewEventScreenP
   () => {
     const { createNewEventStore } = useStores()
     const navigation = useNavigation()
-    const { setValue, register, handleSubmit, errors } = useForm<FormData>()
+    const defaultPos = createNewEventStore?.place
+      ? createNewEventStore?.place?.coord?.latitude +
+        ',' +
+        createNewEventStore?.place?.coord?.longitude
+      : ''
+    const { setValue, register, handleSubmit, errors, getValues } = useForm<FormData>({
+      defaultValues: {
+        title: createNewEventStore?.place?.name,
+        pos: defaultPos,
+      },
+    })
 
     React.useEffect(() => {
       register(
@@ -75,12 +85,14 @@ export const CreateNewEventScreen: React.FunctionComponent<CreateNewEventScreenP
             onChangeText={text => setValue('pos', text, true)}
             label="createNewEventScreen.chosePosLabel"
             caption={errors.pos?.message.toString()}
+            defaultValue={getValues().pos}
           />
           <SizedBox h={4} />
           <TextField
             onChangeText={text => setValue('title', text, true)}
             label="createNewEventScreen.chosePlaceTitleLabel"
             caption={errors.title?.message.toString()}
+            defaultValue={getValues().title}
           />
 
           <SizedBox h={6} />

@@ -21,6 +21,7 @@ query getMyJoinedEvent {
   getMyJoinedEvent {
     id
     place {
+      name
       address
     }
   }
@@ -30,6 +31,7 @@ query getMyHostedEvent {
   getMyHostedEvent {
     id
     place {
+      name
       address
     }
   }

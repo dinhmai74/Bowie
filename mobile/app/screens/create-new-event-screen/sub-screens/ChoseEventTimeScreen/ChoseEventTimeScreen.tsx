@@ -36,14 +36,18 @@ const RowSpaceBetween = styled(View)({
 export const ChoseEventTimeScreen: React.FC = () => {
   const navigation = useNavigation()
   const { createNewEventStore } = useStores()
-  const [date, setDate] = React.useState(moment())
+  const [date, setDate] = React.useState(moment(createNewEventStore.startTime) || moment())
   const [showTimepicker, setShowTimepicker] = useImmer({
     to: false,
     from: false,
   })
+  const dffrom = createNewEventStore.startTime
+    ? new Date(createNewEventStore.startTime)
+    : new Date()
+  const dfTo = createNewEventStore.endTime ? new Date(createNewEventStore.endTime) : new Date()
   const [time, setTime] = useImmer({
-    to: new Date(),
-    from: new Date(),
+    from: dffrom,
+    to: dfTo,
   })
 
   const onChange = (event, selectedDate, type) => {
