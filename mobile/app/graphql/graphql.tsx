@@ -61,12 +61,12 @@ export type CoordInput = {
 };
 
 export type CustomGraphQlUpload = {
-  file: Array<Scalars['Upload']>;
+  file: Scalars['Upload'];
 };
 
 export type CustomUpload = {
   __typename?: 'CustomUpload';
-  file: Array<Scalars['Upload']>;
+  file: Scalars['Upload'];
 };
 
 
@@ -82,8 +82,8 @@ export type Event = {
   tags: Array<Scalars['String']>;
   place: Place;
   information: Information;
-  galleries: Array<Scalars['String']>;
-  thumbnail: Scalars['String'];
+  galleries?: Maybe<Array<Scalars['String']>>;
+  thumbnail?: Maybe<Scalars['String']>;
 };
 
 export type EventCreateInput = {
@@ -94,8 +94,8 @@ export type EventCreateInput = {
   tags: Array<Scalars['String']>;
   place: EventPlaceInput;
   information: EventInformationInput;
-  galleries: Array<Scalars['String']>;
-  thumbnail: Scalars['String'];
+  galleries?: Maybe<Array<Scalars['String']>>;
+  thumbnail?: Maybe<Scalars['String']>;
 };
 
 export type EventInformationInput = {
@@ -104,14 +104,13 @@ export type EventInformationInput = {
 };
 
 export type EventInput = {
-  membersInfo: Array<EventMemberInfoInput>;
   startTime: Scalars['DateTime'];
   endTime: Scalars['DateTime'];
   tags: Array<Scalars['String']>;
   place: EventPlaceInput;
   information: EventInformationInput;
-  galleries: UploadsInput;
-  thumbnail: CustomGraphQlUpload;
+  galleries?: Maybe<UploadsInput>;
+  thumbnail?: Maybe<CustomGraphQlUpload>;
 };
 
 export type EventMemberInfoInput = {
@@ -154,8 +153,8 @@ export type EventWithHost = {
   tags: Array<Scalars['String']>;
   place: Place;
   information: Information;
-  galleries: Array<Scalars['String']>;
-  thumbnail: Scalars['String'];
+  galleries?: Maybe<Array<Scalars['String']>>;
+  thumbnail?: Maybe<Scalars['String']>;
   hostInfo?: Maybe<User>;
 };
 
@@ -520,7 +519,7 @@ export type GetAllEventsQuery = (
   { __typename?: 'Query' }
   & { getEvents: Array<(
     { __typename?: 'Event' }
-    & Pick<Event, 'id' | 'hostId' | 'endTime' | 'startTime'>
+    & Pick<Event, 'id' | 'thumbnail' | 'galleries' | 'hostId' | 'endTime' | 'startTime'>
     & { membersInfo: Array<(
       { __typename?: 'MemberInfo' }
       & Pick<MemberInfo, 'id' | 'type'>
@@ -547,7 +546,7 @@ export type GetEventByCoordQuery = (
   { __typename?: 'Query' }
   & { getEventBaseOnPos: Array<(
     { __typename?: 'EventWithHost' }
-    & Pick<EventWithHost, 'id' | 'endTime' | 'startTime'>
+    & Pick<EventWithHost, 'id' | 'tags' | 'thumbnail' | 'galleries' | 'endTime' | 'startTime'>
     & { hostInfo?: Maybe<(
       { __typename?: 'User' }
       & Pick<User, 'id' | 'name' | 'email' | 'avatarId'>
@@ -573,7 +572,7 @@ export type GetEventByIdQuery = (
   { __typename?: 'Query' }
   & { getEventById?: Maybe<(
     { __typename?: 'Event' }
-    & Pick<Event, 'id' | 'hostId' | 'endTime' | 'startTime'>
+    & Pick<Event, 'id' | 'thumbnail' | 'galleries' | 'hostId' | 'endTime' | 'startTime'>
     & { membersInfo: Array<(
       { __typename?: 'MemberInfo' }
       & Pick<MemberInfo, 'id' | 'type'>
@@ -1115,6 +1114,8 @@ export const GetAllEventsDocument = gql`
     query getAllEvents {
   getEvents {
     id
+    thumbnail
+    galleries
     hostId
     membersInfo {
       id
@@ -1169,6 +1170,9 @@ export const GetEventByCoordDocument = gql`
     query getEventByCoord($input: CoordInput!) {
   getEventBaseOnPos(input: $input) {
     id
+    tags
+    thumbnail
+    galleries
     hostInfo {
       id
       name
@@ -1222,6 +1226,8 @@ export const GetEventByIdDocument = gql`
     query getEventById($id: String!) {
   getEventById(id: $id) {
     id
+    thumbnail
+    galleries
     hostId
     membersInfo {
       id

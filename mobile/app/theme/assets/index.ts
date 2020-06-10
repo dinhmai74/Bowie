@@ -12,5 +12,6 @@ export const images = {
   iWashHand: require('./undraw_wash_hands_nwl2.png'),
   iUpload: require('./undraw_uploading_go67.png'),
   addImgPlaceholder: require('./add_image_placeholder.png'),
+  iMale: require('./undraw_male_avatar_323b.png'),
 }
 export type ImagesTypes = keyof typeof images

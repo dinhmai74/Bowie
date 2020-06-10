@@ -5,9 +5,6 @@ import { Uploads, CustomUpload } from '../Upload'
 
 @InputType()
 export class EventInput {
-  @Field(() => MemberInfo)
-  membersInfo: MemberInfo[]
-
   @Field()
   startTime: Date
 
@@ -23,9 +20,9 @@ export class EventInput {
   @Field()
   information: Information
 
-  @Field(() => Uploads)
+  @Field(() => Uploads, { nullable: true })
   galleries: Uploads
 
-  @Field(() => CustomUpload)
+  @Field(() => CustomUpload, { nullable: true })
   thumbnail: CustomUpload
 }

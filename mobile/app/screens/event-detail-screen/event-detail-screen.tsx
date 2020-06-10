@@ -1,7 +1,7 @@
 import { RouteProp, useRoute } from '@react-navigation/native'
 import { Icon } from '@ui-kitten/components'
 import { ApolloError } from 'apollo-client'
-import { useGetEventByIdQuery, useJoinEventMutation } from 'app-graphql'
+import { useGetEventByIdQuery, useJoinEventMutation, useGetImgQuery } from 'app-graphql'
 import {
   AppDivider,
   AppError,
@@ -17,15 +17,16 @@ import { observer } from 'mobx-react-lite'
 import moment from 'moment'
 import { PrimaryParamList } from 'navigation/types'
 import React from 'react'
-import { ScrollView } from 'react-native'
+import { ScrollView, StyleSheet } from 'react-native'
 import { useSafeArea } from 'react-native-safe-area-context'
 import { NavigationScreenProp } from 'react-navigation'
 import styled from 'styled-components'
 // import { useStores } from "models/root-store"
-import { images, spacing } from 'theme'
+import { images, spacing, metrics } from 'theme'
 import { DateFormat, useSnackBars } from 'utils'
 import { EventPlace } from './components/EventPlace'
 import { JoinModal } from './components/JoinModal'
+import { AppImageWithFetch } from 'components/AppImageWithFetch/AppImageWithFetch'
 
 const Body = styled(ScrollView)`
   flex: 1;
@@ -33,12 +34,24 @@ const Body = styled(ScrollView)`
 `
 
 const BottomView = styled(View)`
-  flex: 1;
   width: 100%;
   align-self: flex-end;
   justify-content: flex-end;
   padding: 0 ${spacing[6]}px;
 `
+
+const imgSize = {
+  width: metrics.images.lg.width,
+  height: (metrics.images.lg.width * 2) / 3,
+}
+
+const styles = StyleSheet.create({
+  galleriesContainer: {
+    ...imgSize,
+    marginRight: spacing[6],
+    marginVertical: spacing[4],
+  },
+})
 
 const LoadingComponent = () => {
   return (
@@ -76,7 +89,9 @@ export const EventDetailScreen: React.FunctionComponent<EventDetailScreenProps> 
     const { addSnack } = useSnackBars()
     const insets = useSafeArea()
 
-    const { loading, error, data } = useGetEventByIdQuery({ variables: { id: params.id } })
+    const { loading: loadingGetEvent, error, data } = useGetEventByIdQuery({
+      variables: { id: params.id },
+    })
     const [joinEvent, { loading: joinEventLoading }] = useJoinEventMutation({
       onError: e => {
         console.tron.log(e)
@@ -87,6 +102,7 @@ export const EventDetailScreen: React.FunctionComponent<EventDetailScreenProps> 
       },
     })
 
+    const loading = loadingGetEvent
     if (loading) return <LoadingComponent />
 
     if (error) {
@@ -101,31 +117,49 @@ export const EventDetailScreen: React.FunctionComponent<EventDetailScreenProps> 
       .format(DateFormat.fullDateTime)}`
 
     return (
-      <Screen>
-        <Header headerTx={event?.information?.eventName} leftIcon="back" />
-        <Body>
-          <EventPlace place={event?.place} />
-          <AppDivider />
+      <View full bgBaseOnTheme>
+        <Screen>
+          <Header headerTx={event?.information?.eventName} leftIcon="back" />
+          <Body>
+            <EventPlace place={event?.place} />
+            <AppDivider />
 
-          <View row>
-            <Icon name="clock" />
-            <SizedBox w={3} />
-            <Text text={time} />
-          </View>
-          <AppDivider />
+            <View row>
+              <Icon name="clock" />
+              <SizedBox w={3} />
+              <Text text={time} />
+            </View>
+            <AppDivider />
 
-          <View>
-            <Text tx="eventDetailScreen.information" preset="h3" />
-            <SizedBox w={3} />
-            <Text tx={event.information.description} />
-          </View>
-          <AppDivider />
-        </Body>
+            <View>
+              <Text tx="eventDetailScreen.information" preset="h3" />
+              <SizedBox w={3} />
+              <Text tx={event.information.description} />
+            </View>
+            <AppDivider />
+
+            <View>
+              <Text preset="h3" tx="eventDetailScreen.gallary" />
+              <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                {data?.getEventById?.galleries.map(v => {
+                  return (
+                    <AppImageWithFetch
+                      id={v}
+                      key={v}
+                      containerStyle={styles.galleriesContainer}
+                      style={imgSize}
+                      layoutStyle={imgSize}
+                    />
+                  )
+                })}
+              </ScrollView>
+            </View>
+          </Body>
+        </Screen>
 
         <BottomView style={{ paddingBottom: insets.bottom || spacing[6] }}>
           <Button tx="eventDetailScreen.join" full onPress={() => setJoinModalVisible(true)} />
         </BottomView>
-
         <JoinModal
           visible={joinModal}
           onBackdropPress={() => setJoinModalVisible(false)}
@@ -141,7 +175,7 @@ export const EventDetailScreen: React.FunctionComponent<EventDetailScreenProps> 
             })
           }}
         />
-      </Screen>
+      </View>
     )
   },
 )

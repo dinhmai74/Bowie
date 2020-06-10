@@ -1,6 +1,6 @@
 import moment, { Moment } from 'moment'
 export const DateFormat = {
-  hourMinuteWithIndicator: 'HH:mm a',
+  timeWithIndicator: 'HH:mm a',
   fullDateTime: 'DD MMM [at] HH:mm a',
   monthDate: 'MMM[,] DD',
   serverTime: 'YYYY-MM-DD',

@@ -4,12 +4,12 @@ import { useAuthMutation, User, UserWithAvt } from 'app-graphql'
 import { useStores } from 'models/root-store'
 import React, { useEffect, useMemo } from 'react'
 import { useNetworkStatus } from 'react-offix-hooks'
-import { useSnackBars } from 'utils'
 import { useForceUpdate } from 'utils/custom-hooks'
 import { load, remove, save } from 'utils/storage'
 import { AuthStack } from './auth-navigator'
 import { PrimaryStackWithModal } from './primary-navigator'
 import { RootParamList } from './types'
+import { Alert } from 'react-native'
 
 export const AuthContext = React.createContext(null)
 
@@ -29,7 +29,6 @@ const RootStack = () => {
   const { userInfoStore } = useStores()
   const [validUser, setValidUser] = React.useState(false)
   const refresh = useForceUpdate()
-  const { addSnack } = useSnackBars()
 
   const removeUserInfo = () => {
     userInfoStore.clear()
@@ -50,8 +49,8 @@ const RootStack = () => {
       saveUserInfo(d.auth)
     },
     onError: e => {
-      addSnack(e.message, { type: 'danger' })
       removeUserInfo()
+      Alert.alert(e.message)
     },
   })
   const isOnline = useNetworkStatus()

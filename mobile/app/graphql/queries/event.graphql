@@ -1,6 +1,8 @@
 query getAllEvents {
   getEvents {
     id
+    thumbnail
+    galleries
     hostId
     membersInfo {
       id
@@ -26,6 +28,9 @@ query getAllEvents {
 query getEventByCoord($input: CoordInput!) {
   getEventBaseOnPos(input: $input) {
     id
+    tags
+    thumbnail
+    galleries
     hostInfo {
       id
       name
@@ -49,6 +54,8 @@ query getEventByCoord($input: CoordInput!) {
 query getEventById($id: String!) {
   getEventById(id: $id) {
     id
+    thumbnail
+    galleries
     hostId
     membersInfo {
       id
@@ -70,3 +77,4 @@ query getEventById($id: String!) {
     }
   }
 }
+

@@ -58,7 +58,7 @@ export class EventResolver {
   @UseMiddleware(isAuth)
   async createEvent(
     @Arg('event')
-    { startTime, endTime, place, information, membersInfo, tags, galleries, thumbnail }: EventInput,
+    { startTime, endTime, place, information, tags, galleries, thumbnail }: EventInput,
     // @Arg('galleries', () => [GraphQLUpload]) galleries: FileUpload[],
     @Ctx() ctx: MyContext,
   ): Promise<Event> {
@@ -71,7 +71,7 @@ export class EventResolver {
       event.endTime = endTime
       event.place = place
       event.information = information
-      event.membersInfo = membersInfo
+      event.membersInfo = []
       event.tags = tags
       event.hostId = user!.id
       event.galleries = []
@@ -88,15 +88,16 @@ export class EventResolver {
       }
 
       const id = v4()
-      ;(await createImg(thumbnail.file, id + '.png'))
-        .on('finish', () => {
-          // event.thumbnail = id
-          console.log('done')
-        })
-        .on('error', () => {
-          console.log('error')
-        })
-
+      if (thumbnail && thumbnail.file) {
+        ;(await createImg(thumbnail.file, id + '.png'))
+          .on('finish', () => {
+            event.thumbnail = id
+            console.log('done')
+          })
+          .on('error', () => {
+            console.log('error')
+          })
+      }
       await DI.eventRepos.persist(event)
 
       // update tags amount

@@ -97,7 +97,7 @@ export const FillEventInfoScreen: React.FC<FillEventInfoScreenProps> = props => 
     { loading: loadingCreateEvent, data: dataCreateEvent },
   ] = useCreateEventMutation({
     onError(e) {
-      console.tron.log(e)
+      console.tron.log(e.message)
     },
     onCompleted(d) {
       console.tron.log('d', d)
@@ -123,11 +123,9 @@ export const FillEventInfoScreen: React.FC<FillEventInfoScreenProps> = props => 
       })
       files.push(file)
     })
-    console.tron.log('files', files)
     muCreatNewEvent({
       variables: {
         event: {
-          membersInfo: [],
           startTime: moment(createNewEventStore.startTime).utc(),
           endTime: moment(createNewEventStore.endTime).utc(),
           tags: selectedTags.map(v => v.id),
@@ -141,7 +139,7 @@ export const FillEventInfoScreen: React.FC<FillEventInfoScreenProps> = props => 
           galleries: {
             files,
           },
-          thumbnail: {
+          thumbnail: thumbnail && {
             file: thumbnail,
           },
         },

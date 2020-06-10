@@ -12,6 +12,7 @@ import { images, metrics, useThemes } from 'theme'
 import { Color } from 'theme/color-model'
 import { AppRoutes, DateFormat, getBase64UriFromUnknownSource } from 'utils'
 import { appMapViewStyles as styles } from './app-map-view.styles'
+import { AppImageWithFetch } from 'components/AppImageWithFetch/AppImageWithFetch'
 
 export type Region = {
   latitude: number
@@ -31,14 +32,16 @@ const AppMarker: React.FC<AppMarker> = ({ coordinate, avatar, ...rest }) => {
     variables: {
       id: avatar,
     },
+    fetchPolicy: 'no-cache',
   })
 
   let imgUri: any
   if (data?.getImg) imgUri = getBase64UriFromUnknownSource(data?.getImg?.data)
+  const src = imgUri ? { uri: imgUri } : images.iMale
 
   return (
     <MapMarker coordinate={coordinate} {...rest}>
-      <Avatar source={{ uri: imgUri }} />
+      <Avatar source={src} />
     </MapMarker>
   )
 }
@@ -50,15 +53,25 @@ interface AppMarkerCardProps {
 
 const AppMarkerCard: React.FC<AppMarkerCardProps> = ({ event, color }) => {
   const navigation = useNavigation()
+
   const time = `${moment(event.startTime)
     .local()
-    .format(DateFormat.hourMinuteWithIndicator)} - ${moment(event.endTime)
+    .format(DateFormat.timeWithIndicator)} - ${moment(event.endTime)
     .local()
-    .format(DateFormat.hourMinuteWithIndicator)}`
+    .format(DateFormat.timeWithIndicator)}`
 
   return (
     <AppCard style={styles.bottomInfoContent}>
-      <Image source={images.place} style={styles.bottomInfoImage} />
+      {event?.thumbnail ? (
+        <AppImageWithFetch
+          id={event?.thumbnail}
+          style={styles.bottomInfoImage}
+          containerStyle={metrics.images.thumbnail}
+          layoutStyle={metrics.images.thumbnail}
+        />
+      ) : (
+        <Image source={images.place} style={styles.bottomInfoImage} />
+      )}
       <SizedBox h={4} />
       <Text text={event.information.eventName} preset="bold" />
       <SizedBox h={4} />

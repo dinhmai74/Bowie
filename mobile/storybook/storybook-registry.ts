@@ -1,3 +1,4 @@
+require("../app/components/AppImageWithFetch/AppImageWithFetch.story")
 require("../app/components/AppCircleButton/AppCircleButton.story")
 require("../app/components/AppFooter/AppFooter.story")
 require("../app/components/AppKittenIcon/AppKittenIcon.story")
