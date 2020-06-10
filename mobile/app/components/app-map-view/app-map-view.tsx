@@ -51,12 +51,12 @@ interface AppMarkerCardProps {
   color: Color
 }
 
-const AppMarkerCard: React.FC<AppMarkerCardProps> = ({ event, color }) => {
+const AppMarkerCard: React.FC<AppMarkerCardProps> = ({ event }) => {
   const navigation = useNavigation()
 
-  const time = `${moment(event.startTime)
+  const time = `${moment(event?.startTime)
     .local()
-    .format(DateFormat.timeWithIndicator)} - ${moment(event.endTime)
+    .format(DateFormat.timeWithIndicator)} - ${moment(event?.endTime)
     .local()
     .format(DateFormat.timeWithIndicator)}`
 
