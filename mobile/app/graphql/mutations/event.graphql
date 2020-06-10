@@ -1,5 +1,5 @@
-mutation createEvent($input: EventCreateInput!) {
-  createEvent(input: $input) {
+mutation createEvent($event: EventInput!) {
+  createEvent(event: $event) {
     hostId
   }
 }

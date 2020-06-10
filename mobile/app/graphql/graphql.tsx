@@ -60,6 +60,15 @@ export type CoordInput = {
   latitude: Scalars['Float'];
 };
 
+export type CustomGraphQlUpload = {
+  file: Array<Scalars['Upload']>;
+};
+
+export type CustomUpload = {
+  __typename?: 'CustomUpload';
+  file: Array<Scalars['Upload']>;
+};
+
 
 export type Event = {
   __typename?: 'Event';
@@ -73,6 +82,8 @@ export type Event = {
   tags: Array<Scalars['String']>;
   place: Place;
   information: Information;
+  galleries: Array<Scalars['String']>;
+  thumbnail: Scalars['String'];
 };
 
 export type EventCreateInput = {
@@ -83,6 +94,8 @@ export type EventCreateInput = {
   tags: Array<Scalars['String']>;
   place: EventPlaceInput;
   information: EventInformationInput;
+  galleries: Array<Scalars['String']>;
+  thumbnail: Scalars['String'];
 };
 
 export type EventInformationInput = {
@@ -91,8 +104,14 @@ export type EventInformationInput = {
 };
 
 export type EventInput = {
-  email: Scalars['String'];
-  password: Scalars['String'];
+  membersInfo: Array<EventMemberInfoInput>;
+  startTime: Scalars['DateTime'];
+  endTime: Scalars['DateTime'];
+  tags: Array<Scalars['String']>;
+  place: EventPlaceInput;
+  information: EventInformationInput;
+  galleries: UploadsInput;
+  thumbnail: CustomGraphQlUpload;
 };
 
 export type EventMemberInfoInput = {
@@ -135,6 +154,8 @@ export type EventWithHost = {
   tags: Array<Scalars['String']>;
   place: Place;
   information: Information;
+  galleries: Array<Scalars['String']>;
+  thumbnail: Scalars['String'];
   hostInfo?: Maybe<User>;
 };
 
@@ -178,6 +199,7 @@ export type Mutation = {
   __typename?: 'Mutation';
   joinEvent: Event;
   editJoinTypeEventInfo: Event;
+  testMultipleFile: Scalars['Boolean'];
   createEvent: Event;
   createTag: EventTag;
   changeTagQuantity: EventTag;
@@ -201,8 +223,13 @@ export type MutationEditJoinTypeEventInfoArgs = {
 };
 
 
+export type MutationTestMultipleFileArgs = {
+  picture: Array<Scalars['Upload']>;
+};
+
+
 export type MutationCreateEventArgs = {
-  input: EventCreateInput;
+  event: EventInput;
 };
 
 
@@ -286,6 +313,15 @@ export type SignUpInput = {
   name: Scalars['String'];
 };
 
+
+export type Uploads = {
+  __typename?: 'Uploads';
+  files: Array<Scalars['Upload']>;
+};
+
+export type UploadsInput = {
+  files: Array<Scalars['Upload']>;
+};
 
 export type User = {
   __typename?: 'User';
@@ -421,7 +457,7 @@ export type AuthMutation = (
 );
 
 export type CreateEventMutationVariables = {
-  input: EventCreateInput;
+  event: EventInput;
 };
 
 
@@ -942,8 +978,8 @@ export type AuthMutationHookResult = ReturnType<typeof useAuthMutation>;
 export type AuthMutationResult = ApolloReactCommon.MutationResult<AuthMutation>;
 export type AuthMutationOptions = ApolloReactCommon.BaseMutationOptions<AuthMutation, AuthMutationVariables>;
 export const CreateEventDocument = gql`
-    mutation createEvent($input: EventCreateInput!) {
-  createEvent(input: $input) {
+    mutation createEvent($event: EventInput!) {
+  createEvent(event: $event) {
     hostId
   }
 }
@@ -963,7 +999,7 @@ export type CreateEventMutationFn = ApolloReactCommon.MutationFunction<CreateEve
  * @example
  * const [createEventMutation, { data, loading, error }] = useCreateEventMutation({
  *   variables: {
- *      input: // value for 'input'
+ *      event: // value for 'event'
  *   },
  * });
  */

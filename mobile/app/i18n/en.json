@@ -11,7 +11,9 @@
     "pre": "Prev",
     "from": "From",
     "to": "To",
-    "done": "Done"
+    "done": "Done",
+    "exit": "Exit",
+    "choose": "Choose"
   },
   "errors": {
     "invalidUser": "Invalid user.",
@@ -107,7 +109,12 @@
       "eventstag": "Event's tags",
       "trendingTags": "Trending tags:",
       "selectedTags": "Selected tags:",
-      "orNewOne": "Or new one:"
+      "orNewOne": "Or new one:",
+      "creatingEvent": "Creating event",
+      "loadingDesc": "It may take a second, please be patience",
+      "createSuccess": "Your events was created. We will navigate back in a few seconds",
+      "pickThumbnail": "Pick group's thumbnail",
+      "pickGallaries": "Pick some gallaries"
     }
   },
   "en": "English",

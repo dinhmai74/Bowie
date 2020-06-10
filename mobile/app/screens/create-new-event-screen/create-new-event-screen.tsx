@@ -16,8 +16,8 @@ const StyledScreen = styled(Screen)({
 })
 
 const StyledWallpaper = styled(Wallpaper)(() => ({
-  ...metrics.images.md,
-  left: sw / 2 - metrics.images.md.width / 2,
+  ...metrics.images.lg,
+  left: sw / 2 - metrics.images.lg.width / 2,
   bottom: spacing[7],
 }))
 
@@ -44,28 +44,25 @@ export const CreateNewEventScreen: React.FunctionComponent<CreateNewEventScreenP
       register(
         { name: 'pos' },
         {
-          // required: 'errors.requiredField',
-          // pattern: {
-          // message: 'You should fill with coord like : 1232.100,120.222',
-          // value: /^([0-9/.\s]*),([0-9/.\s]*)$/,
-          // },
+          required: 'errors.requiredField',
+          pattern: {
+            message: 'You should fill with coord like : 1232.100,120.222',
+            value: /^([0-9/.\s]*),([0-9/.\s]*)$/,
+          },
         },
       )
       register(
         { name: 'title' },
         {
-          // required: 'errors.requiredField'
+          required: 'errors.requiredField',
         },
       )
     }, [register])
 
     const onSubmit = (data: FormData) => {
-      // const pos = data.pos.replace(/ /g, '').split(',')
-      // createNewEventStore.setPlaceInfo(Number(pos[0]), Number(pos[1]), data.title)
-      navigation.navigate(AppRoutes.createNewEventTime, {
-        // title: data.title,
-        title: '21321',
-      })
+      const pos = data.pos.replace(/ /g, '').split(',')
+      createNewEventStore.setPlaceInfo(Number(pos[0]), Number(pos[1]), data.title)
+      navigation.navigate(AppRoutes.createNewEventTime)
     }
 
     return (

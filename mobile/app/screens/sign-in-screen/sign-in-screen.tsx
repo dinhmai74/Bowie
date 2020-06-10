@@ -87,16 +87,13 @@ export const SignInScreen: React.FunctionComponent<SignInScreenProps> = observer
   const { addSnack } = useSnackBars()
 
   const onError = err => {
-    addSnack({
-      message: err.message,
+    addSnack(err.message, {
       type: 'danger',
     })
   }
 
   const handleSuccess = d => {
-    addSnack({
-      message: 'signInScreen.signInScreen',
-    })
+    addSnack('signInScreen.signInScreen')
     refForm.current.animateNextTransition()
     nDelay(200).then(() => setTriggerSpreadOut(true))
     nDelay(600).then(() => auth?.navigateHome(d))

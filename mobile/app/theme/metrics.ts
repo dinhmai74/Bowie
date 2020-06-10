@@ -27,12 +27,12 @@ export const metrics = {
       height: 200,
     },
     md: {
-      width: 300,
-      height: 300,
+      width: 250,
+      height: 250,
     },
     lg: {
-      width: 400,
-      height: 400,
+      width: 300,
+      height: 300,
     },
   },
   icon: {

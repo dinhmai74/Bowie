@@ -28,15 +28,14 @@ export const NotificationsScreen: React.FunctionComponent<NotificationsScreenPro
         <View style={styles.container}>
           <Button
             onPress={() =>
-              addSnack({
-                message:
-                  'There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour,',
-              })
+              addSnack(
+                'There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour,',
+              )
             }
           >
             123
           </Button>
-          <Button onPress={() => addSnack({ message: 'yep yep' })}>close</Button>
+          <Button onPress={() => addSnack('yep yep')}>close</Button>
         </View>
       </Screen>
     )

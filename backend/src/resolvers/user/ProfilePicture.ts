@@ -1,10 +1,8 @@
-import { createWriteStream, mkdir, readFileSync, unlinkSync, existsSync } from 'fs'
-import { GraphQLUpload } from 'graphql-upload'
+import { createWriteStream, existsSync, unlinkSync } from 'fs'
+import { FileUpload, GraphQLUpload } from 'graphql-upload'
 import { Arg, Ctx, Mutation, Resolver } from 'type-graphql'
 import { v4 } from 'uuid'
-import { Image } from '../../entity/Image'
 import { MyContext } from '../../graphql-types/MyContext'
-import { Upload } from '../../graphql-types/Upload'
 import { DI } from '../../mikroconfig'
 
 const baseImgDir = '/../../../images'
@@ -14,10 +12,9 @@ export class ProfilePictureResolver {
   @Mutation(() => Boolean)
   async addProfilePicture(
     @Ctx() ctx: MyContext,
-    @Arg('picture', () => GraphQLUpload)
-    file: Upload,
+    @Arg('picture', () => GraphQLUpload) file: FileUpload,
   ): Promise<boolean> {
-    const { createReadStream, filename } = file
+    const { createReadStream } = await file
     console.log('file', file)
     if (!ctx.req.session!.userId) return false
 

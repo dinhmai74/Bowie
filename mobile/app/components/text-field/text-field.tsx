@@ -1,8 +1,8 @@
 import { Input, InputProps, TextProps } from '@ui-kitten/components'
-import { useLocalization } from 'i18n/i18n'
-import React, { useImperativeHandle, useRef } from 'react'
-import { spacing } from 'theme'
 import { Text } from 'components/text/text'
+import { useLocalization } from 'i18n/i18n'
+import React from 'react'
+import { spacing } from 'theme'
 
 export interface TextFieldProps extends InputProps {
   full?: boolean

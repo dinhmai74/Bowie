@@ -6,7 +6,8 @@ import { spacing } from 'theme'
 
 const Footer = styled(View)({
   justifyContent: 'flex-end',
-  paddingVertical: spacing[5],
+  paddingBottom: spacing[5],
+  paddingTop: spacing[1],
 })
 
 export interface AppFooterProps extends ViewProps {}

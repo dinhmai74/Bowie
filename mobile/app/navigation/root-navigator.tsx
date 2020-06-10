@@ -50,7 +50,7 @@ const RootStack = () => {
       saveUserInfo(d.auth)
     },
     onError: e => {
-      addSnack({ message: e.message, type: 'danger' })
+      addSnack(e.message, { type: 'danger' })
       removeUserInfo()
     },
   })

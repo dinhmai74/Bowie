@@ -80,10 +80,10 @@ export const EventDetailScreen: React.FunctionComponent<EventDetailScreenProps> 
     const [joinEvent, { loading: joinEventLoading }] = useJoinEventMutation({
       onError: e => {
         console.tron.log(e)
-        addSnack({ message: e.message, type: 'danger' })
+        addSnack(e.message, { type: 'danger' })
       },
       onCompleted: d => {
-        addSnack({ message: 'Join success!' })
+        addSnack('Join success!')
       },
     })
 

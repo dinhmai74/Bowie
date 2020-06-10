@@ -1,11 +1,12 @@
-import { Text, View } from 'components'
+import { Text, View, Button } from 'components'
 import * as MediaLibrary from 'expo-media-library'
 import * as Permissions from 'expo-permissions'
 import React from 'react'
-import { Button, Dimensions, Platform, FlatList } from 'react-native'
+import { Dimensions, Platform, FlatList, TouchableOpacity } from 'react-native'
 import styled from 'styled-components'
 import { ImageTile } from './ImageTile'
 import { Modal } from '@ui-kitten/components'
+import { spacing } from 'theme'
 const { width, height } = Dimensions.get('window')
 
 const Header = styled(View)({
@@ -14,8 +15,8 @@ const Header = styled(View)({
   justifyContent: 'space-between',
   flexDirection: 'row',
   alignItems: 'center',
-  padding: 10,
-  marginTop: 20,
+  paddingHorizontal: spacing[4],
+  marginVertical: spacing[2],
 })
 
 const Container = styled(View)({
@@ -35,7 +36,7 @@ const getImages = params => {
 
 interface ImageBowserProps {
   max: number
-  callback: (v: Promise<any[]>) => void
+  callback: (v: Promise<MediaLibrary.Asset[]>) => void
   isVisible?: boolean
 }
 
@@ -78,7 +79,7 @@ export const ImageBowser: React.FC<ImageBowserProps> = props => {
   }
 
   const prepareCallback = () => {
-    const selectedPhotos = photos.filter((item, index) => {
+    const selectedPhotos = photos.filter((_, index) => {
       return selected[index]
     })
     callback(Promise.resolve(selectedPhotos))
@@ -92,14 +93,17 @@ export const ImageBowser: React.FC<ImageBowserProps> = props => {
     if (selectedCount === max) headerText = headerText + ' (Max)'
     return (
       <Header>
-        <Button title="Exit" onPress={() => callback(Promise.resolve([]))} />
+        <TouchableOpacity onPress={() => callback(Promise.resolve([]))}>
+          <Text tx="common.exit" themeColor="text-primary-color" />
+        </TouchableOpacity>
         <Text>{headerText}</Text>
-        <Button
-          title="Choose"
+        <TouchableOpacity
           onPress={() => {
             prepareCallback()
           }}
-        />
+        >
+          <Text tx="common.choose" themeColor="text-primary-color" />
+        </TouchableOpacity>
       </Header>
     )
   }

@@ -17,9 +17,12 @@ const Container = styled(View)<{}>`
 
 const AUTO_DISMISS = 2000
 
+interface SnackBarOption {
+  type: SnackbarType
+}
+
 interface SnackBarProviderState {
-  addSnack: (value: SnackbarValue) => void
-  addMess: (value: string, type: SnackbarType) => void
+  addSnack: (value: string, option?: SnackBarOption) => void
 }
 
 export const SnackBarProvider = ({ children }) => {
@@ -37,13 +40,10 @@ export const SnackBarProvider = ({ children }) => {
   }, [activeAlertIds])
 
   // const addAlert = (v: SnackbarValue) => setValues(p => [...p, v])
-  const addSnack = useCallback((content: SnackbarValue) => {
-    setValues(v => _.uniqBy([...v, content], v => v.message))
-  }, [])
-  const addMess = useCallback((message, type) => {
+  const addSnack = useCallback((message, type) => {
     setValues(v => _.uniqBy([...v, { message, type }], v => v.message))
   }, [])
-  const value = useMemo(() => ({ addSnack, addMess }), [addSnack, addMess])
+  const value = useMemo(() => ({ addSnack }), [addSnack])
 
   return (
     <SnackBarContext.Provider value={value}>

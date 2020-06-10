@@ -1,8 +1,7 @@
 import { createWriteStream, readFileSync } from 'fs'
-import { GraphQLUpload } from 'graphql-upload'
+import { FileUpload, GraphQLUpload } from 'graphql-upload'
 import { Arg, Mutation, Query, Resolver } from 'type-graphql'
 import { Image } from '../../entity'
-import { Upload } from '../../graphql-types/Upload'
 
 const baseImgDir = '/../../../images'
 @Resolver()
@@ -17,7 +16,7 @@ export class ImageFactoryResolver {
   }
 
   @Mutation(() => Boolean)
-  async createPhoto(@Arg('input', () => GraphQLUpload) file: Upload): Promise<Boolean> {
+  async createPhoto(@Arg('input', () => GraphQLUpload) file: FileUpload): Promise<Boolean> {
     const { createReadStream, filename } = file
     const imgDir = `${baseImgDir}`
 

@@ -12,6 +12,7 @@
     "@types/uuid": "^8.0.0",
     "@typescript-eslint/eslint-plugin": "^2.31.0",
     "@typescript-eslint/parser": "^2.31.0",
+    "class-validator": "^0.12.2",
     "eslint": "^7.0.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-import": "^2.20.2",
@@ -37,7 +38,7 @@
     "node-cron": "^2.0.3",
     "pg": "^8.2.1",
     "reflect-metadata": "^0.1.13",
-    "type-graphql": "^1.0.0-rc.1",
+    "type-graphql": "^1.0.0-rc.2",
     "uuid": "^8.1.0"
   },
   "scripts": {

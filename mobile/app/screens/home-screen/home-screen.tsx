@@ -61,8 +61,7 @@ export const HomeScreen: React.FunctionComponent<HomeScreenProps> = observer(() 
     const getLocationAsync = async () => {
       const { status } = await Permissions.askAsync(Permissions.LOCATION)
       if (status !== 'granted') {
-        addSnack({
-          message: 'permissionLocation',
+        addSnack('permissionLocation', {
           type: 'danger',
         })
       }

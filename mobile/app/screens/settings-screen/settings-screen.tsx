@@ -99,11 +99,11 @@ export const SettingsScreen: React.FunctionComponent<SettingsScreenProps> = obse
   if (getInfoError) console.tron.log('get usererror', getInfoError)
   const [addProfilePicture] = useAddPictureMutation({
     onCompleted: () => {
-      addSnack({ message: 'added' })
+      addSnack('added')
       triggerGetCurrentUser()
     },
     onError: e => {
-      addSnack({ message: 'Cannot add avatar' + e.message, type: 'danger' })
+      addSnack('Cannot add avatar' + e.message, { type: 'danger' })
     },
   })
 
@@ -117,8 +117,7 @@ export const SettingsScreen: React.FunctionComponent<SettingsScreenProps> = obse
       if (isIos) {
         const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL)
         if (status !== 'granted') {
-          addSnack({
-            message: 'Sorry, we need camera roll permissions to make this work!',
+          addSnack('Sorry, we need camera roll permissions to make this work!', {
             type: 'warning',
           })
         }
@@ -147,7 +146,7 @@ export const SettingsScreen: React.FunctionComponent<SettingsScreenProps> = obse
       const result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.All,
         allowsEditing: true,
-        aspect: [4, 3],
+        aspect: [4, 4],
         quality: 1,
       })
       if (result.cancelled === false) {

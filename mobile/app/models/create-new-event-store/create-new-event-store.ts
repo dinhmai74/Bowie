@@ -50,6 +50,9 @@ export const CreateNewEventStoreModel = types
       self.startTime = start.format()
       self.endTime = end.format()
     },
+    setTags(v: any) {
+      self.tags = v
+    },
   })) // eslint-disable-line @typescript-eslint/no-unused-vars
 
 /**
