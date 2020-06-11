@@ -3,6 +3,7 @@ import { Icon } from '@ui-kitten/components'
 import { ApolloError } from 'apollo-client'
 import { useGetEventByIdQuery, useJoinEventMutation } from 'app-graphql'
 import {
+  AppAvatar,
   AppDivider,
   AppError,
   AppLoading,
@@ -12,7 +13,6 @@ import {
   SizedBox,
   Text,
   View,
-  AppAvatar,
 } from 'components'
 import { AppImageWithFetch } from 'components/AppImageWithFetch/AppImageWithFetch'
 import { observer } from 'mobx-react-lite'
@@ -92,7 +92,7 @@ export const EventDetailScreen: React.FunctionComponent<EventDetailScreenProps> 
   const { loading: loadingGetEvent, error, data } = useGetEventByIdQuery({
     variables: { id: params.id },
   })
-  const [joinEvent, { loading: joinEventLoading }] = useJoinEventMutation({
+  const [joinEvent, { loading: loadingJointEvent }] = useJoinEventMutation({
     onError: e => {
       addSnack(e.message, { type: 'danger' })
     },
@@ -100,6 +100,8 @@ export const EventDetailScreen: React.FunctionComponent<EventDetailScreenProps> 
       addSnack('Join success!')
     },
   })
+
+  console.tron.log('loading', loadingJointEvent)
 
   const loading = loadingGetEvent
   if (loading) return <LoadingComponent />

@@ -1,4 +1,3 @@
-import { useNavigation } from '@react-navigation/native'
 import { Button, Screen, SizedBox, TextField, View, Wallpaper } from 'components'
 import { observer } from 'mobx-react-lite'
 import { useStores } from 'models/root-store'
@@ -10,6 +9,7 @@ import styled from 'styled-components'
 import { metrics, spacing, sw } from 'theme'
 import { AppRoutes } from 'utils'
 import { NewEventHeader } from './components/NewEventHeader'
+import { PickPositionModal } from './PickPositionModal'
 
 const StyledScreen = styled(Screen)({
   backgroundColor: 'transparent',
@@ -35,15 +35,24 @@ type FormData = {
 }
 
 export const CreateNewEventScreen: React.FunctionComponent<CreateNewEventScreenProps> = observer(
-  () => {
+  props => {
     const { createNewEventStore } = useStores()
-    const navigation = useNavigation()
+    const { navigation } = props
+    // const navigation = useNavigation()
     const defaultPos = createNewEventStore?.place
       ? createNewEventStore?.place?.coord?.latitude +
         ',' +
         createNewEventStore?.place?.coord?.longitude
       : ''
-    const { setValue, register, handleSubmit, errors, getValues } = useForm<FormData>({
+    const {
+      setValue,
+      register,
+      unregister,
+      handleSubmit,
+      errors,
+      getValues,
+      triggerValidation,
+    } = useForm<FormData>({
       defaultValues: {
         title: createNewEventStore?.place?.name,
         pos: defaultPos,
@@ -67,6 +76,7 @@ export const CreateNewEventScreen: React.FunctionComponent<CreateNewEventScreenP
           required: 'errors.requiredField',
         },
       )
+      return () => unregister(['pos', 'title']) // unregister input after component unmount
     }, [register])
 
     const onSubmit = (data: FormData) => {
@@ -87,7 +97,16 @@ export const CreateNewEventScreen: React.FunctionComponent<CreateNewEventScreenP
             caption={errors.pos?.message.toString()}
             defaultValue={getValues().pos}
           />
+
+          <SizedBox h={2} />
+          <PickPositionModal
+            onSubmit={coord => {
+              setValue('pos', `${coord?.latitude}, ${coord?.longitude}`)
+              triggerValidation('pos')
+            }}
+          />
           <SizedBox h={4} />
+
           <TextField
             onChangeText={text => setValue('title', text, true)}
             label="createNewEventScreen.chosePlaceTitleLabel"

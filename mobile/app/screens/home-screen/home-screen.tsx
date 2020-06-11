@@ -1,13 +1,12 @@
 import { EventWithHost, useGetEventByCoordLazyQuery } from 'app-graphql'
 import { AppError, AppLoading, AppMapView, Screen, SizedBox, View } from 'components'
-import * as Location from 'expo-location'
-import * as Permissions from 'expo-permissions'
 import { observer } from 'mobx-react-lite'
 import React from 'react'
 import { StyleSheet } from 'react-native'
 import { Region } from 'react-native-maps'
 import { NavigationScreenProp } from 'react-navigation'
-import { getCoordAlpha, nDelay, SnackBarContext } from 'utils'
+import { useNetworkStatus } from 'react-offix-hooks'
+import { getLocationAsync, SnackBarContext } from 'utils'
 import { Header } from './components/Header'
 
 const HomeWrapper: React.FC<{ onRefresh: () => void }> = ({ children, onRefresh }) => {
@@ -33,64 +32,38 @@ export interface HomeScreenProps {
 
 export const HomeScreen: React.FunctionComponent<HomeScreenProps> = observer(({ navigation }) => {
   // const { someStore } = useStores()
-  const [location, setLocation] = React.useState<any>({})
   const [errorGetLocation, setErrGetLocation] = React.useState<boolean>(false)
   const { addSnack } = React.useContext(SnackBarContext)
+  const isOnline = useNetworkStatus()
 
   const [region, setRegion] = React.useState<Region>(undefined)
 
-  const [fetchEvent, { data, error }] = useGetEventByCoordLazyQuery({
+  const [fetchEvent, { data }] = useGetEventByCoordLazyQuery({
     variables: {
       input: {
-        longitude: location.coords?.longitude,
-        latitude: location.coords?.latitude,
+        longitude: region?.longitude,
+        latitude: region?.latitude,
       },
     },
-    onCompleted: data => {
-      console.tron.log(data)
-    },
     onError: e => {
-      nDelay(100).then(() => {
+      console.tron.log('e', e)
+      if (!isOnline) addSnack('error.offline', { type: 'warning' })
+      else {
         addSnack(e.message, { type: 'warning' })
-      })
+      }
     },
+    fetchPolicy: 'cache-and-network',
   })
 
-  if (error) {
-    console.tron.log('errorg get lcoation', error)
-  }
-
   React.useEffect(() => {
-    const getLocationAsync = async () => {
-      const { status } = await Permissions.askAsync(Permissions.LOCATION)
-      if (status !== 'granted') {
-        nDelay(100).then(() => {
-          addSnack('permissionLocation', {
-            type: 'danger',
-          })
-        })
-      }
-
-      const location = await Location.getCurrentPositionAsync({})
-
-      setLocation(location)
-
-      if (location.coords) {
-        const { longitudeDelta, latitudeDelta } = getCoordAlpha(location.coords?.latitude)
-        setRegion({
-          latitude: location.coords?.latitude,
-          longitude: location.coords?.longitude,
-          longitudeDelta,
-          latitudeDelta,
-        })
-        fetchEvent()
-        setErrGetLocation(false)
-      } else {
-        setErrGetLocation(true)
-      }
-    }
-
     getLocationAsync()
+      .then(region => {
+        setRegion(region)
+      })
+      .catch(e => {
+        setErrGetLocation(true)
+        addSnack(e.message, { type: 'warning' })
+      })
 
     navigation.addListener('focus', () => {
       fetchEvent()
@@ -119,7 +92,7 @@ export const HomeScreen: React.FunctionComponent<HomeScreenProps> = observer(({ 
   return (
     <HomeWrapper onRefresh={() => fetchEvent()}>
       <View style={styles.container}>
-        {location !== null && (
+        {region !== null && (
           <AppMapView
             events={events}
             region={region}

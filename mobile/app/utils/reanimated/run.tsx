@@ -39,6 +39,7 @@ const betterSpring = proc(
         velocity,
         position,
         time,
+        // @ts-ignore
         prevPosition,
       },
       {

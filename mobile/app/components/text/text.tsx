@@ -66,7 +66,7 @@ export const Text = (props: TextProps) => {
   }
 
   return (
-    <ReactNativeText {...rest} style={style}>
+    <ReactNativeText style={style} {...rest}>
       {content}
     </ReactNativeText>
   )

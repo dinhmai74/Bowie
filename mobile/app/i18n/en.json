@@ -108,6 +108,7 @@
     "header": "Host new event",
     "chosePosLabel": "Chose the place's position",
     "chosePlaceTitleLabel": "Chose the place's title",
+    "orPickFromMap": "Or pick from from map",
     "time": {
       "willBeHeldOn": "Will be held on:"
     },

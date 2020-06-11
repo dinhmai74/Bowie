@@ -1,10 +1,10 @@
 import { useNavigation } from '@react-navigation/native'
 import { Screen, SizedBox, SmallHero, Text, View } from 'components'
+import { useStores } from 'models/root-store'
 import React from 'react'
 import styled from 'styled-components'
 import { images, metrics, spacing, sw } from 'theme'
-import { nDelay, AppRoutes } from 'utils'
-import { useStores } from 'models/root-store'
+import { AppRoutes, nDelay } from 'utils'
 
 interface SuccessScreenProps {}
 const Container = styled(View)({
@@ -18,7 +18,7 @@ const Description = styled(Text)({
   textAlign: 'center',
 })
 
-export const SuccessScreen: React.FC<SuccessScreenProps> = props => {
+export const SuccessScreen: React.FC<SuccessScreenProps> = () => {
   const navigation = useNavigation()
   const { createNewEventStore } = useStores()
   React.useEffect(() => {

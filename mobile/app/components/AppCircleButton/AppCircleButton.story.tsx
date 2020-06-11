@@ -3,7 +3,7 @@ import { storiesOf } from '@storybook/react-native'
 import { StoryScreen, Story, UseCase } from '../../../storybook/views'
 import { AppCircleButton } from './AppCircleButton'
 
-declare var module
+declare let module
 
 storiesOf('AppCircleButton', module)
   .addDecorator(fn => <StoryScreen>{fn()}</StoryScreen>)

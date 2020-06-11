@@ -1,11 +1,11 @@
 import { Button as KTButton, useStyleSheet } from '@ui-kitten/components'
 import { Text } from 'components/text/text'
-import { flatten, mergeAll, view } from 'ramda'
+import { flatten, mergeAll } from 'ramda'
 import * as React from 'react'
 import { ActivityIndicator, ViewStyle } from 'react-native'
+import { useThemes } from 'theme'
 import { TextPresets, ViewPresets } from './button.presets'
 import { ButtonProps } from './button.props'
-import { useThemes } from 'theme'
 
 export const Button: React.FC<ButtonProps> = props => {
   const { color } = useThemes()

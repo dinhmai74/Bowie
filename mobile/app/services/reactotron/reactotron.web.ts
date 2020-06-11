@@ -12,7 +12,9 @@ declare global {
     /**
      * Hey, it's Reactotron if we're in dev, and no-ops if we're in prod.
      */
+    // @ts-ignore
     tron: typeof Tron
+    // @ts-ignore
     tlog: typeof Tron.display
   }
 }
@@ -36,6 +38,7 @@ const noop = () => undefined
 
 // in dev, we attach Reactotron, in prod we attach a interface-compatible mock.
 if (__DEV__) {
+  // @ts-ignore
   console.tron = Tron // attach reactotron to `console.tron`
 } else {
   // attach a mock so if things sneaky by our __DEV__ guards, we won't crash.

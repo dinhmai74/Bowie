@@ -3,7 +3,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { useThemes } from 'theme'
 
-const StyledIcon = styled(Icon)(p => ({}))
+const StyledIcon = styled(Icon)({})
 
 export interface AppKittenIconProps extends IconProps {}
 

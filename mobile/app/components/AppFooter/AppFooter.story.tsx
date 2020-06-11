@@ -1,16 +1,16 @@
-import * as React from "react"
-import { storiesOf } from "@storybook/react-native"
-import { StoryScreen, Story, UseCase } from "../../../storybook/views"
-import { AppFooter } from "./AppFooter"
+import * as React from 'react'
+import { storiesOf } from '@storybook/react-native'
+import { StoryScreen, Story, UseCase } from '../../../storybook/views'
+import { AppFooter } from './AppFooter'
 
-declare var module
+declare let module
 
-storiesOf("AppFooter", module)
+storiesOf('AppFooter', module)
   .addDecorator(fn => <StoryScreen>{fn()}</StoryScreen>)
-  .add("Style Presets", () => (
+  .add('Style Presets', () => (
     <Story>
       <UseCase text="Primary" usage="The primary.">
-        <AppFooter text="AppFooter" />
+        <AppFooter />
       </UseCase>
     </Story>
   ))

@@ -35,6 +35,8 @@ export const CreateNewEventStoreModel = types
       self.place = undefined
       self.information = undefined
       self.tags = undefined
+      self.startTime = undefined
+      self.endTime = undefined
     },
     setPlaceInfo(latitude: number, longitude: number, title: string) {
       self.place = {

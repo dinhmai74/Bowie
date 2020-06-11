@@ -1,12 +1,12 @@
-import { Text, View, Button } from 'components'
+import { Modal } from '@ui-kitten/components'
+import { Text, View } from 'components'
 import * as MediaLibrary from 'expo-media-library'
 import * as Permissions from 'expo-permissions'
 import React from 'react'
-import { Dimensions, Platform, FlatList, TouchableOpacity } from 'react-native'
+import { Dimensions, FlatList, Platform } from 'react-native'
 import styled from 'styled-components'
-import { ImageTile } from './ImageTile'
-import { Modal } from '@ui-kitten/components'
 import { spacing } from 'theme'
+import { ImageTile } from './ImageTile'
 const { width, height } = Dimensions.get('window')
 
 const Header = styled(View)({
@@ -93,17 +93,17 @@ export const ImageBowser: React.FC<ImageBowserProps> = props => {
     if (selectedCount === max) headerText = headerText + ' (Max)'
     return (
       <Header>
-        <TouchableOpacity onPress={() => callback(Promise.resolve([]))}>
-          <Text tx="common.exit" themeColor="text-primary-color" />
-        </TouchableOpacity>
+        <Text
+          tx="common.exit"
+          themeColor="text-primary-color"
+          onPress={() => callback(Promise.resolve([]))}
+        />
         <Text>{headerText}</Text>
-        <TouchableOpacity
-          onPress={() => {
-            prepareCallback()
-          }}
-        >
-          <Text tx="common.choose" themeColor="text-primary-color" />
-        </TouchableOpacity>
+        <Text
+          tx="common.choose"
+          themeColor="text-primary-color"
+          onPress={() => prepareCallback()}
+        />
       </Header>
     )
   }

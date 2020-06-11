@@ -1,5 +1,4 @@
-import { Icon } from '@ui-kitten/components'
-import { Text, View, AppKittenIcon } from 'components'
+import { AppKittenIcon, Text, View } from 'components'
 import React from 'react'
 import styled from 'styled-components'
 import { spacing } from 'theme'

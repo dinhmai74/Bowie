@@ -1,6 +1,6 @@
-import gql from 'graphql-tag';
-import * as ApolloReactCommon from '@apollo/react-common';
-import * as ApolloReactHooks from '@apollo/react-hooks';
+import gql from 'graphql-tag'
+import * as ApolloReactCommon from '@apollo/react-common'
+import * as ApolloReactHooks from '@apollo/react-hooks'
 export type Maybe<T> = T | null;
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
@@ -679,7 +679,7 @@ export const CreateEventTagsDocument = gql`
     id
   }
 }
-    `;
+    `
 export type CreateEventTagsMutationFn = ApolloReactCommon.MutationFunction<CreateEventTagsMutation, CreateEventTagsMutationVariables>;
 
 /**
@@ -700,7 +700,7 @@ export type CreateEventTagsMutationFn = ApolloReactCommon.MutationFunction<Creat
  * });
  */
 export function useCreateEventTagsMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<CreateEventTagsMutation, CreateEventTagsMutationVariables>) {
-        return ApolloReactHooks.useMutation<CreateEventTagsMutation, CreateEventTagsMutationVariables>(CreateEventTagsDocument, baseOptions);
+        return ApolloReactHooks.useMutation<CreateEventTagsMutation, CreateEventTagsMutationVariables>(CreateEventTagsDocument, baseOptions)
       }
 export type CreateEventTagsMutationHookResult = ReturnType<typeof useCreateEventTagsMutation>;
 export type CreateEventTagsMutationResult = ApolloReactCommon.MutationResult<CreateEventTagsMutation>;
@@ -712,7 +712,7 @@ export const UpdateTagDocument = gql`
     currentUse
   }
 }
-    `;
+    `
 export type UpdateTagMutationFn = ApolloReactCommon.MutationFunction<UpdateTagMutation, UpdateTagMutationVariables>;
 
 /**
@@ -733,7 +733,7 @@ export type UpdateTagMutationFn = ApolloReactCommon.MutationFunction<UpdateTagMu
  * });
  */
 export function useUpdateTagMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<UpdateTagMutation, UpdateTagMutationVariables>) {
-        return ApolloReactHooks.useMutation<UpdateTagMutation, UpdateTagMutationVariables>(UpdateTagDocument, baseOptions);
+        return ApolloReactHooks.useMutation<UpdateTagMutation, UpdateTagMutationVariables>(UpdateTagDocument, baseOptions)
       }
 export type UpdateTagMutationHookResult = ReturnType<typeof useUpdateTagMutation>;
 export type UpdateTagMutationResult = ApolloReactCommon.MutationResult<UpdateTagMutation>;
@@ -745,7 +745,7 @@ export const ChangeTagQuantityDocument = gql`
     currentUse
   }
 }
-    `;
+    `
 export type ChangeTagQuantityMutationFn = ApolloReactCommon.MutationFunction<ChangeTagQuantityMutation, ChangeTagQuantityMutationVariables>;
 
 /**
@@ -767,7 +767,7 @@ export type ChangeTagQuantityMutationFn = ApolloReactCommon.MutationFunction<Cha
  * });
  */
 export function useChangeTagQuantityMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<ChangeTagQuantityMutation, ChangeTagQuantityMutationVariables>) {
-        return ApolloReactHooks.useMutation<ChangeTagQuantityMutation, ChangeTagQuantityMutationVariables>(ChangeTagQuantityDocument, baseOptions);
+        return ApolloReactHooks.useMutation<ChangeTagQuantityMutation, ChangeTagQuantityMutationVariables>(ChangeTagQuantityDocument, baseOptions)
       }
 export type ChangeTagQuantityMutationHookResult = ReturnType<typeof useChangeTagQuantityMutation>;
 export type ChangeTagQuantityMutationResult = ApolloReactCommon.MutationResult<ChangeTagQuantityMutation>;
@@ -780,7 +780,7 @@ export const GetAllTagDocument = gql`
     currentUse
   }
 }
-    `;
+    `
 
 /**
  * __useGetAllTagQuery__
@@ -798,10 +798,10 @@ export const GetAllTagDocument = gql`
  * });
  */
 export function useGetAllTagQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetAllTagQuery, GetAllTagQueryVariables>) {
-        return ApolloReactHooks.useQuery<GetAllTagQuery, GetAllTagQueryVariables>(GetAllTagDocument, baseOptions);
+        return ApolloReactHooks.useQuery<GetAllTagQuery, GetAllTagQueryVariables>(GetAllTagDocument, baseOptions)
       }
 export function useGetAllTagLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetAllTagQuery, GetAllTagQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<GetAllTagQuery, GetAllTagQueryVariables>(GetAllTagDocument, baseOptions);
+          return ApolloReactHooks.useLazyQuery<GetAllTagQuery, GetAllTagQueryVariables>(GetAllTagDocument, baseOptions)
         }
 export type GetAllTagQueryHookResult = ReturnType<typeof useGetAllTagQuery>;
 export type GetAllTagLazyQueryHookResult = ReturnType<typeof useGetAllTagLazyQuery>;
@@ -820,7 +820,7 @@ export const GetTopTagsDocument = gql`
     __typename
   }
 }
-    `;
+    `
 
 /**
  * __useGetTopTagsQuery__
@@ -838,10 +838,10 @@ export const GetTopTagsDocument = gql`
  * });
  */
 export function useGetTopTagsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetTopTagsQuery, GetTopTagsQueryVariables>) {
-        return ApolloReactHooks.useQuery<GetTopTagsQuery, GetTopTagsQueryVariables>(GetTopTagsDocument, baseOptions);
+        return ApolloReactHooks.useQuery<GetTopTagsQuery, GetTopTagsQueryVariables>(GetTopTagsDocument, baseOptions)
       }
 export function useGetTopTagsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetTopTagsQuery, GetTopTagsQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<GetTopTagsQuery, GetTopTagsQueryVariables>(GetTopTagsDocument, baseOptions);
+          return ApolloReactHooks.useLazyQuery<GetTopTagsQuery, GetTopTagsQueryVariables>(GetTopTagsDocument, baseOptions)
         }
 export type GetTopTagsQueryHookResult = ReturnType<typeof useGetTopTagsQuery>;
 export type GetTopTagsLazyQueryHookResult = ReturnType<typeof useGetTopTagsLazyQuery>;
@@ -860,7 +860,7 @@ export const LoginDocument = gql`
     avatarId
   }
 }
-    `;
+    `
 export type LoginMutationFn = ApolloReactCommon.MutationFunction<LoginMutation, LoginMutationVariables>;
 
 /**
@@ -882,7 +882,7 @@ export type LoginMutationFn = ApolloReactCommon.MutationFunction<LoginMutation, 
  * });
  */
 export function useLoginMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<LoginMutation, LoginMutationVariables>) {
-        return ApolloReactHooks.useMutation<LoginMutation, LoginMutationVariables>(LoginDocument, baseOptions);
+        return ApolloReactHooks.useMutation<LoginMutation, LoginMutationVariables>(LoginDocument, baseOptions)
       }
 export type LoginMutationHookResult = ReturnType<typeof useLoginMutation>;
 export type LoginMutationResult = ApolloReactCommon.MutationResult<LoginMutation>;
@@ -898,7 +898,7 @@ export const SignUpDocument = gql`
     avatarId
   }
 }
-    `;
+    `
 export type SignUpMutationFn = ApolloReactCommon.MutationFunction<SignUpMutation, SignUpMutationVariables>;
 
 /**
@@ -921,7 +921,7 @@ export type SignUpMutationFn = ApolloReactCommon.MutationFunction<SignUpMutation
  * });
  */
 export function useSignUpMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<SignUpMutation, SignUpMutationVariables>) {
-        return ApolloReactHooks.useMutation<SignUpMutation, SignUpMutationVariables>(SignUpDocument, baseOptions);
+        return ApolloReactHooks.useMutation<SignUpMutation, SignUpMutationVariables>(SignUpDocument, baseOptions)
       }
 export type SignUpMutationHookResult = ReturnType<typeof useSignUpMutation>;
 export type SignUpMutationResult = ApolloReactCommon.MutationResult<SignUpMutation>;
@@ -930,7 +930,7 @@ export const LogoutDocument = gql`
     mutation logout {
   logout
 }
-    `;
+    `
 export type LogoutMutationFn = ApolloReactCommon.MutationFunction<LogoutMutation, LogoutMutationVariables>;
 
 /**
@@ -950,7 +950,7 @@ export type LogoutMutationFn = ApolloReactCommon.MutationFunction<LogoutMutation
  * });
  */
 export function useLogoutMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<LogoutMutation, LogoutMutationVariables>) {
-        return ApolloReactHooks.useMutation<LogoutMutation, LogoutMutationVariables>(LogoutDocument, baseOptions);
+        return ApolloReactHooks.useMutation<LogoutMutation, LogoutMutationVariables>(LogoutDocument, baseOptions)
       }
 export type LogoutMutationHookResult = ReturnType<typeof useLogoutMutation>;
 export type LogoutMutationResult = ApolloReactCommon.MutationResult<LogoutMutation>;
@@ -967,7 +967,7 @@ export const AuthDocument = gql`
     joinedEvent
   }
 }
-    `;
+    `
 export type AuthMutationFn = ApolloReactCommon.MutationFunction<AuthMutation, AuthMutationVariables>;
 
 /**
@@ -987,7 +987,7 @@ export type AuthMutationFn = ApolloReactCommon.MutationFunction<AuthMutation, Au
  * });
  */
 export function useAuthMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<AuthMutation, AuthMutationVariables>) {
-        return ApolloReactHooks.useMutation<AuthMutation, AuthMutationVariables>(AuthDocument, baseOptions);
+        return ApolloReactHooks.useMutation<AuthMutation, AuthMutationVariables>(AuthDocument, baseOptions)
       }
 export type AuthMutationHookResult = ReturnType<typeof useAuthMutation>;
 export type AuthMutationResult = ApolloReactCommon.MutationResult<AuthMutation>;
@@ -998,7 +998,7 @@ export const CreateEventDocument = gql`
     hostId
   }
 }
-    `;
+    `
 export type CreateEventMutationFn = ApolloReactCommon.MutationFunction<CreateEventMutation, CreateEventMutationVariables>;
 
 /**
@@ -1019,7 +1019,7 @@ export type CreateEventMutationFn = ApolloReactCommon.MutationFunction<CreateEve
  * });
  */
 export function useCreateEventMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<CreateEventMutation, CreateEventMutationVariables>) {
-        return ApolloReactHooks.useMutation<CreateEventMutation, CreateEventMutationVariables>(CreateEventDocument, baseOptions);
+        return ApolloReactHooks.useMutation<CreateEventMutation, CreateEventMutationVariables>(CreateEventDocument, baseOptions)
       }
 export type CreateEventMutationHookResult = ReturnType<typeof useCreateEventMutation>;
 export type CreateEventMutationResult = ApolloReactCommon.MutationResult<CreateEventMutation>;
@@ -1028,7 +1028,7 @@ export const AddPictureDocument = gql`
     mutation addPicture($file: Upload!) {
   addProfilePicture(picture: $file)
 }
-    `;
+    `
 export type AddPictureMutationFn = ApolloReactCommon.MutationFunction<AddPictureMutation, AddPictureMutationVariables>;
 
 /**
@@ -1049,7 +1049,7 @@ export type AddPictureMutationFn = ApolloReactCommon.MutationFunction<AddPicture
  * });
  */
 export function useAddPictureMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<AddPictureMutation, AddPictureMutationVariables>) {
-        return ApolloReactHooks.useMutation<AddPictureMutation, AddPictureMutationVariables>(AddPictureDocument, baseOptions);
+        return ApolloReactHooks.useMutation<AddPictureMutation, AddPictureMutationVariables>(AddPictureDocument, baseOptions)
       }
 export type AddPictureMutationHookResult = ReturnType<typeof useAddPictureMutation>;
 export type AddPictureMutationResult = ApolloReactCommon.MutationResult<AddPictureMutation>;
@@ -1064,7 +1064,7 @@ export const JoinEventDocument = gql`
     }
   }
 }
-    `;
+    `
 export type JoinEventMutationFn = ApolloReactCommon.MutationFunction<JoinEventMutation, JoinEventMutationVariables>;
 
 /**
@@ -1085,7 +1085,7 @@ export type JoinEventMutationFn = ApolloReactCommon.MutationFunction<JoinEventMu
  * });
  */
 export function useJoinEventMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<JoinEventMutation, JoinEventMutationVariables>) {
-        return ApolloReactHooks.useMutation<JoinEventMutation, JoinEventMutationVariables>(JoinEventDocument, baseOptions);
+        return ApolloReactHooks.useMutation<JoinEventMutation, JoinEventMutationVariables>(JoinEventDocument, baseOptions)
       }
 export type JoinEventMutationHookResult = ReturnType<typeof useJoinEventMutation>;
 export type JoinEventMutationResult = ApolloReactCommon.MutationResult<JoinEventMutation>;
@@ -1100,7 +1100,7 @@ export const EditJoinTypeEventInfoDocument = gql`
     }
   }
 }
-    `;
+    `
 export type EditJoinTypeEventInfoMutationFn = ApolloReactCommon.MutationFunction<EditJoinTypeEventInfoMutation, EditJoinTypeEventInfoMutationVariables>;
 
 /**
@@ -1121,7 +1121,7 @@ export type EditJoinTypeEventInfoMutationFn = ApolloReactCommon.MutationFunction
  * });
  */
 export function useEditJoinTypeEventInfoMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<EditJoinTypeEventInfoMutation, EditJoinTypeEventInfoMutationVariables>) {
-        return ApolloReactHooks.useMutation<EditJoinTypeEventInfoMutation, EditJoinTypeEventInfoMutationVariables>(EditJoinTypeEventInfoDocument, baseOptions);
+        return ApolloReactHooks.useMutation<EditJoinTypeEventInfoMutation, EditJoinTypeEventInfoMutationVariables>(EditJoinTypeEventInfoDocument, baseOptions)
       }
 export type EditJoinTypeEventInfoMutationHookResult = ReturnType<typeof useEditJoinTypeEventInfoMutation>;
 export type EditJoinTypeEventInfoMutationResult = ApolloReactCommon.MutationResult<EditJoinTypeEventInfoMutation>;
@@ -1153,7 +1153,7 @@ export const GetAllEventsDocument = gql`
     }
   }
 }
-    `;
+    `
 
 /**
  * __useGetAllEventsQuery__
@@ -1171,10 +1171,10 @@ export const GetAllEventsDocument = gql`
  * });
  */
 export function useGetAllEventsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetAllEventsQuery, GetAllEventsQueryVariables>) {
-        return ApolloReactHooks.useQuery<GetAllEventsQuery, GetAllEventsQueryVariables>(GetAllEventsDocument, baseOptions);
+        return ApolloReactHooks.useQuery<GetAllEventsQuery, GetAllEventsQueryVariables>(GetAllEventsDocument, baseOptions)
       }
 export function useGetAllEventsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetAllEventsQuery, GetAllEventsQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<GetAllEventsQuery, GetAllEventsQueryVariables>(GetAllEventsDocument, baseOptions);
+          return ApolloReactHooks.useLazyQuery<GetAllEventsQuery, GetAllEventsQueryVariables>(GetAllEventsDocument, baseOptions)
         }
 export type GetAllEventsQueryHookResult = ReturnType<typeof useGetAllEventsQuery>;
 export type GetAllEventsLazyQueryHookResult = ReturnType<typeof useGetAllEventsLazyQuery>;
@@ -1208,7 +1208,7 @@ export const GetEventByCoordDocument = gql`
     }
   }
 }
-    `;
+    `
 
 /**
  * __useGetEventByCoordQuery__
@@ -1227,10 +1227,10 @@ export const GetEventByCoordDocument = gql`
  * });
  */
 export function useGetEventByCoordQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetEventByCoordQuery, GetEventByCoordQueryVariables>) {
-        return ApolloReactHooks.useQuery<GetEventByCoordQuery, GetEventByCoordQueryVariables>(GetEventByCoordDocument, baseOptions);
+        return ApolloReactHooks.useQuery<GetEventByCoordQuery, GetEventByCoordQueryVariables>(GetEventByCoordDocument, baseOptions)
       }
 export function useGetEventByCoordLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetEventByCoordQuery, GetEventByCoordQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<GetEventByCoordQuery, GetEventByCoordQueryVariables>(GetEventByCoordDocument, baseOptions);
+          return ApolloReactHooks.useLazyQuery<GetEventByCoordQuery, GetEventByCoordQueryVariables>(GetEventByCoordDocument, baseOptions)
         }
 export type GetEventByCoordQueryHookResult = ReturnType<typeof useGetEventByCoordQuery>;
 export type GetEventByCoordLazyQueryHookResult = ReturnType<typeof useGetEventByCoordLazyQuery>;
@@ -1269,7 +1269,7 @@ export const GetEventByIdDocument = gql`
     }
   }
 }
-    `;
+    `
 
 /**
  * __useGetEventByIdQuery__
@@ -1288,10 +1288,10 @@ export const GetEventByIdDocument = gql`
  * });
  */
 export function useGetEventByIdQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetEventByIdQuery, GetEventByIdQueryVariables>) {
-        return ApolloReactHooks.useQuery<GetEventByIdQuery, GetEventByIdQueryVariables>(GetEventByIdDocument, baseOptions);
+        return ApolloReactHooks.useQuery<GetEventByIdQuery, GetEventByIdQueryVariables>(GetEventByIdDocument, baseOptions)
       }
 export function useGetEventByIdLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetEventByIdQuery, GetEventByIdQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<GetEventByIdQuery, GetEventByIdQueryVariables>(GetEventByIdDocument, baseOptions);
+          return ApolloReactHooks.useLazyQuery<GetEventByIdQuery, GetEventByIdQueryVariables>(GetEventByIdDocument, baseOptions)
         }
 export type GetEventByIdQueryHookResult = ReturnType<typeof useGetEventByIdQuery>;
 export type GetEventByIdLazyQueryHookResult = ReturnType<typeof useGetEventByIdLazyQuery>;
@@ -1305,7 +1305,7 @@ export const GetImgDocument = gql`
     data
   }
 }
-    `;
+    `
 
 /**
  * __useGetImgQuery__
@@ -1324,10 +1324,10 @@ export const GetImgDocument = gql`
  * });
  */
 export function useGetImgQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetImgQuery, GetImgQueryVariables>) {
-        return ApolloReactHooks.useQuery<GetImgQuery, GetImgQueryVariables>(GetImgDocument, baseOptions);
+        return ApolloReactHooks.useQuery<GetImgQuery, GetImgQueryVariables>(GetImgDocument, baseOptions)
       }
 export function useGetImgLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetImgQuery, GetImgQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<GetImgQuery, GetImgQueryVariables>(GetImgDocument, baseOptions);
+          return ApolloReactHooks.useLazyQuery<GetImgQuery, GetImgQueryVariables>(GetImgDocument, baseOptions)
         }
 export type GetImgQueryHookResult = ReturnType<typeof useGetImgQuery>;
 export type GetImgLazyQueryHookResult = ReturnType<typeof useGetImgLazyQuery>;
@@ -1342,7 +1342,7 @@ export const GetAllUsersDocument = gql`
     email
   }
 }
-    `;
+    `
 
 /**
  * __useGetAllUsersQuery__
@@ -1360,10 +1360,10 @@ export const GetAllUsersDocument = gql`
  * });
  */
 export function useGetAllUsersQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetAllUsersQuery, GetAllUsersQueryVariables>) {
-        return ApolloReactHooks.useQuery<GetAllUsersQuery, GetAllUsersQueryVariables>(GetAllUsersDocument, baseOptions);
+        return ApolloReactHooks.useQuery<GetAllUsersQuery, GetAllUsersQueryVariables>(GetAllUsersDocument, baseOptions)
       }
 export function useGetAllUsersLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetAllUsersQuery, GetAllUsersQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<GetAllUsersQuery, GetAllUsersQueryVariables>(GetAllUsersDocument, baseOptions);
+          return ApolloReactHooks.useLazyQuery<GetAllUsersQuery, GetAllUsersQueryVariables>(GetAllUsersDocument, baseOptions)
         }
 export type GetAllUsersQueryHookResult = ReturnType<typeof useGetAllUsersQuery>;
 export type GetAllUsersLazyQueryHookResult = ReturnType<typeof useGetAllUsersLazyQuery>;
@@ -1383,7 +1383,7 @@ export const GetCurrentUserInfoDocument = gql`
     updatedAt
   }
 }
-    `;
+    `
 
 /**
  * __useGetCurrentUserInfoQuery__
@@ -1401,10 +1401,10 @@ export const GetCurrentUserInfoDocument = gql`
  * });
  */
 export function useGetCurrentUserInfoQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetCurrentUserInfoQuery, GetCurrentUserInfoQueryVariables>) {
-        return ApolloReactHooks.useQuery<GetCurrentUserInfoQuery, GetCurrentUserInfoQueryVariables>(GetCurrentUserInfoDocument, baseOptions);
+        return ApolloReactHooks.useQuery<GetCurrentUserInfoQuery, GetCurrentUserInfoQueryVariables>(GetCurrentUserInfoDocument, baseOptions)
       }
 export function useGetCurrentUserInfoLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetCurrentUserInfoQuery, GetCurrentUserInfoQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<GetCurrentUserInfoQuery, GetCurrentUserInfoQueryVariables>(GetCurrentUserInfoDocument, baseOptions);
+          return ApolloReactHooks.useLazyQuery<GetCurrentUserInfoQuery, GetCurrentUserInfoQueryVariables>(GetCurrentUserInfoDocument, baseOptions)
         }
 export type GetCurrentUserInfoQueryHookResult = ReturnType<typeof useGetCurrentUserInfoQuery>;
 export type GetCurrentUserInfoLazyQueryHookResult = ReturnType<typeof useGetCurrentUserInfoLazyQuery>;
@@ -1422,7 +1422,7 @@ export const GetMyJoinedEventDocument = gql`
     }
   }
 }
-    `;
+    `
 
 /**
  * __useGetMyJoinedEventQuery__
@@ -1440,10 +1440,10 @@ export const GetMyJoinedEventDocument = gql`
  * });
  */
 export function useGetMyJoinedEventQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetMyJoinedEventQuery, GetMyJoinedEventQueryVariables>) {
-        return ApolloReactHooks.useQuery<GetMyJoinedEventQuery, GetMyJoinedEventQueryVariables>(GetMyJoinedEventDocument, baseOptions);
+        return ApolloReactHooks.useQuery<GetMyJoinedEventQuery, GetMyJoinedEventQueryVariables>(GetMyJoinedEventDocument, baseOptions)
       }
 export function useGetMyJoinedEventLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetMyJoinedEventQuery, GetMyJoinedEventQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<GetMyJoinedEventQuery, GetMyJoinedEventQueryVariables>(GetMyJoinedEventDocument, baseOptions);
+          return ApolloReactHooks.useLazyQuery<GetMyJoinedEventQuery, GetMyJoinedEventQueryVariables>(GetMyJoinedEventDocument, baseOptions)
         }
 export type GetMyJoinedEventQueryHookResult = ReturnType<typeof useGetMyJoinedEventQuery>;
 export type GetMyJoinedEventLazyQueryHookResult = ReturnType<typeof useGetMyJoinedEventLazyQuery>;
@@ -1461,7 +1461,7 @@ export const GetMyHostedEventDocument = gql`
     }
   }
 }
-    `;
+    `
 
 /**
  * __useGetMyHostedEventQuery__
@@ -1479,10 +1479,10 @@ export const GetMyHostedEventDocument = gql`
  * });
  */
 export function useGetMyHostedEventQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetMyHostedEventQuery, GetMyHostedEventQueryVariables>) {
-        return ApolloReactHooks.useQuery<GetMyHostedEventQuery, GetMyHostedEventQueryVariables>(GetMyHostedEventDocument, baseOptions);
+        return ApolloReactHooks.useQuery<GetMyHostedEventQuery, GetMyHostedEventQueryVariables>(GetMyHostedEventDocument, baseOptions)
       }
 export function useGetMyHostedEventLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetMyHostedEventQuery, GetMyHostedEventQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<GetMyHostedEventQuery, GetMyHostedEventQueryVariables>(GetMyHostedEventDocument, baseOptions);
+          return ApolloReactHooks.useLazyQuery<GetMyHostedEventQuery, GetMyHostedEventQueryVariables>(GetMyHostedEventDocument, baseOptions)
         }
 export type GetMyHostedEventQueryHookResult = ReturnType<typeof useGetMyHostedEventQuery>;
 export type GetMyHostedEventLazyQueryHookResult = ReturnType<typeof useGetMyHostedEventLazyQuery>;

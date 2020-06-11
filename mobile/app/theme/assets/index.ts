@@ -14,7 +14,5 @@ export const images = {
   addImgPlaceholder: require('./add_image_placeholder.png'),
   iMale: require('./undraw_male_avatar_323b.png'),
   iProfilePic: require('./i-profile.png'),
-  iEmpty: require('./i-empty.png'),
-  tets: require('./i-empty.png'),
 }
 export type ImagesTypes = keyof typeof images
