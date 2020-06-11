@@ -19,7 +19,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-start',
     paddingBottom: spacing[5],
-    paddingHorizontal: spacing[4],
     paddingTop: spacing[5],
   },
 })

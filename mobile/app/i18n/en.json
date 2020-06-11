@@ -13,7 +13,8 @@
     "to": "To",
     "done": "Done",
     "exit": "Exit",
-    "choose": "Choose"
+    "choose": "Choose",
+    "hosted": "Hosted"
   },
   "warning": {
     "youAreOffline": "You are offline now, we will send a request when you online later"
@@ -98,7 +99,10 @@
   "savedScreen": {
     "header": "Joined events",
     "myHostedEvent": "My hosted's events",
-    "myJoinedEvent": "My joined's events"
+    "myJoinedEvent": "My joined's events",
+    "empty": {
+      "desc": "Find events in explore or your friends’s party list."
+    }
   },
   "createNewEventScreen": {
     "header": "Host new event",

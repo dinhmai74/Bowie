@@ -58,7 +58,6 @@
     "expo-location": "~8.1.0",
     "expo-media-library": "~8.1.0",
     "extract-files": "^8.1.0",
-    "firebase": "7.9.0",
     "graphql": "^14.6.0",
     "graphql-tag": "^2.10.3",
     "i18n-js": "^3.0.11",
@@ -159,13 +158,13 @@
       {
         "preset": "jest-expo/ios",
         "transformIgnorePatterns": [
-          "node_modules/(?!(jest-)?react-native|react-clone-referenced-element|@react-native-community|expo(nent)?|@expo(nent)?/.*|react-navigation|@react-navigation/.*|@unimodules/.*|sentry-expo|native-base|@ui-kitten|@storybook)"
+          "node_modules/(?!(jest-)?react-native|react-clone-referenced-element|@react-native-community|expo(nent)?|@expo(nent)?/.*|react-navigation|@react-navigation/.*|@unimodules/.*|sentry-expo|native-base|@ui-kitten|@storybook|expo-media-library|unimodules-permissions-interface)"
         ]
       },
       {
         "preset": "jest-expo/android",
         "transformIgnorePatterns": [
-          "node_modules/(?!(jest-)?react-native|react-clone-referenced-element|@react-native-community|expo(nent)?|@expo(nent)?/.*|react-navigation|@react-navigation/.*|@unimodules/.*|sentry-expo|native-base|@ui-kitten|@storybook)"
+          "node_modules/(?!(jest-)?react-native|react-clone-referenced-element|@react-native-community|expo(nent)?|@expo(nent)?/.*|react-navigation|@react-navigation/.*|@unimodules/.*|sentry-expo|native-base|@ui-kitten|@storybook|expo-media-library|unimodules-permissions-interface)"
         ]
       }
     ]

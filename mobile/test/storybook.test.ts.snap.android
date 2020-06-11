@@ -399,6 +399,27 @@ exports[`Storyshots TextField Labelling 1`] = `
 </View>
 `;
 
+exports[`Storyshots TextField text area 1`] = `
+<View
+  onLayout={[Function]}
+  style={
+    Object {
+      "backgroundColor": "#f0f0f0",
+      "flex": 1,
+    }
+  }
+>
+  <RNCSafeAreaView
+    onInsetsChange={[Function]}
+    style={
+      Object {
+        "flex": 1,
+      }
+    }
+  />
+</View>
+`;
+
 exports[`Storyshots Wallpaper Style Presets 1`] = `
 <View
   onLayout={[Function]}

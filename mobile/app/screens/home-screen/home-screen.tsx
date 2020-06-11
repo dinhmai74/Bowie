@@ -1,5 +1,5 @@
 import { EventWithHost, useGetEventByCoordLazyQuery } from 'app-graphql'
-import { AppError, AppLoading, AppMapView, Button, Screen, SizedBox, View } from 'components'
+import { AppError, AppLoading, AppMapView, Screen, SizedBox, View } from 'components'
 import * as Location from 'expo-location'
 import * as Permissions from 'expo-permissions'
 import { observer } from 'mobx-react-lite'
@@ -7,7 +7,7 @@ import React from 'react'
 import { StyleSheet } from 'react-native'
 import { Region } from 'react-native-maps'
 import { NavigationScreenProp } from 'react-navigation'
-import { getCoordAlpha, useSnackBars } from 'utils'
+import { getCoordAlpha, nDelay, SnackBarContext } from 'utils'
 import { Header } from './components/Header'
 
 const HomeWrapper: React.FC<{ onRefresh: () => void }> = ({ children, onRefresh }) => {
@@ -35,7 +35,7 @@ export const HomeScreen: React.FunctionComponent<HomeScreenProps> = observer(({ 
   // const { someStore } = useStores()
   const [location, setLocation] = React.useState<any>({})
   const [errorGetLocation, setErrGetLocation] = React.useState<boolean>(false)
-  const { addSnack } = useSnackBars()
+  const { addSnack } = React.useContext(SnackBarContext)
 
   const [region, setRegion] = React.useState<Region>(undefined)
 
@@ -50,9 +50,10 @@ export const HomeScreen: React.FunctionComponent<HomeScreenProps> = observer(({ 
       console.tron.log(data)
     },
     onError: e => {
-      addSnack(e.message, { type: 'warning' })
+      nDelay(100).then(() => {
+        addSnack(e.message, { type: 'warning' })
+      })
     },
-    fetchPolicy: 'network-only',
   })
 
   if (error) {
@@ -63,8 +64,10 @@ export const HomeScreen: React.FunctionComponent<HomeScreenProps> = observer(({ 
     const getLocationAsync = async () => {
       const { status } = await Permissions.askAsync(Permissions.LOCATION)
       if (status !== 'granted') {
-        addSnack('permissionLocation', {
-          type: 'danger',
+        nDelay(100).then(() => {
+          addSnack('permissionLocation', {
+            type: 'danger',
+          })
         })
       }
 

@@ -117,9 +117,9 @@ export const SettingsScreen: React.FunctionComponent<SettingsScreenProps> = obse
       if (isIos) {
         const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL)
         if (status !== 'granted') {
-          addSnack('Sorry, we need camera roll permissions to make this work!', {
-            type: 'warning',
-          })
+          // addSnack('Sorry, we need camera roll permissions to make this work!', {
+          //   type: 'warning',
+          // })
         }
       }
 

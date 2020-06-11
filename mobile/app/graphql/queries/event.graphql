@@ -55,8 +55,12 @@ query getEventById($id: String!) {
   getEventById(id: $id) {
     id
     thumbnail
+    totalMember
     galleries
-    hostId
+    hostInfo {
+      avatarId
+      id
+    }
     membersInfo {
       id
       type
@@ -77,4 +81,3 @@ query getEventById($id: String!) {
     }
   }
 }
-

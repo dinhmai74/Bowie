@@ -20,23 +20,11 @@ export interface NotificationsScreenProps {
 export const NotificationsScreen: React.FunctionComponent<NotificationsScreenProps> = observer(
   () => {
     // const { appSnackbackStore } = useStores()
-    const { addSnack } = useSnackBars()
+    // const { addSnack } = useSnackBars()
 
     return (
       <Screen preset="scroll">
         <Header headerTx="notificationsScreen.header" leftIcon="back" />
-        <View style={styles.container}>
-          <Button
-            onPress={() =>
-              addSnack(
-                'There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour,',
-              )
-            }
-          >
-            123
-          </Button>
-          <Button onPress={() => addSnack('yep yep', { type: 'warning' })}>close</Button>
-        </View>
       </Screen>
     )
   },

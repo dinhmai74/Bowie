@@ -16,7 +16,7 @@ export interface AppCircleButtonProps extends ButtonProps {
 
 export const AppCircleButton: React.FunctionComponent<AppCircleButtonProps> = props => {
   // const { someStore } = useStores()
-  const { width = metrics.icon.xl, ...rest } = props
+  const { width = metrics.icon.xl, accessoryLeft = StarIcon, ...rest } = props
 
   const buttonStyle: ViewStyle = {
     width: width,
@@ -24,5 +24,5 @@ export const AppCircleButton: React.FunctionComponent<AppCircleButtonProps> = pr
     borderRadius: width / 2,
   }
 
-  return useObserver(() => <SButton accessoryLeft={StarIcon} style={buttonStyle} {...rest} />)
+  return useObserver(() => <SButton {...{ accessoryLeft }} style={buttonStyle} {...rest} />)
 }

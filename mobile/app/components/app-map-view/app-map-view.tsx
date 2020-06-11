@@ -13,6 +13,7 @@ import { Color } from 'theme/color-model'
 import { AppRoutes, DateFormat, getBase64UriFromUnknownSource } from 'utils'
 import { appMapViewStyles as styles } from './app-map-view.styles'
 import { AppImageWithFetch } from 'components/AppImageWithFetch/AppImageWithFetch'
+import { AppAvatar } from 'components'
 
 export type Region = {
   latitude: number
@@ -28,20 +29,9 @@ export interface AppMarker extends MarkerProps {
 
 const AppMarker: React.FC<AppMarker> = ({ coordinate, avatar, ...rest }) => {
   // const [track, setTrack] = useState(true)
-  const { data } = useGetImgQuery({
-    variables: {
-      id: avatar,
-    },
-    fetchPolicy: 'no-cache',
-  })
-
-  let imgUri: any
-  if (data?.getImg) imgUri = getBase64UriFromUnknownSource(data?.getImg?.data)
-  const src = imgUri ? { uri: imgUri } : images.iMale
-
   return (
     <MapMarker coordinate={coordinate} {...rest}>
-      <Avatar source={src} />
+      <AppAvatar id={avatar} />
     </MapMarker>
   )
 }
@@ -73,7 +63,7 @@ const AppMarkerCard: React.FC<AppMarkerCardProps> = ({ event }) => {
         <Image source={images.place} style={styles.bottomInfoImage} />
       )}
       <SizedBox h={4} />
-      <Text text={event.information.eventName} preset="bold" />
+      <Text text={event?.information?.eventName} preset="bold" />
       <SizedBox h={4} />
       <Text text={time} />
       <SizedBox h={4} />

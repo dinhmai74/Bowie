@@ -5,7 +5,7 @@ import { Arg, Ctx, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql
 import { v4 } from 'uuid'
 import { Coord, Event } from '../../entity'
 import { EventInput } from '../../graphql-types'
-import { EventWithHost } from '../../graphql-types/event/EventResponse'
+import { EventWithHost, GetEventByIdResponse } from '../../graphql-types/event/EventResponse'
 import { MyContext } from '../../graphql-types/MyContext'
 import { isAuth } from '../../middleware/isAuth'
 import { DI } from '../../mikroconfig'
@@ -22,11 +22,45 @@ export class EventResolver {
     return events
   }
 
-  @Query(() => Event, { nullable: true })
-  async getEventById(@Arg('id') id: string): Promise<Event | null> {
-    const event = await DI.eventRepos.findOne(id)
+  @UseMiddleware(isAuth)
+  @Query(() => GetEventByIdResponse, { nullable: true })
+  async getEventById(
+    @Arg('id') id: string,
+    @Ctx() ctx: MyContext,
+  ): Promise<GetEventByIdResponse | null> {
+    try {
+      const event = await DI.eventRepos.findOne({ id })
+      if (!event) throw new ApolloError('Event not found')
+      const rs = new GetEventByIdResponse()
+      // bind data
+      rs.id = event!.id
+      rs.place = event!.place
+      rs.startTime = event!.startTime
+      rs.endTime = event!.endTime
+      rs.place = event!.place
+      rs.information = event!.information
+      rs.tags = event!.tags
+      rs.hostId = event!.hostId
+      rs.galleries = event!.galleries
+      rs.thumbnail = event!.thumbnail
 
-    return event
+      rs.totalMember = event!.membersInfo.length
+
+      // get member info
+      rs.membersInfo = []
+      if (event!.membersInfo) {
+        if (ctx.req.session!.userId !== event!.hostId)
+          rs.membersInfo = event!.membersInfo.filter((v) => v.type === 'public')
+        else rs.membersInfo = event!.membersInfo
+      }
+      const hostInfo = (await DI.userRepos.findOne({ id: event!.hostId })) || undefined
+      rs.hostInfo = hostInfo
+
+      return rs
+    } catch (e) {
+      const mess = e!.message || JSON.stringify(e)
+      throw new ApolloError(mess)
+    }
   }
 
   @Query(() => [EventWithHost])

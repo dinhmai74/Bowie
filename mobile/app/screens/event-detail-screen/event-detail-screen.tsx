@@ -1,7 +1,7 @@
 import { RouteProp, useRoute } from '@react-navigation/native'
 import { Icon } from '@ui-kitten/components'
 import { ApolloError } from 'apollo-client'
-import { useGetEventByIdQuery, useJoinEventMutation, useGetImgQuery } from 'app-graphql'
+import { useGetEventByIdQuery, useJoinEventMutation } from 'app-graphql'
 import {
   AppDivider,
   AppError,
@@ -12,7 +12,9 @@ import {
   SizedBox,
   Text,
   View,
+  AppAvatar,
 } from 'components'
+import { AppImageWithFetch } from 'components/AppImageWithFetch/AppImageWithFetch'
 import { observer } from 'mobx-react-lite'
 import moment from 'moment'
 import { PrimaryParamList } from 'navigation/types'
@@ -22,11 +24,10 @@ import { useSafeArea } from 'react-native-safe-area-context'
 import { NavigationScreenProp } from 'react-navigation'
 import styled from 'styled-components'
 // import { useStores } from "models/root-store"
-import { images, spacing, metrics } from 'theme'
+import { images, metrics, spacing } from 'theme'
 import { DateFormat, useSnackBars } from 'utils'
 import { EventPlace } from './components/EventPlace'
 import { JoinModal } from './components/JoinModal'
-import { AppImageWithFetch } from 'components/AppImageWithFetch/AppImageWithFetch'
 
 const Body = styled(ScrollView)`
   flex: 1;
@@ -81,101 +82,106 @@ export interface EventDetailScreenProps {
 
 type ScreenRouteProps = RouteProp<PrimaryParamList, 'eventDetail'>
 
-export const EventDetailScreen: React.FunctionComponent<EventDetailScreenProps> = observer(
-  props => {
-    // const { someStore } = useStores()
-    const { params } = useRoute<ScreenRouteProps>()
-    const [joinModal, setJoinModalVisible] = React.useState(false)
-    const { addSnack } = useSnackBars()
-    const insets = useSafeArea()
+export const EventDetailScreen: React.FunctionComponent<EventDetailScreenProps> = observer(() => {
+  // const { someStore } = useStores()
+  const { params } = useRoute<ScreenRouteProps>()
+  const [joinModal, setJoinModalVisible] = React.useState(false)
+  const { addSnack } = useSnackBars()
+  const insets = useSafeArea()
 
-    const { loading: loadingGetEvent, error, data } = useGetEventByIdQuery({
-      variables: { id: params.id },
-    })
-    const [joinEvent, { loading: joinEventLoading }] = useJoinEventMutation({
-      onError: e => {
-        console.tron.log(e)
-        addSnack(e.message, { type: 'danger' })
-      },
-      onCompleted: d => {
-        addSnack('Join success!')
-      },
-    })
+  const { loading: loadingGetEvent, error, data } = useGetEventByIdQuery({
+    variables: { id: params.id },
+  })
+  const [joinEvent, { loading: joinEventLoading }] = useJoinEventMutation({
+    onError: e => {
+      addSnack(e.message, { type: 'danger' })
+    },
+    onCompleted: () => {
+      addSnack('Join success!')
+    },
+  })
 
-    const loading = loadingGetEvent
-    if (loading) return <LoadingComponent />
+  const loading = loadingGetEvent
+  if (loading) return <LoadingComponent />
 
-    if (error) {
-      return <ErrorComponent error={error} />
-    }
+  if (error) {
+    return <ErrorComponent error={error} />
+  }
 
-    const event = data?.getEventById
-    const time = `${moment(event?.startTime)
-      .local()
-      .format(DateFormat.fullDateTime)} - ${moment(event?.endTime)
-      .local()
-      .format(DateFormat.fullDateTime)}`
+  const event = data?.getEventById
+  const time = `${moment(event?.startTime)
+    .local()
+    .format(DateFormat.fullDateTime)} - ${moment(event?.endTime)
+    .local()
+    .format(DateFormat.fullDateTime)}`
 
-    return (
-      <View full bgBaseOnTheme>
-        <Screen>
-          <Header headerTx={event?.information?.eventName} leftIcon="back" />
-          <Body>
-            <EventPlace place={event?.place} />
-            <AppDivider />
+  return (
+    <View full bgBaseOnTheme>
+      <Screen>
+        <Header headerTx={event?.information?.eventName} leftIcon="back" />
+        <Body>
+          <EventPlace place={event?.place} />
+          <AppDivider />
 
-            <View row>
-              <Icon name="clock" />
-              <SizedBox w={3} />
-              <Text text={time} />
-            </View>
-            <AppDivider />
+          <View row>
+            <Icon name="clock" />
+            <SizedBox w={3} />
+            <Text text={time} />
+          </View>
+          <AppDivider />
 
-            <View>
-              <Text tx="eventDetailScreen.information" preset="h3" />
-              <SizedBox w={3} />
-              <Text tx={event.information.description} />
-            </View>
-            <AppDivider />
+          <View>
+            <Text tx="eventDetailScreen.information" preset="h3" />
+            <SizedBox w={3} />
+            <Text tx={event?.information?.description} />
+          </View>
+          <AppDivider />
 
-            <View>
-              <Text preset="h3" tx="eventDetailScreen.gallary" />
-              <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                {data?.getEventById?.galleries.map(v => {
-                  return (
-                    <AppImageWithFetch
-                      id={v}
-                      key={v}
-                      containerStyle={styles.galleriesContainer}
-                      style={imgSize}
-                      layoutStyle={imgSize}
-                    />
-                  )
-                })}
-              </ScrollView>
-            </View>
-          </Body>
-        </Screen>
+          <View row>
+            <Text preset="h3" tx="common.hosted" />
+            <SizedBox w={4} />
+            <AppAvatar id={data?.getEventById?.hostInfo?.avatarId} />
+          </View>
+          <AppDivider />
 
-        <BottomView style={{ paddingBottom: insets.bottom || spacing[6] }}>
-          <Button tx="eventDetailScreen.join" full onPress={() => setJoinModalVisible(true)} />
-        </BottomView>
-        <JoinModal
-          visible={joinModal}
-          onBackdropPress={() => setJoinModalVisible(false)}
-          onAccepted={type => {
-            setJoinModalVisible(false)
-            joinEvent({
-              variables: {
-                input: {
-                  type,
-                  eventId: event?.id,
-                },
+          <View>
+            <Text preset="h3" tx="eventDetailScreen.gallary" />
+            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+              {data?.getEventById?.galleries.map(v => {
+                return (
+                  <AppImageWithFetch
+                    id={v}
+                    key={v}
+                    containerStyle={styles.galleriesContainer}
+                    style={imgSize}
+                    layoutStyle={imgSize}
+                  />
+                )
+              })}
+            </ScrollView>
+          </View>
+        </Body>
+      </Screen>
+
+      <BottomView style={{ paddingBottom: insets.bottom || spacing[6] }}>
+        <Button tx="eventDetailScreen.join" full onPress={() => setJoinModalVisible(true)} />
+      </BottomView>
+
+      <JoinModal
+        visible={joinModal}
+        onBackdropPress={() => setJoinModalVisible(false)}
+        onAccepted={type => {
+          setJoinModalVisible(false)
+          joinEvent({
+            variables: {
+              input: {
+                type,
+                eventId: event?.id,
               },
-            })
-          }}
-        />
-      </View>
-    )
-  },
-)
+            },
+          })
+        }}
+      />
+    </View>
+  )
+})

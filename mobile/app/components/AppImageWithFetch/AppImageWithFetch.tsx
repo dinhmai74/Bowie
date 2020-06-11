@@ -2,7 +2,7 @@ import { useGetImgQuery } from 'app-graphql'
 import React from 'react'
 import { Image, StyleSheet } from 'react-native'
 import SkeletonContent from 'react-native-skeleton-content'
-import { metrics, spacing } from 'theme'
+import { metrics } from 'theme'
 import { getBase64UriFromUnknownSource } from 'utils'
 
 const imgSize = {

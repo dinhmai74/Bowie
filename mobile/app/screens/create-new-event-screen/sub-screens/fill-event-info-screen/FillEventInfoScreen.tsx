@@ -1,13 +1,9 @@
 import { useNavigation } from '@react-navigation/native'
-import {
-  useCreateEventMutation,
-  useGetTopTagsQuery,
-  CreateEventDocument,
-  GetEventByCoordDocument,
-} from 'app-graphql'
+import { CreateEventDocument, useGetTopTagsQuery } from 'app-graphql'
 import {
   AppCircleButton,
   AppFooter,
+  AppIcon,
   AppLoading,
   Button,
   ImageBowser,
@@ -16,69 +12,35 @@ import {
   Text,
   TextField,
   View,
-  AppIcon,
 } from 'components'
 import * as ImagePicker from 'expo-image-picker'
 import * as MediaLibrary from 'expo-media-library'
 import { ReactNativeFile } from 'extract-files'
 import _ from 'lodash'
 import { useStores } from 'models/root-store'
+import moment from 'moment'
 import React from 'react'
 import { useForm } from 'react-hook-form'
-import { Image, TextStyle, ImageStyle, TouchableOpacity } from 'react-native'
+import { TouchableOpacity } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
+import { useOfflineMutation } from 'react-offix-hooks'
 import { NewEventHeader } from 'screens/create-new-event-screen/components/NewEventHeader'
-import styled from 'styled-components'
-import { metrics, spacing, images } from 'theme'
+import { images, metrics } from 'theme'
+import { AppRoutes, useSnackBars } from 'utils'
 import { LoadingScreen } from '../LoadingScreen/LoadingScreen'
 import { SuccessScreen } from '../SuccessScreen/SuccessScreen'
 import { ChoseTagBottomSheet, Tag } from './ChoseTagBottomSheet'
-import { useSnackBars, AppRoutes } from 'utils'
-import moment from 'moment'
-import { useOfflineMutation, useNetworkStatus } from 'react-offix-hooks'
-
-const PickThumbnailWrapper = styled(View)({
-  alignItems: 'flex-end',
-})
-
-const ThumbnailImgWrapper = styled(View)({
-  alignItems: 'center',
-})
-
-const IlluPickImg = styled(Image)({
-  ...metrics.images.xsm,
-  resizeMode: 'contain',
-  marginHorizontal: spacing[4],
-})
-
-const GalleryImg = styled(Image)({
-  marginRight: spacing[4],
-  ...metrics.images.x2m,
-})
-
-const NameInput = styled(TextField)({
-  flex: 1,
-  marginLeft: spacing[4],
-})
-
-const NameInputWrapper = styled(View)({
-  alignItems: 'center',
-})
-
-const TEXT_AREA_STYLE: TextStyle = {
-  minHeight: 120,
-}
-
-const FooterRow = styled(View)({
-  flexDirection: 'row',
-  justifyContent: 'space-between',
-  marginTop: spacing[8],
-  paddingHorizontal: spacing[6],
-})
-
-const SButton = styled(Button)({
-  marginHorizontal: spacing[2],
-})
+import {
+  FooterRow,
+  GalleryImg,
+  IlluPickImg,
+  NameInput,
+  NameInputWrapper,
+  PickThumbnailWrapper,
+  SButton,
+  TEXT_AREA_STYLE,
+  ThumbnailImgWrapper,
+} from './FillEventInfoScreen.elements'
 
 interface FillEventInfoScreenProps {}
 
@@ -87,7 +49,7 @@ type FormValue = {
   description: string
 }
 
-export const FillEventInfoScreen: React.FC<FillEventInfoScreenProps> = props => {
+export const FillEventInfoScreen: React.FC<FillEventInfoScreenProps> = () => {
   const { createNewEventStore } = useStores()
   const { data: tagsData, loading: loadingTags } = useGetTopTagsQuery()
   const { addSnack } = useSnackBars()
@@ -104,7 +66,6 @@ export const FillEventInfoScreen: React.FC<FillEventInfoScreenProps> = props => 
   const [imageBrowserOpen, setImageBrowserOpen] = React.useState(false)
   const [gallaries, setGallaries] = React.useState<MediaLibrary.Asset[]>([])
   const [thumbnail, setThumbnail] = React.useState<any>(null)
-  const [error, setError] = React.useState<string>('')
 
   const [
     muCreatNewEvent,
@@ -139,11 +100,6 @@ export const FillEventInfoScreen: React.FC<FillEventInfoScreenProps> = props => 
             startTime: moment(createNewEventStore.startTime).utc(),
             endTime: moment(createNewEventStore.endTime).utc(),
             tags: selectedTags.map(v => v.id),
-            // place: {
-            // address: '1232ccc',
-            // name: 'Ho chi minhh coffe',
-            // coord: { latitude: 10.943009870934329, longitude: 106.74740731729867 },
-            // },
             place: createNewEventStore.place,
             information: { eventName: data.name, description: data.description },
             galleries: {
@@ -155,16 +111,13 @@ export const FillEventInfoScreen: React.FC<FillEventInfoScreenProps> = props => 
           },
         },
       })
-      console.tron.log('create')
     } catch (e) {
       if (e.offline) {
         // 2. We can still track when offline change is going to be replicated.
         addSnack('warning.youAreOffline', { type: 'warning' })
         navigation.navigate(AppRoutes.primaryStack)
-        e.watchOfflineChange().then(d => {
-          console.tron.log('offline changed', d)
-          setError(JSON.stringify(d))
-        })
+      } else {
+        addSnack(e?.message, { type: 'warning' })
       }
     }
   }
@@ -194,14 +147,15 @@ export const FillEventInfoScreen: React.FC<FillEventInfoScreenProps> = props => 
 
         const file = new ReactNativeFile({
           uri: result?.uri,
-          name: 'avatar.png',
+          name: 'thumbnail.png',
           type: 'image/png',
         })
 
         setThumbnail(file)
       }
-    } catch (E) {
-      addSnack(E, {
+    } catch (e) {
+      const mess = e?.message || JSON.stringify(e)
+      addSnack(mess, {
         type: 'warning',
       })
     }
@@ -348,7 +302,6 @@ export const FillEventInfoScreen: React.FC<FillEventInfoScreenProps> = props => 
     <View full bgBaseOnTheme>
       <Screen autoPaddingHorizontal>
         <NewEventHeader headerTx={createNewEventStore.place?.name} />
-        <Text text={error} />
 
         <ScrollView keyboardDismissMode="none" showsVerticalScrollIndicator={false}>
           {renderNameInput()}

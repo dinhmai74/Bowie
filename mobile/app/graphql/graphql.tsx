@@ -164,6 +164,24 @@ export type FieldError = {
   message: Scalars['String'];
 };
 
+export type GetEventByIdResponse = {
+  __typename?: 'GetEventByIdResponse';
+  id: Scalars['String'];
+  createdAt: Scalars['DateTime'];
+  updatedAt: Scalars['DateTime'];
+  hostId?: Maybe<Scalars['String']>;
+  membersInfo: Array<MemberInfo>;
+  startTime: Scalars['DateTime'];
+  endTime: Scalars['DateTime'];
+  tags: Array<Scalars['String']>;
+  place: Place;
+  information: Information;
+  galleries?: Maybe<Array<Scalars['String']>>;
+  thumbnail?: Maybe<Scalars['String']>;
+  totalMember: Scalars['Float'];
+  hostInfo?: Maybe<User>;
+};
+
 export type Image = {
   __typename?: 'Image';
   data: Scalars['Buffer'];
@@ -198,7 +216,6 @@ export type Mutation = {
   __typename?: 'Mutation';
   joinEvent: Event;
   editJoinTypeEventInfo: Event;
-  testMultipleFile: Scalars['Boolean'];
   createEvent: Event;
   createTag: EventTag;
   changeTagQuantity: EventTag;
@@ -219,11 +236,6 @@ export type MutationJoinEventArgs = {
 
 export type MutationEditJoinTypeEventInfoArgs = {
   input: JoinEventInput;
-};
-
-
-export type MutationTestMultipleFileArgs = {
-  picture: Array<Scalars['Upload']>;
 };
 
 
@@ -281,8 +293,9 @@ export type Query = {
   book: Scalars['String'];
   getBooks: BooksResponse;
   getEvents: Array<Event>;
-  getEventById?: Maybe<Event>;
+  getEventById?: Maybe<GetEventByIdResponse>;
   getEventBaseOnPos: Array<EventWithHost>;
+  testFunc: Scalars['Boolean'];
   getAllTag: Array<EventTag>;
   getTopTenHotTag: Array<EventTag>;
   hello: Scalars['String'];
@@ -571,9 +584,12 @@ export type GetEventByIdQueryVariables = {
 export type GetEventByIdQuery = (
   { __typename?: 'Query' }
   & { getEventById?: Maybe<(
-    { __typename?: 'Event' }
-    & Pick<Event, 'id' | 'thumbnail' | 'galleries' | 'hostId' | 'endTime' | 'startTime'>
-    & { membersInfo: Array<(
+    { __typename?: 'GetEventByIdResponse' }
+    & Pick<GetEventByIdResponse, 'id' | 'thumbnail' | 'totalMember' | 'galleries' | 'endTime' | 'startTime'>
+    & { hostInfo?: Maybe<(
+      { __typename?: 'User' }
+      & Pick<User, 'avatarId' | 'id'>
+    )>, membersInfo: Array<(
       { __typename?: 'MemberInfo' }
       & Pick<MemberInfo, 'id' | 'type'>
     )>, information: (
@@ -1227,8 +1243,12 @@ export const GetEventByIdDocument = gql`
   getEventById(id: $id) {
     id
     thumbnail
+    totalMember
     galleries
-    hostId
+    hostInfo {
+      avatarId
+      id
+    }
     membersInfo {
       id
       type
