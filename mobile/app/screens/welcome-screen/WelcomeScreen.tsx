@@ -10,29 +10,6 @@ import { useMemoOne } from 'use-memo-one'
 import { AppRoutes } from 'utils'
 import { runTiming, runTimingWithEndAction } from 'utils/reanimated'
 
-const styles = StyleSheet.create({
-  container: {
-    alignItems: 'center',
-    flex: 1,
-    justifyContent: 'center',
-    paddingHorizontal: spacing[6],
-  },
-  footer: {
-    justifyContent: 'flex-end',
-    paddingHorizontal: spacing[6],
-  },
-  full: {
-    flex: 1,
-  },
-  logo: {
-    ...metrics.images.logo,
-    resizeMode: 'contain',
-  },
-  subText: {
-    textAlign: 'center',
-  },
-})
-
 export interface WelcomeScreenProps extends NavigationInjectedProps<{}> {}
 
 export const WelcomeScreen: React.FunctionComponent<WelcomeScreenProps> = props => {
@@ -96,3 +73,26 @@ export const WelcomeScreen: React.FunctionComponent<WelcomeScreenProps> = props 
     </Screen>
   )
 }
+
+const styles = StyleSheet.create({
+  container: {
+    alignItems: 'center',
+    flex: 1,
+    justifyContent: 'center',
+    paddingHorizontal: spacing[6],
+  },
+  footer: {
+    justifyContent: 'flex-end',
+    paddingHorizontal: spacing[6],
+  },
+  full: {
+    flex: 1,
+  },
+  logo: {
+    ...metrics.images.logo,
+    resizeMode: 'contain',
+  },
+  subText: {
+    textAlign: 'center',
+  },
+})

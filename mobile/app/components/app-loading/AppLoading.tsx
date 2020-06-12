@@ -1,4 +1,4 @@
-import { SmallHero, SmallHeroProps } from 'components/SmallHero/SmallHero'
+import { SmallHero, SmallHeroProps } from 'components/small-hero/SmallHero'
 import React from 'react'
 import { images, spacing } from 'theme'
 import { Text } from '../text/text'

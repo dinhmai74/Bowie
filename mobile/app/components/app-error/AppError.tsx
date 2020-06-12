@@ -1,5 +1,5 @@
-import { SizedBox } from 'components/sized-box/sized-box'
-import { SmallHero, SmallHeroProps } from 'components/SmallHero/SmallHero'
+import { SizedBox } from 'components/sized-box/SizedBox'
+import { SmallHero, SmallHeroProps } from 'components/small-hero/SmallHero'
 import React from 'react'
 import { Text } from '../text/text'
 import { appErrorStyles as styles } from './AppError.styles'

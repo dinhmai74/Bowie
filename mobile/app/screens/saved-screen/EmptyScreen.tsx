@@ -3,7 +3,7 @@ import React from 'react'
 import { Image, ScrollView, RefreshControl } from 'react-native'
 import styled from 'styled-components'
 import { images, spacing } from 'theme'
-import { Container } from './saved-screen.elements'
+import { Container } from './SavedScreen.styles'
 
 const EmptyImg = styled(Image)({
   width: 375,

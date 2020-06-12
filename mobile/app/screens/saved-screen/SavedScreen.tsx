@@ -5,7 +5,7 @@ import React from 'react'
 import { RefreshControl, ScrollView } from 'react-native'
 import { NavigationScreenProp } from 'react-navigation'
 import { EmptyScreen } from './EmptyScreen'
-import { Container, MyHostedWrapper, MyJoinedWrapper } from './saved-screen.elements'
+import { Container, MyHostedWrapper, MyJoinedWrapper } from './SavedScreen.styles'
 
 export interface SavedScreenProps {
   navigation: NavigationScreenProp<any, any>

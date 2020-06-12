@@ -3,7 +3,7 @@ import { View, TouchableOpacity } from 'react-native'
 import { useObserver } from 'mobx-react-lite'
 import { Text } from '../text/text'
 // import { useStores } from "../../models/root-store"
-import { authHeaderStyles as styles } from './auth-header.styles'
+import { authHeaderStyles as styles } from './AuthHeaderstyles'
 import { Icon } from '@ui-kitten/components'
 import { metrics, useThemes } from 'theme'
 import { useNavigation } from '@react-navigation/native'

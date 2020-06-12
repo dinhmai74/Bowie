@@ -1,7 +1,7 @@
 import DateTimePicker from '@react-native-community/datetimepicker'
 import { useNavigation } from '@react-navigation/native'
 import { AppDivider, AppIcon, Button, Screen, SizedBox, Text, View } from 'components'
-import { AppFooter } from 'components/AppFooter/AppFooter'
+import { AppFooter } from 'components/app-footer/AppFooter'
 import { useStores } from 'models/root-store'
 import moment from 'moment'
 import React from 'react'

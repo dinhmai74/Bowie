@@ -2,80 +2,16 @@ import { useNavigation } from '@react-navigation/native'
 import { EventWithHost } from 'app-graphql'
 import { AppAvatar, AppCard, Button, Text } from 'components'
 import { AppIcon } from 'components/app-icon/AppIcon'
-import { AppImageWithFetch } from 'components/AppImageWithFetch/AppImageWithFetch'
-import { SizedBox } from 'components/sized-box/sized-box'
+import { AppImageWithFetch } from 'components/app-image-with-fetch/AppImageWithFetch'
+import { SizedBox } from 'components/sized-box/SizedBox'
 import moment from 'moment'
 import React, { useState } from 'react'
 import { Image, View } from 'react-native'
-import MapView, { Marker as MapMarker, MarkerProps } from 'react-native-maps'
+import MapView, { Marker as MapMarker, MarkerProps, LatLng, Region } from 'react-native-maps'
 import { images, metrics, useThemes } from 'theme'
 import { Color } from 'theme/color-model'
 import { AppRoutes, DateFormat } from 'utils'
-import { appMapViewStyles as styles } from './app-map-view.styles'
-
-export type Region = {
-  latitude: number
-  longitude: number
-  latitudeDelta: number
-  longitudeDelta: number
-}
-
-export interface AppMarker extends MarkerProps {
-  coordinate: any
-  avatar: any
-}
-
-const AppMarker: React.FC<AppMarker> = ({ coordinate, avatar, ...rest }) => {
-  // const [track, setTrack] = useState(true)
-  return (
-    <MapMarker coordinate={coordinate} {...rest}>
-      <AppAvatar id={avatar} />
-    </MapMarker>
-  )
-}
-
-interface AppMarkerCardProps {
-  event: EventWithHost
-  color: Color
-}
-
-const AppMarkerCard: React.FC<AppMarkerCardProps> = ({ event }) => {
-  const navigation = useNavigation()
-
-  const time = `${moment(event?.startTime)
-    .local()
-    .format(DateFormat.timeWithIndicator)} - ${moment(event?.endTime)
-    .local()
-    .format(DateFormat.timeWithIndicator)}`
-
-  return (
-    <AppCard style={styles.bottomInfoContent}>
-      {event?.thumbnail ? (
-        <AppImageWithFetch
-          id={event?.thumbnail}
-          style={styles.bottomInfoImage}
-          containerStyle={metrics.images.thumbnail}
-          layoutStyle={metrics.images.thumbnail}
-        />
-      ) : (
-        <Image source={images.place} style={styles.bottomInfoImage} />
-      )}
-      <SizedBox h={4} />
-      <Text text={event?.information?.eventName} preset="bold" />
-      <SizedBox h={4} />
-      <Text text={time} />
-      <SizedBox h={4} />
-      <Button
-        style={styles.bottomInfoButton}
-        onPress={() => navigation.navigate(AppRoutes.eventDetail, { id: event.id })}
-        preset="bordered"
-        tx="homeScreen.viewDetail"
-      />
-    </AppCard>
-  )
-}
-
-export type MarkerField = {}
+import { appMapViewStyles as styles } from './AppMapView.styles'
 
 export interface AppMapViewProps {
   region: Region
@@ -129,6 +65,63 @@ export const AppMapView: React.FunctionComponent<AppMapViewProps> = props => {
         </View>
       )}
     </>
+  )
+}
+
+interface AppMarkerCardProps {
+  event: EventWithHost
+  color: Color
+}
+
+const AppMarkerCard: React.FC<AppMarkerCardProps> = ({ event }) => {
+  const navigation = useNavigation()
+
+  const time = `${moment(event?.startTime)
+    .local()
+    .format(DateFormat.timeWithIndicator)} - ${moment(event?.endTime)
+    .local()
+    .format(DateFormat.timeWithIndicator)}`
+
+  return (
+    <AppCard style={styles.bottomInfoContent}>
+      {event?.thumbnail ? (
+        <AppImageWithFetch
+          id={event?.thumbnail}
+          style={styles.bottomInfoImage}
+          containerStyle={metrics.images.thumbnail}
+          layoutStyle={metrics.images.thumbnail}
+        />
+      ) : (
+        <Image source={images.place} style={styles.bottomInfoImage} />
+      )}
+      <SizedBox h={4} />
+      <Text text={event?.information?.eventName} preset="bold" />
+      <SizedBox h={4} />
+      <Text text={time} />
+      <SizedBox h={4} />
+      <Button
+        style={styles.bottomInfoButton}
+        onPress={() => navigation.navigate(AppRoutes.eventDetail, { id: event.id })}
+        preset="bordered"
+        tx="homeScreen.viewDetail"
+      />
+    </AppCard>
+  )
+}
+
+export type MarkerField = {}
+
+export interface AppMarker extends MarkerProps {
+  coordinate: LatLng
+  avatar: any
+}
+
+const AppMarker: React.FC<AppMarker> = ({ coordinate, avatar, ...rest }) => {
+  // const [track, setTrack] = useState(true)
+  return (
+    <MapMarker coordinate={coordinate} {...rest}>
+      <AppAvatar id={avatar} />
+    </MapMarker>
   )
 }
 

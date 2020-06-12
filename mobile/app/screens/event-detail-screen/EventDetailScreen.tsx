@@ -14,7 +14,7 @@ import {
   Text,
   View,
 } from 'components'
-import { AppImageWithFetch } from 'components/AppImageWithFetch/AppImageWithFetch'
+import { AppImageWithFetch } from 'components/app-image-with-fetch/AppImageWithFetch'
 import { observer } from 'mobx-react-lite'
 import moment from 'moment'
 import { PrimaryParamList } from 'navigation/types'

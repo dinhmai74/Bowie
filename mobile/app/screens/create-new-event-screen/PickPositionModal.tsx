@@ -7,14 +7,6 @@ import { spacing } from 'theme'
 import { useImmer } from 'use-immer'
 import { getCoordAlpha, getLocationAsync } from 'utils'
 
-const SHeader = styled(View)({
-  padding: spacing[4],
-  paddingVertical: spacing[2],
-  flexDirection: 'row',
-  alignItems: 'center',
-  justifyContent: 'space-between',
-})
-
 interface PickPositionModalProps {
   onSubmit: (coord: LatLng) => void
 }
@@ -112,3 +104,11 @@ export const PickPositionModal: React.FC<PickPositionModalProps> = ({ onSubmit }
     </>
   )
 }
+
+const SHeader = styled(View)({
+  padding: spacing[4],
+  paddingVertical: spacing[2],
+  flexDirection: 'row',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+})

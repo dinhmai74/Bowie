@@ -3,7 +3,7 @@
 
 import { storiesOf } from '@storybook/react-native'
 import * as React from 'react'
-import { TextField } from '../'
+import { TextField } from '..'
 import { Story, StoryScreen, UseCase } from '../../../storybook/views'
 import { Input } from '@ui-kitten/components'
 

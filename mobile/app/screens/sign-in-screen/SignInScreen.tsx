@@ -24,42 +24,6 @@ import {
 import { EyeIcon, FBicon } from './components/Icons'
 import { useSignInAnimations } from './hooks'
 
-const styles = StyleSheet.create({
-  btn: {
-    alignSelf: 'flex-end',
-    borderBottomLeftRadius: spacing[2],
-    borderRadius: 0,
-    borderTopLeftRadius: spacing[2],
-    marginVertical: spacing[2],
-  },
-  btnCook: {
-    paddingHorizontal: spacing[7],
-  },
-  btnForgot: {
-    alignSelf: 'flex-start',
-    marginVertical: spacing[4],
-  },
-  btnView: {},
-  container: {
-    paddingHorizontal: spacing[6],
-  },
-  label: {
-    paddingBottom: spacing[1],
-  },
-  linkView: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  wallpaper: {
-    ...metrics.images.logo,
-    bottom: spacing[6],
-    left: spacing[6],
-    position: 'absolute',
-    resizeMode: 'contain',
-    right: 0,
-  },
-})
-
 export interface SignInScreenProps {
   navigation: NavigationScreenProp<any, any>
 }
@@ -258,9 +222,12 @@ export const SignInScreen: React.FunctionComponent<SignInScreenProps> = observer
           </Animated.View>
 
           <Animated.View style={[getOpacity(animFgpw), styles.linkView]}>
-            <TouchableOpacity style={styles.btnForgot}>
-              <Text themeColor="color-basic-600" underline tx="signInScreen.forgotPassword" />
-            </TouchableOpacity>
+            <Text
+              underline
+              status="basic"
+              tx="signInScreen.forgotPassword"
+              style={styles.btnForgot}
+            />
 
             <TouchableOpacity
               style={styles.btnForgot}
@@ -313,4 +280,40 @@ export const SignInScreen: React.FunctionComponent<SignInScreenProps> = observer
       </Transitioning.View>
     </Screen>
   )
+})
+
+const styles = StyleSheet.create({
+  btn: {
+    alignSelf: 'flex-end',
+    borderBottomLeftRadius: spacing[2],
+    borderRadius: 0,
+    borderTopLeftRadius: spacing[2],
+    marginVertical: spacing[2],
+  },
+  btnCook: {
+    paddingHorizontal: spacing[7],
+  },
+  btnForgot: {
+    alignSelf: 'flex-start',
+    marginVertical: spacing[4],
+  },
+  btnView: {},
+  container: {
+    paddingHorizontal: spacing[6],
+  },
+  label: {
+    paddingBottom: spacing[1],
+  },
+  linkView: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  wallpaper: {
+    ...metrics.images.logo,
+    bottom: spacing[6],
+    left: spacing[6],
+    position: 'absolute',
+    resizeMode: 'contain',
+    right: 0,
+  },
 })
