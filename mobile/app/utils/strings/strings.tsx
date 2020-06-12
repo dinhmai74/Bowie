@@ -29,4 +29,3 @@ export const AppRoutes = {
   primaryStack: 'primaryStack',
   viewMap: 'viewMap',
 }
-

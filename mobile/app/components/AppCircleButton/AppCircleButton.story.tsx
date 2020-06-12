@@ -14,4 +14,3 @@ storiesOf('AppCircleButton', module)
       </UseCase>
     </Story>
   ))
-

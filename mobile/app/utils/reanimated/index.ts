@@ -1,4 +1,4 @@
-import { Value } from "react-native-reanimated"
+import { Value } from 'react-native-reanimated'
 export const state = {
   finished: new Value(0),
   position: new Value(0),
@@ -6,4 +6,4 @@ export const state = {
   frameTime: new Value(0),
 }
 
-export * from "./run"
+export * from './run'

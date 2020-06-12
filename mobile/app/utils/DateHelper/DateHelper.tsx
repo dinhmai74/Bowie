@@ -11,4 +11,3 @@ export const combineDateAndTime = (date: string | Moment, time: string | Moment)
   const rs = moment(moment(date).format(DateFormat.serverTime) + ' ' + timeString + ':00')
   return rs
 }
-

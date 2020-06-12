@@ -1,6 +1,6 @@
-import { Layout } from "@ui-kitten/components"
-import React from "react"
-import { appCardStyles as styles } from "./app-card.styles"
+import { Layout } from '@ui-kitten/components'
+import React from 'react'
+import { appCardStyles as styles } from './app-card.styles'
 
 export interface AppCardProps {
   style?: any

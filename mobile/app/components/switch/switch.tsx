@@ -1,5 +1,5 @@
-import { Toggle, ToggleProps } from "@ui-kitten/components"
-import * as React from "react"
+import { Toggle, ToggleProps } from '@ui-kitten/components'
+import * as React from 'react'
 
 export interface SwitchProps extends ToggleProps {}
 

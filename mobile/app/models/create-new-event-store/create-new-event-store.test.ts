@@ -1,6 +1,6 @@
-import { CreateNewEventStoreModel, CreateNewEventStore } from "./create-new-event-store"
+import { CreateNewEventStoreModel, CreateNewEventStore } from './create-new-event-store'
 
-test("can be created", () => {
+test('can be created', () => {
   const instance: CreateNewEventStore = CreateNewEventStoreModel.create({})
 
   expect(instance).toBeTruthy()

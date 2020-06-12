@@ -1,7 +1,7 @@
-import * as React from "react"
-import { View, ViewProps, ViewStyle } from "react-native"
-import { spacing, Spacing } from "theme"
-import { mergeAll, flatten } from "ramda"
+import * as React from 'react'
+import { View, ViewProps, ViewStyle } from 'react-native'
+import { spacing, Spacing } from 'theme'
+import { mergeAll, flatten } from 'ramda'
 
 export interface SizedBoxProps extends ViewProps {
   /* ------------- height of box ------------- */

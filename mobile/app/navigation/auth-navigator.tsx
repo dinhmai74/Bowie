@@ -1,7 +1,7 @@
-import { createNativeStackNavigator } from "@react-navigation/native-stack"
-import React from "react"
-import { SignInScreen, WelcomeScreen } from "../screens"
-import { AuthParamList } from "./types"
+import { createNativeStackNavigator } from '@react-navigation/native-stack'
+import React from 'react'
+import { SignInScreen, WelcomeScreen } from '../screens'
+import { AuthParamList } from './types'
 
 const Stack = createNativeStackNavigator<AuthParamList>()
 
@@ -26,4 +26,4 @@ export function AuthStack() {
  * Anything not on this list will be a standard `back` action in
  * react-navigation.
  */
-export const exitRoutes: string[] = ["welcome"]
+export const exitRoutes: string[] = ['welcome']

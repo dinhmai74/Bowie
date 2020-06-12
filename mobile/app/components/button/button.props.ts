@@ -1,6 +1,6 @@
-import { ViewStyle, TextStyle } from "react-native"
-import { ButtonPresetNames } from "./button.presets"
-import { ButtonProps as BaseButtonProps } from "@ui-kitten/components"
+import { ViewStyle, TextStyle } from 'react-native'
+import { ButtonPresetNames } from './button.presets'
+import { ButtonProps as BaseButtonProps } from '@ui-kitten/components'
 
 export interface ButtonProps extends BaseButtonProps {
   /**
@@ -31,6 +31,6 @@ export interface ButtonProps extends BaseButtonProps {
   children?: any
   full?: boolean
   loading?: boolean
-  loadingSize?: number | "small" | "large"
+  loadingSize?: number | 'small' | 'large'
   loadingColor?: string
 }

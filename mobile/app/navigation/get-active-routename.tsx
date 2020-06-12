@@ -1,4 +1,4 @@
-import { NavigationState, PartialState } from "@react-navigation/native"
+import { NavigationState, PartialState } from '@react-navigation/native'
 
 // Gets the current screen from navigation state
 export default function getActiveRouteName(state: NavigationState | PartialState<NavigationState>) {

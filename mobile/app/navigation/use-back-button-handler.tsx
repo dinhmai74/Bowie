@@ -1,7 +1,7 @@
-import { useEffect, useRef } from "react"
-import { BackHandler } from "react-native"
-import { NavigationContainerRef } from "@react-navigation/native"
-import getActiveRouteName from "./get-active-routename"
+import { useEffect, useRef } from 'react'
+import { BackHandler } from 'react-native'
+import { NavigationContainerRef } from '@react-navigation/native'
+import getActiveRouteName from './get-active-routename'
 
 export function useBackButtonHandler(
   ref: React.RefObject<NavigationContainerRef>,
@@ -42,9 +42,9 @@ export function useBackButtonHandler(
     }
 
     // Subscribe when we come to life
-    BackHandler.addEventListener("hardwareBackPress", onBackPress)
+    BackHandler.addEventListener('hardwareBackPress', onBackPress)
 
     // Unsubscribe when we're done
-    return () => BackHandler.removeEventListener("hardwareBackPress", onBackPress)
+    return () => BackHandler.removeEventListener('hardwareBackPress', onBackPress)
   }, [ref])
 }

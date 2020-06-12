@@ -1,1 +1,1 @@
-export * from "./create-new-event-store"
+export * from './create-new-event-store'

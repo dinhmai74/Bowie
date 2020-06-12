@@ -1,6 +1,6 @@
-import { UserInfoStoreModel, UserInfoStore } from "./user-info-store"
+import { UserInfoStoreModel, UserInfoStore } from './user-info-store'
 
-test("can be created", () => {
+test('can be created', () => {
   const instance: UserInfoStore = UserInfoStoreModel.create({})
 
   expect(instance).toBeTruthy()
