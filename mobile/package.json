@@ -12,6 +12,7 @@
     "format:json": "prettier --write '**/*.json'",
     "format:md": "prettier --write '**/*.md'",
     "format:ts": "prettier --write '**/*.ts{,x}'",
+    "format:lint": "eslint  app storybook test --fix --ext .js,.ts,.tsx",
     "hack:types-react-navigation": "rimraf node_modules/@types/react-navigation/node_modules/@types",
     "hack:types-react-native": "rimraf node_modules/@types/react-native/node_modules/@types",
     "hack:types-react-test-renderer": "rimraf node_modules/@types/react-test-renderer/node_modules/@types",
@@ -61,6 +62,7 @@
     "extract-files": "^8.1.0",
     "graphql": "^14.6.0",
     "graphql-tag": "^2.10.3",
+    "husky": "^4.2.5",
     "i18n-js": "^3.0.11",
     "immer": "^7.0.0",
     "lodash.throttle": "4.1.1",
@@ -176,83 +178,9 @@
     "singleQuote": true,
     "trailingComma": "all"
   },
-  "eslintConfig": {
-    "parser": "@typescript-eslint/parser",
-    "extends": [
-      "prettier",
-      "plugin:@typescript-eslint/recommended",
-      "plugin:react/recommended",
-      "plugin:react-native/all",
-      "standard"
-    ],
-    "parserOptions": {
-      "ecmaFeatures": {
-        "jsx": true
-      },
-      "project": "./tsconfig.json"
-    },
-    "plugins": [
-      "@typescript-eslint",
-      "react",
-      "react-native",
-      "only-warn"
-    ],
-    "settings": {
-      "react": {
-        "pragma": "React",
-        "version": "detect"
-      }
-    },
-    "globals": {
-      "__DEV__": false,
-      "jasmine": false,
-      "beforeAll": false,
-      "afterAll": false,
-      "beforeEach": false,
-      "afterEach": false,
-      "test": false,
-      "expect": false,
-      "describe": false,
-      "jest": false,
-      "it": false
-    },
-    "rules": {
-      "comma-dangle": 0,
-      "no-unused-vars": 0,
-      "no-undef": 0,
-      "quotes": 0,
-      "react/no-unescaped-entities": 0,
-      "react/prop-types": "off",
-      "react-native/no-raw-text": 0,
-      "space-before-function-paren": 0,
-      "@typescript-eslint/ban-ts-ignore": 0,
-      "@typescript-eslint/indent": 0,
-      "@typescript-eslint/explicit-member-accessibility": 0,
-      "@typescript-eslint/explicit-function-return-type": 0,
-      "@typescript-eslint/member-delimiter-style": 0,
-      "@typescript-eslint/no-explicit-any": 0,
-      "@typescript-eslint/no-object-literal-type-assertion": 0,
-      "@typescript-eslint/no-empty-interface": 0,
-      "@typescript-eslint/no-var-requires": 0,
-      "@typescript-eslint/no-use-before-define": 0,
-      "react-native/no-color-literals": 0,
-      "indent": 0,
-      "react/indent": 0,
-      "react-native/indent": 0,
-      "@typescript-eslint/camelcase": "off",
-      "prettier/prettier": 0,
-      "@typescript-eslint/no-empty-function": 0,
-      "@typescript-eslint/no-non-null-assertion": 0,
-      "curly": 0,
-      "arrow-spacing": 0,
-      "keyword-spacing": 0,
-      "no-trailing-spaces": 0,
-      "object-curly-spacing": 0,
-      "space-infix-ops": 0,
-      "no-multi-spaces": 0,
-      "@typescript-eslint/type-annotation-spacing": 0,
-      "no-multiple-empty-lines": 0,
-      "space-before-blocks": 0
+  "husky": {
+    "hooks": {
+      "pre-commit": "yarn format"
     }
   }
 }
