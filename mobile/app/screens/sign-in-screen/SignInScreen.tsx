@@ -1,7 +1,7 @@
 import { useLoginMutation, useSignUpMutation } from 'app-graphql'
 import { AuthHeader, Button, Screen, SizedBox, Text, TextField, View } from 'components'
 import { observer } from 'mobx-react-lite'
-import { useAuthContext } from 'navigation'
+// import { useAuthContext } from 'navigation'
 import React, { useRef, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { StyleSheet, TouchableOpacity } from 'react-native'
@@ -19,10 +19,12 @@ import {
   nDelay,
   runTimingWithEndActionOB,
   useLayout,
-  useSnackBars,
 } from 'utils'
 import { EyeIcon, FBicon } from './components/Icons'
 import { useSignInAnimations } from './hooks'
+import { useSnackBars } from 'hooks'
+import { useAuthContext } from 'navigation/root-navigator'
+// import { useSnackBars } from 'hooks/app-snackbar-provider'
 
 export interface SignInScreenProps {
   navigation: NavigationScreenProp<any, any>
@@ -48,16 +50,14 @@ export const SignInScreen: React.FunctionComponent<SignInScreenProps> = observer
   // const { someStore } = useStores()
   const refForm = useRef(null)
   const auth = useAuthContext()
-  const { addSnack } = useSnackBars()
+  const { addErr, addSnack } = useSnackBars()
 
   const onError = err => {
-    addSnack(err.message, {
-      type: 'danger',
-    })
+    addErr(err.message)
   }
 
   const handleSuccess = d => {
-    // addSnack('signInScreen.signInScreen')
+    addSnack('signInScreen.loginSuccess')
     refForm.current.animateNextTransition()
     nDelay(200).then(() => setTriggerSpreadOut(true))
     nDelay(600).then(() => auth?.navigateHome(d))

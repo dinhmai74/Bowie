@@ -26,7 +26,7 @@ import { ScrollView } from 'react-native-gesture-handler'
 import { useOfflineMutation } from 'react-offix-hooks'
 import { NewEventHeader } from 'screens/create-new-event-screen/components/NewEventHeader'
 import { images, metrics } from 'theme'
-import { AppRoutes, useSnackBars } from 'utils'
+import { AppRoutes } from 'utils/strings'
 import { LoadingScreen } from '../LoadingScreen/LoadingScreen'
 import { SuccessScreen } from '../SuccessScreen/SuccessScreen'
 import { ChoseTagBottomSheet, Tag } from './ChoseTagBottomSheet'
@@ -41,6 +41,8 @@ import {
   TEXT_AREA_STYLE,
   ThumbnailImgWrapper,
 } from './FillEventInfoScreen.elements'
+import { useSnackBars } from 'hooks'
+// import { useSnackBars } from 'hooks/app-snackbar-provider'
 
 interface FillEventInfoScreenProps {}
 

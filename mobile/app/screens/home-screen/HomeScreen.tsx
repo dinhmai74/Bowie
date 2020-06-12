@@ -6,8 +6,9 @@ import { StyleSheet } from 'react-native'
 import { Region } from 'react-native-maps'
 import { NavigationScreenProp } from 'react-navigation'
 import { useNetworkStatus } from 'react-offix-hooks'
-import { getLocationAsync, SnackBarContext } from 'utils'
+import { getLocationAsync, nDelay } from 'utils'
 import { Header } from './components/Header'
+import { useSnackBars } from 'hooks'
 
 const HomeWrapper: React.FC<{ onRefresh: () => void }> = ({ children, onRefresh }) => {
   return (
@@ -33,7 +34,7 @@ export interface HomeScreenProps {
 export const HomeScreen: React.FunctionComponent<HomeScreenProps> = observer(({ navigation }) => {
   // const { someStore } = useStores()
   const [errorGetLocation, setErrGetLocation] = React.useState<boolean>(false)
-  const { addSnack } = React.useContext(SnackBarContext)
+  const { addSnack } = useSnackBars()
   const isOnline = useNetworkStatus()
 
   const [region, setRegion] = React.useState<Region>(undefined)
@@ -55,18 +56,30 @@ export const HomeScreen: React.FunctionComponent<HomeScreenProps> = observer(({ 
     fetchPolicy: 'cache-and-network',
   })
 
-  React.useEffect(() => {
+  const fetchLocation = () => {
     getLocationAsync()
       .then(region => {
         setRegion(region)
+        fetchEvent()
       })
       .catch(e => {
         setErrGetLocation(true)
         addSnack(e.message, { type: 'warning' })
       })
+  }
+
+  const refetch = () => {
+    if (region) fetchEvent()
+    else {
+      fetchLocation()
+    }
+  }
+
+  React.useEffect(() => {
+    fetchLocation()
 
     navigation.addListener('focus', () => {
-      fetchEvent()
+      refetch()
     })
   }, [])
 
@@ -76,7 +89,7 @@ export const HomeScreen: React.FunctionComponent<HomeScreenProps> = observer(({ 
 
   if (!region)
     return (
-      <HomeWrapper onRefresh={() => fetchEvent()}>
+      <HomeWrapper onRefresh={() => refetch()}>
         <SizedBox h={4} />
         <AppLoading />
       </HomeWrapper>

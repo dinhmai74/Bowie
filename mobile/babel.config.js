@@ -29,6 +29,7 @@ module.exports = {
           i18n: './app/i18n',
           'app-graphql': './app/graphql',
           '@types': './app/@types',
+          hooks: './app/hooks',
         },
       },
     ],

@@ -1,7 +1,7 @@
 import { flatten, mergeAll } from 'ramda'
 import * as React from 'react'
 import { TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native'
-import { Text } from '../'
+import { Text } from '../text/text'
 import { spacing } from '../../theme'
 import { CheckboxProps } from './checkbox.props'
 

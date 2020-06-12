@@ -5,7 +5,7 @@ import moment, { Moment } from 'moment'
 import React from 'react'
 import styled from 'styled-components'
 import { spacing } from 'theme'
-import { DateFormat } from 'utils'
+import { DateFormat } from 'utils/DateHelper'
 
 const dateService = new MomentDateService()
 

@@ -10,8 +10,9 @@ import { NewEventHeader } from 'screens/create-new-event-screen/components/NewEv
 import styled from 'styled-components'
 import { images, metrics, spacing } from 'theme'
 import { useImmer } from 'use-immer'
-import { AppRoutes, combineDateAndTime } from 'utils'
+import { AppRoutes } from 'utils/strings'
 import { DatePicker } from './DatePicker'
+import { combineDateAndTime } from 'utils/DateHelper'
 
 const Container = styled(View)({
   flex: 1,

@@ -3,7 +3,7 @@ import React from 'react'
 import { Image, StyleSheet } from 'react-native'
 import SkeletonContent from 'react-native-skeleton-content'
 import { metrics } from 'theme'
-import { getBase64UriFromUnknownSource } from 'utils'
+import { getBase64UriFromUnknownSource } from 'utils/ImageConverter/ImageConverter'
 
 const imgSize = {
   width: metrics.images.lg.width,

@@ -15,7 +15,7 @@ import { initialWindowSafeAreaInsets, SafeAreaProvider } from 'react-native-safe
 import { enableScreens } from 'react-native-screens'
 import { ApolloOfflineProvider } from 'react-offix-hooks'
 import { ThemeProvider } from 'styled-components'
-import { SnackBarProvider } from 'utils'
+import { SnackBarProvider } from './hooks/app-snackbar-provider/AppSnackbarProvider'
 import { translate } from './i18n'
 import { RootStore, RootStoreProvider, setupRootStore } from './models/root-store'
 import {

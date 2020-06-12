@@ -1,5 +1,6 @@
 import { useNavigation } from '@react-navigation/native'
-import { AppIcon, Text } from 'components'
+import { AppIcon } from '../app-icon/AppIcon'
+import { Text } from '../text/text'
 import * as React from 'react'
 import { StyleSheet, TouchableOpacity, View } from 'react-native'
 import { spacing, useThemes } from '../../theme'

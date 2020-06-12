@@ -7,7 +7,7 @@ import { NavigationScreenProp } from 'react-navigation'
 import styled from 'styled-components'
 // import { useStores } from "models/root-store"
 import { metrics, spacing, sw } from 'theme'
-import { AppRoutes } from 'utils'
+import { AppRoutes } from 'utils/strings'
 import { NewEventHeader } from './components/NewEventHeader'
 import { PickPositionModal } from './PickPositionModal'
 

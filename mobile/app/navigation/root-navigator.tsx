@@ -9,9 +9,8 @@ import { load, remove, save } from 'utils/storage'
 import { AuthStack } from './auth-navigator'
 import { PrimaryStackWithModal } from './primary-navigator'
 import { RootParamList } from './types'
-import { Alert } from 'react-native'
 
-export const AuthContext = React.createContext(null)
+export const AuthContext = React.createContext<AuthContextState>({} as AuthContextState)
 
 interface AuthContextState {
   auth: () => void
@@ -19,7 +18,7 @@ interface AuthContextState {
   navigateHome: (d: User) => void
 }
 
-export const useAuthContext = (): AuthContextState => React.useContext(AuthContext)
+export const useAuthContext = () => React.useContext(AuthContext)
 
 const Stack = createStackNavigator<RootParamList>()
 
@@ -50,7 +49,6 @@ const RootStack = () => {
     },
     onError: e => {
       removeUserInfo()
-      Alert.alert(e.message)
     },
   })
   const isOnline = useNetworkStatus()

@@ -37,7 +37,7 @@ export const WelcomeScreen: React.FunctionComponent<WelcomeScreenProps> = props 
   const insets = useSafeArea()
 
   return (
-    <Screen style={styles.full}>
+    <View style={styles.full} bgBaseOnTheme>
       <Screen style={styles.container} preset="scroll">
         <Animated.View
           style={{
@@ -70,7 +70,7 @@ export const WelcomeScreen: React.FunctionComponent<WelcomeScreenProps> = props 
           />
         </Animated.View>
       </View>
-    </Screen>
+    </View>
   )
 }
 

@@ -15,6 +15,7 @@ import {
   View,
 } from 'components'
 import { AppImageWithFetch } from 'components/app-image-with-fetch/AppImageWithFetch'
+import { useSnackBars } from 'hooks'
 import { observer } from 'mobx-react-lite'
 import moment from 'moment'
 import { PrimaryParamList } from 'navigation/types'
@@ -25,7 +26,7 @@ import { NavigationScreenProp } from 'react-navigation'
 import styled from 'styled-components'
 // import { useStores } from "models/root-store"
 import { images, metrics, spacing } from 'theme'
-import { DateFormat, useSnackBars } from 'utils'
+import { DateFormat } from 'utils'
 import { EventPlace } from './components/EventPlace'
 import { JoinModal } from './components/JoinModal'
 

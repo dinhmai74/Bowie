@@ -5,8 +5,8 @@ import React from 'react'
 import { SafeAreaView } from 'react-native'
 // import { PrimaryParamList } from "./types"
 import { useThemes } from 'theme'
-import { AppRoutes } from 'utils'
 import { HomeScreen, NotificationsScreen, SavedScreen, SettingsScreen } from '../screens'
+import { AppRoutes } from 'utils/strings'
 
 const Tab = createBottomTabNavigator()
 

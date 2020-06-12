@@ -1,13 +1,13 @@
-import { AppSnackbar, SnackbarType, SnackbarValue } from 'components'
+import { AppSnackbar, SnackbarType, SnackbarValue } from '../../components/app-snackbar/AppSnackbar'
 import _ from 'lodash'
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import { View } from 'react-native'
 import styled from 'styled-components'
-import { spacing } from 'theme'
+import { spacing } from '../../theme/spacing'
 
-export const SnackBarContext = createContext(null)
+export const SnackBarContext = createContext<SnackBarProviderState>({} as SnackBarProviderState)
 
-const Container = styled(View)<{}>`
+const Container = styled(View)`
   position: absolute;
   bottom: ${spacing[2]}px;
   left: 0;
@@ -23,6 +23,9 @@ interface SnackBarOption {
 
 interface SnackBarProviderState {
   addSnack: (value: string, option?: SnackBarOption) => void
+  addMess: (value: string) => void
+  addErr: (value: string) => void
+  addWarning: (value: string) => void
 }
 
 export const SnackBarProvider = ({ children }) => {
@@ -43,7 +46,27 @@ export const SnackBarProvider = ({ children }) => {
   const addSnack = useCallback((message, { type } = { type: 'success' }) => {
     setValues(v => _.uniqBy([...v, { message, type }], v => v.message))
   }, [])
-  const value = useMemo(() => ({ addSnack }), [addSnack])
+
+  const addMess = useCallback(
+    message => {
+      addSnack(message)
+    },
+    [addSnack],
+  )
+  const addErr = useCallback(
+    message => {
+      addSnack(message, { type: 'danger' })
+    },
+    [addSnack],
+  )
+  const addWarning = useCallback(
+    message => {
+      addSnack(message, { type: 'warning' })
+    },
+    [addSnack],
+  )
+
+  const value = useMemo(() => ({ addSnack, addMess, addErr, addWarning }), [addSnack])
 
   return (
     <SnackBarContext.Provider value={value}>
@@ -59,6 +82,6 @@ export const SnackBarProvider = ({ children }) => {
   )
 }
 
-const useSnackBars = (): SnackBarProviderState => useContext(SnackBarContext)
+const useSnackBars = () => useContext(SnackBarContext)
 
 export { useSnackBars }

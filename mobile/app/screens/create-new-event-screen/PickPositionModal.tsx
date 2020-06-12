@@ -5,7 +5,8 @@ import MapView, { LatLng, Marker, Region } from 'react-native-maps'
 import styled from 'styled-components'
 import { spacing } from 'theme'
 import { useImmer } from 'use-immer'
-import { getCoordAlpha, getLocationAsync } from 'utils'
+import { getCoordAlpha } from 'utils/calcCoordAlpha'
+import { getLocationAsync } from 'utils/get-location'
 
 interface PickPositionModalProps {
   onSubmit: (coord: LatLng) => void

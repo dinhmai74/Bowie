@@ -9,7 +9,7 @@ import * as Permissions from 'expo-permissions'
 import { ReactNativeFile } from 'extract-files'
 import { useLocalization } from 'i18n/i18n'
 import { observer } from 'mobx-react-lite'
-import { useAuthContext } from 'navigation'
+// import { useAuthContext } from 'navigation'
 import React, { useRef } from 'react'
 import { StyleSheet, TouchableOpacity } from 'react-native'
 import { NavigationScreenProp } from 'react-navigation'
@@ -17,9 +17,12 @@ import { SettingsCard } from 'screens/settings-screen/components/SettingsCard'
 // import { useStores } from "models/root-store"
 import { spacing, typography, useThemes } from 'theme'
 import { palette, Palette } from 'theme/palette'
-import { isIos, nDelay, useSnackBars } from 'utils'
+import { isIos, nDelay } from 'utils'
 import { Avatar } from './components/Avatar'
 import { LangBottomSheet } from './components/LangBottomSheet'
+import { useSnackBars } from 'hooks'
+import { useAuthContext } from 'navigation'
+// import { useSnackBars } from 'hooks/app-snackbar-provider'
 
 interface SettingItem {
   name: string
@@ -87,7 +90,7 @@ export const SettingsScreen: React.FunctionComponent<SettingsScreenProps> = obse
   const authContext = useAuthContext()
   const { locale } = useLocalization()
   const { toggle, theme } = useThemes()
-  const { addSnack } = useSnackBars()
+  const { addSnack, addErr, addWarning } = useSnackBars()
   const [logout] = useLogoutMutation()
 
   const [
@@ -103,7 +106,7 @@ export const SettingsScreen: React.FunctionComponent<SettingsScreenProps> = obse
       triggerGetCurrentUser()
     },
     onError: e => {
-      addSnack('Cannot add avatar' + e.message, { type: 'danger' })
+      addErr('Cannot add avatar' + e.message)
     },
   })
 
@@ -117,9 +120,7 @@ export const SettingsScreen: React.FunctionComponent<SettingsScreenProps> = obse
       if (isIos) {
         const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL)
         if (status !== 'granted') {
-          // addSnack('Sorry, we need camera roll permissions to make this work!', {
-          //   type: 'warning',
-          // })
+          addWarning('Sorry, we need camera roll permissions to make this work!')
         }
       }
 

@@ -1,5 +1,6 @@
 import { Modal } from '@ui-kitten/components'
-import { Text, View } from 'components'
+import { Text } from '../text/text'
+import { View } from '../view/view'
 import * as MediaLibrary from 'expo-media-library'
 import * as Permissions from 'expo-permissions'
 import React from 'react'

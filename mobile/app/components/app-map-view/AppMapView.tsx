@@ -1,6 +1,5 @@
 import { useNavigation } from '@react-navigation/native'
 import { EventWithHost } from 'app-graphql'
-import { AppAvatar, AppCard, Button, Text } from 'components'
 import { AppIcon } from 'components/app-icon/AppIcon'
 import { AppImageWithFetch } from 'components/app-image-with-fetch/AppImageWithFetch'
 import { SizedBox } from 'components/sized-box/SizedBox'
@@ -10,8 +9,13 @@ import { Image, View } from 'react-native'
 import MapView, { Marker as MapMarker, MarkerProps, LatLng, Region } from 'react-native-maps'
 import { images, metrics, useThemes } from 'theme'
 import { Color } from 'theme/color-model'
-import { AppRoutes, DateFormat } from 'utils'
+import { DateFormat } from 'utils/DateHelper/DateHelper'
 import { appMapViewStyles as styles } from './AppMapView.styles'
+import { AppRoutes } from 'utils/strings'
+import { AppCard } from 'components/app-card/AppCard'
+import { Button } from 'components/button/button'
+import { Text } from 'components/text/text'
+import { AppAvatar } from 'components/app-avatar/AppAvatar'
 
 export interface AppMapViewProps {
   region: Region

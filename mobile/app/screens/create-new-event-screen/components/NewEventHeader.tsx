@@ -3,7 +3,7 @@ import { AppKittenIcon, Text } from 'components'
 import * as React from 'react'
 import { StyleSheet, View, ViewStyle } from 'react-native'
 import { metrics, spacing } from 'theme'
-import { AppRoutes } from 'utils'
+import { AppRoutes } from 'utils/strings'
 
 const styles = StyleSheet.create({
   header: {

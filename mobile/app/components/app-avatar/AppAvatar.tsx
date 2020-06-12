@@ -3,7 +3,7 @@ import { EvaSize } from '@ui-kitten/components/devsupport'
 import { useGetImgQuery } from 'app-graphql'
 import React from 'react'
 import { images } from 'theme'
-import { getBase64UriFromUnknownSource } from 'utils'
+import { getBase64UriFromUnknownSource } from 'utils/ImageConverter/ImageConverter'
 
 export interface AppAvatarProps {
   id: string
