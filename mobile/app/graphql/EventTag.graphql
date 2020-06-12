@@ -1,6 +1,7 @@
 mutation createEventTags($input: EventTagInput!) {
   createTag(input: $input) {
     name
+    id
   }
 }
 
@@ -30,5 +31,9 @@ query getTopTags {
   getTopTenHotTag {
     name
     currentUse
+    id
+    createdAt
+    updatedAt
+    __typename
   }
 }

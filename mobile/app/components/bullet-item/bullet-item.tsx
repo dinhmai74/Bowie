@@ -1,14 +1,14 @@
-import * as React from "react"
-import { View, ViewStyle, ImageStyle, TextStyle } from "react-native"
-import { Text, AppIcon } from "../"
-import { spacing } from "../../theme"
+import * as React from 'react'
+import { View, ViewStyle, ImageStyle, TextStyle } from 'react-native'
+import { Text, AppIcon } from '../'
+import { spacing } from '../../theme'
 
 const BULLET_ITEM: ViewStyle = {
-  flexDirection: "row",
+  flexDirection: 'row',
   marginTop: spacing[4],
   paddingBottom: spacing[4],
   borderBottomWidth: 1,
-  borderBottomColor: "#3A3048",
+  borderBottomColor: '#3A3048',
 }
 const BULLET_CONTAINER: ViewStyle = {
   marginRight: spacing[4] - 1,
@@ -20,8 +20,8 @@ const BULLET: ImageStyle = {
 }
 const BULLET_TEXT: TextStyle = {
   flex: 1,
-  fontFamily: "Montserrat-Regular",
-  color: "#BAB6C8",
+  fontFamily: 'Montserrat-Regular',
+  color: '#BAB6C8',
   fontSize: 15,
   lineHeight: 22,
 }

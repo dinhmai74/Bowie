@@ -1,20 +1,22 @@
-import { ParamListBase, useRoute, RouteProp } from '@react-navigation/native'
-import { Header, Screen, Text, View } from 'components'
+import { ParamListBase, RouteProp, useRoute } from '@react-navigation/native'
+import { Header, Screen } from 'components'
 import { observer } from 'mobx-react-lite'
+import { PrimaryModalParamList } from 'navigation/types'
 import React from 'react'
 import { StyleSheet } from 'react-native'
-import { NativeStackNavigationProp } from 'react-native-screens/native-stack'
 // import { useStores } from "models/root-store"
-import MapView, { Region, Marker } from 'react-native-maps'
-import { PrimaryModalParamList } from 'navigation/types'
+import MapView, { LatLng, Marker, Region } from 'react-native-maps'
+import { NativeStackNavigationProp } from 'react-native-screens/native-stack'
+import { spacing } from 'theme'
 import { getCoordAlpha } from 'utils'
+import { useImmer } from 'use-immer'
 
 const styles = StyleSheet.create({
   header: {
+    left: spacing[4],
     position: 'absolute',
-    top: 0,
-    left: 0,
     right: 0,
+    top: 0,
     zIndex: 99,
   },
 })
@@ -25,22 +27,41 @@ export interface ViewMapScreenProps {
 
 type ScreenRouteProps = RouteProp<PrimaryModalParamList, 'viewMap'>
 
-export const ViewMapScreen: React.FunctionComponent<ViewMapScreenProps> = observer(props => {
+export const ViewMapScreen: React.FunctionComponent<ViewMapScreenProps> = observer(() => {
   // const { someStore, anotherStore } = useStores()
   // OR
   // const rootStore = useStores()
   const { params } = useRoute<ScreenRouteProps>()
-
   const { longitudeDelta, latitudeDelta } = getCoordAlpha(params?.coord.latitude)
-  const [region, setRegion] = React.useState<Region>({
+  const [region] = useImmer<Region>({
     latitude: params?.coord?.latitude,
     longitude: params?.coord?.longitude,
     latitudeDelta,
     longitudeDelta,
   })
+  const [coord, setCoord] = useImmer<LatLng>({
+    latitude: params?.coord?.latitude,
+    longitude: params?.coord?.longitude,
+  })
 
-  console.tlog('region', region)
+  // const coord = new AnimatedRegion({
+  // latitude: params?.coord?.latitude,
+  // longitude: params?.coord?.longitude,
+  // })
 
+  // const handleRegionChange = mapData => {
+  // // setCoord(d => {
+  // // d.longitude = mapData.longitude
+  // // d.latitude = mapData.latitude
+  // // })
+
+  // setRegion(d => {
+  // d.longitude = mapData.longitude
+  // d.latitude = mapData.latitude
+  // })
+  // }
+
+  console.tron.log('coord', coord)
   return (
     <Screen>
       <Header
@@ -48,10 +69,30 @@ export const ViewMapScreen: React.FunctionComponent<ViewMapScreenProps> = observ
         leftIcon="back"
         style={styles.header}
       />
-      <MapView region={region} style={{ flex: 1 }}>
+      <MapView
+        region={region}
+        // eslint-disable-next-line
+        style={{ flex: 1 }}
+        // onRegionChangeComplete={handleRegionChange}
+      >
         <Marker
-          coordinate={{ latitude: region.latitude, longitude: region.longitude }}
+          coordinate={coord}
           title={params?.title}
+          draggable
+          onDragEnd={e => {
+            if (e.nativeEvent.coordinate) {
+              const { latitude, longitude } = e.nativeEvent.coordinate
+              console.tron.log('dragEnd', latitude, longitude)
+
+              setCoord(d => {
+                d.latitude = latitude
+                d.longitude = longitude
+              })
+            }
+          }}
+          onPress={() => {
+            console.tron.log('coord', coord)
+          }}
         />
       </MapView>
     </Screen>

@@ -3,9 +3,9 @@ import { Text } from 'components/text/text'
 import { flatten, mergeAll } from 'ramda'
 import * as React from 'react'
 import { ActivityIndicator, ViewStyle } from 'react-native'
+import { useThemes } from 'theme'
 import { TextPresets, ViewPresets } from './button.presets'
 import { ButtonProps } from './button.props'
-import { useThemes } from 'theme'
 
 export const Button: React.FC<ButtonProps> = props => {
   const { color } = useThemes()
@@ -15,7 +15,7 @@ export const Button: React.FC<ButtonProps> = props => {
   }
 
   const {
-    preset,
+    preset = 'primary',
     tx,
     text,
     style: styleOverride,
@@ -36,14 +36,18 @@ export const Button: React.FC<ButtonProps> = props => {
 
   let viewStyle = mergeAll(
     // @ts-ignore
-    flatten([viewPresets[preset] && viewPresets[preset], notFullStyle, styleOverride, { opacity }]),
+    flatten([preset && viewPresets[preset], notFullStyle, styleOverride, { opacity }]),
   )
 
   const status = props.status || 'primary'
+  let density = 500
+  if (status === 'basic') density = 600
 
   if (preset) {
     if (preset === 'outlineWithoutBorder') {
       viewStyle = { ...viewStyle, backgroundColor: color[`color-${status}-100`] }
+    } else if (preset === 'bordered') {
+      viewStyle = { ...viewStyle, borderColor: color[`color-${status}-${density}`] }
     }
   }
 
@@ -74,8 +78,9 @@ export const Button: React.FC<ButtonProps> = props => {
 
         // get color by preset
         if (preset) {
-          if (preset === 'bordered' || preset === 'outlineWithoutBorder')
-            textStyle = { ...textStyle, color: color[`color-${status}-500`] }
+          if (preset === 'bordered' || preset === 'outlineWithoutBorder') {
+            textStyle = { ...textStyle, color: color[`color-${status}-${density}`] }
+          }
         }
 
         return <Text {...evaProps} style={[evaProps.style, textStyle]} tx={content} />

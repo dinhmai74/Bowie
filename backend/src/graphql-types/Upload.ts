@@ -1,8 +1,17 @@
 import { Stream } from 'stream'
+import { FileUpload, GraphQLUpload } from 'graphql-upload'
+import { ObjectType, InputType, Field } from 'type-graphql'
 
-export interface Upload {
-  filename: string
-  mimetype: string
-  encoding: string
-  createReadStream: () => Stream
+@ObjectType()
+@InputType('CustomGraphQLUpload')
+export class CustomUpload {
+  @Field(() => GraphQLUpload)
+  file: FileUpload
+}
+
+@ObjectType()
+@InputType('UploadsInput')
+export class Uploads {
+  @Field(() => [GraphQLUpload])
+  files: FileUpload[]
 }

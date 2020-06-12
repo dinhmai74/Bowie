@@ -4,6 +4,8 @@ import { EventTag } from '../../entity'
 import { ChangeQuantityTagInput } from '../../graphql-types'
 import { DI } from '../../mikroconfig'
 import { ErrorMess, removeStringDecoration } from '../../utils'
+import { v4 } from 'uuid'
+import { ObjectId } from 'mongodb'
 
 @Resolver()
 export class EventTagResolver {
@@ -26,6 +28,8 @@ export class EventTagResolver {
   @Mutation(() => EventTag)
   async createTag(@Arg('input') { name }: EventTag): Promise<EventTag> {
     try {
+      const oldTag = await DI.eventTagRepos.findOne({ name })
+      if (oldTag) return oldTag
       const tag = new EventTag()
       let formatedName = name
       if (formatedName[0] === '#') formatedName = formatedName.slice(0, 1)
@@ -33,10 +37,9 @@ export class EventTagResolver {
       formatedName = removeStringDecoration(formatedName)
       tag.name = formatedName
       tag.currentUse = 0
+      await DI.eventTagRepos.persist(tag)
 
-      DI.eventTagRepos.persist(tag)
-
-      return tag
+      return { ...tag, id: tag._id + '' }
     } catch (error) {
       throw new ApolloError(JSON.stringify(error))
     }

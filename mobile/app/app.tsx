@@ -15,11 +15,15 @@ import { initialWindowSafeAreaInsets, SafeAreaProvider } from 'react-native-safe
 import { enableScreens } from 'react-native-screens'
 import { ApolloOfflineProvider } from 'react-offix-hooks'
 import { ThemeProvider } from 'styled-components'
-import { strings } from 'utils/strings'
-import './i18n'
+import { SnackBarProvider } from './hooks/app-snackbar-provider/AppSnackbarProvider'
+import { translate } from './i18n'
 import { RootStore, RootStoreProvider, setupRootStore } from './models/root-store'
-import { exitRoutes, RootNavigator, setRootNavigation } from './navigation'
-import getActiveRouteName from './navigation/get-active-routename'
+import {
+  exitRoutes,
+  RootNavigator,
+  setRootNavigation,
+  useNavigationPersistence,
+} from './navigation'
 import { useBackButtonHandler } from './navigation/use-back-button-handler'
 import { offlineClient } from './services/apollo/apollo'
 import { AppThemeContext, themes } from './theme'
@@ -27,9 +31,6 @@ import { FeatherIconsPack } from './theme/custom-eva-icons/feather-icon'
 import { IoniconsPack } from './theme/custom-eva-icons/ionicons'
 import { initFonts } from './theme/fonts'
 import * as storage from './utils/storage'
-import { loadString } from './utils/storage'
-import { SnackBarProvider } from 'utils'
-import { translate } from './i18n'
 
 // This puts screens in a native ViewController or Activity. If you want fully native
 // stack navigation, use `createNativeStackNavigator` in place of `createStackNavigator`:
@@ -58,6 +59,8 @@ YellowBox.ignoreWarnings([
 const canExit = (routeName: string) => contains(routeName, exitRoutes)
 
 export const NAVIGATION_PERSISTENCE_KEY = 'NAVIGATION_STATE'
+export const THEME_PERSISTENCE_KEY = 'THEME_STATE'
+export const LOCALE_PERSISTENCE_KEY = 'LOCALE_STATE'
 
 /**
  * This is the root component of our app.
@@ -65,87 +68,53 @@ export const NAVIGATION_PERSISTENCE_KEY = 'NAVIGATION_STATE'
 const App: React.FunctionComponent<{}> = () => {
   const navigationRef = useRef<NavigationContainerRef>()
   const [rootStore, setRootStore] = useState<RootStore | undefined>(undefined)
-  const [initialNavigationState, setInitialNavigationState] = useState()
-  const [isRestoringNavigationState, setIsRestoringNavigationState] = useState(true)
   const [theme, setTheme] = React.useState('light')
-
-  setRootNavigation(navigationRef)
-  useBackButtonHandler(navigationRef, canExit)
-
-  /**
-   * Keep track of state changes
-   * Track Screens
-   * Persist State
-   */
-  const routeNameRef = useRef()
-  const onNavigationStateChange = state => {
-    const previousRouteName = routeNameRef.current
-    const currentRouteName = getActiveRouteName(state)
-
-    if (previousRouteName !== currentRouteName) {
-      // track screens.
-      __DEV__ && console.tron.log(currentRouteName)
-    }
-
-    // Save the current route name for later comparision
-    routeNameRef.current = currentRouteName
-
-    // Persist state to storage
-    storage.save(NAVIGATION_PERSISTENCE_KEY, state)
-  }
-
-  useEffect(() => {
-    ;(async () => {
-      await initFonts()
-      setupRootStore().then(setRootStore)
-      i18n.locale = await loadString(strings.lang)
-    })()
-  }, [])
-
-  useEffect(() => {
-    const restoreState = async () => {
-      try {
-        const state = await storage.load(NAVIGATION_PERSISTENCE_KEY)
-
-        if (state) {
-          setInitialNavigationState(state)
-        }
-      } finally {
-        setIsRestoringNavigationState(false)
-      }
-    }
-
-    if (isRestoringNavigationState) {
-      restoreState()
-    }
-  }, [isRestoringNavigationState])
-
-  const currentTheme = themes[theme]
-
-  const toggle = () => {
-    const nextTheme = theme === 'light' ? 'dark' : 'light'
-    setTheme(nextTheme)
-  }
-
   const [locale, setLocale] = React.useState('en')
 
   const localizationContextValue = React.useMemo(
     () => ({
       t: (scope: string, options: any) => translate(scope, { locale, ...options }),
       locale,
-      setLocale,
+      setLocale: (l: string) => {
+        setLocale(l)
+        storage.save(LOCALE_PERSISTENCE_KEY, l)
+      },
     }),
     [locale],
   )
+  setRootNavigation(navigationRef)
+  useBackButtonHandler(navigationRef, canExit)
 
-  // Before we show the app, we have to wait for our state to be ready.
-  // In the meantime, don't render anything. This will be the background
-  // color set in native by rootView's background color.
-  //
-  // This step should be completely covered over by the splash screen though.
-  //
-  // You're welcome to swap in your own component to render if your boot up
-  // sequence is too slow though.
+  const { initialNavigationState, onNavigationStateChange } = useNavigationPersistence(
+    storage,
+    NAVIGATION_PERSISTENCE_KEY,
+  )
+
+  useEffect(() => {
+    ;(async () => {
+      await initFonts()
+      setupRootStore().then(setRootStore)
+
+      // load persist local
+      const localeState = await storage.load(LOCALE_PERSISTENCE_KEY)
+      if (localeState) {
+        if (locale !== localeState) setLocale(localeState)
+        if (i18n.locale !== localeState) i18n.locale = localeState
+      }
+      // load persist theme
+      const storeTheme = await storage.load(THEME_PERSISTENCE_KEY)
+      if (storeTheme && storeTheme !== theme) setTheme(storeTheme)
+    })()
+  }, [])
+
+  const currentTheme = themes[theme]
+
+  const toggle = () => {
+    const nextTheme = theme === 'dark' ? 'light' : 'dark'
+    setTheme(nextTheme)
+    storage.save(THEME_PERSISTENCE_KEY, nextTheme)
+  }
+
   if (!rootStore) {
     return null
   }
@@ -153,15 +122,15 @@ const App: React.FunctionComponent<{}> = () => {
   return (
     <ApolloOfflineProvider client={offlineClient}>
       <ApolloProvider client={offlineClient}>
-        {/**-----------normal ----------------*/}
+        {/* -----------normal ---------------- */}
         <SafeAreaProvider initialSafeAreaInsets={initialWindowSafeAreaInsets}>
           <RootStoreProvider value={rootStore}>
-            {/**----------- theme ----------------*/}
+            {/* ----------- theme ---------------- */}
             <IconRegistry icons={[FeatherIconsPack, IoniconsPack]} />
-            <ThemeProvider theme={currentTheme}>
-              <AppThemeContext.Provider value={{ theme, toggle }}>
-                <ApplicationProvider mapping={mapping} theme={currentTheme}>
-                  {/**----------- utils ----------------*/}
+            <AppThemeContext.Provider value={{ theme, toggle }}>
+              <ApplicationProvider mapping={mapping} theme={currentTheme}>
+                <ThemeProvider theme={currentTheme}>
+                  {/* ----------- utils ---------------- */}
 
                   <SnackBarProvider>
                     <LocalizationContext.Provider value={localizationContextValue}>
@@ -172,9 +141,9 @@ const App: React.FunctionComponent<{}> = () => {
                       />
                     </LocalizationContext.Provider>
                   </SnackBarProvider>
-                </ApplicationProvider>
-              </AppThemeContext.Provider>
-            </ThemeProvider>
+                </ThemeProvider>
+              </ApplicationProvider>
+            </AppThemeContext.Provider>
           </RootStoreProvider>
         </SafeAreaProvider>
       </ApolloProvider>

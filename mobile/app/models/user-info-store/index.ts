@@ -1,1 +1,1 @@
-export * from "./user-info-store"
+export * from './user-info-store'

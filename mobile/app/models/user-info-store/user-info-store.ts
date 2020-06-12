@@ -9,6 +9,7 @@ export const UserInfoStoreModel = types
     name: types.optional(types.string, ''),
     email: types.optional(types.string, ''),
     avatar: types.optional(types.string, ''),
+    isLogin: types.optional(types.boolean, false),
   })
   .actions(self => ({
     setInfo({ email, name, avt }) {

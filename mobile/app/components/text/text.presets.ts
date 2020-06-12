@@ -8,12 +8,10 @@ import { StyleService } from '@ui-kitten/components'
 const BASE: TextStyle = {
   fontFamily: typography.primary,
   fontSize: 16,
-  color: 'text-basic-color',
 }
 
 const MEDIUM: TextStyle = {
   fontFamily: typography.medium,
-  color: 'text-basic-color',
 }
 
 /**

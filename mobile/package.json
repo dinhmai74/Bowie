@@ -12,6 +12,7 @@
     "format:json": "prettier --write '**/*.json'",
     "format:md": "prettier --write '**/*.md'",
     "format:ts": "prettier --write '**/*.ts{,x}'",
+    "format:lint": "eslint  app storybook test --fix --ext .js,.ts,.tsx",
     "hack:types-react-navigation": "rimraf node_modules/@types/react-navigation/node_modules/@types",
     "hack:types-react-native": "rimraf node_modules/@types/react-native/node_modules/@types",
     "hack:types-react-test-renderer": "rimraf node_modules/@types/react-test-renderer/node_modules/@types",
@@ -26,17 +27,21 @@
   },
   "dependencies": {
     "@eva-design/eva": "^2.0.0",
-    "@expo/webpack-config": "^0.12.9",
+    "@expo/webpack-config": "^0.12.12",
     "@react-native-community/async-storage": "^1.8.1",
+    "@react-native-community/cameraroll": "^1.7.2",
+    "@react-native-community/datetimepicker": "2.2.2",
     "@react-native-community/hooks": "^2.4.8",
     "@react-native-community/masked-view": "0.1.6",
-    "@react-native-community/netinfo": "^5.6.2",
+    "@react-native-community/netinfo": "5.5.1",
     "@react-navigation/bottom-tabs": "^5.2.4",
     "@react-navigation/native": "^5.1.5",
     "@react-navigation/native-stack": "^5.0.5",
     "@react-navigation/stack": "^5.2.10",
     "@ui-kitten/components": "^5.0.0",
     "@ui-kitten/eva-icons": "^5.0.0",
+    "@ui-kitten/moment": "^5.0.0",
+    "@yarnpkg/pnpify": "^2.0.0-rc.23",
     "apisauce": "1.1.1",
     "apollo-cache-inmemory": "1.6.5",
     "apollo-cache-persist": "0.1.1",
@@ -49,15 +54,17 @@
     "apollo-upload-client": "^13.0.0",
     "base64-js": "^1.3.1",
     "expo": "~37.0.3",
+    "expo-file-system": "~8.1.0",
     "expo-image-picker": "~8.1.0",
     "expo-localization": "~8.1.0",
     "expo-location": "~8.1.0",
+    "expo-media-library": "~8.1.0",
     "extract-files": "^8.1.0",
-    "firebase": "7.9.0",
     "graphql": "^14.6.0",
     "graphql-tag": "^2.10.3",
+    "husky": "^4.2.5",
     "i18n-js": "^3.0.11",
-    "immer": "^6.0.2",
+    "immer": "^7.0.0",
     "lodash.throttle": "4.1.1",
     "mobx": "^4.15.4",
     "mobx-react-lite": "^1.4.1",
@@ -68,7 +75,7 @@
     "react": "16.13.1",
     "react-apollo": "3.1.4",
     "react-dom": "16.9.0",
-    "react-hook-form": "^5.1.3",
+    "react-hook-form": "^5.7.2",
     "react-native": "https://github.com/expo/react-native/archive/sdk-37.0.0.tar.gz",
     "react-native-gesture-handler": "~1.6.0",
     "react-native-gifted-chat": "^0.13.0",
@@ -76,7 +83,7 @@
     "react-native-localize": "^1.0.0",
     "react-native-maps": "0.26.1",
     "react-native-modal": "^11.5.6",
-    "react-native-reanimated": "^1.9.0",
+    "react-native-reanimated": "~1.7.0",
     "react-native-redash": "^14.1.1",
     "react-native-safe-area-context": "0.7.3",
     "react-native-safe-area-view": "^1.1.1",
@@ -92,11 +99,12 @@
     "reactotron-react-js": "^3.3.7",
     "reactotron-react-native": "^4.0.0-beta.1",
     "reanimated-bottom-sheet": "^1.0.0-alpha.19",
-    "styled-components": "^5.1.0",
-    "use-immer": "^0.3.5",
+    "styled-components": "^5.1.1",
+    "use-immer": "^0.4.0",
     "use-memo-one": "^1.1.1",
     "uuid": "^7.0.2",
-    "validate.js": "0.13.1"
+    "validate.js": "0.13.1",
+    "yup": "^0.29.1"
   },
   "devDependencies": {
     "@babel/core": "^7.8.6",
@@ -126,6 +134,7 @@
     "eslint-config-standard": "^14.1.0",
     "eslint-plugin-import": "^2.15.0",
     "eslint-plugin-node": "^11.0.0",
+    "eslint-plugin-only-warn": "^1.0.2",
     "eslint-plugin-promise": "^4.0.1",
     "eslint-plugin-react": "^7.12.4",
     "eslint-plugin-react-native": "^3.6.0",
@@ -152,13 +161,13 @@
       {
         "preset": "jest-expo/ios",
         "transformIgnorePatterns": [
-          "node_modules/(?!(jest-)?react-native|react-clone-referenced-element|@react-native-community|expo(nent)?|@expo(nent)?/.*|react-navigation|@react-navigation/.*|@unimodules/.*|sentry-expo|native-base|@ui-kitten|@storybook)"
+          "node_modules/(?!(jest-)?react-native|react-clone-referenced-element|@react-native-community|expo(nent)?|@expo(nent)?/.*|react-navigation|@react-navigation/.*|@unimodules/.*|sentry-expo|native-base|@ui-kitten|@storybook|expo-media-library|unimodules-permissions-interface)"
         ]
       },
       {
         "preset": "jest-expo/android",
         "transformIgnorePatterns": [
-          "node_modules/(?!(jest-)?react-native|react-clone-referenced-element|@react-native-community|expo(nent)?|@expo(nent)?/.*|react-navigation|@react-navigation/.*|@unimodules/.*|sentry-expo|native-base|@ui-kitten|@storybook)"
+          "node_modules/(?!(jest-)?react-native|react-clone-referenced-element|@react-native-community|expo(nent)?|@expo(nent)?/.*|react-navigation|@react-navigation/.*|@unimodules/.*|sentry-expo|native-base|@ui-kitten|@storybook|expo-media-library|unimodules-permissions-interface)"
         ]
       }
     ]
@@ -169,81 +178,9 @@
     "singleQuote": true,
     "trailingComma": "all"
   },
-  "eslintConfig": {
-    "parser": "@typescript-eslint/parser",
-    "extends": [
-      "prettier",
-      "plugin:@typescript-eslint/recommended",
-      "plugin:react/recommended",
-      "plugin:react-native/all",
-      "standard"
-    ],
-    "parserOptions": {
-      "ecmaFeatures": {
-        "jsx": true
-      },
-      "project": "./tsconfig.json"
-    },
-    "plugins": [
-      "@typescript-eslint",
-      "react",
-      "react-native"
-    ],
-    "settings": {
-      "react": {
-        "pragma": "React",
-        "version": "detect"
-      }
-    },
-    "globals": {
-      "__DEV__": false,
-      "jasmine": false,
-      "beforeAll": false,
-      "afterAll": false,
-      "beforeEach": false,
-      "afterEach": false,
-      "test": false,
-      "expect": false,
-      "describe": false,
-      "jest": false,
-      "it": false
-    },
-    "rules": {
-      "comma-dangle": 0,
-      "no-unused-vars": 0,
-      "no-undef": 0,
-      "quotes": 0,
-      "react/no-unescaped-entities": 0,
-      "react/prop-types": "off",
-      "react-native/no-raw-text": 0,
-      "space-before-function-paren": 0,
-      "@typescript-eslint/ban-ts-ignore": 0,
-      "@typescript-eslint/indent": 0,
-      "@typescript-eslint/explicit-member-accessibility": 0,
-      "@typescript-eslint/explicit-function-return-type": 0,
-      "@typescript-eslint/member-delimiter-style": 0,
-      "@typescript-eslint/no-explicit-any": 0,
-      "@typescript-eslint/no-object-literal-type-assertion": 0,
-      "@typescript-eslint/no-empty-interface": 0,
-      "@typescript-eslint/no-var-requires": 0,
-      "@typescript-eslint/no-use-before-define": 0,
-      "react-native/no-color-literals": 0,
-      "indent": 0,
-      "react/indent": 0,
-      "react-native/indent": 0,
-      "@typescript-eslint/camelcase": "off",
-      "prettier/prettier": 0,
-      "@typescript-eslint/no-empty-function": 0,
-      "@typescript-eslint/no-non-null-assertion": 0,
-      "curly": 0,
-      "arrow-spacing": 0,
-      "keyword-spacing": 0,
-      "no-trailing-spaces": 0,
-      "object-curly-spacing": 0,
-      "space-infix-ops": 0,
-      "no-multi-spaces": 0,
-      "@typescript-eslint/type-annotation-spacing": 0,
-      "no-multiple-empty-lines": 0
+  "husky": {
+    "hooks": {
+      "pre-commit": "yarn format"
     }
   }
 }

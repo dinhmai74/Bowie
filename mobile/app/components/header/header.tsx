@@ -1,5 +1,6 @@
 import { useNavigation } from '@react-navigation/native'
-import { AppIcon, Text } from 'components'
+import { AppIcon } from '../app-icon/AppIcon'
+import { Text } from '../text/text'
 import * as React from 'react'
 import { StyleSheet, TouchableOpacity, View } from 'react-native'
 import { spacing, useThemes } from '../../theme'
@@ -19,7 +20,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-start',
     paddingBottom: spacing[5],
-    paddingHorizontal: spacing[4],
     paddingTop: spacing[5],
   },
 })
@@ -43,8 +43,8 @@ export const Header: React.FunctionComponent<HeaderProps> = props => {
   return (
     <View style={{ ...styles.root, ...style }}>
       <LeftWrapper style={styles.header} onPress={onLeftPress}>
-        <LeftIcon style={[styles.leftIcon, { opacity: iconOpacity }]} />
-        <Text tx={headerTx} preset="h2medium" />
+        {leftIcon && <LeftIcon style={[styles.leftIcon, { opacity: iconOpacity }]} />}
+        <Text tx={headerTx} preset="h1medium" />
       </LeftWrapper>
     </View>
   )

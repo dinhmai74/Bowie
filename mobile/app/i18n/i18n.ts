@@ -1,3 +1,4 @@
+/* eslint-disable import/no-named-default */
 import * as Localization from 'expo-localization'
 import i18n from 'i18n-js'
 import * as React from 'react'

@@ -1,72 +1,81 @@
 import * as React from 'react'
-import {
-  KeyboardAvoidingView,
-  Platform,
-  ScrollView,
-  StatusBar,
-  View,
-  StatusBarStyle,
-  SafeAreaView,
-} from 'react-native'
+import { KeyboardAvoidingView, Platform, ScrollView, StatusBar, StatusBarStyle } from 'react-native'
 import { useSafeArea } from 'react-native-safe-area-context'
 import { ScreenProps } from './screen.props'
 import { isNonScrolling, offsets, presets } from './screen.presets'
-import { useThemes } from 'theme'
+import { spacing, useThemes } from 'theme'
+import { View } from '../view/view'
 
 const isIos = Platform.OS === 'ios'
 
 function ScreenWithoutScrolling(props: ScreenProps) {
   const insets = useSafeArea()
   const preset = presets.fixed
+  const { theme } = useThemes()
   const style = props.style || {}
-  const { color, theme } = useThemes()
-  const backgroundColor = props.backgroundColor
-    ? props.backgroundColor
-    : color['background-basic-color-1']
+  const backgroundStyle = props.backgroundColor ? { backgroundColor: props.backgroundColor } : {}
   const insetStyle = { paddingTop: props.unsafe ? 0 : insets.top }
 
-  const isDark = theme === 'dark'
-  let statusBar: StatusBarStyle = 'dark-content'
+  const isLight = theme === 'light'
+  let statusBar: StatusBarStyle = 'light-content'
   if (props.statusBar) statusBar = props.statusBar
-  else if (isDark) statusBar = 'light-content'
-  else if (insets.top === 0) statusBar = 'light-content'
+  else if (isLight && insets.top !== 0) statusBar = 'dark-content'
+
+  const { autoPaddingHorizontal, bgBaseOnTheme } = props
+  const paddingHorizontal = autoPaddingHorizontal && { paddingHorizontal: spacing[6] }
 
   return (
     <KeyboardAvoidingView
-      style={[preset.outer, { backgroundColor }]}
+      style={[preset.outer, backgroundStyle]}
       behavior={isIos ? 'padding' : null}
       keyboardVerticalOffset={offsets[props.keyboardOffset || 'none']}
     >
-      <StatusBar barStyle={statusBar} />
-      <View style={[preset.inner, style, insetStyle]}>{props.children}</View>
-      <SafeAreaView style={{ backgroundColor }} />
+      <StatusBar barStyle={statusBar || 'light-content'} />
+      <View
+        style={[preset.inner, style, paddingHorizontal, insetStyle]}
+        bgBaseOnTheme={bgBaseOnTheme}
+      >
+        {props.children}
+      </View>
     </KeyboardAvoidingView>
   )
 }
 
 function ScreenWithScrolling(props: ScreenProps) {
   const insets = useSafeArea()
+  const { color, theme } = useThemes()
   const preset = presets.scroll
   const style = props.style || {}
-  const { color, theme } = useThemes()
-  const backgroundColor = props.backgroundColor
-    ? props.backgroundColor
-    : color['background-basic-color-1']
-  const insetStyle = { paddingTop: props.unsafe ? 0 : insets.top }
+  const { autoPaddingHorizontal, bgBaseOnTheme } = props
 
-  const isDark = theme === 'dark'
-  let statusBar: StatusBarStyle = 'dark-content'
+  const isLight = theme === 'light'
+  let statusBar: StatusBarStyle = 'light-content'
   if (props.statusBar) statusBar = props.statusBar
-  else if (isDark) statusBar = 'light-content'
-  else if (insets.top === 0) statusBar = 'light-content'
+  else if (isLight && insets.top !== 0) statusBar = 'dark-content'
+
+  let backgroundStyle: any = bgBaseOnTheme && { backgroundColor: color['background-basic-color-1'] }
+  backgroundStyle = props.backgroundColor
+    ? { backgroundColor: props.backgroundColor }
+    : backgroundStyle
+  const insetStyle = { paddingTop: props.unsafe ? 0 : insets.top }
+  const paddingHorizontal = autoPaddingHorizontal && { paddingHorizontal: spacing[6] }
 
   return (
-    <ScrollView
-      style={[preset.outer, { backgroundColor }]}
-      contentContainerStyle={[preset.inner, style]}
+    <KeyboardAvoidingView
+      style={[preset.outer, backgroundStyle]}
+      behavior={isIos ? 'padding' : null}
+      keyboardVerticalOffset={offsets[props.keyboardOffset || 'none']}
     >
-      {props.children}
-    </ScrollView>
+      <StatusBar barStyle={statusBar || 'light-content'} />
+      <View style={[preset.outer, backgroundStyle, insetStyle]}>
+        <ScrollView
+          style={[preset.outer, backgroundStyle]}
+          contentContainerStyle={[preset.inner, paddingHorizontal, style]}
+        >
+          {props.children}
+        </ScrollView>
+      </View>
+    </KeyboardAvoidingView>
   )
 }
 

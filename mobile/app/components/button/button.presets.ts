@@ -6,7 +6,11 @@ import { palette } from 'theme/palette'
 /**
  * All text will start off looking like this.
  */
-const BASE_VIEW: ViewStyle = {}
+const BASE_VIEW: ViewStyle = {
+  paddingHorizontal: spacing[6],
+  paddingVertical: spacing[2],
+  borderRadius: spacing[1],
+}
 
 const BASE_TEXT: TextStyle = {}
 

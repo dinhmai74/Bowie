@@ -1,20 +1,20 @@
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable react-native/no-color-literals */
 
-import * as React from "react"
-import { View, ViewStyle } from "react-native"
-import { storiesOf } from "@storybook/react-native"
-import { StoryScreen, Story, UseCase } from "../../../storybook/views"
-import { Toggle } from "react-powerplug"
-import { Switch } from "./switch"
+import * as React from 'react'
+import { View, ViewStyle } from 'react-native'
+import { storiesOf } from '@storybook/react-native'
+import { StoryScreen, Story, UseCase } from '../../../storybook/views'
+import { Toggle } from 'react-powerplug'
+import { Switch } from './switch'
 
 declare let module
 
-const styleArray: ViewStyle[] = [{ borderColor: "#686868" }]
+const styleArray: ViewStyle[] = [{ borderColor: '#686868' }]
 
-storiesOf("Switch", module)
+storiesOf('Switch', module)
   .addDecorator(fn => <StoryScreen>{fn()}</StoryScreen>)
-  .add("Behaviour", () => (
+  .add('Behaviour', () => (
     <Story>
       <UseCase text="The Toggle Switch" usage="Use the switch to represent on/off states.">
         <Toggle initial={false}>
@@ -29,7 +29,7 @@ storiesOf("Switch", module)
       </UseCase>
     </Story>
   ))
-  .add("Styling", () => (
+  .add('Styling', () => (
     <Story>
       <UseCase text="Custom Styling" usage="Promise me this won't happen.">
         <Toggle initial={false}>

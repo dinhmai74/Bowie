@@ -1,4 +1,4 @@
-import NetInfo from "@react-native-community/netinfo"
+import NetInfo from '@react-native-community/netinfo'
 
 /**
  * Web networks status implementation based on: Mozilla

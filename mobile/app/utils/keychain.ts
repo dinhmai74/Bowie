@@ -1,4 +1,4 @@
-import * as ReactNativeKeychain from "react-native-keychain"
+import * as ReactNativeKeychain from 'react-native-keychain'
 
 /**
  * Saves some credentials securely.
@@ -23,15 +23,15 @@ export async function save(username: string, password: string, server?: string) 
  */
 export async function load(server?: string) {
   if (server) {
-    const creds = await ReactNativeKeychain.getInternetCredentials(server)
+    // const creds = await ReactNativeKeychain.getInternetCredentials(server)
     return {
-      username: creds.username,
-      password: creds.password,
+      // username: creds.username,
+      // password: creds.password,
       server,
     }
   } else {
     const creds = await ReactNativeKeychain.getGenericPassword()
-    if (typeof creds === "object") {
+    if (typeof creds === 'object') {
       return {
         username: creds.username,
         password: creds.password,
@@ -61,3 +61,5 @@ export async function reset(server?: string) {
     return result
   }
 }
+
+export const KeychainStorage = { save, load, reset }

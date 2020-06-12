@@ -1,6 +1,6 @@
-import { set, useCode, Value } from "react-native-reanimated"
-import { useMemoOne } from "use-memo-one"
-import { runTimingOb } from "utils"
+import { set, useCode, Value } from 'react-native-reanimated'
+import { useMemoOne } from 'use-memo-one'
+import { runTimingOb } from 'utils'
 
 export const useSignInAnimations = duration => {
   const {

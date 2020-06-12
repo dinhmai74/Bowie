@@ -105,4 +105,12 @@ export class Event extends BaseEntity {
   @Field()
   @Property()
   information: Information
+
+  @Field(() => String, { nullable: true })
+  @Property()
+  galleries: string[]
+
+  @Field(() => String, { nullable: true })
+  @Property()
+  thumbnail: string
 }

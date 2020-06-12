@@ -1,1 +1,1 @@
-export * from "./get-elevation"
+export * from './get-elevation'

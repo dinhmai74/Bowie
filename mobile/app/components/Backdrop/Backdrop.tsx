@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet } from 'react-native'
+import { StyleSheet, TouchableWithoutFeedback } from 'react-native'
 import Animated, { block, call, cond, eq, useCode } from 'react-native-reanimated'
 
 const styles = StyleSheet.create({
@@ -13,6 +13,7 @@ const styles = StyleSheet.create({
 
 export interface BackdropProps {
   fall: Animated.Node<number>
+  onPress?: () => void
 }
 
 export const Backdrop: React.FunctionComponent<BackdropProps> = props => {
@@ -35,14 +36,20 @@ export const Backdrop: React.FunctionComponent<BackdropProps> = props => {
   }, [fall])
 
   return (
-    <Animated.View
-      pointerEvents={show ? 'auto' : 'none'}
-      style={[
-        styles.shadowContainer,
-        {
-          opacity: animatedShadowOpacity,
-        },
-      ]}
-    />
+    <TouchableWithoutFeedback
+      onPress={() => {
+        props.onPress && props.onPress()
+      }}
+    >
+      <Animated.View
+        pointerEvents={show ? 'auto' : 'none'}
+        style={[
+          styles.shadowContainer,
+          {
+            opacity: animatedShadowOpacity,
+          },
+        ]}
+      />
+    </TouchableWithoutFeedback>
   )
 }

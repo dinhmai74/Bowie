@@ -1,6 +1,6 @@
-import React, { Component } from "react"
-import Animated, { AnimatedNode } from "react-native-reanimated"
-import { PanGestureHandler, State } from "react-native-gesture-handler"
+import React, { Component } from 'react'
+import { PanGestureHandler, State } from 'react-native-gesture-handler'
+import Animated from 'react-native-reanimated'
 
 const {
   add,
@@ -73,7 +73,7 @@ function snapTo(target, snapPoints, best, clb, dragClb) {
             clb && clb({ nativeEvent: { ...pt, index } })
             dragClb &&
               dragClb({
-                nativeEvent: { x, y, targetSnapPointId: pt.id, state: "end" },
+                nativeEvent: { x, y, targetSnapPointId: pt.id, state: 'end' },
               })
           }
         })
@@ -212,9 +212,9 @@ export class InteractableView extends Component<Props> {
 
   private _snapAnchor: { tension: any; x: any; y: any; damping: any }
 
-  private _transX: AnimatedNode<number>
+  private _transX: Animated.Node<number>
 
-  private _transY: AnimatedNode<number>
+  private _transY: Animated.Node<number>
 
   constructor(props) {
     super(props)
@@ -292,7 +292,7 @@ export class InteractableView extends Component<Props> {
     const handleStartDrag =
       props.onDrag &&
       call([target.x, target.y], ([x, y]) =>
-        props.onDrag({ nativeEvent: { x, y, state: "start" } }),
+        props.onDrag({ nativeEvent: { x, y, state: 'start' } }),
       )
 
     const snapBuckets = [[], [], []]
@@ -369,9 +369,9 @@ export class InteractableView extends Component<Props> {
       [
         props.onStop
           ? cond(
-            clockRunning(clock),
-            call([target.x, target.y], ([x, y]) => props.onStop({ nativeEvent: { x, y } })),
-          )
+              clockRunning(clock),
+              call([target.x, target.y], ([x, y]) => props.onStop({ nativeEvent: { x, y } })),
+            )
           : undefined,
         stopClock(clock),
       ],
@@ -437,8 +437,8 @@ export class InteractableView extends Component<Props> {
     this._position = target
     this._snapAnchor = snapAnchor
 
-    this._transX = trans("x", "vx", "left", "right")
-    this._transY = trans("y", "vy", "top", "bottom")
+    this._transX = trans('x', 'vx', 'left', 'right')
+    this._transY = trans('y', 'vy', 'top', 'bottom')
   }
 
   render() {

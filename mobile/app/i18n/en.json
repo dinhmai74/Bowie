@@ -6,14 +6,26 @@
     "loading": "Loading...",
     "or": "Or",
     "public": "Public",
-    "secret": "Secret"
+    "secret": "Secret",
+    "next": "Next",
+    "pre": "Prev",
+    "from": "From",
+    "to": "To",
+    "done": "Done",
+    "exit": "Exit",
+    "choose": "Choose",
+    "hosted": "Hosted"
+  },
+  "warning": {
+    "youAreOffline": "You are offline now, we will send a request when you online later"
   },
   "errors": {
     "invalidUser": "Invalid user.",
     "invalidEmail": "Invalid email address.",
     "required": "This field is required",
     "common": "Sorry, something wrong happen",
-    "permissionLocation": "Permission to access location was denied"
+    "permissionLocation": "Permission to access location was denied",
+    "requiredField": "This field is required"
   },
   "welcomeScreen": {
     "poweredBy": "POWERED BY BOWSER",
@@ -78,7 +90,8 @@
     "information": "Information",
     "join": "Join",
     "wannaJoinAs": "Wanna join as",
-    "member": "Member"
+    "member": "Member",
+    "gallary": "Gallery"
   },
   "viewMapScreen": {
     "header": "Map"
@@ -86,7 +99,32 @@
   "savedScreen": {
     "header": "Joined events",
     "myHostedEvent": "My hosted's events",
-    "myJoinedEvent": "My joined's events"
+    "myJoinedEvent": "My joined's events",
+    "empty": {
+      "desc": "Find events in explore or your friends’s party list."
+    }
+  },
+  "createNewEventScreen": {
+    "header": "Host new event",
+    "chosePosLabel": "Chose the place's position",
+    "chosePlaceTitleLabel": "Chose the place's title",
+    "orPickFromMap": "Or pick from from map",
+    "time": {
+      "willBeHeldOn": "Will be held on:"
+    },
+    "info": {
+      "yourEventWillBeName": "Your events will name:",
+      "details": "Details",
+      "eventstag": "Event's tags",
+      "trendingTags": "Trending tags:",
+      "selectedTags": "Selected tags:",
+      "orNewOne": "Or new one:",
+      "creatingEvent": "Creating event",
+      "loadingDesc": "It may take a second, please be patience",
+      "createSuccess": "Your events was created. We will navigate back in a few seconds",
+      "pickThumbnail": "Pick group's thumbnail",
+      "pickGallaries": "Pick some gallaries"
+    }
   },
   "en": "English",
   "vi": "Vietnamese"

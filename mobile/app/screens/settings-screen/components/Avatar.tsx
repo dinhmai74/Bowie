@@ -1,5 +1,5 @@
 import { Avatar as KittenAvatar } from '@ui-kitten/components'
-import { GetCurrentUserInfoQuery, useGetImgLazyQuery, useGetImgQuery } from 'app-graphql'
+import { GetCurrentUserInfoQuery, useGetImgQuery } from 'app-graphql'
 import { Text, View } from 'components'
 import React from 'react'
 import { ImageStyle, StyleSheet } from 'react-native'

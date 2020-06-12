@@ -23,12 +23,9 @@ export const AppRoutes = {
   Settings: 'Settings',
   homeStack: 'homeStack',
   createNewEvent: 'createNewEvent',
+  createNewEventTime: 'createNewEventTime',
+  createNewEventInfo: 'createNewEventInfo',
   eventDetail: 'eventDetail',
   primaryStack: 'primaryStack',
   viewMap: 'viewMap',
-}
-
-export const DateFormat = {
-  hourMinuteWithIndicator: 'HH:mm a',
-  fullDateTime: 'DD MMM [at] HH:mm a',
 }

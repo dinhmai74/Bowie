@@ -1,5 +1,5 @@
-import React from "react"
-import { PartialState, NavigationState, NavigationContainerRef } from "@react-navigation/native"
+import React from 'react'
+import { PartialState, NavigationState, NavigationContainerRef } from '@react-navigation/native'
 
 export const RootNavigation = {
   navigate(name: string) {

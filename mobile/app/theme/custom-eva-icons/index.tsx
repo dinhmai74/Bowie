@@ -1,28 +1,17 @@
-import React from "react"
-import { StyleSheet, TouchableOpacity } from "react-native"
-import { metrics } from "theme/metrics"
+import React from 'react'
+import { StyleSheet, TouchableOpacity } from 'react-native'
+import { metrics } from 'theme/metrics'
 // import Icon from "react-native-vector-icons/Feather"
 
-function NewIcon({
-  name,
-  style,
-  size,
-  fill,
-  width,
-  height: PHeight,
-  color,
-  onPress,
-  Icon,
-  ...rest
-}) {
+function NewIcon({ name, style, size, onPress, Icon, ...rest }) {
   const { height, tintColor, ...iconStyle } = StyleSheet.flatten(style || {})
   if (onPress) {
     return (
       <TouchableOpacity onPress={onPress}>
         <Icon
           name={name}
-          size={height || size || width || PHeight}
-          color={tintColor || fill || color}
+          size={height || size || metrics.icon.md}
+          color={tintColor}
           style={iconStyle}
           {...rest}
         />
@@ -32,8 +21,8 @@ function NewIcon({
   return (
     <Icon
       name={name}
-      size={height || size || width || PHeight || metrics.icon.md}
-      color={tintColor || fill || color}
+      size={height || size || metrics.icon.md}
+      color={tintColor}
       style={iconStyle}
       {...rest}
     />

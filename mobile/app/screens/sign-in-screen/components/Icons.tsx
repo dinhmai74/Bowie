@@ -1,10 +1,10 @@
-import { Icon } from "@ui-kitten/components"
-import React from "react"
-import { TouchableOpacity } from "react-native-gesture-handler"
+import { Icon } from '@ui-kitten/components'
+import React from 'react'
+import { TouchableOpacity } from 'react-native-gesture-handler'
 
 export const EyeIcon = ({ style, secureTextEntry, onPress, ...rest }) => (
   <TouchableOpacity onPress={onPress}>
-    <Icon style={style} name={secureTextEntry ? "ios-eye-off" : "ios-eye"} {...rest} />
+    <Icon style={style} name={secureTextEntry ? 'ios-eye-off' : 'ios-eye'} {...rest} />
   </TouchableOpacity>
 )
 

@@ -8,7 +8,7 @@ const deg2rad = angle => {
 const rad2deg = angle => {
   return angle * 57.29577951308232 // angle / Math.PI * 180
 }
-export const getCoordAlpha = (latitude: number, radiusInKM: number = 1.5) => {
+export const getCoordAlpha = (latitude: number, radiusInKM = 1.5) => {
   const radiusInRad = radiusInKM / earthRadiusInKM
   const longitudeDelta = rad2deg(radiusInRad / Math.cos(deg2rad(latitude)))
   const latitudeDelta = aspectRatio * rad2deg(radiusInRad)

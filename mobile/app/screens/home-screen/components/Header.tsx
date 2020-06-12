@@ -1,5 +1,4 @@
-import { Icon } from '@ui-kitten/components'
-import { Text, View } from 'components'
+import { AppKittenIcon, Text, View } from 'components'
 import React from 'react'
 import styled from 'styled-components'
 import { spacing } from 'theme'
@@ -18,9 +17,9 @@ export const Header: React.FC<HeaderProps> = props => {
   const { onRefresh } = props
   return (
     <Container>
-      <Text tx="homeScreen.header" preset="h2medium" />
+      <Text tx="homeScreen.header" preset="h1medium" />
       <View>
-        <Icon
+        <AppKittenIcon
           name="refresh-cw"
           onPress={() => {
             onRefresh()
