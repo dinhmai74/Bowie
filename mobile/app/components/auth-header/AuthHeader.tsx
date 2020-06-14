@@ -1,12 +1,13 @@
-import React from 'react'
-import { View, TouchableOpacity } from 'react-native'
+import { useNavigation } from '@react-navigation/native'
+import { Icon } from '@ui-kitten/components'
 import { useObserver } from 'mobx-react-lite'
+import React from 'react'
+import { TouchableOpacity, View } from 'react-native'
+import { metrics, useThemes } from 'theme'
 import { Text } from '../text/text'
 // import { useStores } from "../../models/root-store"
 import { authHeaderStyles as styles } from './AuthHeaderstyles'
-import { Icon } from '@ui-kitten/components'
-import { metrics, useThemes } from 'theme'
-import { useNavigation } from '@react-navigation/native'
+import { AppKittenIcon } from 'components/app-kitten-icon/AppKittenIcon'
 
 export interface AuthHeaderProps {
   onBack?: () => void
@@ -15,7 +16,7 @@ export interface AuthHeaderProps {
 export const AuthHeader: React.FunctionComponent<AuthHeaderProps> = props => {
   // const { someStore } = useStores()
 
-  const { color, toggle, theme } = useThemes()
+  const { toggle, theme } = useThemes()
   const { onBack } = props
   const navigation = useNavigation()
 
@@ -29,19 +30,13 @@ export const AuthHeader: React.FunctionComponent<AuthHeaderProps> = props => {
           onBack ? onBack() : navigation.goBack()
         }}
       >
-        <Icon
-          name="ios-arrow-back"
-          size={metrics.icon.md}
-          fill={color['color-basic-600']}
-          pack="ionicons"
-        />
+        <AppKittenIcon name="ios-arrow-back" size={metrics.icon.md} pack="ionicons" />
         <Text style={styles.title} tx="auth.welcome" />
       </TouchableOpacity>
 
-      <Icon
+      <AppKittenIcon
         name={themeIcon}
         size={metrics.icon.md}
-        fill={color['color-basic-600']}
         pack="feather"
         onPress={() => toggle()}
       />

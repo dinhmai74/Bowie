@@ -1,10 +1,12 @@
 import { useLoginMutation, useSignUpMutation } from 'app-graphql'
 import { AuthHeader, Button, Screen, SizedBox, Text, TextField, View } from 'components'
+import { useSnackBars } from 'hooks'
 import { observer } from 'mobx-react-lite'
+import { useAuthContext } from 'navigation/root-navigator'
 // import { useAuthContext } from 'navigation'
 import React, { useRef, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
-import { StyleSheet, TouchableOpacity } from 'react-native'
+import { StyleSheet } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
 import Animated, { set, Transition, Transitioning, useCode } from 'react-native-reanimated'
 import { mix } from 'react-native-redash'
@@ -22,8 +24,6 @@ import {
 } from 'utils'
 import { EyeIcon, FBicon } from './components/Icons'
 import { useSignInAnimations } from './hooks'
-import { useSnackBars } from 'hooks'
-import { useAuthContext } from 'navigation/root-navigator'
 // import { useSnackBars } from 'hooks/app-snackbar-provider'
 
 export interface SignInScreenProps {
@@ -32,7 +32,7 @@ export interface SignInScreenProps {
 
 const formTransition = (
   <Transition.Sequence>
-    <Transition.Out type="scale" />
+    <Transition.Out type="fade" />
     <Transition.Change interpolation="easeInOut" />
     <Transition.In type="fade" />
   </Transition.Sequence>
@@ -229,15 +229,15 @@ export const SignInScreen: React.FunctionComponent<SignInScreenProps> = observer
               style={styles.btnForgot}
             />
 
-            <TouchableOpacity
+            <Text
+              themeColor="color-basic-600"
+              tx={isSignIn ? 'auth.signUp' : 'auth.signIn'}
               style={styles.btnForgot}
               onPress={() => {
                 refForm.current.animateNextTransition()
                 setIsSignIn(p => !p)
               }}
-            >
-              <Text themeColor="color-basic-600" tx={isSignIn ? 'auth.signUp' : 'auth.signIn'} />
-            </TouchableOpacity>
+            />
           </Animated.View>
         </ScrollView>
 
