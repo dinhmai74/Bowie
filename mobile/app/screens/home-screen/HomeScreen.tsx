@@ -5,10 +5,10 @@ import React from 'react'
 import { StyleSheet } from 'react-native'
 import { Region } from 'react-native-maps'
 import { NavigationScreenProp } from 'react-navigation'
-import { useNetworkStatus } from 'react-offix-hooks'
 import { getLocationAsync, nDelay } from 'utils'
 import { Header } from './components/Header'
 import { useSnackBars } from 'hooks'
+import { useNetInfo } from '@react-native-community/netinfo'
 
 const HomeWrapper: React.FC<{ onRefresh: () => void }> = ({ children, onRefresh }) => {
   return (
@@ -31,11 +31,12 @@ export interface HomeScreenProps {
   navigation: NavigationScreenProp<any, any>
 }
 
-export const HomeScreen: React.FunctionComponent<HomeScreenProps> = observer(({ navigation }) => {
+export const HomeScreen: React.FunctionComponent<HomeScreenProps> = ({ navigation }) => {
   // const { someStore } = useStores()
   const [errorGetLocation, setErrGetLocation] = React.useState<boolean>(false)
   const { addSnack } = useSnackBars()
-  const isOnline = useNetworkStatus()
+  const netInfo = useNetInfo()
+  const isOnline = netInfo.isInternetReachable
 
   const [region, setRegion] = React.useState<Region>(undefined)
 
@@ -117,4 +118,4 @@ export const HomeScreen: React.FunctionComponent<HomeScreenProps> = observer(({ 
       </View>
     </HomeWrapper>
   )
-})
+}

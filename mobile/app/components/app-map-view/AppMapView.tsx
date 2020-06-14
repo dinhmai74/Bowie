@@ -38,7 +38,12 @@ export const AppMapView: React.FunctionComponent<AppMapViewProps> = props => {
     <>
       <MapView
         style={[styles.mapStyle, style]}
-        region={props.region}
+        region={{
+          latitude: 37.78825,
+          longitude: -122.4324,
+          latitudeDelta: 0.0922,
+          longitudeDelta: 0.0421,
+        }}
         showsUserLocation={true}
         {...props}
       >

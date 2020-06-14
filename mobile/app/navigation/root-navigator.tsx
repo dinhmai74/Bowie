@@ -2,11 +2,12 @@ import { NavigationContainer, NavigationContainerRef } from '@react-navigation/n
 import { createStackNavigator } from '@react-navigation/stack'
 import { useAuthMutation, User, UserWithAvt } from 'app-graphql'
 import { useStores } from 'models/root-store'
-import React, { useEffect, useMemo } from 'react'
-import { useNetworkStatus } from 'react-offix-hooks'
+import React, { useEffect, useMemo, useState } from 'react'
 import { useForceUpdate } from 'utils/custom-hooks'
 import { load, remove, save } from 'utils/storage'
 import { AuthStack } from './auth-navigator'
+import NetInfo from '@react-native-community/netinfo'
+
 import { PrimaryStackWithModal } from './primary-navigator'
 import { RootParamList } from './types'
 
@@ -28,6 +29,7 @@ const RootStack = () => {
   const { userInfoStore } = useStores()
   const [validUser, setValidUser] = React.useState(false)
   const refresh = useForceUpdate()
+  const [isOnline, setIsOnline] = useState<boolean>(true)
 
   const removeUserInfo = () => {
     userInfoStore.clear()
@@ -51,18 +53,17 @@ const RootStack = () => {
       removeUserInfo()
     },
   })
-  const isOnline = useNetworkStatus()
 
   useEffect(() => {
     const bootstrapAsync = async () => {
-      if (isOnline) await auth()
-      else {
-        const key = await load(LOGIN_KEY)
-        if (key) setValidUser(true)
-      }
+      const key = await load(LOGIN_KEY)
+      if (key) setValidUser(true)
     }
 
-    bootstrapAsync()
+    NetInfo.fetch().then(state => {
+      if (state.isInternetReachable) auth()
+      else bootstrapAsync()
+    })
   }, [])
 
   const authContext = useMemo(

@@ -121,7 +121,14 @@ export const EventDetailScreen: React.FunctionComponent<EventDetailScreenProps> 
   return (
     <View full bgBaseOnTheme>
       <Screen>
-        <Header headerTx={event?.information?.eventName} leftIcon="back" />
+        <Header
+          headerTx={event?.information?.eventName}
+          leftIcon="back"
+          // eslint-disable-line
+          style={{
+            paddingHorizontal: spacing[4],
+          }}
+        />
         <Body>
           <EventPlace place={event?.place} />
           <AppDivider />
