@@ -2,11 +2,7 @@
   "expo": {
     "name": "bowie",
     "slug": "bowie",
-    "platforms": [
-      "ios",
-      "android",
-      "web"
-    ],
+    "platforms": ["ios", "android", "web"],
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -18,18 +14,16 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "Bowie"
+      "bundleIdentifier": "com.gon.bowie"
     },
     "extra": {
       "ip": "192.168.1.8"
     },
     "android": {
-      "package": "Bowie"
+      "package": "com.gon.bowie"
     },
     "entryPoint": "node_modules/expo/AppEntry.js"
   }

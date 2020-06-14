@@ -130,7 +130,7 @@ android {
     }
 
     defaultConfig {
-        applicationId 'Bowie'
+        applicationId 'com.gon.bowie'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

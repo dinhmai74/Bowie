@@ -1,4 +1,4 @@
-package Bowie;
+package com.gon.bowie;
 
 import android.os.Bundle;
 
