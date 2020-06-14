@@ -1,4 +1,4 @@
-import Constants from 'expo-constants'
+// import Constants from 'expo-constants'
 
 export interface ReactotronConfig {
   /** The name of the app. */
@@ -24,7 +24,7 @@ export interface ReactotronConfig {
 export const DEFAULT_REACTOTRON_CONFIG: ReactotronConfig = {
   name: 'bowie',
   clearOnLoad: true,
-  host: Constants.manifest.extra.ip,
+  host: '192.168.1.2',
   useAsyncStorage: true,
   state: {
     initial: true,
