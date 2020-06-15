@@ -71,13 +71,15 @@ export const Avatar: React.FC<AvatarProps> = props => {
             { width: 220, height: 20, marginBottom: spacing[4] },
             { width: 180, height: 20, marginBottom: spacing[4] },
           ]}
-        >
-          <Text preset="h3">Hi, {toCapitalize(userName)}</Text> */}
+        > */}
+        <View style={styles.skeContainer}>
+          <Text preset="h3">Hi, {toCapitalize(userName)}</Text>
 
-        <Text
-          tx={'settingsScreen.viewAndEdit'}
-          themeColor={theme === 'dark' ? 'color-basic-500' : 'color-primary-700'}
-        />
+          <Text
+            tx={'settingsScreen.viewAndEdit'}
+            themeColor={theme === 'dark' ? 'color-basic-500' : 'color-primary-700'}
+          />
+        </View>
         {/* </SkeletonContent> */}
       </TouchableOpacity>
     </Container>

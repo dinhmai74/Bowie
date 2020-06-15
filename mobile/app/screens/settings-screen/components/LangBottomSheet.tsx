@@ -95,8 +95,6 @@ export const LangBottomSheet: React.FC<LangBottomSheetProps> = ({ bs }) => {
     )
   }
 
-  console.log('bs', fall)
-
   return (
     <>
       <BottomSheet

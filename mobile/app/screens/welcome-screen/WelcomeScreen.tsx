@@ -1,14 +1,12 @@
 import { Button, Screen, SizedBox, Text, View } from 'components'
-import React, { useState } from 'react'
+import React from 'react'
 import { Image, StyleSheet } from 'react-native'
 // import Animated, { Clock, set, useCode, Value } from 'react-native-reanimated'
 // import { mix } from 'react-native-redash'
 import { useSafeArea } from 'react-native-safe-area-context'
 import { NavigationInjectedProps } from 'react-navigation'
 import { images, metrics, spacing } from 'theme'
-import { useMemoOne } from 'use-memo-one'
 import { AppRoutes } from 'utils'
-import { runTiming, runTimingWithEndAction } from 'utils/reanimated'
 
 export interface WelcomeScreenProps extends NavigationInjectedProps<{}> {}
 

@@ -1,14 +1,13 @@
+import { useNetInfo } from '@react-native-community/netinfo'
 import { NavigationContainer, NavigationContainerRef } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
-import { User, UserWithAvt, useAuthMutation } from 'app-graphql'
-import React, { useState, useEffect, useMemo } from 'react'
-import { Text, View } from 'react-native'
-import { useStores } from 'models/root-store'
+import { useAuthMutation, User, UserWithAvt } from 'app-graphql'
 import { useForceUpdate } from 'mobx-react-lite'
-import { save, load, remove } from 'utils'
+import { useStores } from 'models/root-store'
 import { AuthStack } from 'navigation/auth-navigator'
 import { PrimaryStackWithModal } from 'navigation/primary-navigator'
-import { useNetInfo } from '@react-native-community/netinfo'
+import React, { useEffect, useMemo } from 'react'
+import { load, remove, save } from 'utils'
 
 export const AuthContext = React.createContext<AuthContextState>({} as AuthContextState)
 
@@ -35,6 +34,7 @@ const RootStack = () => {
     userInfoStore.clear()
     setValidUser(false)
     remove(LOGIN_KEY)
+    refresh()
   }
 
   const saveUserInfo = (d: User | UserWithAvt) => {
@@ -83,21 +83,25 @@ const RootStack = () => {
         }}
       >
         {!isHaveCookie ? (
-          <Stack.Screen
-            name="authStack"
-            component={AuthStack}
-            options={{
-              headerShown: false,
-            }}
-          />
+          <>
+            <Stack.Screen
+              name="authStack"
+              component={AuthStack}
+              options={{
+                headerShown: false,
+              }}
+            />
+          </>
         ) : (
-          <Stack.Screen
-            name="primaryStackWithModal"
-            component={PrimaryStackWithModal}
-            options={{
-              headerShown: false,
-            }}
-          />
+          <>
+            <Stack.Screen
+              name="primaryStackWithModal"
+              component={PrimaryStackWithModal}
+              options={{
+                headerShown: false,
+              }}
+            />
+          </>
         )}
       </Stack.Navigator>
     </AuthContext.Provider>
@@ -114,13 +118,5 @@ export const RootNavigator = React.forwardRef<
     </NavigationContainer>
   )
 })
-
-function HomeScreen() {
-  return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>Home Scren1</Text>
-    </View>
-  )
-}
 
 RootNavigator.displayName = 'RootNavigator'

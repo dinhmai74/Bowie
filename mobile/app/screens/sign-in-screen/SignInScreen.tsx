@@ -7,20 +7,11 @@ import { useAuthContext } from 'navigation/root-navigator'
 import React, { useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { ScrollView, StyleSheet } from 'react-native'
-import Animated, { set, Transition, useCode } from 'react-native-reanimated'
-import { mix } from 'react-native-redash'
+import Animated from 'react-native-reanimated'
 // import { useStores } from "models/root-store"
 import { NavigationScreenProp } from 'react-navigation'
-import { images, metrics, sh, spacing, sw, useThemes } from 'theme'
-import {
-  getOpacity,
-  getScaleAndOpacity,
-  getTranslateX,
-  mailRegex,
-  nDelay,
-  runTimingWithEndActionOB,
-  useLayout,
-} from 'utils'
+import { images, metrics, spacing, useThemes } from 'theme'
+import { mailRegex, nDelay, useLayout } from 'utils'
 import { EyeIcon, FBicon } from './components/Icons'
 // import { useSignInAnimations } from './hooks'
 // import { useSnackBars } from 'hooks/app-snackbar-provider'

@@ -1,11 +1,10 @@
 import { EventWithHost, useGetEventByCoordLazyQuery } from 'app-graphql'
 import { AppError, AppLoading, AppMapView, Screen, SizedBox, View } from 'components'
-import { observer } from 'mobx-react-lite'
 import React from 'react'
 import { StyleSheet } from 'react-native'
 import { Region } from 'react-native-maps'
 import { NavigationScreenProp } from 'react-navigation'
-import { getLocationAsync, nDelay } from 'utils'
+import { getLocationAsync } from 'utils'
 import { Header } from './components/Header'
 import { useSnackBars } from 'hooks'
 import { useNetInfo } from '@react-native-community/netinfo'
@@ -77,6 +76,7 @@ export const HomeScreen: React.FunctionComponent<HomeScreenProps> = ({ navigatio
     }
   }
 
+  // @ts-ignore
   React.useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
       refetch()

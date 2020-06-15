@@ -1,5 +1,6 @@
 // In App.js in a new project
-
+import './utils/ignore-warnings'
+import './i18n'
 import { mapping } from '@eva-design/eva'
 import { NavigationContainerRef } from '@react-navigation/native'
 import { ApplicationProvider, IconRegistry } from '@ui-kitten/components'
@@ -52,8 +53,8 @@ function App() {
 
   React.useEffect(() => {
     ;(async () => {
-      await initFonts()
       setupRootStore().then(setRootStore)
+      await initFonts()
 
       // load persist local
       const localeState = await storage.load(LOCALE_PERSISTENCE_KEY)
