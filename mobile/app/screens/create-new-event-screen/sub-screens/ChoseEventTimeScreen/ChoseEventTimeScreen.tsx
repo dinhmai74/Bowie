@@ -9,7 +9,7 @@ import { Platform } from 'react-native'
 import { NewEventHeader } from 'screens/create-new-event-screen/components/NewEventHeader'
 import styled from 'styled-components'
 import { images, metrics, spacing } from 'theme'
-import { useImmer } from 'use-immer'
+import { useCustomImmer } from 'hooks'
 import { AppRoutes } from 'utils/strings'
 import { DatePicker } from './DatePicker'
 import { combineDateAndTime } from 'utils/DateHelper'
@@ -38,7 +38,7 @@ export const ChoseEventTimeScreen: React.FC = () => {
   const navigation = useNavigation()
   const { createNewEventStore } = useStores()
   const [date, setDate] = React.useState(moment(createNewEventStore.startTime) || moment())
-  const [showTimepicker, setShowTimepicker] = useImmer({
+  const [showTimepicker, setShowTimepicker] = useCustomImmer({
     to: false,
     from: false,
   })
@@ -46,7 +46,7 @@ export const ChoseEventTimeScreen: React.FC = () => {
     ? new Date(createNewEventStore.startTime)
     : new Date()
   const dfTo = createNewEventStore.endTime ? new Date(createNewEventStore.endTime) : new Date()
-  const [time, setTime] = useImmer({
+  const [time, setTime] = useCustomImmer({
     from: dffrom,
     to: dfTo,
   })

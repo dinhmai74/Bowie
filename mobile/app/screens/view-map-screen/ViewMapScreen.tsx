@@ -9,7 +9,7 @@ import MapView, { LatLng, Marker, Region } from 'react-native-maps'
 import { NativeStackNavigationProp } from 'react-native-screens/native-stack'
 import { spacing } from 'theme'
 import { getCoordAlpha } from 'utils'
-import { useImmer } from 'use-immer'
+import { useCustomImmer } from 'hooks'
 
 const styles = StyleSheet.create({
   header: {
@@ -33,13 +33,13 @@ export const ViewMapScreen: React.FunctionComponent<ViewMapScreenProps> = observ
   // const rootStore = useStores()
   const { params } = useRoute<ScreenRouteProps>()
   const { longitudeDelta, latitudeDelta } = getCoordAlpha(params?.coord.latitude)
-  const [region] = useImmer<Region>({
+  const [region] = useCustomImmer<Region>({
     latitude: params?.coord?.latitude,
     longitude: params?.coord?.longitude,
     latitudeDelta,
     longitudeDelta,
   })
-  const [coord, setCoord] = useImmer<LatLng>({
+  const [coord, setCoord] = useCustomImmer<LatLng>({
     latitude: params?.coord?.latitude,
     longitude: params?.coord?.longitude,
   })

@@ -1,9 +1,11 @@
+import { Modal } from '@ui-kitten/components'
 import { Text, View } from 'components'
-import React from 'react'
-import { Modal, TouchableOpacity } from 'react-native'
+import React, { useState } from 'react'
+import { TouchableOpacity } from 'react-native'
 import MapView, { LatLng, Marker, Region } from 'react-native-maps'
 import styled from 'styled-components'
-import { spacing } from 'theme'
+import { sh, spacing, sw } from 'theme'
+import { useImmer } from 'use-immer'
 import { getCoordAlpha } from 'utils/calcCoordAlpha'
 import { getLocationAsync } from 'utils/get-location'
 
@@ -16,31 +18,40 @@ export const PickPositionModal: React.FC<PickPositionModalProps> = ({ onSubmit }
   const latitude = 0
   const longitude = 0
   const { longitudeDelta, latitudeDelta } = getCoordAlpha(latitude)
-  // const [region, setRegion] = useImmer<Region>({
-  //   latitude: latitude,
-  //   longitude: longitude,
-  //   latitudeDelta,
-  //   longitudeDelta,
-  // })
-  // const [coord, setCoord] = useImmer<LatLng>({
-  //   latitude: latitude,
-  //   longitude: longitude,
-  // })
+  const [region, setRegion] = useState<Region>({
+    latitude: latitude,
+    longitude: longitude,
+    latitudeDelta,
+    longitudeDelta,
+  })
+  const [coord, setCoord] = useState<LatLng>({
+    latitude: latitude,
+    longitude: longitude,
+  })
 
   const setPosition = (r: Region) => {
     const { longitudeDelta, latitudeDelta } = getCoordAlpha(r.latitude)
-    // setRegion(d => {
-    //   d.latitude = r.latitude
-    //   d.longitude = r.longitude
-    //   d.latitudeDelta = longitudeDelta
-    //   d.latitudeDelta = latitudeDelta
-    // })
+    setRegion(p => ({
+      ...p,
+      latitude: r.latitude,
+      longitude: r.longitude,
+      latitudeDelta,
+      longitudeDelta,
+    }))
 
-    // setCoord(d => {
-    //   d.latitude = r.latitude
-    //   d.longitude = r.longitude
-    // })
+    setCoord(p => ({
+      ...p,
+      latitude: r.latitude,
+      longitude: r.longitude,
+    }))
   }
+
+  const [temp, setTemp] = useImmer({
+    latitude: 0,
+    longitude: 0,
+  })
+
+  console.log('t', temp, setTemp)
 
   React.useEffect(() => {
     getLocationAsync().then(r => {
@@ -48,7 +59,7 @@ export const PickPositionModal: React.FC<PickPositionModalProps> = ({ onSubmit }
     })
   }, [])
 
-  // const coordString = `${coord.latitude.toFixed(3)}, ${coord.longitude.toFixed(3)}`
+  const coordString = `${coord.latitude.toFixed(3)}, ${coord.longitude.toFixed(3)}`
 
   return (
     <>
@@ -58,49 +69,46 @@ export const PickPositionModal: React.FC<PickPositionModalProps> = ({ onSubmit }
         }}
       >
         <Text tx="createNewEventScreen.orPickFromMap" status="primary" />
+
+        <Modal visible={visible}>
+          <Container bgBaseOnTheme>
+            <SHeader>
+              <Text tx="common.back" status="primary" onPress={() => setVisible(false)} />
+              <Text text={coordString} preset="h2medium" />
+              <Text
+                tx="common.done"
+                status="primary"
+                onPress={() => {
+                  onSubmit(coord)
+                  setVisible(false)
+                }}
+              />
+            </SHeader>
+            <MapView
+              region={region}
+              // eslint-disable-next-line
+              style={{ flex: 1 }}
+              // onRegionChangeComplete={handleRegionChange}
+            >
+              <Marker
+                coordinate={coord}
+                title={coordString}
+                draggable
+                onDragEnd={e => {
+                  if (e.nativeEvent.coordinate) {
+                    const { latitude, longitude } = e.nativeEvent.coordinate
+
+                    setCoord({
+                      latitude,
+                      longitude,
+                    })
+                  }
+                }}
+              />
+            </MapView>
+          </Container>
+        </Modal>
       </TouchableOpacity>
-
-      <Modal visible={visible}>
-        <SHeader>
-          <Text tx="common.back" status="primary" onPress={() => setVisible(false)} />
-          {/* <Text text={coordString} preset="h2medium" /> */}
-          <Text
-            tx="common.done"
-            status="primary"
-            onPress={() => {
-              // if (onSubmit) onSubmit(coord)
-              setVisible(false)
-            }}
-          />
-        </SHeader>
-
-        {/* <MapView
-          region={region}
-          // eslint-disable-next-line
-          style={{ flex: 1 }}
-          // onRegionChangeComplete={handleRegionChange}
-        >
-          <Marker
-            coordinate={coord}
-            title={coordString}
-            draggable
-            onDragEnd={e => {
-              if (e.nativeEvent.coordinate) {
-                const { latitude, longitude } = e.nativeEvent.coordinate
-                console.tron.log('dragEnd', latitude, longitude)
-
-                setCoord(d => {
-                  d.latitude = latitude
-                  d.longitude = longitude
-                })
-              }
-            }}
-            onPress={() => {
-              console.tron.log('coord', coord)
-            }}
-          />
-        </MapView> */}
-      </Modal>
     </>
   )
 }
@@ -111,4 +119,9 @@ const SHeader = styled(View)({
   flexDirection: 'row',
   alignItems: 'center',
   justifyContent: 'space-between',
+})
+
+const Container = styled(View)({
+  width: sw,
+  height: sh,
 })

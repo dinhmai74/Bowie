@@ -95,6 +95,8 @@ export const LangBottomSheet: React.FC<LangBottomSheetProps> = ({ bs }) => {
     )
   }
 
+  console.log('bs', fall)
+
   return (
     <>
       <BottomSheet
@@ -105,8 +107,7 @@ export const LangBottomSheet: React.FC<LangBottomSheetProps> = ({ bs }) => {
         callbackNode={fall}
         borderRadius={spacing[4]}
       />
-
-      {/* <Backdrop fall={fall} onPress={closeBs} /> */}
+      <Backdrop fall={fall} onPress={() => closeBs()} />
     </>
   )
 }

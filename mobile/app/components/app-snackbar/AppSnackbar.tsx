@@ -20,7 +20,6 @@ const Wrapper = styled(View)<WrapperProps>`
   border-style: solid;
   border-left-width: 3px;
   border-radius: ${spacing[1]}px;
-  ${() => ({ ...getElevation(9) })};
 `
 
 export type SnackbarType = 'success' | 'warning' | 'danger' | 'info'
