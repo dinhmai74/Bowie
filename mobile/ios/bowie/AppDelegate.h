@@ -11,9 +11,11 @@
 #import <UMCore/UMAppDelegateWrapper.h>
 
 #import <EXUpdates/EXUpdatesAppController.h>
+@class RCTBridge; // <-add
 
 @interface AppDelegate : UMAppDelegateWrapper <RCTBridgeDelegate, EXUpdatesAppControllerDelegate>
 
+@property (nonatomic, readonly) RCTBridge *bridge; // <-add
 @property (nonatomic, strong) UMModuleRegistryAdapter *moduleRegistryAdapter;
 @property (nonatomic, strong) UIWindow *window;
 

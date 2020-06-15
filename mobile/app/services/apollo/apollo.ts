@@ -8,7 +8,7 @@ import { ReactNativeNetworkStatus } from './ReactNativeNetworkStatus'
 
 const { createUploadLink } = require('apollo-upload-client')
 
-const ip = '192.168.43.194'
+const ip = '192.168.1.7'
 const GRAPHQL_URL = `http://${Platform.OS === 'ios' ? 'localhost' : ip}:4000/graphql`
 
 // Create cache wrapper

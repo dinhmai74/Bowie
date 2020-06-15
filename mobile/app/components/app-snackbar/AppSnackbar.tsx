@@ -41,7 +41,7 @@ export const AppSnackbar: React.FunctionComponent<AppSnackbarProps> = props => {
   if (type === 'danger') message = PMessage.replace('GraphQL error:', '').trim()
 
   return (
-    <Wrapper c={`color-${type || 'success'}-500`}>
+    <Wrapper c={`color-${type || 'success'}-500`} style={getElevation()}>
       <Text preset="secondary" color={palette.black} tx={message} />
     </Wrapper>
   )
