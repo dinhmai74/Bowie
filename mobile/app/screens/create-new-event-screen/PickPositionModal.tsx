@@ -4,7 +4,6 @@ import { Modal, TouchableOpacity } from 'react-native'
 import MapView, { LatLng, Marker, Region } from 'react-native-maps'
 import styled from 'styled-components'
 import { spacing } from 'theme'
-import { useImmer } from 'use-immer'
 import { getCoordAlpha } from 'utils/calcCoordAlpha'
 import { getLocationAsync } from 'utils/get-location'
 
@@ -17,30 +16,30 @@ export const PickPositionModal: React.FC<PickPositionModalProps> = ({ onSubmit }
   const latitude = 0
   const longitude = 0
   const { longitudeDelta, latitudeDelta } = getCoordAlpha(latitude)
-  const [region, setRegion] = useImmer<Region>({
-    latitude: latitude,
-    longitude: longitude,
-    latitudeDelta,
-    longitudeDelta,
-  })
-  const [coord, setCoord] = useImmer<LatLng>({
-    latitude: latitude,
-    longitude: longitude,
-  })
+  // const [region, setRegion] = useImmer<Region>({
+  //   latitude: latitude,
+  //   longitude: longitude,
+  //   latitudeDelta,
+  //   longitudeDelta,
+  // })
+  // const [coord, setCoord] = useImmer<LatLng>({
+  //   latitude: latitude,
+  //   longitude: longitude,
+  // })
 
   const setPosition = (r: Region) => {
     const { longitudeDelta, latitudeDelta } = getCoordAlpha(r.latitude)
-    setRegion(d => {
-      d.latitude = r.latitude
-      d.longitude = r.longitude
-      d.latitudeDelta = longitudeDelta
-      d.latitudeDelta = latitudeDelta
-    })
+    // setRegion(d => {
+    //   d.latitude = r.latitude
+    //   d.longitude = r.longitude
+    //   d.latitudeDelta = longitudeDelta
+    //   d.latitudeDelta = latitudeDelta
+    // })
 
-    setCoord(d => {
-      d.latitude = r.latitude
-      d.longitude = r.longitude
-    })
+    // setCoord(d => {
+    //   d.latitude = r.latitude
+    //   d.longitude = r.longitude
+    // })
   }
 
   React.useEffect(() => {
@@ -49,7 +48,7 @@ export const PickPositionModal: React.FC<PickPositionModalProps> = ({ onSubmit }
     })
   }, [])
 
-  const coordString = `${coord.latitude.toFixed(3)}, ${coord.longitude.toFixed(3)}`
+  // const coordString = `${coord.latitude.toFixed(3)}, ${coord.longitude.toFixed(3)}`
 
   return (
     <>
@@ -64,18 +63,18 @@ export const PickPositionModal: React.FC<PickPositionModalProps> = ({ onSubmit }
       <Modal visible={visible}>
         <SHeader>
           <Text tx="common.back" status="primary" onPress={() => setVisible(false)} />
-          <Text text={coordString} preset="h2medium" />
+          {/* <Text text={coordString} preset="h2medium" /> */}
           <Text
             tx="common.done"
             status="primary"
             onPress={() => {
-              onSubmit(coord)
+              // if (onSubmit) onSubmit(coord)
               setVisible(false)
             }}
           />
         </SHeader>
 
-        <MapView
+        {/* <MapView
           region={region}
           // eslint-disable-next-line
           style={{ flex: 1 }}
@@ -100,7 +99,7 @@ export const PickPositionModal: React.FC<PickPositionModalProps> = ({ onSubmit }
               console.tron.log('coord', coord)
             }}
           />
-        </MapView>
+        </MapView> */}
       </Modal>
     </>
   )

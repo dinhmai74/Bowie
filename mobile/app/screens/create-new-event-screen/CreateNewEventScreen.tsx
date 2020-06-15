@@ -9,7 +9,7 @@ import styled from 'styled-components'
 import { metrics, spacing, sw } from 'theme'
 import { AppRoutes } from 'utils/strings'
 import { NewEventHeader } from './components/NewEventHeader'
-import { PickPositionModal } from './PickPositionModal'
+// import { PickPositionModal } from './PickPositionModal'
 
 const StyledScreen = styled(Screen)({
   backgroundColor: 'transparent',
@@ -99,12 +99,12 @@ export const CreateNewEventScreen: React.FunctionComponent<CreateNewEventScreenP
           />
 
           <SizedBox h={2} />
-          <PickPositionModal
+          {/* <PickPositionModal
             onSubmit={coord => {
               setValue('pos', `${coord?.latitude}, ${coord?.longitude}`)
               triggerValidation('pos')
             }}
-          />
+          /> */}
           <SizedBox h={4} />
 
           <TextField

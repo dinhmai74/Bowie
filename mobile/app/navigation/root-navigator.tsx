@@ -1,15 +1,14 @@
 import { NavigationContainer, NavigationContainerRef } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
-import { useAuthMutation, User, UserWithAvt } from 'app-graphql'
+import { User, UserWithAvt, useAuthMutation } from 'app-graphql'
+import React, { useState, useEffect, useMemo } from 'react'
+import { Text, View } from 'react-native'
 import { useStores } from 'models/root-store'
-import React, { useEffect, useMemo, useState } from 'react'
-import { useForceUpdate } from 'utils/custom-hooks'
-import { load, remove, save } from 'utils/storage'
-import { AuthStack } from './auth-navigator'
-import NetInfo from '@react-native-community/netinfo'
-
-import { PrimaryStackWithModal } from './primary-navigator'
-import { RootParamList } from './types'
+import { useForceUpdate } from 'mobx-react-lite'
+import { save, load, remove } from 'utils'
+import { AuthStack } from 'navigation/auth-navigator'
+import { PrimaryStackWithModal } from 'navigation/primary-navigator'
+import { useNetInfo } from '@react-native-community/netinfo'
 
 export const AuthContext = React.createContext<AuthContextState>({} as AuthContextState)
 
@@ -21,7 +20,7 @@ interface AuthContextState {
 
 export const useAuthContext = () => React.useContext(AuthContext)
 
-const Stack = createStackNavigator<RootParamList>()
+const Stack = createStackNavigator()
 
 const LOGIN_KEY = 'login'
 
@@ -29,7 +28,8 @@ const RootStack = () => {
   const { userInfoStore } = useStores()
   const [validUser, setValidUser] = React.useState(false)
   const refresh = useForceUpdate()
-  const [isOnline, setIsOnline] = useState<boolean>(true)
+  const netInfo = useNetInfo()
+  const isOnline = netInfo.isInternetReachable
 
   const removeUserInfo = () => {
     userInfoStore.clear()
@@ -56,14 +56,15 @@ const RootStack = () => {
 
   useEffect(() => {
     const bootstrapAsync = async () => {
-      const key = await load(LOGIN_KEY)
-      if (key) setValidUser(true)
+      if (isOnline) {
+        await auth()
+      } else {
+        const key = await load(LOGIN_KEY)
+        if (key) setValidUser(true)
+      }
     }
 
-    NetInfo.fetch().then(state => {
-      if (state.isInternetReachable) auth()
-      else bootstrapAsync()
-    })
+    bootstrapAsync()
   }, [])
 
   const authContext = useMemo(
@@ -113,5 +114,13 @@ export const RootNavigator = React.forwardRef<
     </NavigationContainer>
   )
 })
+
+function HomeScreen() {
+  return (
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <Text>Home Scren1</Text>
+    </View>
+  )
+}
 
 RootNavigator.displayName = 'RootNavigator'

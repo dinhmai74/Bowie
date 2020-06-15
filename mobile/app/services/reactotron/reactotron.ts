@@ -1,5 +1,5 @@
 import { onSnapshot } from 'mobx-state-tree'
-import { AsyncStorage } from 'react-native'
+import AsyncStorage from '@react-native-community/async-storage'
 import { mst } from 'reactotron-mst'
 import Tron from 'reactotron-react-native'
 import { RootStore } from '../../models/root-store/root-store'

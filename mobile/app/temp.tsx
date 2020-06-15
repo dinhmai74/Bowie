@@ -1,56 +1,96 @@
-// In App.js in a new project
+// Welcome to the main entry point of the app.
+//
+// In this file, we'll be kicking off our app or storybook.
 
 import { mapping } from '@eva-design/eva'
+// import { default as mapping } from './theme/ui-kitten.mapping.json'
 import { NavigationContainerRef } from '@react-navigation/native'
 import { ApplicationProvider, IconRegistry } from '@ui-kitten/components'
 import { i18n, LocalizationContext } from 'i18n/i18n'
-import { translate } from 'i18n/translate'
-import { RootStore } from 'models/root-store/root-store'
-import { RootStoreProvider } from 'models/root-store/root-store-context'
-import { setupRootStore } from 'models/root-store/setup-root-store'
-import {
-  setRootNavigation,
-  useBackButtonHandler,
-  useNavigationPersistence,
-} from 'navigation/navigation-utilities'
-import { RootNavigator } from 'navigation/root-navigator'
-import * as React from 'react'
+import { contains } from 'ramda'
+import React, { useEffect, useRef, useState } from 'react'
 import { ApolloProvider } from 'react-apollo'
-import { Text } from 'react-native'
+import { YellowBox } from 'react-native'
 import { initialWindowSafeAreaInsets, SafeAreaProvider } from 'react-native-safe-area-context'
-import { ApolloOfflineProvider } from 'react-offix-hooks'
-import { offlineClient } from 'services/apollo/apollo'
-import { ThemeProvider } from 'styled-components'
-import { AppThemeContext, themes } from 'theme'
-import { FeatherIconsPack } from 'theme/custom-eva-icons/feather-icon'
-import { IoniconsPack } from 'theme/custom-eva-icons/ionicons'
-import { initFonts } from 'theme/fonts'
-import * as storage from './utils/storage'
 import { enableScreens } from 'react-native-screens'
-import { SnackBarProvider } from 'hooks/app-snackbar-provider/AppSnackbarProvider'
+import { ApolloOfflineProvider } from 'react-offix-hooks'
+import { ThemeProvider } from 'styled-components'
+import { SnackBarProvider } from './hooks/app-snackbar-provider/AppSnackbarProvider'
+import { translate } from './i18n'
+import { RootStore, RootStoreProvider, setupRootStore } from './models/root-store'
+import {
+  exitRoutes,
+  RootNavigator,
+  setRootNavigation,
+  useNavigationPersistence,
+} from './navigation'
+import { useBackButtonHandler } from './navigation/use-back-button-handler'
+import { offlineClient } from './services/apollo/apollo'
+import { AppThemeContext, themes } from './theme'
+import { FeatherIconsPack } from './theme/custom-eva-icons/feather-icon'
+import { IoniconsPack } from './theme/custom-eva-icons/ionicons'
+import { initFonts } from './theme/fonts'
+import * as storage from './utils/storage'
 
+// This puts screens in a native ViewController or Activity. If you want fully native
+// stack navigation, use `createNativeStackNavigator` in place of `createStackNavigator`:
+// https://github.com/kmagiera/react-native-screens#using-native-stack-navigator
 enableScreens()
 
-const NAVIGATION_PERSISTENCE_KEY = 'NAVIGATION_STATE'
-const THEME_PERSISTENCE_KEY = 'THEME_STATE'
-const LOCALE_PERSISTENCE_KEY = 'LOCALE_STATE'
-const exitRoutes = ['welcome']
-export const canExit = (routeName: string) => exitRoutes.includes(routeName)
+/**
+ * Ignore some yellowbox warnings. Some of these are for deprecated functions
+ * that we haven't gotten around to replacing yet.
+ */
+YellowBox.ignoreWarnings([
+  'componentWillMount is deprecated',
+  'componentWillReceiveProps is deprecated',
+  'Require cycle:',
+  "Can't perform a React state",
+  'Story with',
+  'Expected style',
+])
 
-function App() {
-  const [rootStore, setRootStore] = React.useState<RootStore | undefined>(undefined)
+/**
+ * Are we allowed to exit the app?  This is called when the back button
+ * is pressed on android.
+ *
+ * @param routeName The currently active route name.
+ */
+const canExit = (routeName: string) => contains(routeName, exitRoutes)
+
+export const NAVIGATION_PERSISTENCE_KEY = 'NAVIGATION_STATE'
+export const THEME_PERSISTENCE_KEY = 'THEME_STATE'
+export const LOCALE_PERSISTENCE_KEY = 'LOCALE_STATE'
+
+/**
+ * This is the root component of our app.
+ */
+const App: React.FunctionComponent<{}> = () => {
+  const navigationRef = useRef<NavigationContainerRef>()
+  const [rootStore, setRootStore] = useState<RootStore | undefined>(undefined)
   const [theme, setTheme] = React.useState('light')
   const [locale, setLocale] = React.useState('en')
 
-  const navigationRef = React.useRef<NavigationContainerRef>()
+  const localizationContextValue = React.useMemo(
+    () => ({
+      t: (scope: string, options: any) => translate(scope, { locale, ...options }),
+      locale,
+      setLocale: (l: string) => {
+        setLocale(l)
+        storage.save(LOCALE_PERSISTENCE_KEY, l)
+      },
+    }),
+    [locale],
+  )
   setRootNavigation(navigationRef)
   useBackButtonHandler(navigationRef, canExit)
+
   const { initialNavigationState, onNavigationStateChange } = useNavigationPersistence(
     storage,
     NAVIGATION_PERSISTENCE_KEY,
   )
 
-  React.useEffect(() => {
+  useEffect(() => {
     ;(async () => {
       await initFonts()
       setupRootStore().then(setRootStore)
@@ -67,18 +107,6 @@ function App() {
     })()
   }, [])
 
-  const localizationContextValue = React.useMemo(
-    () => ({
-      t: (scope: string, options: any) => translate(scope, { locale, ...options }),
-      locale,
-      setLocale: (l: string) => {
-        setLocale(l)
-        storage.save(LOCALE_PERSISTENCE_KEY, l)
-      },
-    }),
-    [locale],
-  )
-
   const currentTheme = themes[theme]
 
   const toggle = () => {
@@ -87,7 +115,9 @@ function App() {
     storage.save(THEME_PERSISTENCE_KEY, nextTheme)
   }
 
-  if (!rootStore) return <Text>Loading</Text>
+  if (!rootStore) {
+    return null
+  }
 
   return (
     <ApolloOfflineProvider client={offlineClient}>

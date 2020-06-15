@@ -4,7 +4,6 @@ import { Text, View } from 'components'
 import React from 'react'
 import { ImageStyle, StyleSheet } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
-import SkeletonContent from 'react-native-skeleton-content'
 import styled from 'styled-components'
 import { spacing, useThemes } from 'theme'
 import { getBase64UriFromUnknownSource, toCapitalize } from 'utils'
@@ -55,17 +54,17 @@ export const Avatar: React.FC<AvatarProps> = props => {
   return (
     <Container row>
       <TouchableOpacity onPress={props.onAvatarPress}>
-        <SkeletonContent
+        {/* <SkeletonContent
           containerStyle={styles.skeContainer}
           isLoading={loading || loadingImg}
           layout={[skeAvatar]}
-        >
-          {!loading && <KittenAvatar source={{ uri: avatarUri }} style={{ ...skeAvatar }} />}
-        </SkeletonContent>
+        > */}
+        <KittenAvatar source={{ uri: avatarUri }} style={{ ...skeAvatar }} />
+        {/* </SkeletonContent> */}
       </TouchableOpacity>
 
       <TouchableOpacity onPress={props.onEditPress}>
-        <SkeletonContent
+        {/* <SkeletonContent
           containerStyle={styles.skeContainer}
           isLoading={loading}
           layout={[
@@ -73,13 +72,13 @@ export const Avatar: React.FC<AvatarProps> = props => {
             { width: 180, height: 20, marginBottom: spacing[4] },
           ]}
         >
-          <Text preset="h3">Hi, {toCapitalize(userName)}</Text>
+          <Text preset="h3">Hi, {toCapitalize(userName)}</Text> */}
 
-          <Text
-            tx={'settingsScreen.viewAndEdit'}
-            themeColor={theme === 'dark' ? 'color-basic-500' : 'color-primary-700'}
-          />
-        </SkeletonContent>
+        <Text
+          tx={'settingsScreen.viewAndEdit'}
+          themeColor={theme === 'dark' ? 'color-basic-500' : 'color-primary-700'}
+        />
+        {/* </SkeletonContent> */}
       </TouchableOpacity>
     </Container>
   )

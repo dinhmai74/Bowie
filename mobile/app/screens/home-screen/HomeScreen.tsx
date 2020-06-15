@@ -69,20 +69,21 @@ export const HomeScreen: React.FunctionComponent<HomeScreenProps> = ({ navigatio
       })
   }
 
-  const refetch = () => {
-    if (region) fetchEvent()
-    else {
-      fetchLocation()
+  const refetch = async () => {
+    if (!region) {
+      await fetchLocation()
+    } else {
+      fetchEvent()
     }
   }
 
   React.useEffect(() => {
-    fetchLocation()
-
-    navigation.addListener('focus', () => {
+    const unsubscribe = navigation.addListener('focus', () => {
       refetch()
     })
-  }, [])
+
+    return unsubscribe
+  }, [navigation])
 
   let events: EventWithHost[] = []
   // @ts-ignore

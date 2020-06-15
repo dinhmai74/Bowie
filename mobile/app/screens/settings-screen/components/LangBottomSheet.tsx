@@ -106,7 +106,7 @@ export const LangBottomSheet: React.FC<LangBottomSheetProps> = ({ bs }) => {
         borderRadius={spacing[4]}
       />
 
-      <Backdrop fall={fall} onPress={closeBs} />
+      {/* <Backdrop fall={fall} onPress={closeBs} /> */}
     </>
   )
 }

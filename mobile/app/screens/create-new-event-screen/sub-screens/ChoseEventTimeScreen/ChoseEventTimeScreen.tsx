@@ -56,9 +56,10 @@ export const ChoseEventTimeScreen: React.FC = () => {
     setShowTimepicker(p => {
       p[type] = Platform.OS === 'ios'
     })
-    setTime(p => {
-      p[type] = currentDate
-    })
+    setTime &&
+      setTime(p => {
+        p[type] = currentDate
+      })
   }
 
   const onSubmit = () => {
@@ -86,11 +87,12 @@ export const ChoseEventTimeScreen: React.FC = () => {
               <SizedBox w={3} />
               <View>
                 <Button
-                  onPress={() =>
-                    setShowTimepicker(p => {
-                      p.from = true
-                    })
-                  }
+                  onPress={() => {
+                    // setShowTimepicker &&
+                    // setShowTimepicker(p => {
+                    //   p.from = true
+                    // })
+                  }}
                   text={moment(time.from).format('HH a')}
                   status="basic"
                   preset="bordered"
@@ -106,11 +108,12 @@ export const ChoseEventTimeScreen: React.FC = () => {
               <SizedBox w={3} />
               <View>
                 <Button
-                  onPress={() =>
-                    setShowTimepicker(p => {
-                      p.to = true
-                    })
-                  }
+                  onPress={() => {
+                    // setShowTimepicker &&
+                    // setShowTimepicker(p => {
+                    //   p.to = true
+                    // })}
+                  }}
                   text={moment(time.to).format('HH a')}
                   status="basic"
                   preset="bordered"

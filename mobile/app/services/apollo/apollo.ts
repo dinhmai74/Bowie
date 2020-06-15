@@ -11,28 +11,23 @@ const { createUploadLink } = require('apollo-upload-client')
 const ip = '192.168.1.2'
 const GRAPHQL_URL = `http://${Platform.OS === 'ios' ? 'localhost' : ip}:4000/graphql`
 
+// Create cache wrapper
 const cacheStorage = {
   getItem: async key => {
-    try {
-      console.tron.log('getItem apollo', key)
-      const data = await AsyncStorage.getItem(key)
-      if (typeof data === 'string') {
-        return JSON.parse(data)
-      }
-      return data
-    } catch (error) {
-      console.tron.error('error restore cache persist', error)
+    const data = await AsyncStorage.getItem(key)
+    if (typeof data === 'string') {
+      return JSON.parse(data)
     }
+    return data
   },
-  setItem: (key, value) => {
+  setItem: async (key, value) => {
     let valueStr = value
-    console.tron.log('set apollo', key)
     if (typeof valueStr === 'object') {
       valueStr = JSON.stringify(value)
     }
     return AsyncStorage.setItem(key, valueStr)
   },
-  removeItem: key => {
+  removeItem: async key => {
     return AsyncStorage.removeItem(key)
   },
 }

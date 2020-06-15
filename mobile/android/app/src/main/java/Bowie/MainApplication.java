@@ -26,8 +26,16 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.List;
 import javax.annotation.Nullable;
+import com.facebook.react.config.ReactFeatureFlags; // <- add
+import com.facebook.react.bridge.JSIModulePackage; // <- add
+import com.swmansion.reanimated.ReanimatedJSIModulePackage; // <- add
+
 
 public class MainApplication extends Application implements ReactApplication {
+  static {
+    ReactFeatureFlags.useTurboModules = true; // <- add
+  }
+
   private final ReactModuleRegistryProvider mModuleRegistryProvider = new ReactModuleRegistryProvider(
     new BasePackageList().getPackageList()
   );
@@ -49,6 +57,11 @@ public class MainApplication extends Application implements ReactApplication {
     protected String getJSMainModuleName() {
       return "index";
     }
+
+     @Override
+      protected JSIModulePackage getJSIModulePackage() {
+        return new ReanimatedJSIModulePackage(); // <- add
+      }
 
     @Override
     protected @Nullable String getJSBundleFile() {

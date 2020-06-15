@@ -1,7 +1,6 @@
 import { useGetImgQuery } from 'app-graphql'
 import React from 'react'
 import { Image, StyleSheet } from 'react-native'
-import SkeletonContent from 'react-native-skeleton-content'
 import { metrics } from 'theme'
 import { getBase64UriFromUnknownSource } from 'utils/ImageConverter/ImageConverter'
 
@@ -36,13 +35,5 @@ export const AppImageWithFetch: React.FunctionComponent<AppImageWithFetchProps> 
   let imgUri
   if (data?.getImg?.data) imgUri = getBase64UriFromUnknownSource(data?.getImg.data)
 
-  return (
-    <SkeletonContent
-      containerStyle={{ ...styles.container, ...containerStyle }}
-      isLoading={loading}
-      layout={[{ ...layoutStyle, marginBottom: 10 }]}
-    >
-      <Image source={{ uri: imgUri }} style={[imgSize, style]} />
-    </SkeletonContent>
-  )
+  return <Image source={{ uri: imgUri }} style={[imgSize, style]} />
 }

@@ -56,7 +56,7 @@
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>Give bowie periences permission to save photos</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Give bowie periences permission to access your photos</string>
+	<string>Give $(PRODUCT_NAME) permission to save photos</string>
 	<key>NSRemindersUsageDescription</key>
 	<string>Allow bowie to access your reminders</string>
 	<key>UILaunchStoryboardName</key>
@@ -74,8 +74,5 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-  
-  <key>NSPhotoLibraryUsageDescription</key>
-  <string>Give $(PRODUCT_NAME) permission to save photos</string>
 </dict>
 </plist>

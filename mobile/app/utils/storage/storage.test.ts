@@ -1,4 +1,4 @@
-import { AsyncStorage } from 'react-native'
+import AsyncStorage from '@react-native-community/async-storage'
 
 import { load, loadString, save, saveString, clear, remove } from './storage'
 

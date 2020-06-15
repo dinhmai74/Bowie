@@ -5,7 +5,8 @@ import Animated, {
   Clock,
   clockRunning,
   cond,
-  Easing,
+  // @ts-ignore
+  EasingNode as Easing,
   eq,
   proc,
   set,

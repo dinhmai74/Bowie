@@ -4,11 +4,10 @@ import { useSnackBars } from 'hooks'
 import { observer } from 'mobx-react-lite'
 import { useAuthContext } from 'navigation/root-navigator'
 // import { useAuthContext } from 'navigation'
-import React, { useRef, useState } from 'react'
+import React, { useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
-import { StyleSheet } from 'react-native'
-import { ScrollView } from 'react-native-gesture-handler'
-import Animated, { set, Transition, Transitioning, useCode } from 'react-native-reanimated'
+import { ScrollView, StyleSheet } from 'react-native'
+import Animated, { set, Transition, useCode } from 'react-native-reanimated'
 import { mix } from 'react-native-redash'
 // import { useStores } from "models/root-store"
 import { NavigationScreenProp } from 'react-navigation'
@@ -23,20 +22,12 @@ import {
   useLayout,
 } from 'utils'
 import { EyeIcon, FBicon } from './components/Icons'
-import { useSignInAnimations } from './hooks'
+// import { useSignInAnimations } from './hooks'
 // import { useSnackBars } from 'hooks/app-snackbar-provider'
 
 export interface SignInScreenProps {
   navigation: NavigationScreenProp<any, any>
 }
-
-const formTransition = (
-  <Transition.Sequence>
-    <Transition.Out type="fade" />
-    <Transition.Change interpolation="easeInOut" />
-    <Transition.In type="fade" />
-  </Transition.Sequence>
-)
 
 type FormData = {
   email: string
@@ -48,7 +39,6 @@ const duration = 300
 
 export const SignInScreen: React.FunctionComponent<SignInScreenProps> = observer(() => {
   // const { someStore } = useStores()
-  const refForm = useRef(null)
   const auth = useAuthContext()
   const { addErr, addSnack } = useSnackBars()
 
@@ -58,9 +48,7 @@ export const SignInScreen: React.FunctionComponent<SignInScreenProps> = observer
 
   const handleSuccess = d => {
     addSnack('signInScreen.loginSuccess')
-    refForm.current.animateNextTransition()
-    nDelay(200).then(() => setTriggerSpreadOut(true))
-    nDelay(600).then(() => auth?.navigateHome(d))
+    nDelay(100).then(() => auth?.navigateHome(d))
   }
 
   const [login, loginResult] = useLoginMutation({
@@ -85,16 +73,6 @@ export const SignInScreen: React.FunctionComponent<SignInScreenProps> = observer
   const [triggerSpreadOut, setTriggerSpreadOut] = useState<boolean>(false)
 
   const [btnCookLayout, layout] = useLayout()
-
-  const {
-    animWallpaper,
-    animEmail,
-    animPassword,
-    animFgpw,
-    animBtnCook,
-    animBtnFb,
-    animBtnCookOut,
-  } = useSignInAnimations(duration)
 
   /* ------------- methods ------------- */
 
@@ -126,30 +104,27 @@ export const SignInScreen: React.FunctionComponent<SignInScreenProps> = observer
     }
   }
 
-  useCode(() => {
-    if (triggerSpreadOut) {
-      return set(animBtnCookOut, runTimingWithEndActionOB({ duration: 600, endAction: nextScreen }))
-    }
-    return []
-  }, [triggerSpreadOut])
+  // useCode(() => {
+  //   if (triggerSpreadOut) {
+  //     return set(animBtnCookOut, runTimingWithEndActionOB({ duration: 600, endAction: nextScreen }))
+  //   }
+  //   return []
+  // }, [triggerSpreadOut])
 
   const loading = loginResult?.loading || signUpResult?.loading
 
   return (
     <Screen bgBaseOnTheme>
-      <Animated.Image
-        source={images.tasting}
-        style={[styles.wallpaper, getOpacity(animWallpaper)]}
-      />
+      <Animated.Image source={images.tasting} style={styles.wallpaper} />
 
       <AuthHeader />
 
-      <Transitioning.View transition={formTransition} ref={refForm}>
+      <View>
         <ScrollView style={styles.container}>
           <Text preset="h1medium" tx={isSignIn ? 'signInScreen.title' : 'signUpScreen.title'} />
           <SizedBox h={5} />
 
-          <Animated.View style={getTranslateX(animEmail, sw, 0)}>
+          <Animated.View>
             <Controller
               as={TextField}
               control={control}
@@ -194,7 +169,7 @@ export const SignInScreen: React.FunctionComponent<SignInScreenProps> = observer
             </>
           )}
 
-          <Animated.View style={getTranslateX(animPassword, sw, 0)}>
+          <Animated.View>
             <Controller
               as={TextField}
               control={control}
@@ -211,7 +186,6 @@ export const SignInScreen: React.FunctionComponent<SignInScreenProps> = observer
                 <EyeIcon
                   {...{ style, secureTextEntry }}
                   onPress={() => {
-                    refForm.current.animateNextTransition()
                     setSecureTextEntry(p => !p)
                   }}
                 />
@@ -221,7 +195,7 @@ export const SignInScreen: React.FunctionComponent<SignInScreenProps> = observer
             />
           </Animated.View>
 
-          <Animated.View style={[getOpacity(animFgpw), styles.linkView]}>
+          <Animated.View>
             <Text
               underline
               status="basic"
@@ -234,7 +208,6 @@ export const SignInScreen: React.FunctionComponent<SignInScreenProps> = observer
               tx={isSignIn ? 'auth.signUp' : 'auth.signIn'}
               style={styles.btnForgot}
               onPress={() => {
-                refForm.current.animateNextTransition()
                 setIsSignIn(p => !p)
               }}
             />
@@ -242,7 +215,7 @@ export const SignInScreen: React.FunctionComponent<SignInScreenProps> = observer
         </ScrollView>
 
         <SizedBox h={4} />
-        <Animated.View
+        {/* <Animated.View
           // eslint-disable-next-line
           style={{
             position: 'absolute',
@@ -253,10 +226,10 @@ export const SignInScreen: React.FunctionComponent<SignInScreenProps> = observer
             height: mix(animBtnCookOut, 0, sh),
             opacity: mix(animBtnCookOut, 1, 0),
           }}
-        />
+        /> */}
 
         <View style={styles.btnView} onLayout={layout}>
-          <Animated.View style={getScaleAndOpacity(animBtnCook)}>
+          <Animated.View>
             {!triggerSpreadOut && (
               <Button
                 full={false}
@@ -271,13 +244,13 @@ export const SignInScreen: React.FunctionComponent<SignInScreenProps> = observer
               </Button>
             )}
           </Animated.View>
-          <Animated.View style={getScaleAndOpacity(animBtnFb)}>
+          <Animated.View>
             <Button style={styles.btn}>
               <FBicon />
             </Button>
           </Animated.View>
         </View>
-      </Transitioning.View>
+      </View>
     </Screen>
   )
 })
