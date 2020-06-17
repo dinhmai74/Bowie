@@ -40,7 +40,7 @@ import {
   SButton,
   TEXT_AREA_STYLE,
   ThumbnailImgWrapper,
-} from './FillEventInfoScreen.elements'
+} from './FillEventInfoScreen.styles'
 import { useSnackBars } from 'hooks'
 // import { useSnackBars } from 'hooks/app-snackbar-provider'
 
