@@ -6,39 +6,35 @@ import { Instance, SnapshotOut, types } from 'mobx-state-tree'
 export const UserInfoStoreModel = types
   .model('UserInfoStore')
   .props({
+    id: types.optional(types.string, ''),
     name: types.optional(types.string, ''),
     email: types.optional(types.string, ''),
     avatar: types.optional(types.string, ''),
     isLogin: types.optional(types.boolean, false),
   })
   .actions(self => ({
-    setInfo({ email, name, avt }) {
+    setInfo({ email, name, avt, id }) {
       self.email = email
       self.name = name
       self.avatar = avt
+      self.id = id
     },
-  }))
-  .actions(self => ({
-    setName(email: string) {
+
+    setEmail(email: string) {
       self.email = email
     },
-  }))
 
-  .actions(self => ({
     setName(name: string) {
       self.name = name
     },
-  }))
-  .actions(s => ({
+
     setAvatar(avt: string) {
-      s.avatar = avt
+      self.avatar = avt
     },
-  }))
-  .actions(s => ({
     clear() {
-      s.avatar = ''
-      s.email = ''
-      s.name = ''
+      self.avatar = ''
+      self.email = ''
+      self.name = ''
     },
   }))
 

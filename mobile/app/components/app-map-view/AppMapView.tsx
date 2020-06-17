@@ -33,6 +33,7 @@ export const AppMapView: React.FunctionComponent<AppMapViewProps> = props => {
   const onPressMarker = (location: any, index: number) => {
     setSelected(index)
   }
+  const navigation = useNavigation()
 
   return (
     <>
@@ -65,7 +66,14 @@ export const AppMapView: React.FunctionComponent<AppMapViewProps> = props => {
             preset="raise"
           />
           <SizedBox h={5} />
-          <AppMarkerCard event={events[selected]} color={color} />
+          <AppMarkerCard
+            event={events[selected]}
+            color={color}
+            onSubmit={() => {
+              setSelected(null)
+              navigation.navigate(AppRoutes.eventDetail, { id: events[selected].id })
+            }}
+          />
         </View>
       )}
     </>
@@ -75,11 +83,10 @@ export const AppMapView: React.FunctionComponent<AppMapViewProps> = props => {
 interface AppMarkerCardProps {
   event: EventWithHost
   color: Color
+  onSubmit: () => void
 }
 
-const AppMarkerCard: React.FC<AppMarkerCardProps> = ({ event }) => {
-  const navigation = useNavigation()
-
+const AppMarkerCard: React.FC<AppMarkerCardProps> = ({ event, onSubmit }) => {
   const time = `${moment(event?.startTime)
     .local()
     .format(DateFormat.timeWithIndicator)} - ${moment(event?.endTime)
@@ -105,7 +112,9 @@ const AppMarkerCard: React.FC<AppMarkerCardProps> = ({ event }) => {
       <SizedBox h={4} />
       <Button
         style={styles.bottomInfoButton}
-        onPress={() => navigation.navigate(AppRoutes.eventDetail, { id: event.id })}
+        onPress={() => {
+          onSubmit()
+        }}
         preset="bordered"
         tx="homeScreen.viewDetail"
       />

@@ -36,10 +36,10 @@ const RootStack = () => {
   }
 
   const saveUserInfo = (d: User | UserWithAvt) => {
-    const { email, name, avatarId } = d
+    const { email, name, avatarId, id } = d
     setValidUser(true)
     save(LOGIN_KEY, 'login')
-    userInfoStore.setInfo({ name, email, avt: avatarId })
+    userInfoStore.setInfo({ name, email, avt: avatarId, id })
     refresh()
   }
 

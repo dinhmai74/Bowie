@@ -73,7 +73,9 @@ export const HomeScreen: React.FunctionComponent<HomeScreenProps> = observer(({ 
   }
 
   React.useEffect(() => {
-    refetch()
+    navigation.addListener('focus', () => {
+      refetch()
+    })
   }, [])
 
   let events: EventWithHost[] = []

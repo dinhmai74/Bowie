@@ -3,3 +3,7 @@ mutation createEvent($event: EventInput!) {
     hostId
   }
 }
+
+mutation disbandEvent($id: String!) {
+  disbandEvent(id: $id)
+}

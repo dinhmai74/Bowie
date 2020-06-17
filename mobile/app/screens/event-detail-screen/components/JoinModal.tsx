@@ -25,23 +25,25 @@ export const JoinModal: React.FC<JoinModalProps> = props => {
   const { onAccepted, ...rest } = props
   return (
     <Modal {...rest} backdropStyle={AppStyles.backdrop}>
-      <StyledCard disabled={true}>
-        <Text preset="h3" tx="eventDetailScreen.wannaJoinAs" textAlign="center" />
+      <View autoPaddingHorizontal>
+        <StyledCard disabled={true}>
+          <Text preset="h3" tx="eventDetailScreen.wannaJoinAs" textAlign="center" />
 
-        <StyledChoseRow row>
-          <Button
-            tx="common.secret"
-            appearance="outline"
-            onPress={() => onAccepted(MemberInfoType.SECRET)}
-          />
-          <SizedBox w={4} />
-          <Text tx="common.or" />
-          <SizedBox w={4} />
-          <Button tx="common.public" onPress={() => onAccepted(MemberInfoType.PUBLIC)} />
-        </StyledChoseRow>
+          <StyledChoseRow row>
+            <Button
+              tx="common.secret"
+              appearance="outline"
+              onPress={() => onAccepted(MemberInfoType.SECRET)}
+            />
+            <SizedBox w={4} />
+            <Text tx="common.or" />
+            <SizedBox w={4} />
+            <Button tx="common.public" onPress={() => onAccepted(MemberInfoType.PUBLIC)} />
+          </StyledChoseRow>
 
-        <Text preset="h3" tx="eventDetailScreen.member" textAlign="center" />
-      </StyledCard>
+          <Text preset="h3" tx="eventDetailScreen.member" textAlign="center" />
+        </StyledCard>
+      </View>
     </Modal>
   )
 }

@@ -1,578 +1,702 @@
-import gql from 'graphql-tag'
-import * as ApolloReactCommon from '@apollo/react-common'
-import * as ApolloReactHooks from '@apollo/react-hooks'
-export type Maybe<T> = T | null
+import gql from 'graphql-tag';
+import * as ApolloReactCommon from '@apollo/react-common';
+import * as ApolloReactHooks from '@apollo/react-hooks';
+export type Maybe<T> = T | null;
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
-  ID: string
-  String: string
-  Boolean: boolean
-  Int: number
-  Float: number
+  ID: string;
+  String: string;
+  Boolean: boolean;
+  Int: number;
+  Float: number;
   /** The javascript `Date` as string. Type represents date and time as the ISO Date string. */
-  DateTime: any
+  DateTime: any;
   /** Buffer scalar type */
-  Buffer: any
+  Buffer: any;
   /** The `Upload` scalar type represents a file upload. */
-  Upload: any
-}
+  Upload: any;
+};
 
 export type AuthInput = {
-  email: Scalars['String']
-  password: Scalars['String']
-}
+  email: Scalars['String'];
+  password: Scalars['String'];
+};
 
 export type BaseEntity = {
-  __typename?: 'BaseEntity'
-  id: Scalars['String']
-  createdAt: Scalars['DateTime']
-  updatedAt: Scalars['DateTime']
-}
+  __typename?: 'BaseEntity';
+  id: Scalars['String'];
+  createdAt: Scalars['DateTime'];
+  updatedAt: Scalars['DateTime'];
+};
 
 export type Book = {
-  __typename?: 'Book'
-  id: Scalars['String']
-  createdAt: Scalars['DateTime']
-  updatedAt: Scalars['DateTime']
-  title: Scalars['String']
-}
+  __typename?: 'Book';
+  id: Scalars['String'];
+  createdAt: Scalars['DateTime'];
+  updatedAt: Scalars['DateTime'];
+  title: Scalars['String'];
+};
 
 export type BooksResponse = {
-  __typename?: 'BooksResponse'
-  books?: Maybe<Array<Book>>
-  errors?: Maybe<Array<FieldError>>
-}
+  __typename?: 'BooksResponse';
+  books?: Maybe<Array<Book>>;
+  errors?: Maybe<Array<FieldError>>;
+};
+
 
 export type ChangeQuantityTagInput = {
-  amount: Scalars['Float']
-  id: Scalars['String']
-}
+  amount: Scalars['Float'];
+  id: Scalars['String'];
+};
 
 export type Coord = {
-  __typename?: 'Coord'
-  longitude: Scalars['Float']
-  latitude: Scalars['Float']
-}
+  __typename?: 'Coord';
+  longitude: Scalars['Float'];
+  latitude: Scalars['Float'];
+};
 
 export type CoordInput = {
-  longitude: Scalars['Float']
-  latitude: Scalars['Float']
-}
+  longitude: Scalars['Float'];
+  latitude: Scalars['Float'];
+};
 
 export type CustomGraphQlUpload = {
-  file: Scalars['Upload']
-}
+  file: Scalars['Upload'];
+};
 
 export type CustomUpload = {
-  __typename?: 'CustomUpload'
-  file: Scalars['Upload']
-}
+  __typename?: 'CustomUpload';
+  file: Scalars['Upload'];
+};
+
 
 export type Event = {
-  __typename?: 'Event'
-  id: Scalars['String']
-  createdAt: Scalars['DateTime']
-  updatedAt: Scalars['DateTime']
-  hostId?: Maybe<Scalars['String']>
-  membersInfo: Array<MemberInfo>
-  startTime: Scalars['DateTime']
-  endTime: Scalars['DateTime']
-  tags: Array<Scalars['String']>
-  place: Place
-  information: Information
-  galleries?: Maybe<Array<Scalars['String']>>
-  thumbnail?: Maybe<Scalars['String']>
-}
+  __typename?: 'Event';
+  id: Scalars['String'];
+  createdAt: Scalars['DateTime'];
+  updatedAt: Scalars['DateTime'];
+  hostId?: Maybe<Scalars['String']>;
+  membersInfo: Array<MemberInfo>;
+  startTime: Scalars['DateTime'];
+  endTime: Scalars['DateTime'];
+  tags: Array<Scalars['String']>;
+  place: Place;
+  information: Information;
+  galleries?: Maybe<Array<Scalars['String']>>;
+  thumbnail?: Maybe<Scalars['String']>;
+};
 
 export type EventCreateInput = {
-  hostId?: Maybe<Scalars['String']>
-  membersInfo: Array<EventMemberInfoInput>
-  startTime: Scalars['DateTime']
-  endTime: Scalars['DateTime']
-  tags: Array<Scalars['String']>
-  place: EventPlaceInput
-  information: EventInformationInput
-  galleries?: Maybe<Array<Scalars['String']>>
-  thumbnail?: Maybe<Scalars['String']>
-}
+  hostId?: Maybe<Scalars['String']>;
+  membersInfo: Array<EventMemberInfoInput>;
+  startTime: Scalars['DateTime'];
+  endTime: Scalars['DateTime'];
+  tags: Array<Scalars['String']>;
+  place: EventPlaceInput;
+  information: EventInformationInput;
+  galleries?: Maybe<Array<Scalars['String']>>;
+  thumbnail?: Maybe<Scalars['String']>;
+};
 
 export type EventInformationInput = {
-  eventName: Scalars['String']
-  description: Scalars['String']
-}
+  eventName: Scalars['String'];
+  description: Scalars['String'];
+};
 
 export type EventInput = {
-  startTime: Scalars['DateTime']
-  endTime: Scalars['DateTime']
-  tags: Array<Scalars['String']>
-  place: EventPlaceInput
-  information: EventInformationInput
-  galleries?: Maybe<UploadsInput>
-  thumbnail?: Maybe<CustomGraphQlUpload>
-}
+  startTime: Scalars['DateTime'];
+  endTime: Scalars['DateTime'];
+  tags: Array<Scalars['String']>;
+  place: EventPlaceInput;
+  information: EventInformationInput;
+  galleries?: Maybe<UploadsInput>;
+  thumbnail?: Maybe<CustomGraphQlUpload>;
+};
 
 export type EventMemberInfoInput = {
-  id: Scalars['String']
+  id: Scalars['String'];
   /** secret or public */
-  type: Scalars['String']
-}
+  type: Scalars['String'];
+};
 
 export type EventPlaceInput = {
-  name: Scalars['String']
-  address: Scalars['String']
-  coord: CoordInput
-}
+  name: Scalars['String'];
+  address: Scalars['String'];
+  coord: CoordInput;
+};
 
 export type EventTag = {
-  __typename?: 'EventTag'
-  id: Scalars['String']
-  createdAt: Scalars['DateTime']
-  updatedAt: Scalars['DateTime']
-  name: Scalars['String']
+  __typename?: 'EventTag';
+  id: Scalars['String'];
+  createdAt: Scalars['DateTime'];
+  updatedAt: Scalars['DateTime'];
+  name: Scalars['String'];
   /** Current user use this tag for create event */
-  currentUse: Scalars['Float']
-}
+  currentUse: Scalars['Float'];
+};
 
 export type EventTagInput = {
-  name: Scalars['String']
+  name: Scalars['String'];
   /** Current user use this tag for create event */
-  currentUse: Scalars['Float']
-}
+  currentUse: Scalars['Float'];
+};
 
 export type EventWithHost = {
-  __typename?: 'EventWithHost'
-  id: Scalars['String']
-  createdAt: Scalars['DateTime']
-  updatedAt: Scalars['DateTime']
-  hostId?: Maybe<Scalars['String']>
-  membersInfo: Array<MemberInfo>
-  startTime: Scalars['DateTime']
-  endTime: Scalars['DateTime']
-  tags: Array<Scalars['String']>
-  place: Place
-  information: Information
-  galleries?: Maybe<Array<Scalars['String']>>
-  thumbnail?: Maybe<Scalars['String']>
-  hostInfo?: Maybe<User>
-}
+  __typename?: 'EventWithHost';
+  id: Scalars['String'];
+  createdAt: Scalars['DateTime'];
+  updatedAt: Scalars['DateTime'];
+  hostId?: Maybe<Scalars['String']>;
+  membersInfo: Array<MemberInfo>;
+  startTime: Scalars['DateTime'];
+  endTime: Scalars['DateTime'];
+  tags: Array<Scalars['String']>;
+  place: Place;
+  information: Information;
+  galleries?: Maybe<Array<Scalars['String']>>;
+  thumbnail?: Maybe<Scalars['String']>;
+  hostInfo?: Maybe<User>;
+};
 
 export type FieldError = {
-  __typename?: 'FieldError'
-  path: Scalars['String']
-  message: Scalars['String']
-}
+  __typename?: 'FieldError';
+  path: Scalars['String'];
+  message: Scalars['String'];
+};
 
 export type GetEventByIdResponse = {
-  __typename?: 'GetEventByIdResponse'
-  id: Scalars['String']
-  createdAt: Scalars['DateTime']
-  updatedAt: Scalars['DateTime']
-  hostId?: Maybe<Scalars['String']>
-  membersInfo: Array<MemberInfo>
-  startTime: Scalars['DateTime']
-  endTime: Scalars['DateTime']
-  tags: Array<Scalars['String']>
-  place: Place
-  information: Information
-  galleries?: Maybe<Array<Scalars['String']>>
-  thumbnail?: Maybe<Scalars['String']>
-  totalMember: Scalars['Float']
-  hostInfo?: Maybe<User>
-}
+  __typename?: 'GetEventByIdResponse';
+  id: Scalars['String'];
+  createdAt: Scalars['DateTime'];
+  updatedAt: Scalars['DateTime'];
+  hostId?: Maybe<Scalars['String']>;
+  membersInfo: Array<MemberInfo>;
+  startTime: Scalars['DateTime'];
+  endTime: Scalars['DateTime'];
+  tags: Array<Scalars['String']>;
+  place: Place;
+  information: Information;
+  galleries?: Maybe<Array<Scalars['String']>>;
+  thumbnail?: Maybe<Scalars['String']>;
+  totalMember: Scalars['Float'];
+  hostInfo?: Maybe<User>;
+};
 
 export type Image = {
-  __typename?: 'Image'
-  data: Scalars['Buffer']
-  contentType: Scalars['String']
-}
+  __typename?: 'Image';
+  data: Scalars['Buffer'];
+  contentType: Scalars['String'];
+};
 
 export type Information = {
-  __typename?: 'Information'
-  eventName: Scalars['String']
-  description: Scalars['String']
-}
+  __typename?: 'Information';
+  eventName: Scalars['String'];
+  description: Scalars['String'];
+};
 
 export type JoinEventInput = {
-  type: MemberInfoType
-  eventId: Scalars['String']
-}
+  type: MemberInfoType;
+  eventId: Scalars['String'];
+};
 
 export type MemberInfo = {
-  __typename?: 'MemberInfo'
-  id: Scalars['String']
+  __typename?: 'MemberInfo';
+  id: Scalars['String'];
   /** secret or public */
-  type: Scalars['String']
-}
+  type: Scalars['String'];
+};
 
 /** The type of member when join event: secret or public */
 export enum MemberInfoType {
   SECRET = 'SECRET',
-  PUBLIC = 'PUBLIC',
+  PUBLIC = 'PUBLIC'
 }
 
 export type Mutation = {
-  __typename?: 'Mutation'
-  joinEvent: Event
-  editJoinTypeEventInfo: Event
-  createEvent: Event
-  createTag: EventTag
-  changeTagQuantity: EventTag
-  IncreaseOrDecreaseTagQuantity: EventTag
-  createPhoto: Scalars['Boolean']
-  register: User
-  login: User
-  auth?: Maybe<User>
-  logout: Scalars['Boolean']
-  addProfilePicture: Scalars['Boolean']
-}
+  __typename?: 'Mutation';
+  joinEvent: Event;
+  editJoinTypeEventInfo: Event;
+  createEvent: Event;
+  disbandEvent: Scalars['Boolean'];
+  createTag: EventTag;
+  changeTagQuantity: EventTag;
+  IncreaseOrDecreaseTagQuantity: EventTag;
+  createPhoto: Scalars['Boolean'];
+  register: User;
+  login: User;
+  auth?: Maybe<User>;
+  logout: Scalars['Boolean'];
+  addProfilePicture: Scalars['Boolean'];
+};
+
 
 export type MutationJoinEventArgs = {
-  input: JoinEventInput
-}
+  input: JoinEventInput;
+};
+
 
 export type MutationEditJoinTypeEventInfoArgs = {
-  input: JoinEventInput
-}
+  input: JoinEventInput;
+};
+
 
 export type MutationCreateEventArgs = {
-  event: EventInput
-}
+  event: EventInput;
+};
+
+
+export type MutationDisbandEventArgs = {
+  id: Scalars['String'];
+};
+
 
 export type MutationCreateTagArgs = {
-  input: EventTagInput
-}
+  input: EventTagInput;
+};
+
 
 export type MutationChangeTagQuantityArgs = {
-  input: ChangeQuantityTagInput
-}
+  input: ChangeQuantityTagInput;
+};
+
 
 export type MutationIncreaseOrDecreaseTagQuantityArgs = {
-  increase: Scalars['Boolean']
-  id: Scalars['String']
-}
+  increase: Scalars['Boolean'];
+  id: Scalars['String'];
+};
+
 
 export type MutationCreatePhotoArgs = {
-  input: Scalars['Upload']
-}
+  input: Scalars['Upload'];
+};
+
 
 export type MutationRegisterArgs = {
-  input: SignUpInput
-}
+  input: SignUpInput;
+};
+
 
 export type MutationLoginArgs = {
-  input: AuthInput
-}
+  input: AuthInput;
+};
+
 
 export type MutationAddProfilePictureArgs = {
-  picture: Scalars['Upload']
-}
+  picture: Scalars['Upload'];
+};
 
 export type Place = {
-  __typename?: 'Place'
-  name: Scalars['String']
-  address: Scalars['String']
-  coord: Coord
-}
+  __typename?: 'Place';
+  name: Scalars['String'];
+  address: Scalars['String'];
+  coord: Coord;
+};
 
 export type Query = {
-  __typename?: 'Query'
-  getMyJoinedEvent?: Maybe<Array<Event>>
-  getMyHostedEvent: Array<Event>
-  book: Scalars['String']
-  getBooks: BooksResponse
-  getEvents: Array<Event>
-  getEventById?: Maybe<GetEventByIdResponse>
-  getEventBaseOnPos: Array<EventWithHost>
-  testFunc: Scalars['Boolean']
-  getAllTag: Array<EventTag>
-  getTopTenHotTag: Array<EventTag>
-  hello: Scalars['String']
-  getImg: Image
-  getAllUsers: Array<User>
-  me?: Maybe<User>
-}
+  __typename?: 'Query';
+  getMyJoinedEvent?: Maybe<Array<Event>>;
+  getMyHostedEvent: Array<Event>;
+  book: Scalars['String'];
+  getBooks: BooksResponse;
+  getEvents: Array<Event>;
+  getEventById?: Maybe<GetEventByIdResponse>;
+  getEventBaseOnPos: Array<EventWithHost>;
+  testFunc: Scalars['Boolean'];
+  getAllTag: Array<EventTag>;
+  getTopTenHotTag: Array<EventTag>;
+  hello: Scalars['String'];
+  getImg: Image;
+  getAllUsers: Array<User>;
+  me?: Maybe<User>;
+};
+
 
 export type QueryGetEventByIdArgs = {
-  id: Scalars['String']
-}
+  id: Scalars['String'];
+};
+
 
 export type QueryGetEventBaseOnPosArgs = {
-  input: CoordInput
-}
+  input: CoordInput;
+};
+
 
 export type QueryGetImgArgs = {
-  id: Scalars['String']
-}
+  id: Scalars['String'];
+};
 
 export type SignUpInput = {
-  email: Scalars['String']
-  password: Scalars['String']
-  name: Scalars['String']
-}
+  email: Scalars['String'];
+  password: Scalars['String'];
+  name: Scalars['String'];
+};
+
 
 export type Uploads = {
-  __typename?: 'Uploads'
-  files: Array<Scalars['Upload']>
-}
+  __typename?: 'Uploads';
+  files: Array<Scalars['Upload']>;
+};
 
 export type UploadsInput = {
-  files: Array<Scalars['Upload']>
-}
+  files: Array<Scalars['Upload']>;
+};
 
 export type User = {
-  __typename?: 'User'
-  id: Scalars['String']
-  createdAt: Scalars['DateTime']
-  updatedAt: Scalars['DateTime']
-  email: Scalars['String']
-  name: Scalars['String']
-  avatarId?: Maybe<Scalars['String']>
-  joinedEvent?: Maybe<Array<Scalars['String']>>
-}
+  __typename?: 'User';
+  id: Scalars['String'];
+  createdAt: Scalars['DateTime'];
+  updatedAt: Scalars['DateTime'];
+  email: Scalars['String'];
+  name: Scalars['String'];
+  avatarId?: Maybe<Scalars['String']>;
+  joinedEvent?: Maybe<Array<Scalars['String']>>;
+};
 
 export type UserWithAvt = {
-  __typename?: 'UserWithAvt'
-  id: Scalars['String']
-  createdAt: Scalars['DateTime']
-  updatedAt: Scalars['DateTime']
-  email: Scalars['String']
-  name: Scalars['String']
-  avatarId?: Maybe<Scalars['String']>
-  joinedEvent?: Maybe<Array<Scalars['String']>>
-  avatar?: Maybe<Image>
-}
+  __typename?: 'UserWithAvt';
+  id: Scalars['String'];
+  createdAt: Scalars['DateTime'];
+  updatedAt: Scalars['DateTime'];
+  email: Scalars['String'];
+  name: Scalars['String'];
+  avatarId?: Maybe<Scalars['String']>;
+  joinedEvent?: Maybe<Array<Scalars['String']>>;
+  avatar?: Maybe<Image>;
+};
 
 export type CreateEventTagsMutationVariables = {
-  input: EventTagInput
-}
+  input: EventTagInput;
+};
 
-export type CreateEventTagsMutation = { __typename?: 'Mutation' } & {
-  createTag: { __typename?: 'EventTag' } & Pick<EventTag, 'name' | 'id'>
-}
+
+export type CreateEventTagsMutation = (
+  { __typename?: 'Mutation' }
+  & { createTag: (
+    { __typename?: 'EventTag' }
+    & Pick<EventTag, 'name' | 'id'>
+  ) }
+);
 
 export type UpdateTagMutationVariables = {
-  updateTagInput: ChangeQuantityTagInput
-}
+  updateTagInput: ChangeQuantityTagInput;
+};
 
-export type UpdateTagMutation = { __typename?: 'Mutation' } & {
-  changeTagQuantity: { __typename?: 'EventTag' } & Pick<EventTag, 'name' | 'currentUse'>
-}
+
+export type UpdateTagMutation = (
+  { __typename?: 'Mutation' }
+  & { changeTagQuantity: (
+    { __typename?: 'EventTag' }
+    & Pick<EventTag, 'name' | 'currentUse'>
+  ) }
+);
 
 export type ChangeTagQuantityMutationVariables = {
-  increase: Scalars['Boolean']
-  id: Scalars['String']
-}
+  increase: Scalars['Boolean'];
+  id: Scalars['String'];
+};
 
-export type ChangeTagQuantityMutation = { __typename?: 'Mutation' } & {
-  IncreaseOrDecreaseTagQuantity: { __typename?: 'EventTag' } & Pick<EventTag, 'name' | 'currentUse'>
-}
 
-export type GetAllTagQueryVariables = {}
+export type ChangeTagQuantityMutation = (
+  { __typename?: 'Mutation' }
+  & { IncreaseOrDecreaseTagQuantity: (
+    { __typename?: 'EventTag' }
+    & Pick<EventTag, 'name' | 'currentUse'>
+  ) }
+);
 
-export type GetAllTagQuery = { __typename?: 'Query' } & {
-  getAllTag: Array<{ __typename?: 'EventTag' } & Pick<EventTag, 'id' | 'name' | 'currentUse'>>
-}
+export type GetAllTagQueryVariables = {};
 
-export type GetTopTagsQueryVariables = {}
 
-export type GetTopTagsQuery = { __typename?: 'Query' } & {
-  getTopTenHotTag: Array<
-    { __typename: 'EventTag' } & Pick<
-      EventTag,
-      'name' | 'currentUse' | 'id' | 'createdAt' | 'updatedAt'
-    >
-  >
-}
+export type GetAllTagQuery = (
+  { __typename?: 'Query' }
+  & { getAllTag: Array<(
+    { __typename?: 'EventTag' }
+    & Pick<EventTag, 'id' | 'name' | 'currentUse'>
+  )> }
+);
+
+export type GetTopTagsQueryVariables = {};
+
+
+export type GetTopTagsQuery = (
+  { __typename?: 'Query' }
+  & { getTopTenHotTag: Array<(
+    { __typename: 'EventTag' }
+    & Pick<EventTag, 'name' | 'currentUse' | 'id' | 'createdAt' | 'updatedAt'>
+  )> }
+);
 
 export type LoginMutationVariables = {
-  email: Scalars['String']
-  password: Scalars['String']
-}
+  email: Scalars['String'];
+  password: Scalars['String'];
+};
 
-export type LoginMutation = { __typename?: 'Mutation' } & {
-  login: { __typename?: 'User' } & Pick<
-    User,
-    'id' | 'name' | 'email' | 'createdAt' | 'updatedAt' | 'avatarId'
-  >
-}
+
+export type LoginMutation = (
+  { __typename?: 'Mutation' }
+  & { login: (
+    { __typename?: 'User' }
+    & Pick<User, 'id' | 'name' | 'email' | 'createdAt' | 'updatedAt' | 'avatarId'>
+  ) }
+);
 
 export type SignUpMutationVariables = {
-  email: Scalars['String']
-  password: Scalars['String']
-  name: Scalars['String']
-}
+  email: Scalars['String'];
+  password: Scalars['String'];
+  name: Scalars['String'];
+};
 
-export type SignUpMutation = { __typename?: 'Mutation' } & {
-  register: { __typename?: 'User' } & Pick<
-    User,
-    'id' | 'name' | 'email' | 'createdAt' | 'updatedAt' | 'avatarId'
-  >
-}
 
-export type LogoutMutationVariables = {}
+export type SignUpMutation = (
+  { __typename?: 'Mutation' }
+  & { register: (
+    { __typename?: 'User' }
+    & Pick<User, 'id' | 'name' | 'email' | 'createdAt' | 'updatedAt' | 'avatarId'>
+  ) }
+);
 
-export type LogoutMutation = { __typename?: 'Mutation' } & Pick<Mutation, 'logout'>
+export type LogoutMutationVariables = {};
 
-export type AuthMutationVariables = {}
 
-export type AuthMutation = { __typename?: 'Mutation' } & {
-  auth?: Maybe<
-    { __typename?: 'User' } & Pick<
-      User,
-      'email' | 'name' | 'avatarId' | 'id' | 'createdAt' | 'updatedAt' | 'joinedEvent'
-    >
-  >
-}
+export type LogoutMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'logout'>
+);
+
+export type AuthMutationVariables = {};
+
+
+export type AuthMutation = (
+  { __typename?: 'Mutation' }
+  & { auth?: Maybe<(
+    { __typename?: 'User' }
+    & Pick<User, 'email' | 'name' | 'avatarId' | 'id' | 'createdAt' | 'updatedAt' | 'joinedEvent'>
+  )> }
+);
 
 export type CreateEventMutationVariables = {
-  event: EventInput
-}
+  event: EventInput;
+};
 
-export type CreateEventMutation = { __typename?: 'Mutation' } & {
-  createEvent: { __typename?: 'Event' } & Pick<Event, 'hostId'>
-}
+
+export type CreateEventMutation = (
+  { __typename?: 'Mutation' }
+  & { createEvent: (
+    { __typename?: 'Event' }
+    & Pick<Event, 'hostId'>
+  ) }
+);
+
+export type DisbandEventMutationVariables = {
+  id: Scalars['String'];
+};
+
+
+export type DisbandEventMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'disbandEvent'>
+);
 
 export type AddPictureMutationVariables = {
-  file: Scalars['Upload']
-}
+  file: Scalars['Upload'];
+};
 
-export type AddPictureMutation = { __typename?: 'Mutation' } & Pick<Mutation, 'addProfilePicture'>
+
+export type AddPictureMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'addProfilePicture'>
+);
 
 export type JoinEventMutationVariables = {
-  input: JoinEventInput
-}
+  input: JoinEventInput;
+};
 
-export type JoinEventMutation = { __typename?: 'Mutation' } & {
-  joinEvent: { __typename?: 'Event' } & Pick<Event, 'id'> & {
-      membersInfo: Array<{ __typename?: 'MemberInfo' } & Pick<MemberInfo, 'id' | 'type'>>
-    }
-}
+
+export type JoinEventMutation = (
+  { __typename?: 'Mutation' }
+  & { joinEvent: (
+    { __typename?: 'Event' }
+    & Pick<Event, 'id'>
+    & { membersInfo: Array<(
+      { __typename?: 'MemberInfo' }
+      & Pick<MemberInfo, 'id' | 'type'>
+    )> }
+  ) }
+);
 
 export type EditJoinTypeEventInfoMutationVariables = {
-  input: JoinEventInput
-}
+  input: JoinEventInput;
+};
 
-export type EditJoinTypeEventInfoMutation = { __typename?: 'Mutation' } & {
-  editJoinTypeEventInfo: { __typename?: 'Event' } & Pick<Event, 'id'> & {
-      membersInfo: Array<{ __typename?: 'MemberInfo' } & Pick<MemberInfo, 'id' | 'type'>>
-    }
-}
 
-export type GetAllEventsQueryVariables = {}
+export type EditJoinTypeEventInfoMutation = (
+  { __typename?: 'Mutation' }
+  & { editJoinTypeEventInfo: (
+    { __typename?: 'Event' }
+    & Pick<Event, 'id'>
+    & { membersInfo: Array<(
+      { __typename?: 'MemberInfo' }
+      & Pick<MemberInfo, 'id' | 'type'>
+    )> }
+  ) }
+);
 
-export type GetAllEventsQuery = { __typename?: 'Query' } & {
-  getEvents: Array<
-    { __typename?: 'Event' } & Pick<
-      Event,
-      'id' | 'thumbnail' | 'galleries' | 'hostId' | 'endTime' | 'startTime'
-    > & {
-        membersInfo: Array<{ __typename?: 'MemberInfo' } & Pick<MemberInfo, 'id' | 'type'>>
-        information: { __typename?: 'Information' } & Pick<Information, 'eventName' | 'description'>
-        place: { __typename?: 'Place' } & Pick<Place, 'name' | 'address'> & {
-            coord: { __typename?: 'Coord' } & Pick<Coord, 'latitude' | 'longitude'>
-          }
-      }
-  >
-}
+export type GetAllEventsQueryVariables = {};
+
+
+export type GetAllEventsQuery = (
+  { __typename?: 'Query' }
+  & { getEvents: Array<(
+    { __typename?: 'Event' }
+    & Pick<Event, 'id' | 'thumbnail' | 'galleries' | 'hostId' | 'endTime' | 'startTime'>
+    & { membersInfo: Array<(
+      { __typename?: 'MemberInfo' }
+      & Pick<MemberInfo, 'id' | 'type'>
+    )>, information: (
+      { __typename?: 'Information' }
+      & Pick<Information, 'eventName' | 'description'>
+    ), place: (
+      { __typename?: 'Place' }
+      & Pick<Place, 'name' | 'address'>
+      & { coord: (
+        { __typename?: 'Coord' }
+        & Pick<Coord, 'latitude' | 'longitude'>
+      ) }
+    ) }
+  )> }
+);
 
 export type GetEventByCoordQueryVariables = {
-  input: CoordInput
-}
+  input: CoordInput;
+};
 
-export type GetEventByCoordQuery = { __typename?: 'Query' } & {
-  getEventBaseOnPos: Array<
-    { __typename?: 'EventWithHost' } & Pick<
-      EventWithHost,
-      'id' | 'tags' | 'thumbnail' | 'galleries' | 'endTime' | 'startTime'
-    > & {
-        hostInfo?: Maybe<{ __typename?: 'User' } & Pick<User, 'id' | 'name' | 'email' | 'avatarId'>>
-        information: { __typename?: 'Information' } & Pick<Information, 'eventName'>
-        place: { __typename?: 'Place' } & {
-          coord: { __typename?: 'Coord' } & Pick<Coord, 'latitude' | 'longitude'>
-        }
-      }
-  >
-}
+
+export type GetEventByCoordQuery = (
+  { __typename?: 'Query' }
+  & { getEventBaseOnPos: Array<(
+    { __typename?: 'EventWithHost' }
+    & Pick<EventWithHost, 'id' | 'tags' | 'thumbnail' | 'galleries' | 'endTime' | 'startTime'>
+    & { hostInfo?: Maybe<(
+      { __typename?: 'User' }
+      & Pick<User, 'id' | 'name' | 'email' | 'avatarId'>
+    )>, information: (
+      { __typename?: 'Information' }
+      & Pick<Information, 'eventName'>
+    ), place: (
+      { __typename?: 'Place' }
+      & { coord: (
+        { __typename?: 'Coord' }
+        & Pick<Coord, 'latitude' | 'longitude'>
+      ) }
+    ) }
+  )> }
+);
 
 export type GetEventByIdQueryVariables = {
-  id: Scalars['String']
-}
+  id: Scalars['String'];
+};
 
-export type GetEventByIdQuery = { __typename?: 'Query' } & {
-  getEventById?: Maybe<
-    { __typename?: 'GetEventByIdResponse' } & Pick<
-      GetEventByIdResponse,
-      'id' | 'thumbnail' | 'totalMember' | 'galleries' | 'endTime' | 'startTime'
-    > & {
-        hostInfo?: Maybe<{ __typename?: 'User' } & Pick<User, 'avatarId' | 'id'>>
-        membersInfo: Array<{ __typename?: 'MemberInfo' } & Pick<MemberInfo, 'id' | 'type'>>
-        information: { __typename?: 'Information' } & Pick<Information, 'eventName' | 'description'>
-        place: { __typename?: 'Place' } & Pick<Place, 'name' | 'address'> & {
-            coord: { __typename?: 'Coord' } & Pick<Coord, 'latitude' | 'longitude'>
-          }
-      }
-  >
-}
+
+export type GetEventByIdQuery = (
+  { __typename?: 'Query' }
+  & { getEventById?: Maybe<(
+    { __typename?: 'GetEventByIdResponse' }
+    & Pick<GetEventByIdResponse, 'id' | 'thumbnail' | 'totalMember' | 'galleries' | 'endTime' | 'startTime'>
+    & { hostInfo?: Maybe<(
+      { __typename?: 'User' }
+      & Pick<User, 'avatarId' | 'id'>
+    )>, membersInfo: Array<(
+      { __typename?: 'MemberInfo' }
+      & Pick<MemberInfo, 'id' | 'type'>
+    )>, information: (
+      { __typename?: 'Information' }
+      & Pick<Information, 'eventName' | 'description'>
+    ), place: (
+      { __typename?: 'Place' }
+      & Pick<Place, 'name' | 'address'>
+      & { coord: (
+        { __typename?: 'Coord' }
+        & Pick<Coord, 'latitude' | 'longitude'>
+      ) }
+    ) }
+  )> }
+);
 
 export type GetImgQueryVariables = {
-  id: Scalars['String']
-}
+  id: Scalars['String'];
+};
 
-export type GetImgQuery = { __typename?: 'Query' } & {
-  getImg: { __typename?: 'Image' } & Pick<Image, 'data'>
-}
 
-export type GetAllUsersQueryVariables = {}
+export type GetImgQuery = (
+  { __typename?: 'Query' }
+  & { getImg: (
+    { __typename?: 'Image' }
+    & Pick<Image, 'data'>
+  ) }
+);
 
-export type GetAllUsersQuery = { __typename?: 'Query' } & {
-  getAllUsers: Array<{ __typename?: 'User' } & Pick<User, 'id' | 'email'>>
-}
+export type GetAllUsersQueryVariables = {};
 
-export type GetCurrentUserInfoQueryVariables = {}
 
-export type GetCurrentUserInfoQuery = { __typename?: 'Query' } & {
-  me?: Maybe<
-    { __typename?: 'User' } & Pick<
-      User,
-      'email' | 'id' | 'avatarId' | 'name' | 'joinedEvent' | 'createdAt' | 'updatedAt'
-    >
-  >
-}
+export type GetAllUsersQuery = (
+  { __typename?: 'Query' }
+  & { getAllUsers: Array<(
+    { __typename?: 'User' }
+    & Pick<User, 'id' | 'email'>
+  )> }
+);
 
-export type GetMyJoinedEventQueryVariables = {}
+export type GetCurrentUserInfoQueryVariables = {};
 
-export type GetMyJoinedEventQuery = { __typename?: 'Query' } & {
-  getMyJoinedEvent?: Maybe<
-    Array<
-      { __typename?: 'Event' } & Pick<Event, 'id'> & {
-          place: { __typename?: 'Place' } & Pick<Place, 'name' | 'address'>
-        }
-    >
-  >
-}
 
-export type GetMyHostedEventQueryVariables = {}
+export type GetCurrentUserInfoQuery = (
+  { __typename?: 'Query' }
+  & { me?: Maybe<(
+    { __typename?: 'User' }
+    & Pick<User, 'email' | 'id' | 'avatarId' | 'name' | 'joinedEvent' | 'createdAt' | 'updatedAt'>
+  )> }
+);
 
-export type GetMyHostedEventQuery = { __typename?: 'Query' } & {
-  getMyHostedEvent: Array<
-    { __typename?: 'Event' } & Pick<Event, 'id'> & {
-        place: { __typename?: 'Place' } & Pick<Place, 'name' | 'address'>
-      }
-  >
-}
+export type GetMyJoinedEventQueryVariables = {};
+
+
+export type GetMyJoinedEventQuery = (
+  { __typename?: 'Query' }
+  & { getMyJoinedEvent?: Maybe<Array<(
+    { __typename?: 'Event' }
+    & Pick<Event, 'id'>
+    & { place: (
+      { __typename?: 'Place' }
+      & Pick<Place, 'name' | 'address'>
+    ) }
+  )>> }
+);
+
+export type GetMyHostedEventQueryVariables = {};
+
+
+export type GetMyHostedEventQuery = (
+  { __typename?: 'Query' }
+  & { getMyHostedEvent: Array<(
+    { __typename?: 'Event' }
+    & Pick<Event, 'id'>
+    & { place: (
+      { __typename?: 'Place' }
+      & Pick<Place, 'name' | 'address'>
+    ) }
+  )> }
+);
+
 
 export const CreateEventTagsDocument = gql`
-  mutation createEventTags($input: EventTagInput!) {
-    createTag(input: $input) {
-      name
-      id
-    }
+    mutation createEventTags($input: EventTagInput!) {
+  createTag(input: $input) {
+    name
+    id
   }
-`
-export type CreateEventTagsMutationFn = ApolloReactCommon.MutationFunction<
-  CreateEventTagsMutation,
-  CreateEventTagsMutationVariables
->
+}
+    `;
+export type CreateEventTagsMutationFn = ApolloReactCommon.MutationFunction<CreateEventTagsMutation, CreateEventTagsMutationVariables>;
 
 /**
  * __useCreateEventTagsMutation__
@@ -591,37 +715,21 @@ export type CreateEventTagsMutationFn = ApolloReactCommon.MutationFunction<
  *   },
  * });
  */
-export function useCreateEventTagsMutation(
-  baseOptions?: ApolloReactHooks.MutationHookOptions<
-    CreateEventTagsMutation,
-    CreateEventTagsMutationVariables
-  >,
-) {
-  return ApolloReactHooks.useMutation<CreateEventTagsMutation, CreateEventTagsMutationVariables>(
-    CreateEventTagsDocument,
-    baseOptions,
-  )
-}
-export type CreateEventTagsMutationHookResult = ReturnType<typeof useCreateEventTagsMutation>
-export type CreateEventTagsMutationResult = ApolloReactCommon.MutationResult<
-  CreateEventTagsMutation
->
-export type CreateEventTagsMutationOptions = ApolloReactCommon.BaseMutationOptions<
-  CreateEventTagsMutation,
-  CreateEventTagsMutationVariables
->
+export function useCreateEventTagsMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<CreateEventTagsMutation, CreateEventTagsMutationVariables>) {
+        return ApolloReactHooks.useMutation<CreateEventTagsMutation, CreateEventTagsMutationVariables>(CreateEventTagsDocument, baseOptions);
+      }
+export type CreateEventTagsMutationHookResult = ReturnType<typeof useCreateEventTagsMutation>;
+export type CreateEventTagsMutationResult = ApolloReactCommon.MutationResult<CreateEventTagsMutation>;
+export type CreateEventTagsMutationOptions = ApolloReactCommon.BaseMutationOptions<CreateEventTagsMutation, CreateEventTagsMutationVariables>;
 export const UpdateTagDocument = gql`
-  mutation updateTag($updateTagInput: ChangeQuantityTagInput!) {
-    changeTagQuantity(input: $updateTagInput) {
-      name
-      currentUse
-    }
+    mutation updateTag($updateTagInput: ChangeQuantityTagInput!) {
+  changeTagQuantity(input: $updateTagInput) {
+    name
+    currentUse
   }
-`
-export type UpdateTagMutationFn = ApolloReactCommon.MutationFunction<
-  UpdateTagMutation,
-  UpdateTagMutationVariables
->
+}
+    `;
+export type UpdateTagMutationFn = ApolloReactCommon.MutationFunction<UpdateTagMutation, UpdateTagMutationVariables>;
 
 /**
  * __useUpdateTagMutation__
@@ -640,32 +748,21 @@ export type UpdateTagMutationFn = ApolloReactCommon.MutationFunction<
  *   },
  * });
  */
-export function useUpdateTagMutation(
-  baseOptions?: ApolloReactHooks.MutationHookOptions<UpdateTagMutation, UpdateTagMutationVariables>,
-) {
-  return ApolloReactHooks.useMutation<UpdateTagMutation, UpdateTagMutationVariables>(
-    UpdateTagDocument,
-    baseOptions,
-  )
-}
-export type UpdateTagMutationHookResult = ReturnType<typeof useUpdateTagMutation>
-export type UpdateTagMutationResult = ApolloReactCommon.MutationResult<UpdateTagMutation>
-export type UpdateTagMutationOptions = ApolloReactCommon.BaseMutationOptions<
-  UpdateTagMutation,
-  UpdateTagMutationVariables
->
+export function useUpdateTagMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<UpdateTagMutation, UpdateTagMutationVariables>) {
+        return ApolloReactHooks.useMutation<UpdateTagMutation, UpdateTagMutationVariables>(UpdateTagDocument, baseOptions);
+      }
+export type UpdateTagMutationHookResult = ReturnType<typeof useUpdateTagMutation>;
+export type UpdateTagMutationResult = ApolloReactCommon.MutationResult<UpdateTagMutation>;
+export type UpdateTagMutationOptions = ApolloReactCommon.BaseMutationOptions<UpdateTagMutation, UpdateTagMutationVariables>;
 export const ChangeTagQuantityDocument = gql`
-  mutation changeTagQuantity($increase: Boolean!, $id: String!) {
-    IncreaseOrDecreaseTagQuantity(increase: $increase, id: $id) {
-      name
-      currentUse
-    }
+    mutation changeTagQuantity($increase: Boolean!, $id: String!) {
+  IncreaseOrDecreaseTagQuantity(increase: $increase, id: $id) {
+    name
+    currentUse
   }
-`
-export type ChangeTagQuantityMutationFn = ApolloReactCommon.MutationFunction<
-  ChangeTagQuantityMutation,
-  ChangeTagQuantityMutationVariables
->
+}
+    `;
+export type ChangeTagQuantityMutationFn = ApolloReactCommon.MutationFunction<ChangeTagQuantityMutation, ChangeTagQuantityMutationVariables>;
 
 /**
  * __useChangeTagQuantityMutation__
@@ -685,34 +782,21 @@ export type ChangeTagQuantityMutationFn = ApolloReactCommon.MutationFunction<
  *   },
  * });
  */
-export function useChangeTagQuantityMutation(
-  baseOptions?: ApolloReactHooks.MutationHookOptions<
-    ChangeTagQuantityMutation,
-    ChangeTagQuantityMutationVariables
-  >,
-) {
-  return ApolloReactHooks.useMutation<
-    ChangeTagQuantityMutation,
-    ChangeTagQuantityMutationVariables
-  >(ChangeTagQuantityDocument, baseOptions)
-}
-export type ChangeTagQuantityMutationHookResult = ReturnType<typeof useChangeTagQuantityMutation>
-export type ChangeTagQuantityMutationResult = ApolloReactCommon.MutationResult<
-  ChangeTagQuantityMutation
->
-export type ChangeTagQuantityMutationOptions = ApolloReactCommon.BaseMutationOptions<
-  ChangeTagQuantityMutation,
-  ChangeTagQuantityMutationVariables
->
+export function useChangeTagQuantityMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<ChangeTagQuantityMutation, ChangeTagQuantityMutationVariables>) {
+        return ApolloReactHooks.useMutation<ChangeTagQuantityMutation, ChangeTagQuantityMutationVariables>(ChangeTagQuantityDocument, baseOptions);
+      }
+export type ChangeTagQuantityMutationHookResult = ReturnType<typeof useChangeTagQuantityMutation>;
+export type ChangeTagQuantityMutationResult = ApolloReactCommon.MutationResult<ChangeTagQuantityMutation>;
+export type ChangeTagQuantityMutationOptions = ApolloReactCommon.BaseMutationOptions<ChangeTagQuantityMutation, ChangeTagQuantityMutationVariables>;
 export const GetAllTagDocument = gql`
-  query getAllTag {
-    getAllTag {
-      id
-      name
-      currentUse
-    }
+    query getAllTag {
+  getAllTag {
+    id
+    name
+    currentUse
   }
-`
+}
+    `;
 
 /**
  * __useGetAllTagQuery__
@@ -729,43 +813,30 @@ export const GetAllTagDocument = gql`
  *   },
  * });
  */
-export function useGetAllTagQuery(
-  baseOptions?: ApolloReactHooks.QueryHookOptions<GetAllTagQuery, GetAllTagQueryVariables>,
-) {
-  return ApolloReactHooks.useQuery<GetAllTagQuery, GetAllTagQueryVariables>(
-    GetAllTagDocument,
-    baseOptions,
-  )
-}
-export function useGetAllTagLazyQuery(
-  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetAllTagQuery, GetAllTagQueryVariables>,
-) {
-  return ApolloReactHooks.useLazyQuery<GetAllTagQuery, GetAllTagQueryVariables>(
-    GetAllTagDocument,
-    baseOptions,
-  )
-}
-export type GetAllTagQueryHookResult = ReturnType<typeof useGetAllTagQuery>
-export type GetAllTagLazyQueryHookResult = ReturnType<typeof useGetAllTagLazyQuery>
-export type GetAllTagQueryResult = ApolloReactCommon.QueryResult<
-  GetAllTagQuery,
-  GetAllTagQueryVariables
->
+export function useGetAllTagQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetAllTagQuery, GetAllTagQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetAllTagQuery, GetAllTagQueryVariables>(GetAllTagDocument, baseOptions);
+      }
+export function useGetAllTagLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetAllTagQuery, GetAllTagQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetAllTagQuery, GetAllTagQueryVariables>(GetAllTagDocument, baseOptions);
+        }
+export type GetAllTagQueryHookResult = ReturnType<typeof useGetAllTagQuery>;
+export type GetAllTagLazyQueryHookResult = ReturnType<typeof useGetAllTagLazyQuery>;
+export type GetAllTagQueryResult = ApolloReactCommon.QueryResult<GetAllTagQuery, GetAllTagQueryVariables>;
 export function refetchGetAllTagQuery(variables?: GetAllTagQueryVariables) {
-  return { query: GetAllTagDocument, variables: variables }
-}
-export const GetTopTagsDocument = gql`
-  query getTopTags {
-    getTopTenHotTag {
-      name
-      currentUse
-      id
-      createdAt
-      updatedAt
-      __typename
+      return { query: GetAllTagDocument, variables: variables }
     }
+export const GetTopTagsDocument = gql`
+    query getTopTags {
+  getTopTenHotTag {
+    name
+    currentUse
+    id
+    createdAt
+    updatedAt
+    __typename
   }
-`
+}
+    `;
 
 /**
  * __useGetTopTagsQuery__
@@ -782,47 +853,31 @@ export const GetTopTagsDocument = gql`
  *   },
  * });
  */
-export function useGetTopTagsQuery(
-  baseOptions?: ApolloReactHooks.QueryHookOptions<GetTopTagsQuery, GetTopTagsQueryVariables>,
-) {
-  return ApolloReactHooks.useQuery<GetTopTagsQuery, GetTopTagsQueryVariables>(
-    GetTopTagsDocument,
-    baseOptions,
-  )
-}
-export function useGetTopTagsLazyQuery(
-  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetTopTagsQuery, GetTopTagsQueryVariables>,
-) {
-  return ApolloReactHooks.useLazyQuery<GetTopTagsQuery, GetTopTagsQueryVariables>(
-    GetTopTagsDocument,
-    baseOptions,
-  )
-}
-export type GetTopTagsQueryHookResult = ReturnType<typeof useGetTopTagsQuery>
-export type GetTopTagsLazyQueryHookResult = ReturnType<typeof useGetTopTagsLazyQuery>
-export type GetTopTagsQueryResult = ApolloReactCommon.QueryResult<
-  GetTopTagsQuery,
-  GetTopTagsQueryVariables
->
+export function useGetTopTagsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetTopTagsQuery, GetTopTagsQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetTopTagsQuery, GetTopTagsQueryVariables>(GetTopTagsDocument, baseOptions);
+      }
+export function useGetTopTagsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetTopTagsQuery, GetTopTagsQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetTopTagsQuery, GetTopTagsQueryVariables>(GetTopTagsDocument, baseOptions);
+        }
+export type GetTopTagsQueryHookResult = ReturnType<typeof useGetTopTagsQuery>;
+export type GetTopTagsLazyQueryHookResult = ReturnType<typeof useGetTopTagsLazyQuery>;
+export type GetTopTagsQueryResult = ApolloReactCommon.QueryResult<GetTopTagsQuery, GetTopTagsQueryVariables>;
 export function refetchGetTopTagsQuery(variables?: GetTopTagsQueryVariables) {
-  return { query: GetTopTagsDocument, variables: variables }
-}
-export const LoginDocument = gql`
-  mutation login($email: String!, $password: String!) {
-    login(input: { email: $email, password: $password }) {
-      id
-      name
-      email
-      createdAt
-      updatedAt
-      avatarId
+      return { query: GetTopTagsDocument, variables: variables }
     }
+export const LoginDocument = gql`
+    mutation login($email: String!, $password: String!) {
+  login(input: {email: $email, password: $password}) {
+    id
+    name
+    email
+    createdAt
+    updatedAt
+    avatarId
   }
-`
-export type LoginMutationFn = ApolloReactCommon.MutationFunction<
-  LoginMutation,
-  LoginMutationVariables
->
+}
+    `;
+export type LoginMutationFn = ApolloReactCommon.MutationFunction<LoginMutation, LoginMutationVariables>;
 
 /**
  * __useLoginMutation__
@@ -842,36 +897,25 @@ export type LoginMutationFn = ApolloReactCommon.MutationFunction<
  *   },
  * });
  */
-export function useLoginMutation(
-  baseOptions?: ApolloReactHooks.MutationHookOptions<LoginMutation, LoginMutationVariables>,
-) {
-  return ApolloReactHooks.useMutation<LoginMutation, LoginMutationVariables>(
-    LoginDocument,
-    baseOptions,
-  )
-}
-export type LoginMutationHookResult = ReturnType<typeof useLoginMutation>
-export type LoginMutationResult = ApolloReactCommon.MutationResult<LoginMutation>
-export type LoginMutationOptions = ApolloReactCommon.BaseMutationOptions<
-  LoginMutation,
-  LoginMutationVariables
->
+export function useLoginMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<LoginMutation, LoginMutationVariables>) {
+        return ApolloReactHooks.useMutation<LoginMutation, LoginMutationVariables>(LoginDocument, baseOptions);
+      }
+export type LoginMutationHookResult = ReturnType<typeof useLoginMutation>;
+export type LoginMutationResult = ApolloReactCommon.MutationResult<LoginMutation>;
+export type LoginMutationOptions = ApolloReactCommon.BaseMutationOptions<LoginMutation, LoginMutationVariables>;
 export const SignUpDocument = gql`
-  mutation signUp($email: String!, $password: String!, $name: String!) {
-    register(input: { email: $email, password: $password, name: $name }) {
-      id
-      name
-      email
-      createdAt
-      updatedAt
-      avatarId
-    }
+    mutation signUp($email: String!, $password: String!, $name: String!) {
+  register(input: {email: $email, password: $password, name: $name}) {
+    id
+    name
+    email
+    createdAt
+    updatedAt
+    avatarId
   }
-`
-export type SignUpMutationFn = ApolloReactCommon.MutationFunction<
-  SignUpMutation,
-  SignUpMutationVariables
->
+}
+    `;
+export type SignUpMutationFn = ApolloReactCommon.MutationFunction<SignUpMutation, SignUpMutationVariables>;
 
 /**
  * __useSignUpMutation__
@@ -892,29 +936,18 @@ export type SignUpMutationFn = ApolloReactCommon.MutationFunction<
  *   },
  * });
  */
-export function useSignUpMutation(
-  baseOptions?: ApolloReactHooks.MutationHookOptions<SignUpMutation, SignUpMutationVariables>,
-) {
-  return ApolloReactHooks.useMutation<SignUpMutation, SignUpMutationVariables>(
-    SignUpDocument,
-    baseOptions,
-  )
-}
-export type SignUpMutationHookResult = ReturnType<typeof useSignUpMutation>
-export type SignUpMutationResult = ApolloReactCommon.MutationResult<SignUpMutation>
-export type SignUpMutationOptions = ApolloReactCommon.BaseMutationOptions<
-  SignUpMutation,
-  SignUpMutationVariables
->
+export function useSignUpMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<SignUpMutation, SignUpMutationVariables>) {
+        return ApolloReactHooks.useMutation<SignUpMutation, SignUpMutationVariables>(SignUpDocument, baseOptions);
+      }
+export type SignUpMutationHookResult = ReturnType<typeof useSignUpMutation>;
+export type SignUpMutationResult = ApolloReactCommon.MutationResult<SignUpMutation>;
+export type SignUpMutationOptions = ApolloReactCommon.BaseMutationOptions<SignUpMutation, SignUpMutationVariables>;
 export const LogoutDocument = gql`
-  mutation logout {
-    logout
-  }
-`
-export type LogoutMutationFn = ApolloReactCommon.MutationFunction<
-  LogoutMutation,
-  LogoutMutationVariables
->
+    mutation logout {
+  logout
+}
+    `;
+export type LogoutMutationFn = ApolloReactCommon.MutationFunction<LogoutMutation, LogoutMutationVariables>;
 
 /**
  * __useLogoutMutation__
@@ -932,34 +965,26 @@ export type LogoutMutationFn = ApolloReactCommon.MutationFunction<
  *   },
  * });
  */
-export function useLogoutMutation(
-  baseOptions?: ApolloReactHooks.MutationHookOptions<LogoutMutation, LogoutMutationVariables>,
-) {
-  return ApolloReactHooks.useMutation<LogoutMutation, LogoutMutationVariables>(
-    LogoutDocument,
-    baseOptions,
-  )
-}
-export type LogoutMutationHookResult = ReturnType<typeof useLogoutMutation>
-export type LogoutMutationResult = ApolloReactCommon.MutationResult<LogoutMutation>
-export type LogoutMutationOptions = ApolloReactCommon.BaseMutationOptions<
-  LogoutMutation,
-  LogoutMutationVariables
->
+export function useLogoutMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<LogoutMutation, LogoutMutationVariables>) {
+        return ApolloReactHooks.useMutation<LogoutMutation, LogoutMutationVariables>(LogoutDocument, baseOptions);
+      }
+export type LogoutMutationHookResult = ReturnType<typeof useLogoutMutation>;
+export type LogoutMutationResult = ApolloReactCommon.MutationResult<LogoutMutation>;
+export type LogoutMutationOptions = ApolloReactCommon.BaseMutationOptions<LogoutMutation, LogoutMutationVariables>;
 export const AuthDocument = gql`
-  mutation auth {
-    auth {
-      email
-      name
-      avatarId
-      id
-      createdAt
-      updatedAt
-      joinedEvent
-    }
+    mutation auth {
+  auth {
+    email
+    name
+    avatarId
+    id
+    createdAt
+    updatedAt
+    joinedEvent
   }
-`
-export type AuthMutationFn = ApolloReactCommon.MutationFunction<AuthMutation, AuthMutationVariables>
+}
+    `;
+export type AuthMutationFn = ApolloReactCommon.MutationFunction<AuthMutation, AuthMutationVariables>;
 
 /**
  * __useAuthMutation__
@@ -977,31 +1002,20 @@ export type AuthMutationFn = ApolloReactCommon.MutationFunction<AuthMutation, Au
  *   },
  * });
  */
-export function useAuthMutation(
-  baseOptions?: ApolloReactHooks.MutationHookOptions<AuthMutation, AuthMutationVariables>,
-) {
-  return ApolloReactHooks.useMutation<AuthMutation, AuthMutationVariables>(
-    AuthDocument,
-    baseOptions,
-  )
-}
-export type AuthMutationHookResult = ReturnType<typeof useAuthMutation>
-export type AuthMutationResult = ApolloReactCommon.MutationResult<AuthMutation>
-export type AuthMutationOptions = ApolloReactCommon.BaseMutationOptions<
-  AuthMutation,
-  AuthMutationVariables
->
+export function useAuthMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<AuthMutation, AuthMutationVariables>) {
+        return ApolloReactHooks.useMutation<AuthMutation, AuthMutationVariables>(AuthDocument, baseOptions);
+      }
+export type AuthMutationHookResult = ReturnType<typeof useAuthMutation>;
+export type AuthMutationResult = ApolloReactCommon.MutationResult<AuthMutation>;
+export type AuthMutationOptions = ApolloReactCommon.BaseMutationOptions<AuthMutation, AuthMutationVariables>;
 export const CreateEventDocument = gql`
-  mutation createEvent($event: EventInput!) {
-    createEvent(event: $event) {
-      hostId
-    }
+    mutation createEvent($event: EventInput!) {
+  createEvent(event: $event) {
+    hostId
   }
-`
-export type CreateEventMutationFn = ApolloReactCommon.MutationFunction<
-  CreateEventMutation,
-  CreateEventMutationVariables
->
+}
+    `;
+export type CreateEventMutationFn = ApolloReactCommon.MutationFunction<CreateEventMutation, CreateEventMutationVariables>;
 
 /**
  * __useCreateEventMutation__
@@ -1020,32 +1034,48 @@ export type CreateEventMutationFn = ApolloReactCommon.MutationFunction<
  *   },
  * });
  */
-export function useCreateEventMutation(
-  baseOptions?: ApolloReactHooks.MutationHookOptions<
-    CreateEventMutation,
-    CreateEventMutationVariables
-  >,
-) {
-  return ApolloReactHooks.useMutation<CreateEventMutation, CreateEventMutationVariables>(
-    CreateEventDocument,
-    baseOptions,
-  )
+export function useCreateEventMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<CreateEventMutation, CreateEventMutationVariables>) {
+        return ApolloReactHooks.useMutation<CreateEventMutation, CreateEventMutationVariables>(CreateEventDocument, baseOptions);
+      }
+export type CreateEventMutationHookResult = ReturnType<typeof useCreateEventMutation>;
+export type CreateEventMutationResult = ApolloReactCommon.MutationResult<CreateEventMutation>;
+export type CreateEventMutationOptions = ApolloReactCommon.BaseMutationOptions<CreateEventMutation, CreateEventMutationVariables>;
+export const DisbandEventDocument = gql`
+    mutation disbandEvent($id: String!) {
+  disbandEvent(id: $id)
 }
-export type CreateEventMutationHookResult = ReturnType<typeof useCreateEventMutation>
-export type CreateEventMutationResult = ApolloReactCommon.MutationResult<CreateEventMutation>
-export type CreateEventMutationOptions = ApolloReactCommon.BaseMutationOptions<
-  CreateEventMutation,
-  CreateEventMutationVariables
->
+    `;
+export type DisbandEventMutationFn = ApolloReactCommon.MutationFunction<DisbandEventMutation, DisbandEventMutationVariables>;
+
+/**
+ * __useDisbandEventMutation__
+ *
+ * To run a mutation, you first call `useDisbandEventMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDisbandEventMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [disbandEventMutation, { data, loading, error }] = useDisbandEventMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDisbandEventMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<DisbandEventMutation, DisbandEventMutationVariables>) {
+        return ApolloReactHooks.useMutation<DisbandEventMutation, DisbandEventMutationVariables>(DisbandEventDocument, baseOptions);
+      }
+export type DisbandEventMutationHookResult = ReturnType<typeof useDisbandEventMutation>;
+export type DisbandEventMutationResult = ApolloReactCommon.MutationResult<DisbandEventMutation>;
+export type DisbandEventMutationOptions = ApolloReactCommon.BaseMutationOptions<DisbandEventMutation, DisbandEventMutationVariables>;
 export const AddPictureDocument = gql`
-  mutation addPicture($file: Upload!) {
-    addProfilePicture(picture: $file)
-  }
-`
-export type AddPictureMutationFn = ApolloReactCommon.MutationFunction<
-  AddPictureMutation,
-  AddPictureMutationVariables
->
+    mutation addPicture($file: Upload!) {
+  addProfilePicture(picture: $file)
+}
+    `;
+export type AddPictureMutationFn = ApolloReactCommon.MutationFunction<AddPictureMutation, AddPictureMutationVariables>;
 
 /**
  * __useAddPictureMutation__
@@ -1064,38 +1094,24 @@ export type AddPictureMutationFn = ApolloReactCommon.MutationFunction<
  *   },
  * });
  */
-export function useAddPictureMutation(
-  baseOptions?: ApolloReactHooks.MutationHookOptions<
-    AddPictureMutation,
-    AddPictureMutationVariables
-  >,
-) {
-  return ApolloReactHooks.useMutation<AddPictureMutation, AddPictureMutationVariables>(
-    AddPictureDocument,
-    baseOptions,
-  )
-}
-export type AddPictureMutationHookResult = ReturnType<typeof useAddPictureMutation>
-export type AddPictureMutationResult = ApolloReactCommon.MutationResult<AddPictureMutation>
-export type AddPictureMutationOptions = ApolloReactCommon.BaseMutationOptions<
-  AddPictureMutation,
-  AddPictureMutationVariables
->
-export const JoinEventDocument = gql`
-  mutation joinEvent($input: JoinEventInput!) {
-    joinEvent(input: $input) {
-      id
-      membersInfo {
-        id
-        type
+export function useAddPictureMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<AddPictureMutation, AddPictureMutationVariables>) {
+        return ApolloReactHooks.useMutation<AddPictureMutation, AddPictureMutationVariables>(AddPictureDocument, baseOptions);
       }
+export type AddPictureMutationHookResult = ReturnType<typeof useAddPictureMutation>;
+export type AddPictureMutationResult = ApolloReactCommon.MutationResult<AddPictureMutation>;
+export type AddPictureMutationOptions = ApolloReactCommon.BaseMutationOptions<AddPictureMutation, AddPictureMutationVariables>;
+export const JoinEventDocument = gql`
+    mutation joinEvent($input: JoinEventInput!) {
+  joinEvent(input: $input) {
+    id
+    membersInfo {
+      id
+      type
     }
   }
-`
-export type JoinEventMutationFn = ApolloReactCommon.MutationFunction<
-  JoinEventMutation,
-  JoinEventMutationVariables
->
+}
+    `;
+export type JoinEventMutationFn = ApolloReactCommon.MutationFunction<JoinEventMutation, JoinEventMutationVariables>;
 
 /**
  * __useJoinEventMutation__
@@ -1114,35 +1130,24 @@ export type JoinEventMutationFn = ApolloReactCommon.MutationFunction<
  *   },
  * });
  */
-export function useJoinEventMutation(
-  baseOptions?: ApolloReactHooks.MutationHookOptions<JoinEventMutation, JoinEventMutationVariables>,
-) {
-  return ApolloReactHooks.useMutation<JoinEventMutation, JoinEventMutationVariables>(
-    JoinEventDocument,
-    baseOptions,
-  )
-}
-export type JoinEventMutationHookResult = ReturnType<typeof useJoinEventMutation>
-export type JoinEventMutationResult = ApolloReactCommon.MutationResult<JoinEventMutation>
-export type JoinEventMutationOptions = ApolloReactCommon.BaseMutationOptions<
-  JoinEventMutation,
-  JoinEventMutationVariables
->
-export const EditJoinTypeEventInfoDocument = gql`
-  mutation editJoinTypeEventInfo($input: JoinEventInput!) {
-    editJoinTypeEventInfo(input: $input) {
-      id
-      membersInfo {
-        id
-        type
+export function useJoinEventMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<JoinEventMutation, JoinEventMutationVariables>) {
+        return ApolloReactHooks.useMutation<JoinEventMutation, JoinEventMutationVariables>(JoinEventDocument, baseOptions);
       }
+export type JoinEventMutationHookResult = ReturnType<typeof useJoinEventMutation>;
+export type JoinEventMutationResult = ApolloReactCommon.MutationResult<JoinEventMutation>;
+export type JoinEventMutationOptions = ApolloReactCommon.BaseMutationOptions<JoinEventMutation, JoinEventMutationVariables>;
+export const EditJoinTypeEventInfoDocument = gql`
+    mutation editJoinTypeEventInfo($input: JoinEventInput!) {
+  editJoinTypeEventInfo(input: $input) {
+    id
+    membersInfo {
+      id
+      type
     }
   }
-`
-export type EditJoinTypeEventInfoMutationFn = ApolloReactCommon.MutationFunction<
-  EditJoinTypeEventInfoMutation,
-  EditJoinTypeEventInfoMutationVariables
->
+}
+    `;
+export type EditJoinTypeEventInfoMutationFn = ApolloReactCommon.MutationFunction<EditJoinTypeEventInfoMutation, EditJoinTypeEventInfoMutationVariables>;
 
 /**
  * __useEditJoinTypeEventInfoMutation__
@@ -1161,55 +1166,40 @@ export type EditJoinTypeEventInfoMutationFn = ApolloReactCommon.MutationFunction
  *   },
  * });
  */
-export function useEditJoinTypeEventInfoMutation(
-  baseOptions?: ApolloReactHooks.MutationHookOptions<
-    EditJoinTypeEventInfoMutation,
-    EditJoinTypeEventInfoMutationVariables
-  >,
-) {
-  return ApolloReactHooks.useMutation<
-    EditJoinTypeEventInfoMutation,
-    EditJoinTypeEventInfoMutationVariables
-  >(EditJoinTypeEventInfoDocument, baseOptions)
-}
-export type EditJoinTypeEventInfoMutationHookResult = ReturnType<
-  typeof useEditJoinTypeEventInfoMutation
->
-export type EditJoinTypeEventInfoMutationResult = ApolloReactCommon.MutationResult<
-  EditJoinTypeEventInfoMutation
->
-export type EditJoinTypeEventInfoMutationOptions = ApolloReactCommon.BaseMutationOptions<
-  EditJoinTypeEventInfoMutation,
-  EditJoinTypeEventInfoMutationVariables
->
+export function useEditJoinTypeEventInfoMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<EditJoinTypeEventInfoMutation, EditJoinTypeEventInfoMutationVariables>) {
+        return ApolloReactHooks.useMutation<EditJoinTypeEventInfoMutation, EditJoinTypeEventInfoMutationVariables>(EditJoinTypeEventInfoDocument, baseOptions);
+      }
+export type EditJoinTypeEventInfoMutationHookResult = ReturnType<typeof useEditJoinTypeEventInfoMutation>;
+export type EditJoinTypeEventInfoMutationResult = ApolloReactCommon.MutationResult<EditJoinTypeEventInfoMutation>;
+export type EditJoinTypeEventInfoMutationOptions = ApolloReactCommon.BaseMutationOptions<EditJoinTypeEventInfoMutation, EditJoinTypeEventInfoMutationVariables>;
 export const GetAllEventsDocument = gql`
-  query getAllEvents {
-    getEvents {
+    query getAllEvents {
+  getEvents {
+    id
+    thumbnail
+    galleries
+    hostId
+    membersInfo {
       id
-      thumbnail
-      galleries
-      hostId
-      membersInfo {
-        id
-        type
-      }
-      endTime
-      startTime
-      information {
-        eventName
-        description
-      }
-      place {
-        name
-        address
-        coord {
-          latitude
-          longitude
-        }
+      type
+    }
+    endTime
+    startTime
+    information {
+      eventName
+      description
+    }
+    place {
+      name
+      address
+      coord {
+        latitude
+        longitude
       }
     }
   }
-`
+}
+    `;
 
 /**
  * __useGetAllEventsQuery__
@@ -1226,61 +1216,45 @@ export const GetAllEventsDocument = gql`
  *   },
  * });
  */
-export function useGetAllEventsQuery(
-  baseOptions?: ApolloReactHooks.QueryHookOptions<GetAllEventsQuery, GetAllEventsQueryVariables>,
-) {
-  return ApolloReactHooks.useQuery<GetAllEventsQuery, GetAllEventsQueryVariables>(
-    GetAllEventsDocument,
-    baseOptions,
-  )
-}
-export function useGetAllEventsLazyQuery(
-  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
-    GetAllEventsQuery,
-    GetAllEventsQueryVariables
-  >,
-) {
-  return ApolloReactHooks.useLazyQuery<GetAllEventsQuery, GetAllEventsQueryVariables>(
-    GetAllEventsDocument,
-    baseOptions,
-  )
-}
-export type GetAllEventsQueryHookResult = ReturnType<typeof useGetAllEventsQuery>
-export type GetAllEventsLazyQueryHookResult = ReturnType<typeof useGetAllEventsLazyQuery>
-export type GetAllEventsQueryResult = ApolloReactCommon.QueryResult<
-  GetAllEventsQuery,
-  GetAllEventsQueryVariables
->
-export function refetchGetAllEventsQuery(variables?: GetAllEventsQueryVariables) {
-  return { query: GetAllEventsDocument, variables: variables }
-}
-export const GetEventByCoordDocument = gql`
-  query getEventByCoord($input: CoordInput!) {
-    getEventBaseOnPos(input: $input) {
-      id
-      tags
-      thumbnail
-      galleries
-      hostInfo {
-        id
-        name
-        email
-        avatarId
+export function useGetAllEventsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetAllEventsQuery, GetAllEventsQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetAllEventsQuery, GetAllEventsQueryVariables>(GetAllEventsDocument, baseOptions);
       }
-      endTime
-      startTime
-      information {
-        eventName
-      }
-      place {
-        coord {
-          latitude
-          longitude
+export function useGetAllEventsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetAllEventsQuery, GetAllEventsQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetAllEventsQuery, GetAllEventsQueryVariables>(GetAllEventsDocument, baseOptions);
         }
+export type GetAllEventsQueryHookResult = ReturnType<typeof useGetAllEventsQuery>;
+export type GetAllEventsLazyQueryHookResult = ReturnType<typeof useGetAllEventsLazyQuery>;
+export type GetAllEventsQueryResult = ApolloReactCommon.QueryResult<GetAllEventsQuery, GetAllEventsQueryVariables>;
+export function refetchGetAllEventsQuery(variables?: GetAllEventsQueryVariables) {
+      return { query: GetAllEventsDocument, variables: variables }
+    }
+export const GetEventByCoordDocument = gql`
+    query getEventByCoord($input: CoordInput!) {
+  getEventBaseOnPos(input: $input) {
+    id
+    tags
+    thumbnail
+    galleries
+    hostInfo {
+      id
+      name
+      email
+      avatarId
+    }
+    endTime
+    startTime
+    information {
+      eventName
+    }
+    place {
+      coord {
+        latitude
+        longitude
       }
     }
   }
-`
+}
+    `;
 
 /**
  * __useGetEventByCoordQuery__
@@ -1298,69 +1272,50 @@ export const GetEventByCoordDocument = gql`
  *   },
  * });
  */
-export function useGetEventByCoordQuery(
-  baseOptions?: ApolloReactHooks.QueryHookOptions<
-    GetEventByCoordQuery,
-    GetEventByCoordQueryVariables
-  >,
-) {
-  return ApolloReactHooks.useQuery<GetEventByCoordQuery, GetEventByCoordQueryVariables>(
-    GetEventByCoordDocument,
-    baseOptions,
-  )
-}
-export function useGetEventByCoordLazyQuery(
-  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
-    GetEventByCoordQuery,
-    GetEventByCoordQueryVariables
-  >,
-) {
-  return ApolloReactHooks.useLazyQuery<GetEventByCoordQuery, GetEventByCoordQueryVariables>(
-    GetEventByCoordDocument,
-    baseOptions,
-  )
-}
-export type GetEventByCoordQueryHookResult = ReturnType<typeof useGetEventByCoordQuery>
-export type GetEventByCoordLazyQueryHookResult = ReturnType<typeof useGetEventByCoordLazyQuery>
-export type GetEventByCoordQueryResult = ApolloReactCommon.QueryResult<
-  GetEventByCoordQuery,
-  GetEventByCoordQueryVariables
->
-export function refetchGetEventByCoordQuery(variables?: GetEventByCoordQueryVariables) {
-  return { query: GetEventByCoordDocument, variables: variables }
-}
-export const GetEventByIdDocument = gql`
-  query getEventById($id: String!) {
-    getEventById(id: $id) {
-      id
-      thumbnail
-      totalMember
-      galleries
-      hostInfo {
-        avatarId
-        id
+export function useGetEventByCoordQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetEventByCoordQuery, GetEventByCoordQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetEventByCoordQuery, GetEventByCoordQueryVariables>(GetEventByCoordDocument, baseOptions);
       }
-      membersInfo {
-        id
-        type
-      }
-      endTime
-      startTime
-      information {
-        eventName
-        description
-      }
-      place {
-        name
-        address
-        coord {
-          latitude
-          longitude
+export function useGetEventByCoordLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetEventByCoordQuery, GetEventByCoordQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetEventByCoordQuery, GetEventByCoordQueryVariables>(GetEventByCoordDocument, baseOptions);
         }
+export type GetEventByCoordQueryHookResult = ReturnType<typeof useGetEventByCoordQuery>;
+export type GetEventByCoordLazyQueryHookResult = ReturnType<typeof useGetEventByCoordLazyQuery>;
+export type GetEventByCoordQueryResult = ApolloReactCommon.QueryResult<GetEventByCoordQuery, GetEventByCoordQueryVariables>;
+export function refetchGetEventByCoordQuery(variables?: GetEventByCoordQueryVariables) {
+      return { query: GetEventByCoordDocument, variables: variables }
+    }
+export const GetEventByIdDocument = gql`
+    query getEventById($id: String!) {
+  getEventById(id: $id) {
+    id
+    thumbnail
+    totalMember
+    galleries
+    hostInfo {
+      avatarId
+      id
+    }
+    membersInfo {
+      id
+      type
+    }
+    endTime
+    startTime
+    information {
+      eventName
+      description
+    }
+    place {
+      name
+      address
+      coord {
+        latitude
+        longitude
       }
     }
   }
-`
+}
+    `;
 
 /**
  * __useGetEventByIdQuery__
@@ -1378,41 +1333,25 @@ export const GetEventByIdDocument = gql`
  *   },
  * });
  */
-export function useGetEventByIdQuery(
-  baseOptions?: ApolloReactHooks.QueryHookOptions<GetEventByIdQuery, GetEventByIdQueryVariables>,
-) {
-  return ApolloReactHooks.useQuery<GetEventByIdQuery, GetEventByIdQueryVariables>(
-    GetEventByIdDocument,
-    baseOptions,
-  )
-}
-export function useGetEventByIdLazyQuery(
-  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
-    GetEventByIdQuery,
-    GetEventByIdQueryVariables
-  >,
-) {
-  return ApolloReactHooks.useLazyQuery<GetEventByIdQuery, GetEventByIdQueryVariables>(
-    GetEventByIdDocument,
-    baseOptions,
-  )
-}
-export type GetEventByIdQueryHookResult = ReturnType<typeof useGetEventByIdQuery>
-export type GetEventByIdLazyQueryHookResult = ReturnType<typeof useGetEventByIdLazyQuery>
-export type GetEventByIdQueryResult = ApolloReactCommon.QueryResult<
-  GetEventByIdQuery,
-  GetEventByIdQueryVariables
->
+export function useGetEventByIdQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetEventByIdQuery, GetEventByIdQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetEventByIdQuery, GetEventByIdQueryVariables>(GetEventByIdDocument, baseOptions);
+      }
+export function useGetEventByIdLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetEventByIdQuery, GetEventByIdQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetEventByIdQuery, GetEventByIdQueryVariables>(GetEventByIdDocument, baseOptions);
+        }
+export type GetEventByIdQueryHookResult = ReturnType<typeof useGetEventByIdQuery>;
+export type GetEventByIdLazyQueryHookResult = ReturnType<typeof useGetEventByIdLazyQuery>;
+export type GetEventByIdQueryResult = ApolloReactCommon.QueryResult<GetEventByIdQuery, GetEventByIdQueryVariables>;
 export function refetchGetEventByIdQuery(variables?: GetEventByIdQueryVariables) {
-  return { query: GetEventByIdDocument, variables: variables }
-}
-export const GetImgDocument = gql`
-  query getImg($id: String!) {
-    getImg(id: $id) {
-      data
+      return { query: GetEventByIdDocument, variables: variables }
     }
+export const GetImgDocument = gql`
+    query getImg($id: String!) {
+  getImg(id: $id) {
+    data
   }
-`
+}
+    `;
 
 /**
  * __useGetImgQuery__
@@ -1430,33 +1369,26 @@ export const GetImgDocument = gql`
  *   },
  * });
  */
-export function useGetImgQuery(
-  baseOptions?: ApolloReactHooks.QueryHookOptions<GetImgQuery, GetImgQueryVariables>,
-) {
-  return ApolloReactHooks.useQuery<GetImgQuery, GetImgQueryVariables>(GetImgDocument, baseOptions)
-}
-export function useGetImgLazyQuery(
-  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetImgQuery, GetImgQueryVariables>,
-) {
-  return ApolloReactHooks.useLazyQuery<GetImgQuery, GetImgQueryVariables>(
-    GetImgDocument,
-    baseOptions,
-  )
-}
-export type GetImgQueryHookResult = ReturnType<typeof useGetImgQuery>
-export type GetImgLazyQueryHookResult = ReturnType<typeof useGetImgLazyQuery>
-export type GetImgQueryResult = ApolloReactCommon.QueryResult<GetImgQuery, GetImgQueryVariables>
+export function useGetImgQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetImgQuery, GetImgQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetImgQuery, GetImgQueryVariables>(GetImgDocument, baseOptions);
+      }
+export function useGetImgLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetImgQuery, GetImgQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetImgQuery, GetImgQueryVariables>(GetImgDocument, baseOptions);
+        }
+export type GetImgQueryHookResult = ReturnType<typeof useGetImgQuery>;
+export type GetImgLazyQueryHookResult = ReturnType<typeof useGetImgLazyQuery>;
+export type GetImgQueryResult = ApolloReactCommon.QueryResult<GetImgQuery, GetImgQueryVariables>;
 export function refetchGetImgQuery(variables?: GetImgQueryVariables) {
-  return { query: GetImgDocument, variables: variables }
-}
-export const GetAllUsersDocument = gql`
-  query getAllUsers {
-    getAllUsers {
-      id
-      email
+      return { query: GetImgDocument, variables: variables }
     }
+export const GetAllUsersDocument = gql`
+    query getAllUsers {
+  getAllUsers {
+    id
+    email
   }
-`
+}
+    `;
 
 /**
  * __useGetAllUsersQuery__
@@ -1473,44 +1405,31 @@ export const GetAllUsersDocument = gql`
  *   },
  * });
  */
-export function useGetAllUsersQuery(
-  baseOptions?: ApolloReactHooks.QueryHookOptions<GetAllUsersQuery, GetAllUsersQueryVariables>,
-) {
-  return ApolloReactHooks.useQuery<GetAllUsersQuery, GetAllUsersQueryVariables>(
-    GetAllUsersDocument,
-    baseOptions,
-  )
-}
-export function useGetAllUsersLazyQuery(
-  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetAllUsersQuery, GetAllUsersQueryVariables>,
-) {
-  return ApolloReactHooks.useLazyQuery<GetAllUsersQuery, GetAllUsersQueryVariables>(
-    GetAllUsersDocument,
-    baseOptions,
-  )
-}
-export type GetAllUsersQueryHookResult = ReturnType<typeof useGetAllUsersQuery>
-export type GetAllUsersLazyQueryHookResult = ReturnType<typeof useGetAllUsersLazyQuery>
-export type GetAllUsersQueryResult = ApolloReactCommon.QueryResult<
-  GetAllUsersQuery,
-  GetAllUsersQueryVariables
->
+export function useGetAllUsersQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetAllUsersQuery, GetAllUsersQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetAllUsersQuery, GetAllUsersQueryVariables>(GetAllUsersDocument, baseOptions);
+      }
+export function useGetAllUsersLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetAllUsersQuery, GetAllUsersQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetAllUsersQuery, GetAllUsersQueryVariables>(GetAllUsersDocument, baseOptions);
+        }
+export type GetAllUsersQueryHookResult = ReturnType<typeof useGetAllUsersQuery>;
+export type GetAllUsersLazyQueryHookResult = ReturnType<typeof useGetAllUsersLazyQuery>;
+export type GetAllUsersQueryResult = ApolloReactCommon.QueryResult<GetAllUsersQuery, GetAllUsersQueryVariables>;
 export function refetchGetAllUsersQuery(variables?: GetAllUsersQueryVariables) {
-  return { query: GetAllUsersDocument, variables: variables }
-}
-export const GetCurrentUserInfoDocument = gql`
-  query getCurrentUserInfo {
-    me {
-      email
-      id
-      avatarId
-      name
-      joinedEvent
-      createdAt
-      updatedAt
+      return { query: GetAllUsersDocument, variables: variables }
     }
+export const GetCurrentUserInfoDocument = gql`
+    query getCurrentUserInfo {
+  me {
+    email
+    id
+    avatarId
+    name
+    joinedEvent
+    createdAt
+    updatedAt
   }
-`
+}
+    `;
 
 /**
  * __useGetCurrentUserInfoQuery__
@@ -1527,50 +1446,29 @@ export const GetCurrentUserInfoDocument = gql`
  *   },
  * });
  */
-export function useGetCurrentUserInfoQuery(
-  baseOptions?: ApolloReactHooks.QueryHookOptions<
-    GetCurrentUserInfoQuery,
-    GetCurrentUserInfoQueryVariables
-  >,
-) {
-  return ApolloReactHooks.useQuery<GetCurrentUserInfoQuery, GetCurrentUserInfoQueryVariables>(
-    GetCurrentUserInfoDocument,
-    baseOptions,
-  )
-}
-export function useGetCurrentUserInfoLazyQuery(
-  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
-    GetCurrentUserInfoQuery,
-    GetCurrentUserInfoQueryVariables
-  >,
-) {
-  return ApolloReactHooks.useLazyQuery<GetCurrentUserInfoQuery, GetCurrentUserInfoQueryVariables>(
-    GetCurrentUserInfoDocument,
-    baseOptions,
-  )
-}
-export type GetCurrentUserInfoQueryHookResult = ReturnType<typeof useGetCurrentUserInfoQuery>
-export type GetCurrentUserInfoLazyQueryHookResult = ReturnType<
-  typeof useGetCurrentUserInfoLazyQuery
->
-export type GetCurrentUserInfoQueryResult = ApolloReactCommon.QueryResult<
-  GetCurrentUserInfoQuery,
-  GetCurrentUserInfoQueryVariables
->
-export function refetchGetCurrentUserInfoQuery(variables?: GetCurrentUserInfoQueryVariables) {
-  return { query: GetCurrentUserInfoDocument, variables: variables }
-}
-export const GetMyJoinedEventDocument = gql`
-  query getMyJoinedEvent {
-    getMyJoinedEvent {
-      id
-      place {
-        name
-        address
+export function useGetCurrentUserInfoQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetCurrentUserInfoQuery, GetCurrentUserInfoQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetCurrentUserInfoQuery, GetCurrentUserInfoQueryVariables>(GetCurrentUserInfoDocument, baseOptions);
       }
+export function useGetCurrentUserInfoLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetCurrentUserInfoQuery, GetCurrentUserInfoQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetCurrentUserInfoQuery, GetCurrentUserInfoQueryVariables>(GetCurrentUserInfoDocument, baseOptions);
+        }
+export type GetCurrentUserInfoQueryHookResult = ReturnType<typeof useGetCurrentUserInfoQuery>;
+export type GetCurrentUserInfoLazyQueryHookResult = ReturnType<typeof useGetCurrentUserInfoLazyQuery>;
+export type GetCurrentUserInfoQueryResult = ApolloReactCommon.QueryResult<GetCurrentUserInfoQuery, GetCurrentUserInfoQueryVariables>;
+export function refetchGetCurrentUserInfoQuery(variables?: GetCurrentUserInfoQueryVariables) {
+      return { query: GetCurrentUserInfoDocument, variables: variables }
+    }
+export const GetMyJoinedEventDocument = gql`
+    query getMyJoinedEvent {
+  getMyJoinedEvent {
+    id
+    place {
+      name
+      address
     }
   }
-`
+}
+    `;
 
 /**
  * __useGetMyJoinedEventQuery__
@@ -1587,48 +1485,29 @@ export const GetMyJoinedEventDocument = gql`
  *   },
  * });
  */
-export function useGetMyJoinedEventQuery(
-  baseOptions?: ApolloReactHooks.QueryHookOptions<
-    GetMyJoinedEventQuery,
-    GetMyJoinedEventQueryVariables
-  >,
-) {
-  return ApolloReactHooks.useQuery<GetMyJoinedEventQuery, GetMyJoinedEventQueryVariables>(
-    GetMyJoinedEventDocument,
-    baseOptions,
-  )
-}
-export function useGetMyJoinedEventLazyQuery(
-  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
-    GetMyJoinedEventQuery,
-    GetMyJoinedEventQueryVariables
-  >,
-) {
-  return ApolloReactHooks.useLazyQuery<GetMyJoinedEventQuery, GetMyJoinedEventQueryVariables>(
-    GetMyJoinedEventDocument,
-    baseOptions,
-  )
-}
-export type GetMyJoinedEventQueryHookResult = ReturnType<typeof useGetMyJoinedEventQuery>
-export type GetMyJoinedEventLazyQueryHookResult = ReturnType<typeof useGetMyJoinedEventLazyQuery>
-export type GetMyJoinedEventQueryResult = ApolloReactCommon.QueryResult<
-  GetMyJoinedEventQuery,
-  GetMyJoinedEventQueryVariables
->
-export function refetchGetMyJoinedEventQuery(variables?: GetMyJoinedEventQueryVariables) {
-  return { query: GetMyJoinedEventDocument, variables: variables }
-}
-export const GetMyHostedEventDocument = gql`
-  query getMyHostedEvent {
-    getMyHostedEvent {
-      id
-      place {
-        name
-        address
+export function useGetMyJoinedEventQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetMyJoinedEventQuery, GetMyJoinedEventQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetMyJoinedEventQuery, GetMyJoinedEventQueryVariables>(GetMyJoinedEventDocument, baseOptions);
       }
+export function useGetMyJoinedEventLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetMyJoinedEventQuery, GetMyJoinedEventQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetMyJoinedEventQuery, GetMyJoinedEventQueryVariables>(GetMyJoinedEventDocument, baseOptions);
+        }
+export type GetMyJoinedEventQueryHookResult = ReturnType<typeof useGetMyJoinedEventQuery>;
+export type GetMyJoinedEventLazyQueryHookResult = ReturnType<typeof useGetMyJoinedEventLazyQuery>;
+export type GetMyJoinedEventQueryResult = ApolloReactCommon.QueryResult<GetMyJoinedEventQuery, GetMyJoinedEventQueryVariables>;
+export function refetchGetMyJoinedEventQuery(variables?: GetMyJoinedEventQueryVariables) {
+      return { query: GetMyJoinedEventDocument, variables: variables }
+    }
+export const GetMyHostedEventDocument = gql`
+    query getMyHostedEvent {
+  getMyHostedEvent {
+    id
+    place {
+      name
+      address
     }
   }
-`
+}
+    `;
 
 /**
  * __useGetMyHostedEventQuery__
@@ -1645,34 +1524,15 @@ export const GetMyHostedEventDocument = gql`
  *   },
  * });
  */
-export function useGetMyHostedEventQuery(
-  baseOptions?: ApolloReactHooks.QueryHookOptions<
-    GetMyHostedEventQuery,
-    GetMyHostedEventQueryVariables
-  >,
-) {
-  return ApolloReactHooks.useQuery<GetMyHostedEventQuery, GetMyHostedEventQueryVariables>(
-    GetMyHostedEventDocument,
-    baseOptions,
-  )
-}
-export function useGetMyHostedEventLazyQuery(
-  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
-    GetMyHostedEventQuery,
-    GetMyHostedEventQueryVariables
-  >,
-) {
-  return ApolloReactHooks.useLazyQuery<GetMyHostedEventQuery, GetMyHostedEventQueryVariables>(
-    GetMyHostedEventDocument,
-    baseOptions,
-  )
-}
-export type GetMyHostedEventQueryHookResult = ReturnType<typeof useGetMyHostedEventQuery>
-export type GetMyHostedEventLazyQueryHookResult = ReturnType<typeof useGetMyHostedEventLazyQuery>
-export type GetMyHostedEventQueryResult = ApolloReactCommon.QueryResult<
-  GetMyHostedEventQuery,
-  GetMyHostedEventQueryVariables
->
+export function useGetMyHostedEventQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetMyHostedEventQuery, GetMyHostedEventQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetMyHostedEventQuery, GetMyHostedEventQueryVariables>(GetMyHostedEventDocument, baseOptions);
+      }
+export function useGetMyHostedEventLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetMyHostedEventQuery, GetMyHostedEventQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetMyHostedEventQuery, GetMyHostedEventQueryVariables>(GetMyHostedEventDocument, baseOptions);
+        }
+export type GetMyHostedEventQueryHookResult = ReturnType<typeof useGetMyHostedEventQuery>;
+export type GetMyHostedEventLazyQueryHookResult = ReturnType<typeof useGetMyHostedEventLazyQuery>;
+export type GetMyHostedEventQueryResult = ApolloReactCommon.QueryResult<GetMyHostedEventQuery, GetMyHostedEventQueryVariables>;
 export function refetchGetMyHostedEventQuery(variables?: GetMyHostedEventQueryVariables) {
-  return { query: GetMyHostedEventDocument, variables: variables }
-}
+      return { query: GetMyHostedEventDocument, variables: variables }
+    }

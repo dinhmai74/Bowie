@@ -30,24 +30,10 @@ export class EventResolver {
   ): Promise<GetEventByIdResponse | null> {
     try {
       const event = await DI.eventRepos.findOne({ id })
-      if (!event) throw new ApolloError('Event not found')
-      const rs = new GetEventByIdResponse()
+      if (!event || event.isDeleted) throw new ApolloError('Event not found')
+      const rs = new GetEventByIdResponse(event)
       // bind data
-      rs.id = event!.id
-      rs.place = event!.place
-      rs.startTime = event!.startTime
-      rs.endTime = event!.endTime
-      rs.place = event!.place
-      rs.information = event!.information
-      rs.tags = event!.tags
-      rs.hostId = event!.hostId
-      rs.galleries = event!.galleries
-      rs.thumbnail = event!.thumbnail
 
-      rs.totalMember = event!.membersInfo.length
-
-      // get member info
-      rs.membersInfo = []
       if (event!.membersInfo) {
         if (ctx.req.session!.userId !== event!.hostId)
           rs.membersInfo = event!.membersInfo.filter((v) => v.type === 'public')
@@ -65,7 +51,9 @@ export class EventResolver {
 
   @Query(() => [EventWithHost])
   async getEventBaseOnPos(@Arg('input') { latitude, longitude }: Coord): Promise<EventWithHost[]> {
-    const events = await DI.em.getRepository(Event).findAll()
+    const events = await DI.em.getRepository(Event).find({
+      isDeleted: false,
+    })
     events.filter((v) => {
       return isInArea(v.place.coord.latitude, v.place.coord.longitude, latitude, longitude, 'K')
     })
@@ -156,5 +144,19 @@ export class EventResolver {
     } catch (error) {
       throw new ApolloError(JSON.stringify(error))
     }
+  }
+
+  @Mutation(() => Boolean)
+  async disbandEvent(@Arg('id') id: string): Promise<boolean> {
+    try {
+      const event = await DI.eventRepos.findOne({ id })
+      if (!event) throw new Error("Can't find event")
+      event!.isDeleted = true
+      await DI.em.flush()
+    } catch (error) {
+      throw new ApolloError('Cannot find the event id')
+    }
+
+    return true
   }
 }

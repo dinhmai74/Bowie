@@ -52,7 +52,7 @@
     "letsCook": "Let's cook!",
     "forgotPassword": "Forgot password?",
     "loginWithFb": "Login with Facebook",
-    "loginSuccess": "Request successfully"
+    "loginSuccess": "Login successfully"
   },
   "auth": {
     "signUp": "Sign Up",
@@ -89,6 +89,9 @@
     "showMap": "Show map",
     "information": "Information",
     "join": "Join",
+    "joinSuccess": "Join successfully",
+    "disband": "Disband",
+    "disbandSuccess": "Disband successfully",
     "wannaJoinAs": "Wanna join as",
     "member": "Member",
     "gallary": "Gallery"

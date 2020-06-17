@@ -20,7 +20,6 @@ const Wrapper = styled(View)<WrapperProps>`
   border-style: solid;
   border-left-width: 3px;
   border-radius: ${spacing[1]}px;
-  ${() => ({ ...getElevation(9) })};
 `
 
 export type SnackbarType = 'success' | 'warning' | 'danger' | 'info'
@@ -42,7 +41,7 @@ export const AppSnackbar: React.FunctionComponent<AppSnackbarProps> = props => {
   if (type === 'danger') message = PMessage.replace('GraphQL error:', '').trim()
 
   return (
-    <Wrapper c={`color-${type || 'success'}-500`}>
+    <Wrapper c={`color-${type || 'success'}-500`} style={getElevation()}>
       <Text preset="secondary" color={palette.black} tx={message} />
     </Wrapper>
   )

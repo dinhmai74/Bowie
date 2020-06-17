@@ -20,5 +20,5 @@ export abstract class BaseEntity implements MongoEntity<BaseEntity> {
   updatedAt = new Date()
 
   @Property()
-  tempId: string
+  isDeleted = false
 }
