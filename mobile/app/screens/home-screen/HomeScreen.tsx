@@ -1,41 +1,36 @@
-import { EventWithHost, useGetEventByCoordLazyQuery } from 'app-graphql'
-import { AppError, AppLoading, AppMapView, Screen, SizedBox, View } from 'components'
+import {
+  EventWithHost,
+  useGetAllTagQuery,
+  useGetEventByCoordLazyQuery,
+  GetAllTagQuery,
+  EventTag,
+} from 'app-graphql'
+import { AppError, AppLoading, AppMapView, Screen, SizedBox, View, Button } from 'components'
+import { useSnackBars } from 'hooks'
 import { observer } from 'mobx-react-lite'
-import React from 'react'
-import { StyleSheet } from 'react-native'
+import React, { useMemo } from 'react'
+import { StyleSheet, ScrollView } from 'react-native'
 import { Region } from 'react-native-maps'
 import { NavigationScreenProp } from 'react-navigation'
 import { useNetworkStatus } from 'react-offix-hooks'
-import { getLocationAsync, nDelay } from 'utils'
-import { Header } from './components/Header'
-import { useSnackBars } from 'hooks'
-
-const HomeWrapper: React.FC<{ onRefresh: () => void }> = ({ children, onRefresh }) => {
-  return (
-    <View full bgBaseOnTheme>
-      <Screen preset="scroll">
-        <Header onRefresh={onRefresh} />
-        {children}
-      </Screen>
-    </View>
-  )
-}
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-})
+import { getLocationAsync } from 'utils'
+import { Header, HeaderProps } from './components/Header'
+import styled from 'styled-components'
+import { spacing } from 'theme'
+import _ from 'lodash'
 
 export interface HomeScreenProps {
   navigation: NavigationScreenProp<any, any>
 }
+
+export type HomeEventTag = Pick<EventTag, 'id' | 'name' | 'currentUse'>
 
 export const HomeScreen: React.FunctionComponent<HomeScreenProps> = observer(({ navigation }) => {
   // const { someStore } = useStores()
   const [errorGetLocation, setErrGetLocation] = React.useState<boolean>(false)
   const { addSnack } = useSnackBars()
   const isOnline = useNetworkStatus()
+  const [tagsSelectedMap, setTagsSelectedMap] = React.useState({})
 
   const [region, setRegion] = React.useState<Region>(undefined)
 
@@ -55,6 +50,8 @@ export const HomeScreen: React.FunctionComponent<HomeScreenProps> = observer(({ 
     },
     fetchPolicy: 'cache-and-network',
   })
+
+  const { data: dataTags, loading: loadingTags } = useGetAllTagQuery()
 
   const fetchLocation = () => {
     getLocationAsync()
@@ -76,21 +73,22 @@ export const HomeScreen: React.FunctionComponent<HomeScreenProps> = observer(({ 
   }
 
   React.useEffect(() => {
-    fetchLocation()
-
-    navigation.addListener('focus', () => {
-      refetch()
-    })
+    refetch()
   }, [])
 
   let events: EventWithHost[] = []
   // @ts-ignore
   if (data?.getEventBaseOnPos?.length > 0) events = [...data.getEventBaseOnPos]
 
-  if (!region)
+  const loading = !region || loadingTags
+
+  console.tron.log('tagsSelectedMap', tagsSelectedMap)
+
+  /* -------------renders  ------------- */
+  if (loading)
     return (
       <HomeWrapper onRefresh={() => refetch()}>
-        <SizedBox h={4} />
+        <SizedBox h={8} />
         <AppLoading />
       </HomeWrapper>
     )
@@ -103,7 +101,17 @@ export const HomeScreen: React.FunctionComponent<HomeScreenProps> = observer(({ 
     )
 
   return (
-    <HomeWrapper onRefresh={() => fetchEvent()}>
+    <HomeWrapper
+      onRefresh={() => fetchEvent()}
+      tags={dataTags.getAllTag}
+      selectedTags={tagsSelectedMap}
+      onSelectedChange={(id, value) =>
+        setTagsSelectedMap({
+          ...tagsSelectedMap,
+          [id]: value,
+        })
+      }
+    >
       <View style={styles.container}>
         {region !== null && (
           <AppMapView
@@ -117,4 +125,27 @@ export const HomeScreen: React.FunctionComponent<HomeScreenProps> = observer(({ 
       </View>
     </HomeWrapper>
   )
+})
+
+export interface HomeWrapperProps extends HeaderProps {}
+
+const HomeWrapper: React.FC<HomeWrapperProps> = ({
+  children,
+  onRefresh,
+  tags,
+  selectedTags,
+  onSelectedChange,
+}) => {
+  return (
+    <View full bgBaseOnTheme>
+      <Screen>
+        <Header {...{ tags, selectedTags, onRefresh, onSelectedChange }} />
+        {children}
+      </Screen>
+    </View>
+  )
+}
+
+const styles = StyleSheet.create({
+  container: {},
 })

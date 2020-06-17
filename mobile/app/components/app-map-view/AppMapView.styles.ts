@@ -4,7 +4,7 @@ import { sw, sh, spacing, metrics } from 'theme'
 export const appMapViewStyles = StyleSheet.create({
   bottomInfo: {
     alignItems: 'center',
-    bottom: 150,
+    bottom: 250,
     justifyContent: 'center',
     left: 0,
     position: 'absolute',

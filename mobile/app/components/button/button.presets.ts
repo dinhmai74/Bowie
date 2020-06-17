@@ -37,6 +37,7 @@ export const ViewPresets = StyleService.create({
     borderWidth: 0,
   },
   bordered: {
+    ...BASE_VIEW,
     borderWidth: 1,
     backgroundColor: palette.transparent,
   },
