@@ -21,6 +21,7 @@ export type HomeParamList = {
 export type PrimaryParamList = {
   homeStack: undefined
   eventDetail: { id: string }
+  searchEventScreen: undefined
 }
 
 export type PrimaryModalParamList = {

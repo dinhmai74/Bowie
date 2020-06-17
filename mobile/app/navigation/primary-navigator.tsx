@@ -9,8 +9,10 @@ import { HomeStack } from './home-navigator'
 import { PrimaryModalParamList, PrimaryParamList } from './types'
 import { ChoseEventTimeScreen } from 'screens/create-new-event-screen/sub-screens/ChoseEventTimeScreen'
 import { FillEventInfoScreen } from 'screens/create-new-event-screen/sub-screens/fill-event-info-screen/FillEventInfoScreen'
+import { SearchEventScreen } from 'screens/search-event-screen/SearchEventScreen'
 
 const StackWithModal = createStackNavigator<PrimaryModalParamList>()
+
 const Stack = createStackNavigator<PrimaryParamList>()
 
 export function PrimaryStackWithModal() {
@@ -50,6 +52,7 @@ function PrimaryStack() {
       }}
     >
       <Stack.Screen name="homeStack" component={HomeStack} />
+      <Stack.Screen name="searchEventScreen" component={SearchEventScreen} />
       <Stack.Screen name="eventDetail" component={EventDetailScreen} />
     </Stack.Navigator>
   )

@@ -4,6 +4,8 @@ import { ScrollView } from 'react-native'
 import styled from 'styled-components'
 import { spacing } from 'theme'
 import { HomeEventTag } from '../HomeScreen'
+import { useNavigation } from '@react-navigation/native'
+import { AppRoutes } from 'utils'
 
 export interface HeaderProps {
   style?: any
@@ -15,15 +17,21 @@ export interface HeaderProps {
 
 export const Header: React.FC<HeaderProps> = props => {
   const { onRefresh, style, tags, selectedTags, onSelectedChange } = props
+  const navigation = useNavigation()
 
   return (
     <Container style={style}>
       <HeaderWrapper>
         <Text tx="homeScreen.header" preset="h1medium" />
         <IconRow>
-          <AppKittenIcon name="search" onPress={() => {}} />
+          <AppKittenIcon
+            name="search"
+            onPress={() => {
+              navigation.navigate(AppRoutes.searchEventScreen)
+            }}
+          />
 
-          <SizedBox w={4} />
+          <SizedBox w={5} />
           <AppKittenIcon
             name="refresh-cw"
             onPress={() => {
@@ -65,7 +73,8 @@ const Container = styled(View)`
 const HeaderWrapper = styled(View)`
   flex-direction: row;
   justify-content: space-between;
-  padding: ${spacing[4]}px ${spacing[2]}px;
+  padding-left: ${spacing[2]}px;
+  padding-bottom: ${spacing[2]}px;
 `
 
 const TagButton = styled(Button)({

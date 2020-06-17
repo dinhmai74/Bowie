@@ -28,4 +28,5 @@ export const AppRoutes = {
   eventDetail: 'eventDetail',
   primaryStack: 'primaryStack',
   viewMap: 'viewMap',
+  searchEventScreen: 'searchEventScreen',
 }

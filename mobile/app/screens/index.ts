@@ -7,3 +7,4 @@ export * from './settings-screen/SettingsScreen'
 export * from './sign-in-screen/SignInScreen'
 export * from './welcome-screen/WelcomeScreen'
 export * from './view-map-screen/ViewMapScreen'
+export * from "./search-event-screen/SearchEventScreen"

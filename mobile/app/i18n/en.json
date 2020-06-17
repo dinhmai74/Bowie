@@ -126,6 +126,9 @@
       "pickGallaries": "Pick some gallaries"
     }
   },
+  "searchEventScreen": {
+    "search": "Search"
+  },
   "en": "English",
   "vi": "Vietnamese"
 }

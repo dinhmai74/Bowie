@@ -47,7 +47,7 @@ YellowBox.ignoreWarnings([
   'Require cycle:',
   "Can't perform a React state",
   'Story with',
-  'Expected style',
+  'Input: unsup',
 ])
 
 /**
