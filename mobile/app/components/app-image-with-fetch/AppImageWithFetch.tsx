@@ -21,14 +21,16 @@ export interface AppImageWithFetchProps {
   style?: any
   containerStyle?: any
   layoutStyle?: any
+  collection: string
 }
 
 export const AppImageWithFetch: React.FunctionComponent<AppImageWithFetchProps> = props => {
   // const { someStore } = useStores()
-  const { id, style, containerStyle, layoutStyle } = props
+  const { id, style, containerStyle, layoutStyle, collection } = props
   const { data, loading } = useGetImgQuery({
     variables: {
       id,
+      collection,
     },
     fetchPolicy: 'no-cache',
   })

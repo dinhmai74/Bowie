@@ -7,8 +7,11 @@ const baseImgDir = '/../../../images'
 @Resolver()
 export class ImageFactoryResolver {
   @Query(() => Image)
-  async getImg(@Arg('id') id: string): Promise<Image | null> {
-    const data = readFileSync(__dirname + `${baseImgDir}/${id}.png`)
+  async getImg(
+    @Arg('id') id: string,
+    @Arg('collection') collection: string,
+  ): Promise<Image | null> {
+    const data = readFileSync(__dirname + `${baseImgDir}/${collection}/${id}.png`)
     const img = new Image()
     img.data = data
     img.contentType = 'image/png'

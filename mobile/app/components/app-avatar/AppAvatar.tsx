@@ -17,6 +17,7 @@ export const AppAvatar: React.FunctionComponent<AppAvatarProps> = props => {
   const { data } = useGetImgQuery({
     variables: {
       id,
+      collection: 'avatar',
     },
     fetchPolicy: 'no-cache',
   })

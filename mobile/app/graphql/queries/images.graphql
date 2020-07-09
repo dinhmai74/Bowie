@@ -1,5 +1,5 @@
-query getImg($id: String!) {
-  getImg(id: $id) {
+query getImg($id: String!, $collection: String!) {
+  getImg(id: $id, collection: $collection) {
     data
   }
 }

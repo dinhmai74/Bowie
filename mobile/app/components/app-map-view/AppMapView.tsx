@@ -90,6 +90,7 @@ const AppMarkerCard: React.FC<AppMarkerCardProps> = ({ event }) => {
     <AppCard style={styles.bottomInfoContent}>
       {event?.thumbnail ? (
         <AppImageWithFetch
+          collection="event"
           id={event?.thumbnail}
           style={styles.bottomInfoImage}
           containerStyle={metrics.images.thumbnail}

@@ -39,6 +39,7 @@ export const Avatar: React.FC<AvatarProps> = props => {
   const { data: imgData, loading: loadingImg } = useGetImgQuery({
     variables: {
       id: getInfoData?.me?.avatarId,
+      collection: 'Avatar',
     },
     fetchPolicy: 'network-only',
   })

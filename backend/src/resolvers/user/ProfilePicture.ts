@@ -1,3 +1,4 @@
+import * as fs from 'fs'
 import { createWriteStream, existsSync, unlinkSync } from 'fs'
 import { FileUpload, GraphQLUpload } from 'graphql-upload'
 import { Arg, Ctx, Mutation, Resolver } from 'type-graphql'
@@ -5,7 +6,7 @@ import { v4 } from 'uuid'
 import { MyContext } from '../../graphql-types/MyContext'
 import { DI } from '../../mikroconfig'
 
-const baseImgDir = '/../../../images'
+const baseImgDir = '/../../../images/avatar'
 
 @Resolver()
 export class ProfilePictureResolver {
@@ -19,6 +20,9 @@ export class ProfilePictureResolver {
     if (!ctx.req.session!.userId) return false
 
     const imgDir = `${baseImgDir}`
+    !fs.existsSync(__dirname + imgDir) && fs.mkdirSync(__dirname + imgDir)
+
+    console.log('imgDir', imgDir)
     const id = v4()
     const user = await DI.userRepos.findOne({ id: ctx.req.session!.userId })
 

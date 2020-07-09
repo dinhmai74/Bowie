@@ -156,6 +156,7 @@ export const EventDetailScreen: React.FunctionComponent<EventDetailScreenProps> 
                     id={v}
                     key={v}
                     containerStyle={styles.galleriesContainer}
+                    collection="event"
                     style={imgSize}
                     layoutStyle={imgSize}
                   />

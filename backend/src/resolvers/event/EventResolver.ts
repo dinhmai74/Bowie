@@ -12,6 +12,7 @@ import { DI } from '../../mikroconfig'
 import { enoughTimeToCreate, isInArea } from '../../utils'
 import { createImg } from '../../utils/CreateFile'
 // import {  } from '../../../images'
+const collectionName = 'event'
 
 @Resolver()
 export class EventResolver {
@@ -118,7 +119,7 @@ export class EventResolver {
 
       for (const gallery of galleries.files) {
         const id = v4()
-        ;(await createImg(gallery, id + '.png'))
+        ;(await createImg(gallery, id + '.png', collectionName))
           .on('finish', async () => {
             event.galleries.push(id)
           })
@@ -129,7 +130,7 @@ export class EventResolver {
 
       const id = v4()
       if (thumbnail && thumbnail.file) {
-        ;(await createImg(thumbnail.file, id + '.png'))
+        ;(await createImg(thumbnail.file, id + '.png', collectionName))
           .on('finish', () => {
             event.thumbnail = id
             console.log('done')
