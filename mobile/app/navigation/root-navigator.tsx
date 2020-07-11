@@ -1,9 +1,9 @@
+import { useNetInfo } from '@react-native-community/netinfo'
 import { NavigationContainer, NavigationContainerRef } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
 import { useAuthMutation, User, UserWithAvt } from 'app-graphql'
 import { useStores } from 'models/root-store'
 import React, { useEffect, useMemo } from 'react'
-import { useNetworkStatus } from 'react-offix-hooks'
 import { useForceUpdate } from 'utils/custom-hooks'
 import { load, remove, save } from 'utils/storage'
 import { AuthStack } from './auth-navigator'
@@ -25,33 +25,17 @@ const Stack = createStackNavigator<RootParamList>()
 const LOGIN_KEY = 'login'
 
 const RootStack = () => {
-  const { userInfoStore } = useStores()
   const [validUser, setValidUser] = React.useState(false)
-  const refresh = useForceUpdate()
-
-  const removeUserInfo = () => {
-    userInfoStore.clear()
-    setValidUser(false)
-    remove(LOGIN_KEY)
-  }
-
-  const saveUserInfo = (d: User | UserWithAvt) => {
-    const { email, name, avatarId } = d
-    setValidUser(true)
-    save(LOGIN_KEY, 'login')
-    userInfoStore.setInfo({ name, email, avt: avatarId })
-    refresh()
-  }
+  const isOnline = useNetInfo().isConnected
 
   const [auth] = useAuthMutation({
     onCompleted: d => {
       saveUserInfo(d.auth)
     },
-    onError: e => {
+    onError() {
       removeUserInfo()
     },
   })
-  const isOnline = useNetworkStatus()
 
   useEffect(() => {
     const bootstrapAsync = async () => {
@@ -70,7 +54,24 @@ const RootStack = () => {
     [auth],
   )
 
+  const refresh = useForceUpdate()
+  const { userInfoStore } = useStores()
+
   const isHaveCookie = isOnline ? validUser : true
+
+  const removeUserInfo = () => {
+    userInfoStore.clear()
+    setValidUser(false)
+    remove(LOGIN_KEY)
+  }
+
+  const saveUserInfo = (d: User | UserWithAvt) => {
+    const { email, name, avatarId } = d
+    setValidUser(true)
+    save(LOGIN_KEY, 'login')
+    userInfoStore.setInfo({ name, email, avt: avatarId })
+    refresh()
+  }
 
   return (
     <AuthContext.Provider value={authContext}>
@@ -80,7 +81,7 @@ const RootStack = () => {
           gestureEnabled: true,
         }}
       >
-        {!isHaveCookie ? (
+        {isHaveCookie ? (
           <Stack.Screen
             name="authStack"
             component={AuthStack}

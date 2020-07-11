@@ -2,11 +2,11 @@ import { Avatar as KittenAvatar } from '@ui-kitten/components'
 import { GetCurrentUserInfoQuery, useGetImgQuery } from 'app-graphql'
 import { Text, View } from 'components'
 import React from 'react'
-import { ImageStyle, StyleSheet } from 'react-native'
+import { ImageSourcePropType, ImageStyle, StyleSheet } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import SkeletonContent from 'react-native-skeleton-content'
 import styled from 'styled-components'
-import { spacing, useThemes } from 'theme'
+import { images, spacing, useThemes } from 'theme'
 import { getBase64UriFromUnknownSource, toCapitalize } from 'utils'
 
 const Container = styled(View)`
@@ -45,10 +45,14 @@ export const Avatar: React.FC<AvatarProps> = props => {
   })
 
   const { theme } = useThemes()
-  let avatarUri: string
+  let avatarSrc: ImageSourcePropType
 
   if (imgData) {
-    avatarUri = getBase64UriFromUnknownSource(imgData.getImg!.data)
+    avatarSrc = {
+      uri: getBase64UriFromUnknownSource(imgData.getImg!.data),
+    }
+  } else {
+    avatarSrc = images.iProfilePic
   }
 
   const userName = getInfoData?.me?.name
@@ -61,7 +65,7 @@ export const Avatar: React.FC<AvatarProps> = props => {
           isLoading={loading || loadingImg}
           layout={[skeAvatar]}
         >
-          {!loading && <KittenAvatar source={{ uri: avatarUri }} style={{ ...skeAvatar }} />}
+          {!loading && <KittenAvatar source={avatarSrc} style={{ ...skeAvatar }} />}
         </SkeletonContent>
       </TouchableOpacity>
 

@@ -1,14 +1,14 @@
+import { useNetInfo } from '@react-native-community/netinfo'
 import { EventWithHost, useGetEventByCoordLazyQuery } from 'app-graphql'
 import { AppError, AppLoading, AppMapView, Screen, SizedBox, View } from 'components'
+import { useSnackBars } from 'hooks'
 import { observer } from 'mobx-react-lite'
 import React from 'react'
 import { StyleSheet } from 'react-native'
 import { Region } from 'react-native-maps'
 import { NavigationScreenProp } from 'react-navigation'
-import { useNetworkStatus } from 'react-offix-hooks'
-import { getLocationAsync, nDelay } from 'utils'
+import { getLocationAsync } from 'utils'
 import { Header } from './components/Header'
-import { useSnackBars } from 'hooks'
 
 const HomeWrapper: React.FC<{ onRefresh: () => void }> = ({ children, onRefresh }) => {
   return (
@@ -35,7 +35,7 @@ export const HomeScreen: React.FunctionComponent<HomeScreenProps> = observer(({ 
   // const { someStore } = useStores()
   const [errorGetLocation, setErrGetLocation] = React.useState<boolean>(false)
   const { addSnack } = useSnackBars()
-  const isOnline = useNetworkStatus()
+  const isOnline = useNetInfo().isConnected
 
   const [region, setRegion] = React.useState<Region>(undefined)
 

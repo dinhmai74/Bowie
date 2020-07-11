@@ -48,7 +48,7 @@ const uploadLink = createUploadLink({
 
 const links = [uploadLink]
 
-export const offlineClient = new ApolloOfflineClient({
+export const offlineClient: any = new ApolloOfflineClient({
   cache: new InMemoryCache(),
   link: ApolloLink.from(links),
   // link: new HttpLink({ uri: GRAPHQL_URL }),
