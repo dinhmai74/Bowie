@@ -1,14 +1,14 @@
 import { InMemoryCache } from 'apollo-cache-inmemory'
 import { ApolloLink } from 'apollo-link'
-import Constants from 'expo-constants'
 // import NetInfo from "@react-native-community/netinfo"
 import { ApolloOfflineClient } from 'offix-client'
 import { AsyncStorage, Platform } from 'react-native'
 import { ReactNativeNetworkStatus } from './ReactNativeNetworkStatus'
+import { Constants } from 'utils/constant'
 
 const { createUploadLink } = require('apollo-upload-client')
 
-const ip = Constants.manifest.extra.ip
+const ip = Constants.ip
 const GRAPHQL_URL = `http://${Platform.OS === 'ios' ? 'localhost' : ip}:4000/graphql`
 
 const cacheStorage = {
