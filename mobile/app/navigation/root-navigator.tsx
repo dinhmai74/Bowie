@@ -3,7 +3,7 @@ import { NavigationContainer, NavigationContainerRef } from '@react-navigation/n
 import { createStackNavigator } from '@react-navigation/stack'
 import { useAuthMutation, User, UserWithAvt } from 'app-graphql'
 import { useStores } from 'models/root-store'
-import React, { useEffect, useMemo } from 'react'
+import React, { useEffect, useMemo, isValidElement } from 'react'
 import { useForceUpdate } from 'utils/custom-hooks'
 import { load, remove, save } from 'utils/storage'
 import { AuthStack } from './auth-navigator'
@@ -27,6 +27,20 @@ const LOGIN_KEY = 'login'
 const RootStack = () => {
   const [validUser, setValidUser] = React.useState(false)
   const isOnline = useNetInfo().isConnected
+  const removeUserInfo = () => {
+    userInfoStore.clear()
+    setValidUser(false)
+    remove(LOGIN_KEY)
+    refresh()
+  }
+
+  const saveUserInfo = (d: User | UserWithAvt) => {
+    const { email, name, avatarId } = d
+    setValidUser(true)
+    save(LOGIN_KEY, 'login')
+    userInfoStore.setInfo({ name, email, avt: avatarId })
+    refresh()
+  }
 
   const [auth] = useAuthMutation({
     onCompleted: d => {
@@ -58,20 +72,7 @@ const RootStack = () => {
   const { userInfoStore } = useStores()
 
   const isHaveCookie = isOnline ? validUser : true
-
-  const removeUserInfo = () => {
-    userInfoStore.clear()
-    setValidUser(false)
-    remove(LOGIN_KEY)
-  }
-
-  const saveUserInfo = (d: User | UserWithAvt) => {
-    const { email, name, avatarId } = d
-    setValidUser(true)
-    save(LOGIN_KEY, 'login')
-    userInfoStore.setInfo({ name, email, avt: avatarId })
-    refresh()
-  }
+  console.log('isOnline', isOnline, validUser)
 
   return (
     <AuthContext.Provider value={authContext}>
@@ -81,7 +82,7 @@ const RootStack = () => {
           gestureEnabled: true,
         }}
       >
-        {isHaveCookie ? (
+        {!isHaveCookie ? (
           <Stack.Screen
             name="authStack"
             component={AuthStack}

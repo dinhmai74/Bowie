@@ -21,7 +21,7 @@ import { isIos, nDelay } from 'utils'
 import { Avatar } from './components/Avatar'
 import { LangBottomSheet } from './components/LangBottomSheet'
 import { useSnackBars } from 'hooks'
-import { useAuthContext } from 'navigation'
+import { useAuthContext } from 'navigation/root-navigator'
 // import { useSnackBars } from 'hooks/app-snackbar-provider'
 
 interface SettingItem {
@@ -91,7 +91,14 @@ export const SettingsScreen: React.FunctionComponent<SettingsScreenProps> = obse
   const { locale } = useLocalization()
   const { toggle, theme } = useThemes()
   const { addSnack, addErr, addWarning } = useSnackBars()
-  const [logout] = useLogoutMutation()
+  const [logout] = useLogoutMutation({
+    onCompleted() {
+      authContext!.logout()
+    },
+    onError(e) {
+      addSnack(e.message)
+    },
+  })
 
   const [
     triggerGetCurrentUser,
@@ -134,7 +141,6 @@ export const SettingsScreen: React.FunctionComponent<SettingsScreenProps> = obse
 
   const signOut = () => {
     logout()
-    authContext!.logout()
   }
 
   const openBs = () => {

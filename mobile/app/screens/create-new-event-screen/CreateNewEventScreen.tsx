@@ -1,6 +1,6 @@
 import { Button, Screen, SizedBox, TextField, View, Wallpaper } from 'components'
 import { observer } from 'mobx-react-lite'
-import { useStores } from 'models/root-store'
+import { useStores } from 'models/root-store/root-store-context'
 import React from 'react'
 import { useForm } from 'react-hook-form'
 import { NavigationScreenProp } from 'react-navigation'

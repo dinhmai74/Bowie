@@ -3,7 +3,7 @@ import { AsyncStorage } from 'react-native'
 import { mst } from 'reactotron-mst'
 import Tron from 'reactotron-react-native'
 import { RootStore } from '../../models/root-store/root-store'
-import { RootNavigation } from '../../navigation'
+import { RootNavigation } from '../../navigation/navigation-utilities'
 import { clear } from '../../utils/storage'
 import { DEFAULT_REACTOTRON_CONFIG, ReactotronConfig } from './reactotron-config'
 

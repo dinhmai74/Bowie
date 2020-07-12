@@ -67,14 +67,14 @@ export const SavedScreen: React.FunctionComponent<SavedScreenProps> = observer((
         >
           <MyHostedWrapper>
             <Text tx="savedScreen.myHostedEvent" preset="bold" />
-            {myHostedEvents?.getMyHostedEvent.map(v => {
+            {myHostedEvents?.getMyHostedEvent?.map(v => {
               return <Text key={v.id}>{v.place.name}</Text>
             })}
           </MyHostedWrapper>
 
           <MyJoinedWrapper>
             <Text tx="savedScreen.myJoinedEvent" preset="bold" />
-            {myJoinedEvents?.getMyJoinedEvent.map(v => {
+            {myJoinedEvents?.getMyJoinedEvent?.map(v => {
               return <Text key={v.id}>{v.place.name}</Text>
             })}
           </MyJoinedWrapper>
