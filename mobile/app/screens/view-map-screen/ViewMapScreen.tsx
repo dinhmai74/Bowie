@@ -61,7 +61,6 @@ export const ViewMapScreen: React.FunctionComponent<ViewMapScreenProps> = observ
   // })
   // }
 
-  console.tron.log('coord', coord)
   return (
     <Screen>
       <Header
@@ -82,7 +81,6 @@ export const ViewMapScreen: React.FunctionComponent<ViewMapScreenProps> = observ
           onDragEnd={e => {
             if (e.nativeEvent.coordinate) {
               const { latitude, longitude } = e.nativeEvent.coordinate
-              console.tron.log('dragEnd', latitude, longitude)
 
               setCoord(d => {
                 d.latitude = latitude
@@ -90,9 +88,7 @@ export const ViewMapScreen: React.FunctionComponent<ViewMapScreenProps> = observ
               })
             }
           }}
-          onPress={() => {
-            console.tron.log('coord', coord)
-          }}
+          onPress={() => {}}
         />
       </MapView>
     </Screen>

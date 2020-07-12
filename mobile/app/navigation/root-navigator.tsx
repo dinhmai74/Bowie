@@ -72,7 +72,6 @@ const RootStack = () => {
   const { userInfoStore } = useStores()
 
   const isHaveCookie = isOnline ? validUser : true
-  console.log('isOnline', isOnline, validUser)
 
   return (
     <AuthContext.Provider value={authContext}>

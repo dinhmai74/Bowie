@@ -102,8 +102,6 @@ export const EventDetailScreen: React.FunctionComponent<EventDetailScreenProps> 
     },
   })
 
-  console.tron.log('loading', loadingJointEvent)
-
   const loading = loadingGetEvent
   if (loading) return <LoadingComponent />
 

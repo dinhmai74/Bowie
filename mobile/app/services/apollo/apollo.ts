@@ -14,7 +14,6 @@ const GRAPHQL_URL = `http://${Platform.OS === 'ios' ? 'localhost' : ip}:4000/gra
 const cacheStorage = {
   getItem: async key => {
     try {
-      console.tron.log('getItem apollo', key)
       const data = await AsyncStorage.getItem(key)
       if (typeof data === 'string') {
         return JSON.parse(data)
@@ -26,7 +25,6 @@ const cacheStorage = {
   },
   setItem: (key, value) => {
     let valueStr = value
-    console.tron.log('set apollo', key)
     if (typeof valueStr === 'object') {
       valueStr = JSON.stringify(value)
     }

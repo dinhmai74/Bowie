@@ -47,7 +47,6 @@ export const HomeScreen: React.FunctionComponent<HomeScreenProps> = observer(({ 
       },
     },
     onError: e => {
-      console.tron.log('e', e)
       if (!isOnline) addSnack('error.offline', { type: 'warning' })
       else {
         addSnack(e.message, { type: 'warning' })

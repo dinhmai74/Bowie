@@ -88,7 +88,6 @@ export const PickPositionModal: React.FC<PickPositionModalProps> = ({ onSubmit }
             onDragEnd={e => {
               if (e.nativeEvent.coordinate) {
                 const { latitude, longitude } = e.nativeEvent.coordinate
-                console.tron.log('dragEnd', latitude, longitude)
 
                 setCoord(d => {
                   d.latitude = latitude
@@ -96,9 +95,7 @@ export const PickPositionModal: React.FC<PickPositionModalProps> = ({ onSubmit }
                 })
               }
             }}
-            onPress={() => {
-              console.tron.log('coord', coord)
-            }}
+            onPress={() => {}}
           />
         </MapView>
       </Modal>

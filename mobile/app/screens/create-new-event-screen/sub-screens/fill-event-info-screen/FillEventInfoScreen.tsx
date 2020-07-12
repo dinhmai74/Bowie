@@ -129,7 +129,6 @@ export const FillEventInfoScreen: React.FC<FillEventInfoScreenProps> = () => {
   const imageBrowserCallback = (callback: Promise<MediaLibrary.Asset[]>) => {
     callback
       .then(photos => {
-        console.tron.log('photo', photos)
         setGallaries(photos)
         setImageBrowserOpen(false)
       })

@@ -171,11 +171,7 @@ export const SettingsScreen: React.FunctionComponent<SettingsScreenProps> = obse
           },
         })
       }
-
-      console.tlog('result', result)
-    } catch (E) {
-      console.tlog('E', E)
-    }
+    } catch (E) {}
   }
 
   /* ------------- renders ------------- */
