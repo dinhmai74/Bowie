@@ -11,7 +11,7 @@ import 'mobx-react-lite/batchingForReactNative'
 import { contains } from 'ramda'
 import React, { useEffect, useRef, useState } from 'react'
 import { ApolloProvider } from 'react-apollo'
-import { YellowBox } from 'react-native'
+import { LogBox } from 'react-native'
 import { initialWindowSafeAreaInsets, SafeAreaProvider } from 'react-native-safe-area-context'
 import { enableScreens } from 'react-native-screens'
 import { ApolloOfflineProvider } from 'react-offix-hooks'
@@ -42,7 +42,7 @@ enableScreens()
  * Ignore some yellowbox warnings. Some of these are for deprecated functions
  * that we haven't gotten around to replacing yet.
  */
-YellowBox.ignoreWarnings([
+LogBox.ignoreLogs([
   'componentWillMount is deprecated',
   'componentWillReceiveProps is deprecated',
   'Require cycle:',
