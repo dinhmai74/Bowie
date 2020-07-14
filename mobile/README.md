@@ -2,7 +2,10 @@
 
 ## IMPORTANT
 
-=> change ip host when run in android at app.json file.
+=> change ip host when run in android at constant.ts file.
+=> Fix stylesheet validate file node_modules/react-native/Libraries/StyleSheetValidation.js
+
+55. const styleProps = Object.keys(styles[name]); => const styleProps = Object.keys(styles[name]||{});
 
 ## Quick Start
 

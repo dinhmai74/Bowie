@@ -1,7 +1,3 @@
-// Welcome to the main entry point of the app.
-//
-// In this file, we'll be kicking off our app or storybook.
-
 import { mapping } from '@eva-design/eva'
 // import { default as mapping } from './theme/ui-kitten.mapping.json'
 import { NavigationContainerRef } from '@react-navigation/native'
@@ -33,15 +29,8 @@ import { IoniconsPack } from './theme/custom-eva-icons/ionicons'
 import { initFonts } from './theme/fonts'
 import * as storage from './utils/storage'
 
-// This puts screens in a native ViewController or Activity. If you want fully native
-// stack navigation, use `createNativeStackNavigator` in place of `createStackNavigator`:
-// https://github.com/kmagiera/react-native-screens#using-native-stack-navigator
 enableScreens()
 
-/**
- * Ignore some yellowbox warnings. Some of these are for deprecated functions
- * that we haven't gotten around to replacing yet.
- */
 LogBox.ignoreLogs([
   'componentWillMount is deprecated',
   'componentWillReceiveProps is deprecated',
@@ -51,12 +40,6 @@ LogBox.ignoreLogs([
   'Expected style',
 ])
 
-/**
- * Are we allowed to exit the app?  This is called when the back button
- * is pressed on android.
- *
- * @param routeName The currently active route name.
- */
 const canExit = (routeName: string) => contains(routeName, exitRoutes)
 
 export const NAVIGATION_PERSISTENCE_KEY = 'NAVIGATION_STATE'
