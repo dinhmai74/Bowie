@@ -7,12 +7,15 @@ import { Button, Header, Screen, SizedBox, Switch, Text, View } from 'components
 import * as ImagePicker from 'expo-image-picker'
 import * as Permissions from 'expo-permissions'
 import { ReactNativeFile } from 'extract-files'
+import { useSnackBars } from 'hooks'
 import { useLocalization } from 'i18n/i18n'
 import { observer } from 'mobx-react-lite'
+import { NavigationProps, PrimaryParamList } from 'navigation'
+import { HomeParamList } from 'navigation/home-navigator'
+import { useAuthContext } from 'navigation/root-navigator'
 // import { useAuthContext } from 'navigation'
 import React, { useRef } from 'react'
 import { StyleSheet, TouchableOpacity } from 'react-native'
-import { NavigationScreenProp } from 'react-navigation'
 import { SettingsCard } from 'screens/settings-screen/components/SettingsCard'
 // import { useStores } from "models/root-store"
 import { spacing, typography, useThemes } from 'theme'
@@ -20,8 +23,6 @@ import { palette, Palette } from 'theme/palette'
 import { isIos, nDelay } from 'utils'
 import { Avatar } from './components/Avatar'
 import { LangBottomSheet } from './components/LangBottomSheet'
-import { useSnackBars } from 'hooks'
-import { useAuthContext } from 'navigation/root-navigator'
 // import { useSnackBars } from 'hooks/app-snackbar-provider'
 
 interface SettingItem {
@@ -57,33 +58,13 @@ const settingItems: SettingItem[][] = [
   ],
 ]
 
-const styles = StyleSheet.create({
-  card: {
-    alignSelf: 'stretch',
-    margin: spacing[4],
-  },
-  cardRow: {
-    flexDirection: 'row',
-  },
-  cardWrapper: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginVertical: spacing[4],
-  },
-  container: {
-    paddingBottom: spacing[6],
-  },
-  rowWrapper: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-})
+// interface Params extends HomeParamList, PrimaryParamList{}
 
-export interface SettingsScreenProps {
-  navigation: NavigationScreenProp<any, any>
-}
+type Params = HomeParamList & PrimaryParamList & {}
 
-export const SettingsScreen: React.FunctionComponent<SettingsScreenProps> = observer(() => {
+export interface SettingsScreenProps extends NavigationProps<Params, 'Saved'> {}
+
+export const SettingsScreen: React.FunctionComponent<SettingsScreenProps> = observer(props => {
   /* ------------------------ hooks ------------------------ */
   // const { someStore } = useStores()
   // const { navigation } = props
@@ -199,7 +180,9 @@ export const SettingsScreen: React.FunctionComponent<SettingsScreenProps> = obse
           data={getInfoData}
           loading={getInfoLoading}
           onAvatarPress={() => pickImage()}
-          onEditPress={() => {}}
+          onEditPress={() => {
+            props.navigation.push('detailProfile')
+          }}
         />
 
         <View row style={styles.rowWrapper}>
@@ -231,4 +214,26 @@ export const SettingsScreen: React.FunctionComponent<SettingsScreenProps> = obse
       <LangBottomSheet bs={bs} />
     </View>
   )
+})
+
+const styles = StyleSheet.create({
+  card: {
+    alignSelf: 'stretch',
+    margin: spacing[4],
+  },
+  cardRow: {
+    flexDirection: 'row',
+  },
+  cardWrapper: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginVertical: spacing[4],
+  },
+  container: {
+    paddingBottom: spacing[6],
+  },
+  rowWrapper: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
 })

@@ -4,11 +4,35 @@ import {
   TransitionPresets,
 } from '@react-navigation/stack'
 import React from 'react'
-import { CreateNewEventScreen, EventDetailScreen, ViewMapScreen } from 'screens'
+import {
+  CreateNewEventScreen,
+  EventDetailScreen,
+  ViewMapScreen,
+  ViewDetailProfileScreen,
+} from 'screens'
 import { HomeStack } from './home-navigator'
-import { PrimaryModalParamList, PrimaryParamList } from './types'
 import { ChoseEventTimeScreen } from 'screens/create-new-event-screen/sub-screens/ChoseEventTimeScreen'
 import { FillEventInfoScreen } from 'screens/create-new-event-screen/sub-screens/fill-event-info-screen/FillEventInfoScreen'
+import { Coord } from 'app-graphql'
+
+export type PrimaryParamList = {
+  homeStack: undefined
+  eventDetail: { id: string }
+  detailProfile: undefined
+}
+
+export type PrimaryModalParamList = {
+  primaryStack: undefined
+  createNewEvent: undefined
+  viewMap: {
+    coord: Coord
+    title: string
+  }
+  createNewEventTime: {
+    title: string
+  }
+  createNewEventInfo: undefined
+}
 
 const StackWithModal = createStackNavigator<PrimaryModalParamList>()
 const Stack = createStackNavigator<PrimaryParamList>()
@@ -51,6 +75,7 @@ function PrimaryStack() {
     >
       <Stack.Screen name="homeStack" component={HomeStack} />
       <Stack.Screen name="eventDetail" component={EventDetailScreen} />
+      <Stack.Screen name="detailProfile" component={ViewDetailProfileScreen} />
     </Stack.Navigator>
   )
 }

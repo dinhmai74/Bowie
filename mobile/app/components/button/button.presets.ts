@@ -8,7 +8,7 @@ import { palette } from 'theme/palette'
  */
 const BASE_VIEW: ViewStyle = {
   paddingHorizontal: spacing[6],
-  paddingVertical: spacing[2],
+  paddingVertical: spacing[3],
   borderRadius: spacing[1],
 }
 
@@ -32,11 +32,12 @@ export const ViewPresets = StyleService.create({
     ...BASE_VIEW,
   },
   outlineWithoutBorder: {
-    paddingVertical: spacing[4],
+    ...BASE_VIEW,
     borderColor: 'none',
     borderWidth: 0,
   },
   bordered: {
+    ...BASE_VIEW,
     borderWidth: 1,
     backgroundColor: palette.transparent,
   },

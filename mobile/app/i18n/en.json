@@ -126,6 +126,12 @@
       "pickGallaries": "Pick some gallaries"
     }
   },
+  "viewDetailProfileScreen": {
+    "header": "User profile",
+    "changePw": "Change password",
+    "discard": "Discard",
+    "saveChanges": "Save "
+  },
   "en": "English",
   "vi": "Vietnamese"
 }

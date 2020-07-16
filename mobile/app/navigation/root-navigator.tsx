@@ -3,7 +3,7 @@ import { NavigationContainer, NavigationContainerRef } from '@react-navigation/n
 import { createStackNavigator } from '@react-navigation/stack'
 import { useAuthMutation, User, UserWithAvt } from 'app-graphql'
 import { useStores } from 'models/root-store'
-import React, { useEffect, useMemo, isValidElement } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import { useForceUpdate } from 'utils/custom-hooks'
 import { load, remove, save } from 'utils/storage'
 import { AuthStack } from './auth-navigator'

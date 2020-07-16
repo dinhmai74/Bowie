@@ -1,6 +1,13 @@
-import React, { useState, useEffect, useRef } from 'react'
+import {
+  NavigationContainerRef,
+  NavigationState,
+  ParamListBase,
+  PartialState,
+  RouteProp,
+} from '@react-navigation/native'
+import { StackNavigationProp } from '@react-navigation/stack'
+import React, { useEffect, useRef, useState } from 'react'
 import { BackHandler } from 'react-native'
-import { PartialState, NavigationState, NavigationContainerRef } from '@react-navigation/native'
 
 export const RootNavigation = {
   navigate(name: string) {
@@ -124,4 +131,12 @@ export function useNavigationPersistence(storage: any, persistenceKey: string) {
   }, [isRestoringNavigationState])
 
   return { onNavigationStateChange, restoreState, initialNavigationState }
+}
+
+export interface NavigationProps<
+  ParamList extends ParamListBase,
+  RouteName extends keyof ParamList = string
+> {
+  navigation: StackNavigationProp<ParamList, RouteName>
+  route: RouteProp<ParamList, RouteName>
 }

@@ -3,7 +3,7 @@ import { Text } from 'components/text/text'
 import { flatten, mergeAll } from 'ramda'
 import * as React from 'react'
 import { ActivityIndicator, ViewStyle } from 'react-native'
-import { useThemes } from 'theme'
+import { useThemes, spacing } from 'theme'
 import { TextPresets, ViewPresets } from './button.presets'
 import { ButtonProps } from './button.props'
 
@@ -36,7 +36,13 @@ export const Button: React.FC<ButtonProps> = props => {
 
   let viewStyle = mergeAll(
     // @ts-ignore
-    flatten([preset && viewPresets[preset], notFullStyle, styleOverride, { opacity }]),
+    flatten([
+      { paddingVertical: spacing[1] },
+      preset && viewPresets[preset],
+      notFullStyle,
+      styleOverride,
+      { opacity },
+    ]),
   )
 
   const status = props.status || 'primary'
@@ -45,7 +51,7 @@ export const Button: React.FC<ButtonProps> = props => {
 
   if (preset) {
     if (preset === 'outlineWithoutBorder') {
-      viewStyle = { ...viewStyle, backgroundColor: color[`color-${status}-100`] }
+      viewStyle = { ...viewStyle, backgroundColor: color[`color-${status}-transparent-100`] }
     } else if (preset === 'bordered') {
       viewStyle = { ...viewStyle, borderColor: color[`color-${status}-${density}`] }
     }

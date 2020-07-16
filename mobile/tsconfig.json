@@ -15,22 +15,10 @@
     "lib": ["es7"],
     "skipLibCheck": true,
     "resolveJsonModule": true,
-    "baseUrl": ".",
+    "baseUrl": "./app",
     "paths": {
-      "app-graphql": ["app/graphql"],
-      "app-graphql/*": ["app/graphql/*"],
-      "*": ["app/*"],
-      "app": ["./app"],
-      "api": ["./app/api"],
-      "components": ["./app/components"],
-      "screens": ["./app/screens"],
-      "navigation": ["./app/navigation"],
-      "services": ["./app/services"],
-      "theme": ["./app/theme"],
-      "utils": ["./app/utils"],
-      "models": ["./app/models"],
-      "i18n": ["./app/i18n"],
-      "hooks": ["./app/hooks"]
+      "app-graphql": ["./graphql"],
+      "app-graphql/*": ["./graphql/*"]
     }
   },
   "exclude": ["node_modules"],

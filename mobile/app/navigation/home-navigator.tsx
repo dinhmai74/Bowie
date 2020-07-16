@@ -8,7 +8,14 @@ import { useThemes } from 'theme'
 import { HomeScreen, NotificationsScreen, SavedScreen, SettingsScreen } from '../screens'
 import { AppRoutes } from 'utils/strings'
 
-const Tab = createBottomTabNavigator()
+export type HomeParamList = {
+  Home: undefined
+  Saved: undefined
+  Notifications: undefined
+  Settings: undefined
+}
+
+const Tab = createBottomTabNavigator<HomeParamList>()
 
 const tabs = ['home', 'saved', 'add', 'notifications', 'settings']
 
