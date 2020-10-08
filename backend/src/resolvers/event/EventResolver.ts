@@ -49,11 +49,13 @@ export class EventResolver {
 
       // get member info
       rs.membersInfo = []
+
       if (event!.membersInfo) {
         if (ctx.req.session!.userId !== event!.hostId)
           rs.membersInfo = event!.membersInfo.filter((v) => v.type === 'public')
         else rs.membersInfo = event!.membersInfo
       }
+
       const hostInfo = (await DI.userRepos.findOne({ id: event!.hostId })) || undefined
       rs.hostInfo = hostInfo
 

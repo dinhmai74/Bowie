@@ -40,6 +40,9 @@ export class MemberInfo {
 
   @Field({ description: 'secret or public' })
   type: MemberInfoType
+
+  @Field()
+  avatarId: string
 }
 
 @ObjectType()
