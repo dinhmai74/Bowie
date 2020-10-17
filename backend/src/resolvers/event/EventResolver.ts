@@ -116,7 +116,6 @@ export class EventResolver {
       const lastestEvent = await DI.eventRepos.findOne({ hostId: ctx.req.session!.userId })
       let isEnought = true
       if (lastestEvent) isEnought = enoughTimeToCreate(moment(lastestEvent!.createdAt).format())
-      console.log('isEnought', isEnought)
       if (!isEnought) return event
 
       for (const gallery of galleries.files) {
@@ -134,13 +133,14 @@ export class EventResolver {
       if (thumbnail && thumbnail.file) {
         ;(await createImg(thumbnail.file, id + '.png', collectionName))
           .on('finish', () => {
-            event.thumbnail = id
-            console.log('done')
+            event.thumbnail = id.toString()
+            console.log('done create event', event)
           })
           .on('error', () => {
             console.log('error')
           })
       }
+
       await DI.eventRepos.persist(event)
 
       // update tags amount

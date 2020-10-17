@@ -11,7 +11,11 @@ export class ImageFactoryResolver {
     @Arg('id') id: string,
     @Arg('collection') collection: string,
   ): Promise<Image | null> {
-    const data = readFileSync(__dirname + `${baseImgDir}/${collection}/${id}.png`)
+    const url = collection
+      ? __dirname + `${baseImgDir}/${collection}/${id}.png`
+      : __dirname + `${baseImgDir}/${id}.png`
+
+    const data = readFileSync(url)
     const img = new Image()
     img.data = data
     img.contentType = 'image/png'
