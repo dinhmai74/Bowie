@@ -77,7 +77,7 @@
     "react-dom": "16.13.1",
     "react-hook-form": "^5.7.2",
     "react-is": "16.8.0",
-    "react-native": "0.63.3",
+    "react-native": "0.64.1",
     "react-native-gesture-handler": "~1.7.0",
     "react-native-keychain": "^5.0.1",
     "react-native-localize": "^1.0.0",
